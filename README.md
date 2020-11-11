@@ -1,2 +1,2 @@
 # khaminbend
-project องค์การบริหารส่วนตำบล portal khokkhamin (khaminbend)
+project เทศบาลตำบลโคกขมิ้น Khokkhamin Smart City(khaminbend)
