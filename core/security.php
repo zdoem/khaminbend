@@ -1,4 +1,7 @@
 <?php
+ if (session_status() == PHP_SESSION_NONE) {
+     session_start();
+  } 
 $logged_in = false;  
 if (!isset($_SESSION['user_id'])) {
     $logged_in = true;

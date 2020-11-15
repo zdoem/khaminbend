@@ -3,6 +3,7 @@
 require '../bootstart.php';   
  
 if (isset($_SESSION['user_id'])) {  
+    echo "<script>window.location.href = '../'</script>";
     exit();
 }
 if (empty($_POST['username'])) {
@@ -11,8 +12,7 @@ if (empty($_POST['username'])) {
 } elseif (empty($_POST['password'])) {
     echo "<script>swal.fire('ข้อมูลไม่ครบ','กรุณากรอก รหัสผ่านผู้ใช้งาน', 'error');</script>";
     exit();
- } else { 
-    
+ } else {  
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
