@@ -1,42 +1,40 @@
 
 <?php
-require '../bootstart.php';  
-
-if (isset($_SESSION['member_no'])) {  
+require '../bootstart.php';   
+ 
+if (isset($_SESSION['user_id'])) {  
     exit();
 }
 if (empty($_POST['username'])) {
-    echo "<script>swal.fire('ข้อมูลไม่ครบ','กรุณากรอก เบอร์โทรศัพท์', 'error');</script>";
+    echo "<script>swal.fire('ข้อมูลไม่ครบ','กรุณากรอก ชื่อผู้ใช้งาน', 'error');</script>";
     exit();
 } elseif (empty($_POST['password'])) {
-    echo "<script>swal.fire('ข้อมูลไม่ครบ','กรุณากรอก รหัสผ่าน', 'error');</script>";
+    echo "<script>swal.fire('ข้อมูลไม่ครบ','กรุณากรอก รหัสผ่านผู้ใช้งาน', 'error');</script>";
     exit();
-} else { 
-    $site =Get_m_site();
-    $phone = trim($_POST['username']);
+ } else { 
+    
+    $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    $query = "SELECT member_no,member_username,member_login,member_firstname,member_lastname,member_bank_account,member_aff_upline  FROM `members` WHERE member_phone = ? AND member_password =?"; // ORDER BY ASC'";
-    $row = $conn->row($query,[$phone,$password]); 
-    if (!$row) {
-        echo "<script>swal.fire('เข้าสู่ระบบ','เบอร์โทรศัพท์ หรือ รหัสผ่าน ไม่ถูกต้อง','error');</script>";
+    $rowsdata = $db::select("CALL user_auth('{$username}','{$password}')")[0];
+ 
+    if ($rowsdata->callstatus=='FAIL') {
+        echo "<script>swal.fire('เข้าสู่ระบบ','ข้อมูลไม้ถูกต้อง!','error');</script>";
         exit();
-    } else { 
-        if (@$row['status'] != 0) {
-            echo "<script>swal.fire('เข้าสู่ระบบ','เบอร์โทรศัพท์ หรือ รหัสผ่าน ไม่ถูกต้อง','error');</script>";
-            exit();
-        }
-    }  
-    $_SESSION['member_no'] = $row['member_no'];
-    $_SESSION['member_username'] = $row['member_username'];
-    $_SESSION['member_login'] = $row['member_login'];
-    $_SESSION['member_name'] = $row['member_firstname'] . " " . $row['member_lastname'];
-    $_SESSION['member_bank_account'] = $row['member_bank_account'];
-    $_SESSION['member_aff_upline'] = $row['member_aff_upline']; 
+    }   
 
-    echo "<script>window.location.href = '/user/dashboard'</script>";
+    $_SESSION['user_id'] =$rowsdata->user_id;  
+    $_SESSION['fname'] = $rowsdata->fname; 
+    $_SESSION['lname'] = $rowsdata->lname; 
+    $_SESSION['position_name'] =$rowsdata->position_name; 
+    $_SESSION['email'] = $rowsdata->email; 
+    $_SESSION['level'] = $rowsdata->level; 
+    $_SESSION['dept_code'] = $rowsdata->dept_code; 
+    $_SESSION['role_code'] = $rowsdata->role_code; 
+
+    echo "<script>window.location.href = '../'</script>";
     exit();
 }
-
+ 
 
 ?>

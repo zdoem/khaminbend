@@ -1,5 +1,5 @@
 <?php
-function getIP()
+function GetIP()
 {
     if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
         $ip = $_SERVER["HTTP_CLIENT_IP"];
@@ -14,7 +14,7 @@ function getIP()
     return $ip;
 }
 
-function get_domain($url=null){   
+function Get_domain($url=null){   
 	 $pieces='';
 	 if(isset($url)){
 	  $pieces = parse_url((isset($url)?$url:$_SERVER['HTTP_HOST']));
@@ -30,6 +30,9 @@ function get_domain($url=null){
         return $regs['domain'];
     }
     return FALSE;
+}
+function Getfullurl($url=null){ 
+   return Get_domain(). $_SERVER['REQUEST_URI'];
 }
 
 ?>

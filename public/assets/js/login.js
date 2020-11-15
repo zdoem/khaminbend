@@ -11,37 +11,32 @@ var app = new Vue({
        		if(event.key == "Enter"){
          		app.checkLogin();
         	}
-		   }, 
-		   
-		checkLogin: function(){ 
-			//var logForm = app.toFormData(app.logDetails); 
+		   },  
+		checkLogin: function(){  
 			var _this=this;
 		   //if(_this.logDetails.username==null||_this.logDetails.password==null||_this.logDetails.username.length<=0||_this.logDetails.password.length<=0){return;}
-			var logForm =$("#frm_login").serialize(); 
-			axios.post('../main/api/login.php', logForm)
-				.then(function(response){ 
-					$("input[name*='csrf_token']").val(response.data.csrf_token); 
-					if(response.data.status=='success'){
-						app.successMessage = response.data.msg;
-						app.logDetails = {username:null, password:null};
-						setTimeout(function(){
-						 	window.location.href="main/index.php";
-						},1000);  
-					} 
-					else{  
-						app.errorMessage = response.data.msg; 	
-					}
-				});
-		},
-
-		toFormData: function(obj){
-			var form_data = new FormData();
-			for(var key in obj){
-				form_data.append(key, obj[key]);
-			}
-			return form_data;
-		},
-
+		   //var logForm =$("#frm_login").serialize();    
+                $.post('handler/login.php', _this.logDetails, function(data) { 
+                    Swal.fire({
+                        title: 'Loggin in....',
+                        text: 'รอซักครู่ค่ะ',
+                        footer: 'ระบบกำลังตรวจสอบข้อมูลผู้ใช้งาน',
+						timer: 2000,
+						showConfirmButton:false,
+                        timerProgressBar: true,
+                        onBeforeOpen: function() {
+                            Swal.showLoading();
+                        },
+                        onClose:function() {
+                            
+                        }
+                    }).then(function(result){ 
+                        if (result.dismiss === Swal.DismissReason.timer) { 
+                        }
+                        $("#xhtml").html(data)
+                    })
+                }); 
+		},   
 		clearMessage: function(){
 			app.errorMessage = '';
 			app.successMessage = '';

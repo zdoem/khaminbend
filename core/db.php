@@ -15,7 +15,7 @@ $db->addConnection([
   'collation' => 'utf8_unicode_ci',
   'pooling' => false,
   'prefix'    => '',
-], 'host1');
+]);
  
 $db->setAsGlobal();
 $db->bootEloquent();

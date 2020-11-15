@@ -9,12 +9,13 @@ defined('ROOT') OR exit('No access allowed');
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
   <title>
+         ระบบข้อมูลครัวเรือน
     <?php
     if(isset($webtitle)){
       echo $webtitle;
     }
     ?>
-    <?=get_domain()?>
+    <?=get_domain()?> 
     </title>
   <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
   <!-- Font Awesome Icons -->
@@ -49,7 +50,7 @@ body {
     <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index2.html" class="brand-link">
+    <a href="/" class="brand-link">
        <img src="images/apple-icon-57x57.png" alt="ระบบจัดการข้อมูลครัวเรือน " class="brand-image img-circle elevation-3"
            style="opacity: .8">
            	<!-- <img src="images/apple-icon-57x57.png" class="img-responsive" alt=""  style="opacity: .8">-->
@@ -64,7 +65,7 @@ body {
                with font-awesome or any other icon font library -->
 
           <li class="nav-item">
-            <a href="villageList.html" class="nav-link ">
+            <a href="villageList.php" class="nav-link ">
               <em class="fa fa-university">&nbsp;</em>
               <p>
               หน้าจัดการข้อมูลหมู่บ้าน
@@ -73,7 +74,7 @@ body {
             </a>
           </li>
           <li class="nav-item">
-            <a href="familyList.html" class="nav-link">
+            <a href="familyList.php" class="nav-link">
               <em class="fa fa-address-card">&nbsp;</em>
               <p>
               หน้าจัดการข้อมูลครัวเรือน
@@ -188,7 +189,7 @@ body {
 
             </ul>
           </li>
-          <li class="nav-header"><a href="login.html"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
+          <li class="nav-header"><a href="login.php"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
