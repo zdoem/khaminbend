@@ -189,7 +189,7 @@ body {
 
             </ul>
           </li>
-          <li class="nav-header"><a href="login.php"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
+          <li class="nav-header"><a href="logout.php"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
