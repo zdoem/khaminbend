@@ -24,6 +24,8 @@ defined('ROOT') OR exit('No access allowed');
   <link rel="stylesheet" href="assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="assets/css/adminlte.min.css">
+  <link rel="stylesheet" href="assets/css/sweetalert2.min.css">
+  <link rel="stylesheet" href="assets/css/dataTables.bootstrap.min.css">
   <!-- Google Font: Source Sans Pro
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">-->
 
@@ -33,6 +35,34 @@ body {
   font-family: 'Prompt', sans-serif; !important;
 }
 </style>
+<!-- REQUIRED SCRIPTS -->
+<!-- jQuery -->
+<script src="assets/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="assets/js/adminlte.js"></script>
+
+<!-- OPTIONAL SCRIPTS -->
+<!-- <script src="assets/js/demo.js"></script> -->
+
+<!-- PAGE PLUGINS -->
+<!-- jQuery Mapael -->
+<script src="assets/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+<script src="assets/plugins/raphael/raphael.min.js"></script>
+<script src="assets/plugins/jquery-mapael/jquery.mapael.min.js"></script>
+<script src="assets/plugins/jquery-mapael/maps/usa_states.min.js"></script>
+<!-- ChartJS -->
+<!-- <script src="assets/plugins/chart.js/Chart.min.js"></script> -->
+
+<!-- PAGE SCRIPTS -->
+<!-- <script src="assets/js/pages/dashboard2.js"></script> -->
+
+<script src="assets/js/sweetalert2.min.js"></script> 
+<script src="assets/plugins/datatables/jquery.dataTables.min.js"></script> 
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper" id="app">

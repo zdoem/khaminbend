@@ -7,6 +7,7 @@ $db = new Capsule;
 
 $db->addConnection([
   'driver'    => DBdriver,
+  'port'      => DBPort,
   'host'      => DBHost,
   'database'  => DBName,
   'username'  => DBUser,

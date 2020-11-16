@@ -82,9 +82,7 @@
 <!-- /.login-box --> 
 <?php 
   require_once 'resource/app_js.php'; 
-?>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+?> 
 <script src="assets/js/login.js"></script>
 <div style="display: none;" id="xhtml"></div>
 </body>

@@ -1,4 +1,4 @@
-<?php
+<?php 
  require 'bootstart.php';   
  require_once 'components/header.php';   
 ?>
@@ -61,7 +61,7 @@
 
           <!-- /.card-body -->
           <div class="card-footer">
-            <a class="btn btn-primary btn-sm" href="villageListData.html">
+            <a class="btn btn-primary btn-sm" href="villageListData.php">
                 <i class="fas fa-search">
                 </i> ค้นหา
             </a>
@@ -86,7 +86,7 @@
             </div>
           </div>
           <div class="card-body p-0">
-            <table class="table table-striped projects">
+            <table class="table table-striped projects" id="tblistdata">
                 <thead>
                     <tr>
                         <th style="width: 1%">
@@ -109,13 +109,8 @@
 
                     </tr>
                 </thead>
-                <tbody>
-					<tr class="project_progress">
-					<td colspan='6' align="center">
-					***  ยังไม่มีข้อมูล ***
-					</td>
-					</tr>
-
+                <tbody> 
+                  
                 </tbody>
             </table>
           </div>
@@ -129,7 +124,23 @@
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+ <script>
+  $(function(){
 
+    $('#tblistdata').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false,
+      "oLanguage": {
+        "sEmptyTable":"*** ยังไม่มีข้อมูล ***"
+      }
+    }); 
+
+  });
+ </script>
 <?php
  require_once 'components/footer.php';  
 ?>
