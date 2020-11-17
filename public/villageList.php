@@ -145,6 +145,7 @@
       'ordering'    : true, 
       'info'        : true,
       'autoWidth'   : false,
+      "info": false,
       "oLanguage": {
         "sEmptyTable":"*** ยังไม่มีข้อมูล ***"
       },

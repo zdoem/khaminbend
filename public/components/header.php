@@ -23,9 +23,11 @@ defined('ROOT') OR exit('No access allowed');
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
+  <link rel="stylesheet" href="assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="assets/css/adminlte.min.css">
-  <link rel="stylesheet" href="assets/css/sweetalert2.min.css">
-  <link rel="stylesheet" href="assets/css/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/sweetalert2.min.css"> 
+
   <!-- Google Font: Source Sans Pro
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">-->
 
@@ -62,6 +64,10 @@ body {
 
 <script src="assets/js/sweetalert2.min.js"></script> 
 <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script> 
+<script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
