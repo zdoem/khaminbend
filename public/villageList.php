@@ -2,6 +2,12 @@
  require 'bootstart.php';   
  require_once 'components/header.php';   
 ?>
+<style>
+  #tblistdata_info,#tblistdata_paginate{padding:0 1.25rem;}
+  .card-header{border-bottom:0}
+  table.dataTable{margin-top:0 !important}
+</style>
+<?= \Volnix\CSRF\CSRF::getHiddenInputString('token_village_frm') ?>
  <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
@@ -61,7 +67,7 @@
 
           <!-- /.card-body -->
           <div class="card-footer">
-            <a class="btn btn-primary btn-sm" href="villageListData.php">
+            <a class="btn btn-primary btn-sm" href="#" id="villageListData">
                 <i class="fas fa-search">
                 </i> ค้นหา
             </a>
@@ -125,22 +131,135 @@
     </section>
     <!-- /.content -->
  <script>
-  $(function(){
+  var table=table||{};
+  $(function(){ 
+    $("#MyModal").on("show.bs.modal", function(e) {
+        var link = $(e.relatedTarget); 
+        $(this).find(".modal-body").load(link.attr("href"));
+    }); 
 
-    $('#tblistdata').DataTable({
+      table=$('#tblistdata').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : false,
-      'ordering'    : true,
+      'ordering'    : true, 
       'info'        : true,
       'autoWidth'   : false,
       "oLanguage": {
         "sEmptyTable":"*** ยังไม่มีข้อมูล ***"
-      }
+      },
+      'processing': true,
+      'serverSide': true,
+      'serverMethod': 'post',
+      'ajax': {
+          'url':'handler/village/villagelist.php',
+          "data": function ( d ) {
+            return $.extend( {}, d, {
+              "vil_moo": $('#txtMoo').val(),
+              "vil_name":$('#txtVillageName').val()
+            });
+          } 
+      }, 
+      'columns': [ 
+         { data: 'rownumber' },
+         { data: 'vil_moo' },
+         { data: 'vil_name' },
+         { data: 'vil_desc' },
+         { data: 'd_update' },
+         {data: "id" , render : function ( data, type, row, meta ) {  
+              return `<a class="btn btn-primary btn-xs" href="handler/village/villageView.php?id=${data}" data-toggle="modal" data-target="#MyModal">  <i class="fas fa-folder">  </i> View </a>
+                      <a class="btn btn-info btn-xs" href="villageFormEdit.php?id=${data}"><i class="fas fa-pencil-alt"> </i> Edit</a> 
+                      <a class="btn btn-danger btn-xs" onClick="DeleteData(${data}); return false;" href="javascript:void(0)"><i class="fas fa-trash"></i> Delete </a>`;
+        }}
+      ],
+      columnDefs: [ 
+        {
+        "className": "text-center", 
+        "searchable": false,
+        "orderable": false,
+        "targets": 0
+    },  
+    {
+        "className": "text-center",
+        "targets":-2
+    }, 
+    // {   "orderable": false, 
+    //     targets: -1, //-1 es la ultima columna y 0 la primera
+    //     data: null,
+    //     defaultContent: '<div class="btn-group"> <button type="button" class="btn btn-info btn-xs dt-view" style="margin-right:16px;"><span class="glyphicon glyphicon-eye-open glyphicon-info-sign" aria-hidden="true"></span></button>  <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button><button type="button" class="btn btn-danger btn-xs dt-delete"><span class="glyphicon glyphicon-remove glyphicon-trash" aria-hidden="true"></span></button></div>'
+    // },
+    { orderable: false, searchable: false, targets: -1,"className": "text-center" } //Ultima columna no ordenable para botones
+   ],
+   "order": [[1, 'asc']] 
     }); 
+ 
+    $('#villageListData').on('click', function () { 
+       table.ajax.reload();
+      //  table.search(this.value).draw();  
+    });
 
-  });
+  }); 
+  function DeleteData(id){
+    Swal.fire({
+      title: 'ยืนยันการลบข้อมูล?',
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'ลบ',
+      cancelButtonText:'ยกเลิก',
+      closeOnConfirm: false 
+    }).then(function(result){
+      if (!result.isConfirmed) return;
+        $.ajax({
+            url: "handler/village/village.php",
+            type: "POST",
+            data: {'action':3,'id': id,'token_village_frm':$("input[name*='token_village_frm']").val()},
+            dataType: "json",
+            success: function (data, status, xhr) {
+                 if(data.status=='deleted'){
+                  Swal.fire("Done!", "ลบข้อมูลเรียบร้อย !", "success");
+                 }else{
+                  Swal.fire("Error deleting!", "Please try again", "error");
+                 }
+                $("input[name*='token_village_frm']").val(data.token); 
+                table.ajax.reload();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+              Swal.fire("Error deleting!", "Please try again", "error");
+            }
+        });
+    }); 
+  }
+
  </script>
+ <!-- Modal html-->
+       <div class="modal fade" id="MyModal">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">แสดงข้อมูล</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- Main content -->
+              
+              <!-- /.content -->
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <!--<button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
 <?php
  require_once 'components/footer.php';  
 ?>

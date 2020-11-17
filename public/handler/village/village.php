@@ -1,5 +1,5 @@
 <?php
-require_once '../bootstart.php';    
+require_once '../../bootstart.php';    
 
 $action=@$_POST['action']; 
 $id=@$_POST['id']; 
@@ -11,7 +11,8 @@ $refer_urlmain='villageList.php';
 // exit();
 
 // check validating csrf token name
-if (\Volnix\CSRF\CSRF::validate($_POST, 'token_village_frm') ){ 
+
+if (\Volnix\CSRF\CSRF::validate($_POST, 'token_village_frm')){ 
  
 $txtMoo=trim((isset($_POST['txtMoo']) ? $_POST['txtMoo'] : ''));
 $txtVillageName=(isset($_POST['txtVillageName']) ? $_POST['txtVillageName'] : '');
@@ -40,27 +41,25 @@ $LearningDesc=(isset($_POST['LearningDesc']) ? $_POST['LearningDesc'] : '');
 
 $txtOther=(isset($_POST['txtOther']) ? $_POST['txtOther'] : ''); 
   
+// validate 
+
 $rows_old=null;
 if($id>0){
 $rows_old = $db::table("tbl_mas_vilage")
     ->where('vil_id', '=', $id)
     ->select($db::raw("vil_id,vil_moo"))
     ->first();
-
- if(is_null($rows_old)){// ไม่ข้อมูลเก่าให้ insert ใหม่ 
-    $action=1;   
-    }else if($rows_old->vil_moo!=$txtMoo){// มีข้อมูลอยู่แล้วให้ update 
-     $action=1;  
-    }else if($rows_old->vil_moo==$txtMoo){
-     $action=2;
-    }else{
-     $action=3;    
-  } 
-
+  if($action!=3){
+         if(!isset($rows_old->vil_id)){// ไม่มีข้อมูลเก่าให้ insert ใหม่ 
+         $action=1;  
+         }else if($rows_old->vil_moo!=$txtMoo){// มีข้อมูลอยู่แล้วให้ update 
+         $action=2;  
+         }
+    } 
 }else{
   $action=1;     
 }  
- 
+
  if ($action == 1) {/*Insert Data*/ 
     try { 
           $row =$db::insert("INSERT INTO tbl_mas_vilage (vil_moo,vil_name,vil_desc,water,water_desc,water_tap,water_tap_desc,bowels,bowels_desc
@@ -95,12 +94,13 @@ $rows_old = $db::table("tbl_mas_vilage")
         } catch (\Exception $e) { 
            $status='deletefail';  
         }
+        echo json_encode(['status'=>$status,'token'=>\Volnix\CSRF\CSRF::getToken('token_village_frm')]); exit();
   }
 }
  ?>
  
 <script type="text/javascript">
-window.location = "../status_action.php?status=<?=$status?>&refer_urlmain=<?=$refer_urlmain?>";
+window.location = "../../status_action.php?status=<?=$status?>&refer_urlmain=<?=$refer_urlmain?>";
 </script>
 <?php
 ?>

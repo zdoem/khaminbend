@@ -47,7 +47,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
 
     <!-- Main content -->
      <section class="content">
-      <form action="handler/village.php" method="post"> 
+      <form action="handler/village/village.php" method="post"> 
       <input type="hidden" name="id" value="<?=@$_GET['id']?>">
       <?= \Volnix\CSRF\CSRF::getHiddenInputString('token_village_frm') ?>
       <div class="container-fluid">
