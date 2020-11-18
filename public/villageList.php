@@ -146,6 +146,7 @@
       'info'        : true,
       'autoWidth'   : false,
       "info": false,
+      "dom": '<"top"i>rt<"bottom"flp><"clear">',
       "oLanguage": {
         "sEmptyTable":"*** ยังไม่มีข้อมูล ***"
       },
