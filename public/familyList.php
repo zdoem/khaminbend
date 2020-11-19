@@ -26,7 +26,7 @@ require_once 'components/header.php';
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <section class="content" id="app" v-cloak>
+    <section class="content">
       <div class="container-fluid">
         <!-- SELECT2 EXAMPLE -->
         <div class="card card-default">
@@ -75,7 +75,7 @@ require_once 'components/header.php';
 			  <div class="col-md-3">
                 <div class="form-group">
                   <label>เลขที่บัตรประจำตัวประชาชน :</label>
-                  <input   type="text" name="txtCitizenId"  id="txtCitizenId" class="form-control" placeholder="14904xxxx2528...">
+                  <input   type="text" name="txtCitizenId" v-model="datainput.txtCitizenId" id="txtCitizenId" class="form-control" placeholder="14904xxxx2528...">
                 </div>
                 <!-- /.form-group -->
               </div>

@@ -29,6 +29,8 @@ require_once ROOTJS.'/bootstart.php';
                   <!-- AdminLTE App -->
                <script src="assets/js/adminlte.js"></script>
                <script src="assets/js/vue.runtime.min.js"></script>   
+               <script src="assets/js/vuelidate.min.js"></script>
+               <script src="assets/js/validators.min.js"></script> 
                <?php
                break;  
               case 'dev':
@@ -54,6 +56,8 @@ require_once ROOTJS.'/bootstart.php';
                      <!-- AdminLTE App -->
                   <script src="assets/js/adminlte.js"></script>
                   <script src="assets/js/vue.js"></script>
+                  <script src="assets/js/vuelidate.min.js"></script> 
+                  <script src="assets/js/validators.min.js"></script>
                <?php
                break; 
    }

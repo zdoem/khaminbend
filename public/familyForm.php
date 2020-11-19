@@ -3,7 +3,102 @@ $webtitle='เพิ่มข้อมูลครัวเรือน';
 require 'bootstart.php';
 require ROOT . '/core/security.php';
 require_once 'components/header.php';
+
+$listmas_occupation=$db::table("tbl_mas_occupation") 
+    ->select($db::raw("occup_code,occup_name"))
+    ->where('f_status', '=','A')
+    ->orderBy('occup_desc', 'asc')
+    ->get()->toArray(); 
+
+$listmas_relations= $db::table("tbl_mas_relations")
+    ->select($db::raw("re_code,re_name"))
+    ->where('f_status', '=', 'A')
+    ->orderBy('re_desc', 'asc')
+    ->get()->toArray();
+
+$listmas_prefix= $db::table("tbl_mas_prefix")
+    ->select($db::raw("pre_code,pre_name"))
+    ->where('f_status', '=', 'A')
+    ->orderBy('pre_desc', 'asc')
+    ->get()->toArray(); 
+  
+$listmas_religion= $db::table("tbl_mas_religion")
+    ->select($db::raw("reg_code,reg_name"))
+    ->where('f_status', '=', 'A')
+    ->orderBy('reg_desc', 'asc')
+    ->get()->toArray(); 
+
+$listmas_pet = $db::table("tbl_mas_pet")
+->select($db::raw("pet_code,pet_name,pet_type"))
+->where('f_status', '=', 'A')
+->orderBy('pet_desc', 'asc')
+->get()->toArray();
+
+$listmas_info = $db::table("tbl_mas_info")
+    ->select($db::raw("info_code,info_name"))
+    ->where('f_status', '=', 'A') 
+    ->get()->toArray();
+
+$listmas_house_occup= $db::table("tbl_mas_house_occup")
+    ->select($db::raw("hccup_code,hccup_name"))
+    ->where('f_status', '=', 'A')
+    ->orderBy('hccup_desc', 'asc')
+    ->get()->toArray();
+
+$listmas_group_occup= $db::table("tbl_mas_group_occup")
+    ->select($db::raw("goccup_code,goccup_name"))
+    ->where('f_status', '=', 'A')
+    ->orderBy('goccup_desc', 'asc')
+    ->get()->toArray();
+
+$listmas_facilities= $db::table("tbl_mas_facilities")
+    ->select($db::raw("fac_code,fac_name"))
+    ->where('f_status', '=', 'A')
+    ->orderBy('fac_desc', 'asc')
+    ->get()->toArray();
+
+$listmas_educate= $db::table("tbl_mas_educate")
+    ->select($db::raw("ed_code,ed_name"))
+    ->where('f_status', '=', 'A')
+    ->orderBy('ed_desc', 'asc')
+    ->get()->toArray();
+
+$listmas_disaster= $db::table("tbl_mas_disaster")
+    ->select($db::raw("dis_code,dis_name"))
+    ->where('f_status', '=', 'A')
+    ->orderBy('dis_desc', 'asc')
+    ->get()->toArray();
+
+$listmas_addition= $db::table("tbl_mas_addition")
+    ->select($db::raw("add_code,add_name"))
+    ->where('f_status', '=', 'A')
+    ->orderBy('add_desc', 'asc')
+    ->get()->toArray();
+
+$listdepartments = $db::table("tbl_departments")
+    ->select($db::raw("dept_code,dept_name"))
+    ->where('f_status', '=', 'A')
+    ->orderBy('dept_desc', 'asc')
+    ->get()->toArray();
+ 
+    
 ?>
+<style> 
+  .dirty {
+    border-color: #5A5!important;
+    background: #EFE!important;
+    }
+    .dirty:focus {
+    outline-color: #8E8!important;
+    }
+    .error {
+    border-color: red!important;
+    background: #FDD!important;
+    }
+    .error:focus {
+    outline-color: #F99!important;
+    } 
+</style> 
  <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -25,8 +120,21 @@ require_once 'components/header.php';
     <!-- /.content-header -->
 
     <!-- Main content -->
-      <section class="content">
-      <div class="container-fluid">
+      <section class="content" id="app" v-cloak 
+      data-familylists='[{ "prefix":"01","txtFName": "","txtLName":"","txtCitizenId":"" ,"xFstatusRd":1,"sexRd":1,"txtNational":"","religion":"","birthday":""
+       ,"educationlevel":"","homerelations":"","careergroup":"","careeranother":"","careermain":"","careersecond":"","netIncome":""}]'
+       data-listmas_occupation='<?=json_encode($listmas_occupation)?>' data-listmas_prefix='<?=json_encode($listmas_prefix)?>'
+       data-listmas_religion='<?=json_encode($listmas_religion)?>' data-listmas_pet='<?=json_encode($listmas_pet)?>'
+       data-listmas_info='<?=json_encode($listmas_info)?>' data-listmas_house_occup='<?=json_encode($listmas_house_occup)?>'
+       data-listmas_group_occup='<?=json_encode($listmas_group_occup)?>' data-listmas_facilities='<?=json_encode($listmas_facilities)?>'
+       data-listmas_educate='<?=json_encode($listmas_educate)?>' data-listmas_disaster='<?=json_encode($listmas_disaster)?>'
+       data-listmas_addition='<?=json_encode($listmas_addition)?>' data-listdepartments='<?=json_encode($listdepartments)?>'
+       data-listmas_relations='<?=json_encode($listmas_relations)?>'  data-apartments='[{ "price": "23000", "rooms": "12" }, { "price": "42000", "rooms": "32" }]'
+       > 
+      <form>   
+          <!-- <pre>{{$data}}</pre> -->
+          <pre>{{ $v }}</pre>
+       <div class="container-fluid">
         <!-- SELECT2 EXAMPLE ข้อมูลครัวเรือน -->
         <div class="card card-primary">
           <div class="card-header">
@@ -44,7 +152,7 @@ require_once 'components/header.php';
               <div class="col-md-4">
                 <div class="form-group">
                   <label>บ้านเลขที่ :</label>
-                  <input type="text" name="txtHouseId" id="txtHouseId" class="form-control" placeholder="บ้านเลขที่  ...">
+                  <input type="text" :class="status($v.houseinfor.txtHouseId)" v-model.trim="$v.houseinfor.txtHouseId.$model" name="txtHouseId" id="txtHouseId" class="form-control" placeholder="บ้านเลขที่  ...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -52,7 +160,7 @@ require_once 'components/header.php';
               <div class="col-md-4">
                 <div class="form-group">
                   <label>หมู่ที่ - ชื่อหมู่บ้าน :</label>
-					<select class="form-control">
+					<select class="form-control"  v-model="houseinfor.mooHouse" >
 						<option>หมู่ที่ 1 - บ้านแสลงคง</option>
 						<option>หมู่ที่ 2 - บ้านตาแก</option>
 						<option>หมู่ที่ 3 - บ้านโคกขมิ้น</option>
@@ -77,7 +185,7 @@ require_once 'components/header.php';
               <div class="col-md-4">
                 <div class="form-group">
                    <label>ตำบล :</label>
-                     <input type="text"  name="txtSubDstrict" value="โคกขมิ้น" id="txtSubDstrict" class="form-control" placeholder="ตำบล  ...">
+                     <input type="text" v-model="houseinfor.txtSubDstrict"  name="txtSubDstrict" value="โคกขมิ้น" id="txtSubDstrict" class="form-control" placeholder="ตำบล  ...">
                  </div>
                  <!-- /.form-group -->
               </div>
@@ -90,7 +198,7 @@ require_once 'components/header.php';
                <div class="col-md-4">
                  <div class="form-group">
                    <label>อำเภอ:</label>
-                   <input type="text"  name="txtDistrict" value="พลับพลาชัย  " id="txtDistrict" class="form-control" placeholder="อำเภอ  ...">
+                   <input type="text"  v-model="houseinfor.txtDistrict"  name="txtDistrict" value="พลับพลาชัย  " id="txtDistrict" class="form-control" placeholder="อำเภอ  ...">
                  </div>
                  <!-- /.form-group -->
                </div>
@@ -98,14 +206,14 @@ require_once 'components/header.php';
                <div class="col-md-4">
                  <div class="form-group">
                    <label>จังหวัด:</label>
-                   <input type="text"  name="txtProvince" value="บุรีรัมย์ " id="txtProvince" class="form-control" placeholder="จังหวัด  ...">
+                   <input type="text"  v-model="houseinfor.txtProvince"  name="txtProvince" value="บุรีรัมย์ " id="txtProvince" class="form-control" placeholder="จังหวัด  ...">
                  </div>
                  <!-- /.form-group -->
                </div>
                 <div class="col-md-4">
                       <div class="form-group">
                           <label>รหัสไปรษณีย์:</label>
-                          <input type="text"   name="txtPostalCode" value="31250" id="txtPostalCode" class="form-control" placeholder="รหัสไปรษณีย์  ...">
+                          <input type="text" v-model="houseinfor.txtPostalCode"  name="txtPostalCode" value="31250" id="txtPostalCode" class="form-control" placeholder="รหัสไปรษณีย์  ...">
                       </div>
                         <!-- /.form-group -->
                   </div>
@@ -135,21 +243,19 @@ require_once 'components/header.php';
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <h5>ลำดับที่ : 1
-				<a class="btn btn-info btn-sm" href="#">
+         <template v-for="(item, index) in familylists"> 
+            <h5>ลำดับที่ : {{index+1}}
+				<a class="btn btn-info btn-sm" href="javascript:void(0)" v-if="index==0" v-on:click="addPeople">
 				  <i class="fas fa-plus-square"></i> เพิ่มสมาชิกในครัวเรือน
-				</a>
+                </a>
+                <a href="javascript:void(0)" class="btn-sm btn-danger" v-if="index>0" v-on:click="removePeople(index)"><i class="fas fa-trash"></i></a>
 			</h5>
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
                   <label>คำนำหน้า:</label>
-                  <select class="form-control">
-                    <option>เด็กชาย</option>
-                    <option>เด็กหญิง</option>
-                    <option>นาย</option>
-                    <option>นางสาว</option>
-                    <option>อื่นๆ </option>
+                  <select class="form-control" v-model="item.prefix">
+                     <option v-for="(v, indexx) in listmas_prefix" v-bind:value="v.pre_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.pre_name}}</option> 
                   </select>
                 </div>
                 <!-- /.form-group -->
@@ -157,7 +263,7 @@ require_once 'components/header.php';
               <div class="col-md-3">
                 <div class="form-group">
                   <label>ชื่อเจ้าบ้าน :</label>
-                  <input type="text" name="txtFName" value="ประเดิม" id="txtFName" class="form-control" placeholder="ประเดิม  ...">
+                  <input type="text" name="txtFName" v-model.trim="item.txtFName.$model" id="txtFName" class="form-control" placeholder="ชื่อเจ้าบ้าน...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -165,7 +271,7 @@ require_once 'components/header.php';
               <div class="col-md-3">
                 <div class="form-group">
                   <label>นามสกุล:</label>
-                  <input type="text" name="txtLName" value="วงค์กระโซ่" id="txtLName" class="form-control" placeholder="วงค์กระโซ่  ...">
+                  <input type="text" name="txtLName" v-model="item.txtLName" id="txtLName" class="form-control" placeholder="นามสกุล...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -173,7 +279,7 @@ require_once 'components/header.php';
               <div class="col-md-3">
                 <div class="form-group">
                   <label>เลขที่ประจำตัวประชาชน  :</label>
-                    <input type="text" name="txtCitizenId" value="14904xxxx2528" id="txtCitizenId" class="form-control" placeholder="เลขที่ประจำตัวประชาชน  ...">
+                    <input type="text" name="txtCitizenId" v-model="item.txtCitizenId" id="txtCitizenId" class="form-control" placeholder="เลขที่ประจำตัวประชาชน  ...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -186,14 +292,14 @@ require_once 'components/header.php';
                 <div class="form-group">
                   <label>สถานภาพ :</label>
                   <div class="form-group clearfix">
-                    <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary1" name="xFstatusRd" checked>
-                      <label for="radioPrimary1">เจ้าบ้าน
+                    <div class="icheck-primary d-inline"> 
+                      <input type="radio" :id="'radioPrimary1'+index" value="1" v-model="item.xFstatusRd"> 
+                      <label :for="'radioPrimary1'+index">เจ้าบ้าน 
                       </label>
                     </div>
-                    <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary2" name="xFstatusRd">
-                      <label for="radioPrimary2">ผู้อยู่อาศัย
+                    <div class="icheck-primary d-inline"> 
+                      <input type="radio" :id="'radioPrimary2' + index" value="2" v-model="item.xFstatusRd">
+                      <label :for="'radioPrimary2'+index">ผู้อยู่อาศัย 
                       </label>
                     </div>
                   </div>
@@ -205,18 +311,18 @@ require_once 'components/header.php';
                   <label>เพศ  :</label>
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary3" name="sexRd" checked>
-                      <label for="radioPrimary3">ชาย
+                      <input type="radio" :id="'radioPrimary3'+index" value="1" v-model="item.sexRd">
+                      <label :for="'radioPrimary3'+index">ชาย
                       </label>
                     </div>
                     <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary4" name="sexRd">
-                      <label for="radioPrimary4">หญิง
+                      <input type="radio" :id="'radioPrimary4'+index" value="2" v-model="item.sexRd">
+                      <label :for="'radioPrimary4'+index">หญิง
                       </label>
                     </div>
                     <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary5" name="sexRd">
-                      <label for="radioPrimary5">อื่นๆ
+                      <input type="radio" :id="'radioPrimary5'+index"  value="3" v-model="item.sexRd">
+                      <label :for="'radioPrimary5'+index">อื่นๆ
                       </label>
                     </div>
                   </div>
@@ -228,7 +334,7 @@ require_once 'components/header.php';
               <div class="col-md-3">
                 <div class="form-group">
                   <label>สัญชาติ  :</label>
-                  <input type="text" name="txtNational" value="ไทย " id="txtNational" class="form-control" placeholder="สัญชาติ  ...">
+                  <input type="text" name="txtNational" v-model="item.txtNational" id="txtNational" class="form-control" placeholder="สัญชาติ  ...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -236,11 +342,8 @@ require_once 'components/header.php';
               <div class="col-md-3">
                  <div class="form-group">
                     <label>ศาสนา :</label>
-                    <select class="form-control">
-                      <option>พุทธ</option>
-                      <option>อิสลาม</option>
-                      <option>คริสต์ศาสนา</option>
-                      <option>อื่นๆ</option>
+                    <select class="form-control" v-model="item.religion" name="religion" id="religion">
+                      <option v-for="(v, indexx) in listmas_religion" :value="v.reg_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.reg_name}}</option> 
                     </select>
                   </div>
                   <!-- /.form-group -->
@@ -256,7 +359,7 @@ require_once 'components/header.php';
                 <div class="form-group">
                   <label>วันเดือนปีเกิด :</label>
                   <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+                      <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" v-model="item.birthday" name="birthday" id="birthday" />
                       <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                       </div>
@@ -270,11 +373,8 @@ require_once 'components/header.php';
                 <div class="col-md-3">
                    <div class="form-group">
                       <label>ระดับการศึกษา :</label>
-                      <select class="form-control">
-                        <option>ต่ำกว่าปริญญาตรี</option>
-                        <option>ปริญญาตรี</option>
-                        <option>ปริญญาโท</option>
-                        <option>ปริญญาเอก</option>
+                      <select class="form-control" v-model="item.educationlevel" name="educationlevel" id="educationlevel">
+                        <option v-for="(v, indexx) in listmas_educate" :value="v.ed_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.ed_name}}</option> 
                       </select>
                     </div>
                     <!-- /.form-group -->
@@ -283,63 +383,37 @@ require_once 'components/header.php';
                  <div class="col-md-3">
                     <div class="form-group">
                        <label>ความสัมพันธ์ในครัวเรือน  :</label>
-                       <select class="form-control">
-                         <option>หัวหน้าครอบครัว</option>
-                         <option>สามี/ภรรยา</option>
-                         <option>ลูก</option>
-                         <option>บุตร</option>
-                         <option>บิดา/มารดา</option>
-                         <option>ปู่/ย่า/ตา/ยาย</option>
-                         <option>พี่/น้อง</option>
-                         <option>หลาน/แหลน</option>
-                         <option>อื่นๆ</option>
+                       <select class="form-control" v-model="item.homerelations" name="homerelations" id="homerelations">
+                          <option v-for="(v, indexx) in listmas_relations" :value="v.re_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.re_name}}</option>
                        </select>
                      </div>
                      <!-- /.form-group -->
                    </div>
                <!-- /.col -->
 
-               <div class="col-md-3">
+               <div class="col-md-3" v-if="index==0">
                     <div class="form-group">
                             <label>กลุ่มอาชีพ :</label>
-                             <select class="form-control">
-                             <option>กลุ่มอาชีพ 1</option>
-                             <option>กลุ่มอาชีพ 2</option>
-                             <option>กลุ่มอาชีพ 3</option>
-                             <option>กลุ่มอาชีพ 4</option>
-                             <option>กลุ่มอาชีพ อื่นๆ </option>
+                             <select class="form-control"  v-model="item.careergroup" name="careergroup" id="careergroup">>
+                             <option v-for="(v, indexx) in listmas_group_occup" :value="v.goccup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.goccup_name}}</option> 
                             </select>
                      </div>
                        <!-- /.form-group -->
                 </div>
-              <div class="col-md-3">
+              <div class="col-md-3" v-if="index==0">
                 <div class="form-group">
                   <label>กลุ่มอาชีพอื่นๆ  :</label>
-                  <textarea class="form-control" name="txtGroupOccupationalOther" id="txtGroupOccupationalOther" rows="1" placeholder="กลุ่มอาชีพอื่นๆ ระบุ  ..."></textarea>
+                  <textarea class="form-control" name="careeranother" id="careeranother" rows="1" placeholder="กลุ่มอาชีพอื่นๆ ระบุ  ...">
+                      {{item.careeranother}}
+                  </textarea>
                 </div>
                 <!-- /.form-group -->
               </div>
 				<div class="col-md-3">
 					<div class="form-group">
 							<label>อาชีพหลัก :</label>
-							 <select class="form-control">
-							 <option>ว่างงาน/ ไม่มีงานทำ</option>
-							 <option>ทำนา</option>
-							 <option>ทำไร่</option>
-							 <option>ทำสวน</option>
-							 <option>เลี้ยงสัตย์</option>
-							 <option>เพาะเลี้ยงสัตย์น้ำ</option>
-							 <option>ทำประมง</option>
-							 <option>รับจ้างทั่วไป/ บริการ</option>
-							 <option>ทำงานบ้าน</option>
-							 <option>กรรมกร</option>
-							 <option>ค้าขาย/ ธุรกิจส่วนตัว</option>
-							 <option>อุตสาหกรรมในครัวเรือน</option>
-							 <option>รับราชการ</option>
-							 <option>รัฐวิสาหกิจ</option>
-							 <option>พนักงาน/ ลูกจ้างเอกชน</option>
-							 <option>นักเรียน/ นักศึกษา</option>
-							 <option>อื่นๆ</option>
+							 <select class="form-control"  v-model="item.careermain" name="careermain" id="careermain">
+							  <option v-for="(v, indexx) in listmas_occupation" :value="v.occup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.occup_name}}</option> 
 							</select>
 					 </div>
 					   <!-- /.form-group -->
@@ -347,7 +421,7 @@ require_once 'components/header.php';
 				 <div class="col-md-3">
 					<div class="form-group">
 							<label>อาชีพรอง :</label>
-							 <select class="form-control">
+							 <select class="form-control"  v-model="item.careersecond" name="careersecond" id="careersecond">
 							 <option>ไม่มี</option>
 							  <option>ทำนา</option>
 							 <option>ทำไร่</option>
@@ -368,230 +442,16 @@ require_once 'components/header.php';
 				<div class="col-md-3">
 					<div class="form-group">
 					  <label>รายได้/ต่อปี  :</label>								
-						<input type="number" name="netIncome" id="netIncome" class="form-control btn-xs" placeholder="รายได้/ต่อปี...">
+						<input type="number" name="netIncome" v-model="item.netIncome"  id="netIncome" class="form-control btn-xs" placeholder="รายได้/ต่อปี...">
 					</div>
 					<!-- /.form-group -->
 				 </div>
 
-            </div>
+              </div> 
+              <hr v-if="showhr(familylists,index)">
+            </template> 
             <!-- /row -->
-            <!-- row -->
-            <hr>
-            <h5>ลำดับที่ : 2  <a href="#" class="btn-sm btn-danger"><i class="fas fa-trash"></i></a></h5>
-            <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>คำนำหน้า:</label>
-					<select class="form-control">
-                    <option>เด็กชาย</option>
-                    <option>เด็กหญิง</option>
-                    <option>นาย</option>
-                    <option>นางสาว</option>
-                    <option>อื่นๆ </option>
-                  </select>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>ชื่อ :</label>
-                  <input type="text" name="txtFName" value="ประเดิม" id="txtFName" class="form-control" placeholder="ประเดิม  ...">
-                </div>
-                <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>นามสกุล:</label>
-                  <input type="text" name="txtLName" value="วงค์กระโซ่" id="txtLName" class="form-control" placeholder="วงค์กระโซ่  ...">
-                </div>
-                <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>เลขที่ประจำตัวประชาชน  :</label>
-                    <input type="text" name="txtCitizenId" value="14904xxxx2528" id="txtCitizenId" class="form-control" placeholder="เลขที่ประจำตัวประชาชน  ...">
-                </div>
-                <!-- /.form-group -->
-              </div>
-
-            </div>
-            <!-- /row -->
-
-            <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>สถานภาพ :</label>
-                  <div class="form-group clearfix">
-                    <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary3" name="xFstatusRd2" >
-                      <label for="radioPrimary3">เจ้าบ้าน
-                      </label>
-                    </div>
-                    <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary4" name="xFstatusRd2" checked>
-                      <label for="radioPrimary4">ผู้อยู่อาศัย
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>เพศ  :</label>
-                  <div class="form-group clearfix">
-                    <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary5" name="sexRd2" checked>
-                      <label for="radioPrimary5">ชาย
-                      </label>
-                    </div>
-                    <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary6" name="sexRd2">
-                      <label for="radioPrimary6">หญิง
-                      </label>
-                    </div>
-                    <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary7" name="sexRd2">
-                      <label for="radioPrimary7">อื่นๆ
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-
-              <div class="col-md-3">
-                  <div class="form-group">
-                  <label>สัญชาติ  :</label>
-                      <input type="text" name="txtNational" value="ไทย " id="txtNational" class="form-control" placeholder="สัญชาติ  ...">
-                    </div>
-                  <!-- /.form-group -->
-            </div>
-
-              <div class="col-md-3">
-                 <div class="form-group">
-                    <label>ศาสนา :</label>
-                    <select class="form-control">
-                      <option>พุทธ</option>
-                      <option>อิสลาม</option>
-                      <option>คริสต์ศาสนา</option>
-                      <option>อื่นๆ</option>
-                    </select>
-                  </div>
-                  <!-- /.form-group -->
-                </div>
-               <!-- /.col -->
-
-            </div>
-            <!-- /row -->
-
-            <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>วันเดือนปีเกิด :</label>
-                  <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
-                      <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                      </div>
-                  </div>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-
-               <div class="col-md-3">
-                  <div class="form-group">
-                     <label>ระดับการศึกษา :</label>
-                     <select class="form-control">
-                       <option>ต่ำกว่าปริญญาตรี</option>
-                       <option>ปริญญาตรี</option>
-                       <option>ปริญญาโท</option>
-                       <option>ปริญญาเอก</option>
-                     </select>
-                   </div>
-                   <!-- /.form-group -->
-                 </div>
-                <!-- /.col -->
-                <div class="col-md-3">
-                   <div class="form-group">
-                      <label>ความสัมพันธ์ในครัวเรือน  :</label>
-                      <select class="form-control">
-                        <option>หัวหน้าครอบครัว</option>
-                        <option>สามี/ภรรยา</option>
-                        <option>ลูก</option>
-                        <option>บุตร</option>
-                        <option>บิดา/มารดา</option>
-                        <option>ปู่/ย่า/ตา/ยาย</option>
-                        <option>พี่/น้อง</option>
-                        <option>หลาน/แหลน</option>
-                        <option>อื่นๆ</option>
-                      </select>
-                    </div>
-                    <!-- /.form-group -->
-                  </div>
-                 <!-- /.col -->
-
-                <!-- /.col -->
-				<div class="col-md-3">
-						<div class="form-group">
-							<label>อาชีพหลัก :</label>
-							 <select class="form-control">
-							 <option>ว่างงาน/ ไม่มีงานทำ</option>
-							 <option>ทำนา</option>
-							 <option>ทำไร่</option>
-							 <option>ทำสวน</option>
-							 <option>เลี้ยงสัตย์</option>
-							 <option>เพาะเลี้ยงสัตย์น้ำ</option>
-							 <option>ทำประมง</option>
-							 <option>รับจ้างทั่วไป/ บริการ</option>
-							 <option>ทำงานบ้าน</option>
-							 <option>กรรมกร</option>
-							 <option>ค้าขาย/ ธุรกิจส่วนตัว</option>
-							 <option>อุตสาหกรรมในครัวเรือน</option>
-							 <option>รับราชการ</option>
-							 <option>รัฐวิสาหกิจ</option>
-							 <option>พนักงาน/ ลูกจ้างเอกชน</option>
-							 <option>นักเรียน/ นักศึกษา</option>
-							 <option>อื่นๆ</option>
-							</select>
-					 </div>
-					   <!-- /.form-group -->
-					</div>
-					 <div class="col-md-3">
-						<div class="form-group">
-								<label>อาชีพรอง :</label>
-								 <select class="form-control">
-								 <option>ไม่มี</option>
-								  <option>ทำนา</option>
-								 <option>ทำไร่</option>
-								 <option>ทำสวน</option>
-								 <option>เลี้ยงสัตย์</option>
-								 <option>เพาะเลี้ยงสัตย์น้ำ</option>
-								 <option>ทำประมง</option>
-								 <option>รับจ้างทั่วไป/ บริการ</option>
-								 <option>ทำงานบ้าน</option>
-								 <option>กรรมกร</option>
-								 <option>ค้าขาย/ ธุรกิจส่วนตัว</option>
-								 <option>อุตสาหกรรมในครัวเรือน</option>
-								 <option>อื่นๆ</option>
-								</select>
-						 </div>
-						   <!-- /.form-group -->
-					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-						  <label>รายได้/ต่อปี  :</label>								
-							<input type="number" name="netIncome" id="netIncome" class="form-control btn-xs" placeholder="รายได้/ต่อปี...">
-						</div>
-						<!-- /.form-group -->
-					 </div>
-            </div>
-            <!-- /row -->
+            <!-- row -->  
           </div>
           <!-- /.card-header -->
 
@@ -1807,193 +1667,7 @@ require_once 'components/header.php';
                           </table>
 
               </div>
-            </div>
-<!--
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>อื่นๆ :</label>
-                  <textarea class="form-control" name="txtOhterLandDesc" id="txtOhterLandDesc" rows="2" placeholder="อื่นๆ ..."></textarea>
-                </div>
-              </div>
-            </div>			
-			
-			<label> สัตว์เลี้ยง</label>
-			 <div class="row">
-                <div class="col-md-3">
-					<div class="form-check">
-					   <label class="form-check-label">
-					   <input class="form-check-input" type="checkbox"> โค (รับวัคซีนแล้ว)</label>
-					</div>
-					<div class="form-group">
-						<input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนโค(รับวัคซีนแล้ว)...ตัว">					
-					</div>
-                </div>
-				<div class="col-md-3">
-					<div class="form-group">
-					<label class="form-check-label">รายละเอียด</label>
-                    <textarea class="form-control" name="txtCowDesc" id="txtCowDesc" rows="1" placeholder="รายละเอียดโค ..."></textarea>
-                  </div>
-                </div>
-                <div class="col-md-3">
-					<div class="form-check">
-					   <label class="form-check-label">
-					   <input class="form-check-input" type="checkbox">กระบือ (รับวัคซีนแล้ว)</label>
-					</div>
-					<div class="form-group">
-						<input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนกระบือ(รับวัคซีนแล้ว)...ตัว">					
-					</div>
-                </div>
-				<div class="col-md-3">
-					<div class="form-group">
-					<label class="form-check-label">รายละเอียด</label>
-                    <textarea class="form-control" name="txtCowDesc" id="txtCowDesc" rows="1" placeholder="รายละเอียดกระบือ ..."></textarea>
-                  </div>
-                </div>				
-			 </div>
-			 
-			 <div class="row">
-                <div class="col-md-3">
-					<div class="form-check">
-					   <label class="form-check-label">
-					   <input class="form-check-input" type="checkbox">สุกร (รับวัคซีนแล้ว)</label>
-					</div>
-					<div class="form-group">
-						<input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนสุกร(รับวัคซีนแล้ว)...ตัว">					
-					</div>
-                </div>
-				<div class="col-md-3">
-					<div class="form-group">
-					<label class="form-check-label">รายละเอียด</label>
-                    <textarea class="form-control" name="txtCowDesc" id="txtCowDesc" rows="1" placeholder="รายละเอียดสุกร ..."></textarea>
-                  </div>
-                </div>
-                <div class="col-md-3">
-					<div class="form-check">
-					   <label class="form-check-label">
-					   <input class="form-check-input" type="checkbox">สุนัข (รับวัคซีนแล้ว)</label>
-					</div>
-					<div class="form-group">
-						<input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนสุนัข(รับวัคซีนแล้ว)...ตัว">					
-					</div>
-                </div>
-				<div class="col-md-3">
-					<div class="form-group">
-					<label class="form-check-label">รายละเอียด</label>
-                    <textarea class="form-control" name="txtCowDesc" id="txtCowDesc" rows="1" placeholder="รายละเอียดสุนัข ..."></textarea>
-                  </div>
-                </div>				
-			 </div>
-
-			 <div class="row">
-                <div class="col-md-3">
-					<div class="form-check">
-					   <label class="form-check-label">
-					   <input class="form-check-input" type="checkbox">แมว (รับวัคซีนแล้ว)</label>
-					</div>
-					<div class="form-group">
-						<input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนแมว(รับวัคซีนแล้ว)...ตัว">					
-					</div>
-                </div>
-				<div class="col-md-3">
-					<div class="form-group">
-					<label class="form-check-label">รายละเอียด</label>
-                    <textarea class="form-control" name="txtCowDesc" id="txtCowDesc" rows="1" placeholder="รายละเอียแมว ..."></textarea>
-                  </div>
-                </div>
-                <div class="col-md-3">
-					<div class="form-check">
-					   <label class="form-check-label">
-					   <input class="form-check-input" type="checkbox">หนูนา (รับวัคซีนแล้ว)</label>
-					</div>
-					<div class="form-group">
-						<input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนหนูนา(รับวัคซีนแล้ว)...ตัว">					
-					</div>
-                </div>
-				<div class="col-md-3">
-					<div class="form-group">
-					<label class="form-check-label">รายละเอียด</label>
-                    <textarea class="form-control" name="txtCowDesc" id="txtCowDesc" rows="1" placeholder="รายละเอียดหนูนา ..."></textarea>
-                  </div>
-                </div>				
-			 </div>
-
-			 <div class="row">
-                <div class="col-md-3">
-					<div class="form-check">
-					   <label class="form-check-label">
-					   <input class="form-check-input" type="checkbox">ไก่บ้าน (รับวัคซีนแล้ว)</label>
-					</div>
-					<div class="form-group">
-						<input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนไก่บ้าน(รับวัคซีนแล้ว)...ตัว">					
-					</div>
-                </div>
-				<div class="col-md-3">
-					<div class="form-group">
-					<label class="form-check-label">รายละเอียด</label>
-                    <textarea class="form-control" name="txtCowDesc" id="txtCowDesc" rows="1" placeholder="รายละเอียดไก่บ้าน ..."></textarea>
-                  </div>
-                </div>
-                <div class="col-md-3">
-					<div class="form-check">
-					   <label class="form-check-label">
-					   <input class="form-check-input" type="checkbox">ไก่ชน (รับวัคซีนแล้ว)</label>
-					</div>
-					<div class="form-group">
-						<input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนไก่ชน(รับวัคซีนแล้ว)...ตัว">					
-					</div>
-                </div>
-				<div class="col-md-3">
-					<div class="form-group">
-					<label class="form-check-label">รายละเอียด</label>
-                    <textarea class="form-control" name="txtCowDesc" id="txtCowDesc" rows="1" placeholder="รายละเอียดไก่ชน ..."></textarea>
-                  </div>
-                </div>				
-			 </div>
-
-			 <div class="row">
-                <div class="col-md-3">
-					<div class="form-check">
-					   <label class="form-check-label">
-					   <input class="form-check-input" type="checkbox">กบ (รับวัคซีนแล้ว)</label>
-					</div>
-					<div class="form-group">
-						<input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนกบ(รับวัคซีนแล้ว)...ตัว">					
-					</div>
-                </div>
-				<div class="col-md-3">
-					<div class="form-group">
-					<label class="form-check-label">รายละเอียด</label>
-                    <textarea class="form-control" name="txtCowDesc" id="txtCowDesc" rows="1" placeholder="รายละเอียดกบ ..."></textarea>
-                  </div>
-                </div>
-                <div class="col-md-3">
-					<div class="form-check">
-					   <label class="form-check-label">
-					   <input class="form-check-input" type="checkbox">ปลา (รับวัคซีนแล้ว)</label>
-					</div>
-					<div class="form-group">
-						<input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนปลา(รับวัคซีนแล้ว)...ตัว">					
-					</div>
-                </div>
-				<div class="col-md-3">
-					<div class="form-group">
-					<label class="form-check-label">รายละเอียด</label>
-                    <textarea class="form-control" name="txtCowDesc" id="txtCowDesc" rows="1" placeholder="รายละเอียดปลา ..."></textarea>
-                  </div>
-                </div>				
-			 </div>
-	         <div class="col-md-4">
-                  <div class="form-check">
-					<label class="form-check-label">
-                    <input class="form-check-input" type="checkbox">อื่นๆ</label>
-                  </div>
-                  <div class="form-group">
-                      <textarea class="form-control" name="txtDesc" id="txtDesc" rows="1" placeholder="อื่นๆ  ..."></textarea>
-                  </div>
-                  </div>
--->
-
+            </div>  
 
             <label>สิ่งแวดล้อม</label>
             <div class="row">
@@ -2192,10 +1866,12 @@ require_once 'components/header.php';
         </div>
         <!-- /.card -->
 
-      </div><!-- /.container-fluid -->
+       </div><!-- /.container-fluid -->
+      </form>
     </section>
     <!-- /.content -->
-
+<script src="assets/js/family.js"></script>
+<div style="display: none;" id="xhtml"></div>
 <?php
 require_once 'components/footer.php';
 ?>
