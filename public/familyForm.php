@@ -4,6 +4,12 @@ require 'bootstart.php';
 require ROOT . '/core/security.php';
 require_once 'components/header.php';
 
+$listmas_vilage= $db::table("tbl_mas_vilage")
+    ->select($db::raw("vil_id,vil_moo,vil_name,vil_desc"))
+    ->where('f_status', '=', 'A')
+    ->orderBy('vil_moo', 'asc')
+    ->get()->toArray();
+
 $listmas_occupation=$db::table("tbl_mas_occupation") 
     ->select($db::raw("occup_code,occup_name"))
     ->where('f_status', '=','A')
@@ -81,7 +87,6 @@ $listdepartments = $db::table("tbl_departments")
     ->orderBy('dept_desc', 'asc')
     ->get()->toArray();
  
-    
 ?>
 <style> 
   .dirty {
@@ -123,17 +128,18 @@ $listdepartments = $db::table("tbl_departments")
       <section class="content" id="app" v-cloak 
       data-familylists='[{ "prefix":"01","txtFName": "","txtLName":"","txtCitizenId":"" ,"xFstatusRd":1,"sexRd":1,"txtNational":"","religion":"","birthday":""
        ,"educationlevel":"","homerelations":"","careergroup":"","careeranother":"","careermain":"","careersecond":"","netIncome":""}]'
+       data-famerdetaillists='{}'
        data-listmas_occupation='<?=json_encode($listmas_occupation)?>' data-listmas_prefix='<?=json_encode($listmas_prefix)?>'
        data-listmas_religion='<?=json_encode($listmas_religion)?>' data-listmas_pet='<?=json_encode($listmas_pet)?>'
        data-listmas_info='<?=json_encode($listmas_info)?>' data-listmas_house_occup='<?=json_encode($listmas_house_occup)?>'
        data-listmas_group_occup='<?=json_encode($listmas_group_occup)?>' data-listmas_facilities='<?=json_encode($listmas_facilities)?>'
        data-listmas_educate='<?=json_encode($listmas_educate)?>' data-listmas_disaster='<?=json_encode($listmas_disaster)?>'
        data-listmas_addition='<?=json_encode($listmas_addition)?>' data-listdepartments='<?=json_encode($listdepartments)?>'
-       data-listmas_relations='<?=json_encode($listmas_relations)?>'  data-apartments='[{ "price": "23000", "rooms": "12" }, { "price": "42000", "rooms": "32" }]'
+       data-listmas_relations='<?=json_encode($listmas_relations)?>'  data-listmas_vilage='<?=json_encode($listmas_vilage)?>'
        > 
-      <form>   
-          <!-- <pre>{{$data}}</pre> -->
-          <pre>{{ $v }}</pre>
+      <form @submit.prevent="submit" id="frm_family">   
+        <!-- <pre>{{$data}}</pre> -->
+        <!-- <pre>{{ $v }}</pre> --> 
        <div class="container-fluid">
         <!-- SELECT2 EXAMPLE ข้อมูลครัวเรือน -->
         <div class="card card-primary">
@@ -160,24 +166,9 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-4">
                 <div class="form-group">
                   <label>หมู่ที่ - ชื่อหมู่บ้าน :</label>
-					<select class="form-control"  v-model="houseinfor.mooHouse" >
-						<option>หมู่ที่ 1 - บ้านแสลงคง</option>
-						<option>หมู่ที่ 2 - บ้านตาแก</option>
-						<option>หมู่ที่ 3 - บ้านโคกขมิ้น</option>
-						<option>หมู่ที่ 4 - บ้านเขว้า</option>
-						<option>หมู่ที่ 5 - บ้านตาพระ</option>
-						<option>หมู่ที่ 6 - บ้านศรีสมบูรณ์</option>
-						<option>หมู่ที่ 7 - บ้านลำเดง</option>
-						<option>หมู่ที่ 8 -  บ้านหนองขอน</option>
-						<option>หมู่ที่ 9 - บ้านพลับ</option>
-						<option>หมู่ที่ 10 - บ้านโคกบัว</option>
-						<option>หมู่ที่ 11 - บ้านโคกขมิ้น</option>
-						<option>หมู่ที่ 12 - บ้านโคกเพชร</option>
-						<option>หมู่ที่ 13 - บ้านทะเมนชัย</option>
-						<option>หมู่ที่ 14 - บ้านพงษ์ศิริ</option>
-						<option>หมู่ที่ 15 - บ้านหนองอุดม</option>
-					  </select>
-
+					<select class="form-control"  :class="status($v.houseinfor.mooHouse)" v-model.trim="$v.houseinfor.mooHouse.$model" > 
+                        <option v-for="(v, indexx) in listmas_vilage" v-bind:value="v.vil_id" v-bind:selected="indexx== 0 ? 'selected' : false">หมู่ที่ {{v.vil_moo}} - {{v.vil_name}}</option> 
+					  </select> 
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -185,7 +176,7 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-4">
                 <div class="form-group">
                    <label>ตำบล :</label>
-                     <input type="text" v-model="houseinfor.txtSubDstrict"  name="txtSubDstrict" value="โคกขมิ้น" id="txtSubDstrict" class="form-control" placeholder="ตำบล  ...">
+                     <input type="text" :class="status($v.houseinfor.txtSubDstrict)" v-model.trim="$v.houseinfor.txtSubDstrict.$model"  name="txtSubDstrict" value="โคกขมิ้น" id="txtSubDstrict" class="form-control" placeholder="ตำบล  ...">
                  </div>
                  <!-- /.form-group -->
               </div>
@@ -198,7 +189,7 @@ $listdepartments = $db::table("tbl_departments")
                <div class="col-md-4">
                  <div class="form-group">
                    <label>อำเภอ:</label>
-                   <input type="text"  v-model="houseinfor.txtDistrict"  name="txtDistrict" value="พลับพลาชัย  " id="txtDistrict" class="form-control" placeholder="อำเภอ  ...">
+                   <input type="text" :class="status($v.houseinfor.txtDistrict)" v-model.trim="$v.houseinfor.txtDistrict.$model"  name="txtDistrict" value="พลับพลาชัย  " id="txtDistrict" class="form-control" placeholder="อำเภอ  ...">
                  </div>
                  <!-- /.form-group -->
                </div>
@@ -206,14 +197,14 @@ $listdepartments = $db::table("tbl_departments")
                <div class="col-md-4">
                  <div class="form-group">
                    <label>จังหวัด:</label>
-                   <input type="text"  v-model="houseinfor.txtProvince"  name="txtProvince" value="บุรีรัมย์ " id="txtProvince" class="form-control" placeholder="จังหวัด  ...">
+                   <input type="text" :class="status($v.houseinfor.txtProvince)" v-model.trim="$v.houseinfor.txtProvince.$model"  name="txtProvince" value="บุรีรัมย์ " id="txtProvince" class="form-control" placeholder="จังหวัด  ...">
                  </div>
                  <!-- /.form-group -->
                </div>
                 <div class="col-md-4">
                       <div class="form-group">
                           <label>รหัสไปรษณีย์:</label>
-                          <input type="text" v-model="houseinfor.txtPostalCode"  name="txtPostalCode" value="31250" id="txtPostalCode" class="form-control" placeholder="รหัสไปรษณีย์  ...">
+                          <input type="text" :class="status($v.houseinfor.txtPostalCode)" v-model.trim="$v.houseinfor.txtPostalCode.$model"  name="txtPostalCode" value="31250" id="txtPostalCode" class="form-control" placeholder="รหัสไปรษณีย์  ...">
                       </div>
                         <!-- /.form-group -->
                   </div>
@@ -243,8 +234,8 @@ $listdepartments = $db::table("tbl_departments")
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-         <template v-for="(item, index) in familylists"> 
-            <h5>ลำดับที่ : {{index+1}}
+         <template v-for="(item, index) in $v.familylists.$each.$iter"> 
+            <h5>ลำดับที่ : {{(index*1)+1}}
 				<a class="btn btn-info btn-sm" href="javascript:void(0)" v-if="index==0" v-on:click="addPeople">
 				  <i class="fas fa-plus-square"></i> เพิ่มสมาชิกในครัวเรือน
                 </a>
@@ -254,7 +245,8 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-3">
                 <div class="form-group">
                   <label>คำนำหน้า:</label>
-                  <select class="form-control" v-model="item.prefix">
+                  <!-- v-model="item.prefix" v-bind:class="{ 'error dirty':item.prefix.$error, '': !item.prefix.$error}" v-model.trim="item.prefix.$model"-->
+                  <select class="form-control" :class="status(item.prefix)" v-model.trim="item.prefix.$model" @blur="item.prefix.$touch()">
                      <option v-for="(v, indexx) in listmas_prefix" v-bind:value="v.pre_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.pre_name}}</option> 
                   </select>
                 </div>
@@ -263,7 +255,7 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-3">
                 <div class="form-group">
                   <label>ชื่อเจ้าบ้าน :</label>
-                  <input type="text" name="txtFName" v-model.trim="item.txtFName.$model" id="txtFName" class="form-control" placeholder="ชื่อเจ้าบ้าน...">
+                  <input type="text" name="txtFName[]" :class="status(item.txtFName)" v-model.trim="item.txtFName.$model" @blur="item.txtFName.$touch()" id="txtFName" class="form-control" placeholder="ชื่อเจ้าบ้าน...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -271,7 +263,7 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-3">
                 <div class="form-group">
                   <label>นามสกุล:</label>
-                  <input type="text" name="txtLName" v-model="item.txtLName" id="txtLName" class="form-control" placeholder="นามสกุล...">
+                  <input type="text" name="txtLName[]" :class="status(item.txtLName)" v-model.trim="item.txtLName.$model" @blur="item.txtLName.$touch()" id="txtLName" class="form-control" placeholder="นามสกุล...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -279,7 +271,7 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-3">
                 <div class="form-group">
                   <label>เลขที่ประจำตัวประชาชน  :</label>
-                    <input type="text" name="txtCitizenId" v-model="item.txtCitizenId" id="txtCitizenId" class="form-control" placeholder="เลขที่ประจำตัวประชาชน  ...">
+                    <input type="text" name="txtCitizenId" :class="status(item.txtCitizenId)" v-model.trim="item.txtCitizenId.$model" @blur="item.txtCitizenId.$touch()" id="txtCitizenId" class="form-control" placeholder="เลขที่ประจำตัวประชาชน  ...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -293,12 +285,12 @@ $listdepartments = $db::table("tbl_departments")
                   <label>สถานภาพ :</label>
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline"> 
-                      <input type="radio" :id="'radioPrimary1'+index" value="1" v-model="item.xFstatusRd"> 
+                      <input type="radio" :id="'radioPrimary1'+index" value="1" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()"> 
                       <label :for="'radioPrimary1'+index">เจ้าบ้าน 
                       </label>
                     </div>
                     <div class="icheck-primary d-inline"> 
-                      <input type="radio" :id="'radioPrimary2' + index" value="2" v-model="item.xFstatusRd">
+                      <input type="radio" :id="'radioPrimary2' + index" value="2" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()">
                       <label :for="'radioPrimary2'+index">ผู้อยู่อาศัย 
                       </label>
                     </div>
@@ -311,17 +303,17 @@ $listdepartments = $db::table("tbl_departments")
                   <label>เพศ  :</label>
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline">
-                      <input type="radio" :id="'radioPrimary3'+index" value="1" v-model="item.sexRd">
+                      <input type="radio" :id="'radioPrimary3'+index" value="1" v-model="item.sexRd" :class="status(item.sexRd)" v-model.trim="item.sexRd.$model" @blur="item.sexRd.$touch()">
                       <label :for="'radioPrimary3'+index">ชาย
                       </label>
                     </div>
                     <div class="icheck-primary d-inline">
-                      <input type="radio" :id="'radioPrimary4'+index" value="2" v-model="item.sexRd">
+                      <input type="radio" :id="'radioPrimary4'+index" value="2" v-model="item.sexRd" :class="status(item.sexRd)" v-model.trim="item.sexRd.$model" @blur="item.sexRd.$touch()">
                       <label :for="'radioPrimary4'+index">หญิง
                       </label>
                     </div>
                     <div class="icheck-primary d-inline">
-                      <input type="radio" :id="'radioPrimary5'+index"  value="3" v-model="item.sexRd">
+                      <input type="radio" :id="'radioPrimary5'+index"  value="3" v-model="item.sexRd" :class="status(item.sexRd)" v-model.trim="item.sexRd.$model" @blur="item.sexRd.$touch()">
                       <label :for="'radioPrimary5'+index">อื่นๆ
                       </label>
                     </div>
@@ -334,7 +326,7 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-3">
                 <div class="form-group">
                   <label>สัญชาติ  :</label>
-                  <input type="text" name="txtNational" v-model="item.txtNational" id="txtNational" class="form-control" placeholder="สัญชาติ  ...">
+                  <input type="text" name="txtNational" :class="status(item.txtNational)" v-model.trim="item.txtNational.$model" @blur="item.txtNational.$touch()" id="txtNational" class="form-control" placeholder="สัญชาติ  ...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -342,7 +334,7 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-3">
                  <div class="form-group">
                     <label>ศาสนา :</label>
-                    <select class="form-control" v-model="item.religion" name="religion" id="religion">
+                    <select class="form-control" name="religion" id="religion" :class="status(item.religion)" v-model.trim="item.religion.$model" @blur="item.religion.$touch()">
                       <option v-for="(v, indexx) in listmas_religion" :value="v.reg_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.reg_name}}</option> 
                     </select>
                   </div>
@@ -358,9 +350,9 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-3">
                 <div class="form-group">
                   <label>วันเดือนปีเกิด :</label>
-                  <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" v-model="item.birthday" name="birthday" id="birthday" />
-                      <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                  <div class="input-group date" id="birthday" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#birthday" :class="status(item.birthday)" v-model.trim="item.birthday.$model" @blur="item.birthday.$touch()" name="birthday" id="birthday" />
+                      <div class="input-group-append" data-target="#birthday" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                       </div>
                   </div>
@@ -373,7 +365,7 @@ $listdepartments = $db::table("tbl_departments")
                 <div class="col-md-3">
                    <div class="form-group">
                       <label>ระดับการศึกษา :</label>
-                      <select class="form-control" v-model="item.educationlevel" name="educationlevel" id="educationlevel">
+                      <select class="form-control"  name="educationlevel" id="educationlevel" :class="status(item.educationlevel)" v-model.trim="item.educationlevel.$model" @blur="item.educationlevel.$touch()">
                         <option v-for="(v, indexx) in listmas_educate" :value="v.ed_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.ed_name}}</option> 
                       </select>
                     </div>
@@ -383,7 +375,7 @@ $listdepartments = $db::table("tbl_departments")
                  <div class="col-md-3">
                     <div class="form-group">
                        <label>ความสัมพันธ์ในครัวเรือน  :</label>
-                       <select class="form-control" v-model="item.homerelations" name="homerelations" id="homerelations">
+                       <select class="form-control" name="homerelations" id="homerelations" :class="status(item.homerelations)" v-model.trim="item.homerelations.$model" @blur="item.homerelations.$touch()">
                           <option v-for="(v, indexx) in listmas_relations" :value="v.re_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.re_name}}</option>
                        </select>
                      </div>
@@ -394,7 +386,7 @@ $listdepartments = $db::table("tbl_departments")
                <div class="col-md-3" v-if="index==0">
                     <div class="form-group">
                             <label>กลุ่มอาชีพ :</label>
-                             <select class="form-control"  v-model="item.careergroup" name="careergroup" id="careergroup">>
+                             <select class="form-control"  name="careergroup" id="careergroup" :class="status(item.careergroup)" v-model.trim="item.careergroup.$model" @blur="item.careergroup.$touch()">
                              <option v-for="(v, indexx) in listmas_group_occup" :value="v.goccup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.goccup_name}}</option> 
                             </select>
                      </div>
@@ -403,7 +395,7 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-3" v-if="index==0">
                 <div class="form-group">
                   <label>กลุ่มอาชีพอื่นๆ  :</label>
-                  <textarea class="form-control" name="careeranother" id="careeranother" rows="1" placeholder="กลุ่มอาชีพอื่นๆ ระบุ  ...">
+                  <textarea class="form-control" name="careeranother" id="careeranother" rows="1" placeholder="กลุ่มอาชีพอื่นๆ ระบุ  ..." :class="status(item.careeranother)" v-model.trim="item.careeranother.$model" @blur="item.careeranother.$touch()">
                       {{item.careeranother}}
                   </textarea>
                 </div>
@@ -412,7 +404,7 @@ $listdepartments = $db::table("tbl_departments")
 				<div class="col-md-3">
 					<div class="form-group">
 							<label>อาชีพหลัก :</label>
-							 <select class="form-control"  v-model="item.careermain" name="careermain" id="careermain">
+							 <select class="form-control" name="careermain" id="careermain" :class="status(item.careermain)" v-model.trim="item.careermain.$model" @blur="item.careermain.$touch()">
 							  <option v-for="(v, indexx) in listmas_occupation" :value="v.occup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.occup_name}}</option> 
 							</select>
 					 </div>
@@ -421,8 +413,9 @@ $listdepartments = $db::table("tbl_departments")
 				 <div class="col-md-3">
 					<div class="form-group">
 							<label>อาชีพรอง :</label>
-							 <select class="form-control"  v-model="item.careersecond" name="careersecond" id="careersecond">
-							 <option>ไม่มี</option>
+							 <select class="form-control" name="careersecond" id="careersecond" :class="status(item.careersecond)" v-model.trim="item.careersecond.$model" @blur="item.careersecond.$touch()">
+                             <option v-for="(v, indexx) in listmas_occupation" :value="v.occup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.occup_name}}</option> 
+                             <!-- <option>ไม่มี</option>
 							  <option>ทำนา</option>
 							 <option>ทำไร่</option>
 							 <option>ทำสวน</option>
@@ -434,7 +427,7 @@ $listdepartments = $db::table("tbl_departments")
 							 <option>กรรมกร</option>
 							 <option>ค้าขาย/ ธุรกิจส่วนตัว</option>
 							 <option>อุตสาหกรรมในครัวเรือน</option>
-							 <option>อื่นๆ</option>
+							 <option>อื่นๆ</option> -->
 							</select>
 					 </div>
 					   <!-- /.form-group -->
@@ -442,7 +435,7 @@ $listdepartments = $db::table("tbl_departments")
 				<div class="col-md-3">
 					<div class="form-group">
 					  <label>รายได้/ต่อปี  :</label>								
-						<input type="number" name="netIncome" v-model="item.netIncome"  id="netIncome" class="form-control btn-xs" placeholder="รายได้/ต่อปี...">
+						<input type="number" name="netIncome" :class="status(item.netIncome)" v-model.trim="item.netIncome.$model" @blur="item.netIncome.$touch()" id="netIncome" class="form-control btn-xs" placeholder="รายได้/ต่อปี...">
 					</div>
 					<!-- /.form-group -->
 				 </div>
@@ -476,16 +469,13 @@ $listdepartments = $db::table("tbl_departments")
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-
+            
               <h5 class="d-sm-inline-block">โฉนด</h5>
-              <a class="d-sm-inline-block btn btn-info btn-sm" href="#"><i class="fas fa-plus-square"></i> เพิ่มโฉนด
-              </a>
-
-
-            <div class="row">
-              <div class="col-md-12">
-				<!--  table-striped  -->
-                    <table class="table table-sm" >
+              <a class="d-sm-inline-block btn btn-info btn-sm" href="javascript:void(0)" v-on:click="addDeed()"><i class="fas fa-plus-square"></i> เพิ่มโฉนด
+              </a>  
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-sm" >
                             <thead>
                               <tr>
                                 <th style="width: 5px">#</th>
@@ -498,12 +488,14 @@ $listdepartments = $db::table("tbl_departments")
                                 <th style="width: 10px">#</th>
                               </tr>
                             </thead>
-                            <tbody>
+                              <tbody>
+                             <tr class="table-warning" v-if="famerdetaillists.deeds.length<=0"><td align="center" colspan="8">*** ยังไม่มีข้อมูล ***</td></tr>        
+                             <template v-for="(item, index) in $v.famerdetaillists.deeds.$each.$iter">
                               <tr >
-                                <td>1.</td>
+                                <td>{{(index*1)+1}}.</td>
 								<td>
 								  <div class="form-group">
-									 <select class="form-control  btn-xs">
+									 <select class="form-control btn-xs" name="province[]"  :class="status(item.province)" v-model.trim="item.province.$model" @blur="item.province.$touch()">
 									<option  value="- กรุณาเลือกจังหวัด -">- กรุณาเลือกจังหวัด -</option>
 									<option value="81">กระบี่</option>
 									<option value="10">กรุงเทพมหานคร</option>
@@ -587,7 +579,7 @@ $listdepartments = $db::table("tbl_departments")
 								</td>
 								<td>
 								<div class="form-group btn-xs">
-								 <select class="form-control btn-xs">
+								 <select class="form-control btn-xs" name="district[]" :class="status(item.district)" v-model.trim="item.district.$model" @blur="item.district.$touch()">
 								 <option>พลับพลาชัย </option>
 								 <option>เมืองบุรีรัมย์</option>
 								 <option>คูเมือง</option>
@@ -600,159 +592,37 @@ $listdepartments = $db::table("tbl_departments")
 								</td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="เลขที่โฉนด  ...">
+                                    <input type="number" name="nodeed" :class="status(item.nodeed)" v-model.trim="item.nodeed.$model" @blur="item.nodeed.$touch()" class="form-control btn-xs" placeholder="เลขที่โฉนด  ...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
+                                    <input type="number" name="arearai[]"  :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
+                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
+                                    <input type="number" name="areatrw[]" :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
                                   </div>
                                 </td>
                                 <td>
-                                <a href="#" class="btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                <a href="javascript:void(0)" v-on:click="removeDeed(index)" class="btn-sm btn-danger"><i class="fas fa-trash"></i></a> 
                                 </td>
-                              </tr>
-                              <tr >
-                                <td>2.</td>
-								<td>
-								  <div class="form-group">
-									 <select class="form-control  btn-xs">
-									<option  value="- กรุณาเลือกจังหวัด -">- กรุณาเลือกจังหวัด -</option>
-									<option value="81">กระบี่</option>
-									<option value="10">กรุงเทพมหานคร</option>
-									<option value="71">กาญจนบุรี</option>
-									<option value="46">กาฬสินธุ์</option>
-									<option value="62">กำแพงเพชร</option>
-									<option value="40">ขอนแก่น</option>
-									<option value="22">จันทบุรี</option>
-									<option value="24">ฉะเชิงเทรา</option>
-									<option value="20">ชลบุรี</option>
-									<option value="18">ชัยนาท</option>
-									<option value="36">ชัยภูมิ</option>
-									<option value="86">ชุมพร</option>
-									<option value="57">เชียงราย</option>
-									<option value="50">เชียงใหม่</option>
-									<option value="92">ตรัง</option>
-									<option value="23">ตราด</option>
-									<option value="63">ตาก</option>
-									<option value="26">นครนายก</option>
-									<option value="73">นครปฐม</option>
-									<option value="48">นครพนม</option>
-									<option value="30">นครราชสีมา</option>
-									<option value="80">นครศรีธรรมราช</option>
-									<option value="60">นครสวรรค์</option>
-									<option value="12">นนทบุรี</option>
-									<option value="96">นราธิวาส</option>
-									<option value="55">น่าน</option>
-									<option value="38">บึงกาฬ</option>
-									<option value="31" selected="selected">บุรีรัมย์</option>
-									<option value="13">ปทุมธานี</option>
-									<option value="77">ประจวบคีรีขันธ์</option>
-									<option value="25">ปราจีนบุรี</option>
-									<option value="94">ปัตตานี</option>
-									<option value="14">พระนครศรีอยุธยา</option>
-									<option value="56">พะเยา</option>
-									<option value="82">พังงา</option>
-									<option value="93">พัทลุง</option>
-									<option value="66">พิจิตร</option>
-									<option value="65">พิษณุโลก</option>
-									<option value="76">เพชรบุรี</option>
-									<option value="67">เพชรบูรณ์</option>
-									<option value="54">แพร่</option>
-									<option value="83">ภูเก็ต</option>
-									<option value="44">มหาสารคาม</option>
-									<option value="49">มุกดาหาร</option>
-									<option value="58">แม่ฮ่องสอน</option>
-									<option value="35">ยโสธร</option>
-									<option value="95">ยะลา</option>
-									<option value="45">ร้อยเอ็ด</option>
-									<option value="85">ระนอง</option>
-									<option value="21">ระยอง</option>
-									<option value="70">ราชบุรี</option>
-									<option value="16">ลพบุรี</option>
-									<option value="52">ลำปาง</option>
-									<option value="51">ลำพูน</option>
-									<option value="42">เลย</option>
-									<option value="33">ศรีสะเกษ</option>
-									<option value="47">สกลนคร</option>
-									<option value="90">สงขลา</option>
-									<option value="91">สตูล</option>
-									<option value="11">สมุทรปราการ</option>
-									<option value="75">สมุทรสงคราม</option>
-									<option value="74">สมุทรสาคร</option>
-									<option value="27">สระแก้ว</option>
-									<option value="19">สระบุรี</option>
-									<option value="17">สิงห์บุรี</option>
-									<option value="64">สุโขทัย</option>
-									<option value="72">สุพรรณบุรี</option>
-									<option value="84">สุราษฎร์ธานี</option>
-									<option value="32">สุรินทร์</option>
-									<option value="43">หนองคาย</option>
-									<option value="39">หนองบัวลำภู</option>
-									<option value="15">อ่างทอง</option>
-									<option value="37">อำนาจเจริญ</option>
-									<option value="41">อุดรธานี</option>
-									<option value="53">อุตรดิตถ์</option>
-									<option value="61">อุทัยธานี</option>
-									<option value="34">อุบลราชธานี</option>
-									</select>
-								   </div>								
-								</td>
-								<td>
-								<div class="form-group btn-xs">
-								 <select class="form-control btn-xs">
-								 <option>พลับพลาชัย </option>
-								 <option>เมืองบุรีรัมย์</option>
-								 <option>คูเมือง</option>
-								 <option>กระสัง</option>
-								 <option>นางรอง</option>
-								 <option>ละหานทราย</option>
-								 <option>ประโคนชัย</option>
-								</select>
-							   </div>
-								</td>
-                                <td>
-                                  <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="เลขที่โฉนด  ...">
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
-                                  </div>
-                                </td>
-                                <td>
-                                <a href="#" class="btn-sm btn-danger"><i class="fas fa-trash"></i></a>
-                                </td>
-                              </tr>
+                              </tr>  
+                              </template>  
+                             </tbody>
+                         </table>       
+                    </div>  
+                </div>   
+                 
 
-                            </tbody>
-                          </table>
-
-              </div>
-            </div>
             <h5 class="d-sm-inline-block">นส.3ก</h5>
-            <a class="inline btn btn-info btn-sm" href="#">
+            <a class="inline btn btn-info btn-sm" href="javascript:void(0)" v-on:click="addNorsor3kors()">
               <i class="fas fa-plus-square"></i> เพิ่ม นส.3ก
             </a>
 
@@ -773,11 +643,13 @@ $listdepartments = $db::table("tbl_departments")
                               </tr>
                             </thead>
                             <tbody>
+                              <tr class="table-warning" v-if="famerdetaillists.norsor3kors.length<=0"><td align="center" colspan="8">*** ยังไม่มีข้อมูล ***</td></tr>        
+                              <template v-for="(item, index) in $v.famerdetaillists.norsor3kors.$each.$iter">
                               <tr>
-                                <td>1.</td>
+                                <td>{{(index*1)+1}}.</td>
 								<td>
 								  <div class="form-group">
-									 <select class="form-control  btn-xs">
+								    <select class="form-control  btn-xs" name="province[]" :class="status(item.province)" v-model.trim="item.province.$model" @blur="item.province.$touch()">
 									<option  value="- กรุณาเลือกจังหวัด -">- กรุณาเลือกจังหวัด -</option>
 									<option value="81">กระบี่</option>
 									<option value="10">กรุงเทพมหานคร</option>
@@ -861,7 +733,7 @@ $listdepartments = $db::table("tbl_departments")
 								</td>
 								<td>
 								<div class="form-group btn-xs">
-								 <select class="form-control btn-xs">
+								 <select class="form-control btn-xs" name="district[]"  :class="status(item.district)" v-model.trim="item.district.$model" @blur="item.district.$touch()">
 								 <option>พลับพลาชัย </option>
 								 <option>เมืองบุรีรัมย์</option>
 								 <option>คูเมือง</option>
@@ -874,36 +746,36 @@ $listdepartments = $db::table("tbl_departments")
 								</td>								
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="เลขที่โฉนด  ...">
+                                    <input type="number" name="nodeed[]" :class="status(item.nodeed)" v-model.trim="item.nodeed.$model" @blur="item.nodeed.$touch()" class="form-control btn-xs" placeholder="เลขที่โฉนด  ...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
+                                    <input type="number" name="arearai[]" :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
+                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
+                                    <input type="number" name="areatrw[]"  :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
                                   </div>
                                 </td>
                                 <td>
-                                  <a href="#" class="btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                  <a href="javascript:void(0)" v-on:click="removeNorsor3kors(index)"  class="btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                                 </td>
                               </tr>
-
+                              </template> 
                             </tbody>
                           </table>
 
               </div>
             </div>
             <h5 class="d-sm-inline-block">สปก.</h5>
-            <a class="inline btn btn-info btn-sm" href="#">
+            <a class="inline btn btn-info btn-sm" href="javascript:void(0)" v-on:click="addSpoks()">
               <i class="fas fa-plus-square"></i> เพิ่ม สปก.
             </a>
 
@@ -924,11 +796,13 @@ $listdepartments = $db::table("tbl_departments")
                               </tr>
                             </thead>
                             <tbody>
+                            <tr class="table-warning" v-if="famerdetaillists.spoks.length<=0"><td align="center" colspan="8">*** ยังไม่มีข้อมูล ***</td></tr>        
+                             <template v-for="(item, index) in $v.famerdetaillists.spoks.$each.$iter">
                               <tr>
-                                <td>1.</td>
+                                <td>{{(index*1)+1}}.</td>
 								<td>
 								  <div class="form-group">
-									 <select class="form-control  btn-xs">
+									 <select class="form-control  btn-xs" name="province[]" :class="status(item.province)" v-model.trim="item.province.$model" @blur="item.province.$touch()">
 									<option  value="- กรุณาเลือกจังหวัด -">- กรุณาเลือกจังหวัด -</option>
 									<option value="81">กระบี่</option>
 									<option value="10">กรุงเทพมหานคร</option>
@@ -1012,7 +886,7 @@ $listdepartments = $db::table("tbl_departments")
 								</td>
 								<td>
 								<div class="form-group btn-xs">
-								 <select class="form-control btn-xs">
+								 <select class="form-control btn-xs" name="district[]" :class="status(item.district)" v-model.trim="item.district.$model" @blur="item.district.$touch()">
 								 <option>พลับพลาชัย </option>
 								 <option>เมืองบุรีรัมย์</option>
 								 <option>คูเมือง</option>
@@ -1025,159 +899,36 @@ $listdepartments = $db::table("tbl_departments")
 								</td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="เลขที่โฉนด  ...">
+                                    <input type="number" name="nodeed[]" :class="status(item.nodeed)" v-model.trim="item.nodeed.$model" @blur="item.nodeed.$touch()" class="form-control btn-xs" placeholder="เลขที่โฉนด  ...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
+                                    <input type="number" name="arearai[]" :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
+                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
+                                    <input type="number" name="areatrw[]"  :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
                                   </div>
                                 </td>
                                 <td>
-                                  <a href="#" class="btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                  <a href="javascript:void(0)" v-on:click="removeSpoks(index)" class="btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                                 </td>
                               </tr>
-                              <tr>
-                                <td>2.</td>
-								<td>
-								  <div class="form-group">
-									 <select class="form-control  btn-xs">
-									<option  value="- กรุณาเลือกจังหวัด -">- กรุณาเลือกจังหวัด -</option>
-									<option value="81">กระบี่</option>
-									<option value="10">กรุงเทพมหานคร</option>
-									<option value="71">กาญจนบุรี</option>
-									<option value="46">กาฬสินธุ์</option>
-									<option value="62">กำแพงเพชร</option>
-									<option value="40">ขอนแก่น</option>
-									<option value="22">จันทบุรี</option>
-									<option value="24">ฉะเชิงเทรา</option>
-									<option value="20">ชลบุรี</option>
-									<option value="18">ชัยนาท</option>
-									<option value="36">ชัยภูมิ</option>
-									<option value="86">ชุมพร</option>
-									<option value="57">เชียงราย</option>
-									<option value="50">เชียงใหม่</option>
-									<option value="92">ตรัง</option>
-									<option value="23">ตราด</option>
-									<option value="63">ตาก</option>
-									<option value="26">นครนายก</option>
-									<option value="73">นครปฐม</option>
-									<option value="48">นครพนม</option>
-									<option value="30">นครราชสีมา</option>
-									<option value="80">นครศรีธรรมราช</option>
-									<option value="60">นครสวรรค์</option>
-									<option value="12">นนทบุรี</option>
-									<option value="96">นราธิวาส</option>
-									<option value="55">น่าน</option>
-									<option value="38">บึงกาฬ</option>
-									<option value="31" selected="selected">บุรีรัมย์</option>
-									<option value="13">ปทุมธานี</option>
-									<option value="77">ประจวบคีรีขันธ์</option>
-									<option value="25">ปราจีนบุรี</option>
-									<option value="94">ปัตตานี</option>
-									<option value="14">พระนครศรีอยุธยา</option>
-									<option value="56">พะเยา</option>
-									<option value="82">พังงา</option>
-									<option value="93">พัทลุง</option>
-									<option value="66">พิจิตร</option>
-									<option value="65">พิษณุโลก</option>
-									<option value="76">เพชรบุรี</option>
-									<option value="67">เพชรบูรณ์</option>
-									<option value="54">แพร่</option>
-									<option value="83">ภูเก็ต</option>
-									<option value="44">มหาสารคาม</option>
-									<option value="49">มุกดาหาร</option>
-									<option value="58">แม่ฮ่องสอน</option>
-									<option value="35">ยโสธร</option>
-									<option value="95">ยะลา</option>
-									<option value="45">ร้อยเอ็ด</option>
-									<option value="85">ระนอง</option>
-									<option value="21">ระยอง</option>
-									<option value="70">ราชบุรี</option>
-									<option value="16">ลพบุรี</option>
-									<option value="52">ลำปาง</option>
-									<option value="51">ลำพูน</option>
-									<option value="42">เลย</option>
-									<option value="33">ศรีสะเกษ</option>
-									<option value="47">สกลนคร</option>
-									<option value="90">สงขลา</option>
-									<option value="91">สตูล</option>
-									<option value="11">สมุทรปราการ</option>
-									<option value="75">สมุทรสงคราม</option>
-									<option value="74">สมุทรสาคร</option>
-									<option value="27">สระแก้ว</option>
-									<option value="19">สระบุรี</option>
-									<option value="17">สิงห์บุรี</option>
-									<option value="64">สุโขทัย</option>
-									<option value="72">สุพรรณบุรี</option>
-									<option value="84">สุราษฎร์ธานี</option>
-									<option value="32">สุรินทร์</option>
-									<option value="43">หนองคาย</option>
-									<option value="39">หนองบัวลำภู</option>
-									<option value="15">อ่างทอง</option>
-									<option value="37">อำนาจเจริญ</option>
-									<option value="41">อุดรธานี</option>
-									<option value="53">อุตรดิตถ์</option>
-									<option value="61">อุทัยธานี</option>
-									<option value="34">อุบลราชธานี</option>
-									</select>
-								   </div>								
-								</td>
-								<td>
-								<div class="form-group btn-xs">
-								 <select class="form-control btn-xs">
-								 <option>พลับพลาชัย </option>
-								 <option>เมืองบุรีรัมย์</option>
-								 <option>คูเมือง</option>
-								 <option>กระสัง</option>
-								 <option>นางรอง</option>
-								 <option>ละหานทราย</option>
-								 <option>ประโคนชัย</option>
-								</select>
-							   </div>
-								</td>
-                                <td>
-                                  <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="เลขที่โฉนด  ...">
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="form-group">
-                                    <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
-                                  </div>
-                                </td>
-                                <td>
-                                  <a href="#" class="btn-sm btn-danger"><i class="fas fa-trash"></i></a>
-                                </td>
-                              </tr>
-
+                            </template>  
                             </tbody>
                           </table>
 
               </div>
             </div>
             <h5 class="d-sm-inline-block">ภบท 5</h5>
-            <a class="inline btn btn-info btn-sm" href="#">
+            <a class="inline btn btn-info btn-sm" href="javascript:void(0)" v-on:click="addChapter5s()">
               <i class="fas fa-plus-square"></i> เพิ่ม ภบท 5
             </a>
 
@@ -1198,14 +949,134 @@ $listdepartments = $db::table("tbl_departments")
                               </tr>
                             </thead>
                             <tbody>
+                             <tr class="table-warning" v-if="famerdetaillists.chapter5s.length<=0"><td align="center" colspan="8">*** ยังไม่มีข้อมูล ***</td></tr>        
+                             <template v-for="(item, index) in $v.famerdetaillists.chapter5s.$each.$iter">
                               <tr >
-                                <td align="center" colspan="7">*** ยังไม่มีข้อมูล ***</td>                                
-                              </tr>
-
-
+                                <td>{{(index*1)+1}}.</td>
+								<td>
+								  <div class="form-group">
+									 <select class="form-control btn-xs" name="province[]"  :class="status(item.province)" v-model.trim="item.province.$model" @blur="item.province.$touch()">
+									<option  value="- กรุณาเลือกจังหวัด -">- กรุณาเลือกจังหวัด -</option>
+									<option value="81">กระบี่</option>
+									<option value="10">กรุงเทพมหานคร</option>
+									<option value="71">กาญจนบุรี</option>
+									<option value="46">กาฬสินธุ์</option>
+									<option value="62">กำแพงเพชร</option>
+									<option value="40">ขอนแก่น</option>
+									<option value="22">จันทบุรี</option>
+									<option value="24">ฉะเชิงเทรา</option>
+									<option value="20">ชลบุรี</option>
+									<option value="18">ชัยนาท</option>
+									<option value="36">ชัยภูมิ</option>
+									<option value="86">ชุมพร</option>
+									<option value="57">เชียงราย</option>
+									<option value="50">เชียงใหม่</option>
+									<option value="92">ตรัง</option>
+									<option value="23">ตราด</option>
+									<option value="63">ตาก</option>
+									<option value="26">นครนายก</option>
+									<option value="73">นครปฐม</option>
+									<option value="48">นครพนม</option>
+									<option value="30">นครราชสีมา</option>
+									<option value="80">นครศรีธรรมราช</option>
+									<option value="60">นครสวรรค์</option>
+									<option value="12">นนทบุรี</option>
+									<option value="96">นราธิวาส</option>
+									<option value="55">น่าน</option>
+									<option value="38">บึงกาฬ</option>
+									<option value="31" selected="selected">บุรีรัมย์</option>
+									<option value="13">ปทุมธานี</option>
+									<option value="77">ประจวบคีรีขันธ์</option>
+									<option value="25">ปราจีนบุรี</option>
+									<option value="94">ปัตตานี</option>
+									<option value="14">พระนครศรีอยุธยา</option>
+									<option value="56">พะเยา</option>
+									<option value="82">พังงา</option>
+									<option value="93">พัทลุง</option>
+									<option value="66">พิจิตร</option>
+									<option value="65">พิษณุโลก</option>
+									<option value="76">เพชรบุรี</option>
+									<option value="67">เพชรบูรณ์</option>
+									<option value="54">แพร่</option>
+									<option value="83">ภูเก็ต</option>
+									<option value="44">มหาสารคาม</option>
+									<option value="49">มุกดาหาร</option>
+									<option value="58">แม่ฮ่องสอน</option>
+									<option value="35">ยโสธร</option>
+									<option value="95">ยะลา</option>
+									<option value="45">ร้อยเอ็ด</option>
+									<option value="85">ระนอง</option>
+									<option value="21">ระยอง</option>
+									<option value="70">ราชบุรี</option>
+									<option value="16">ลพบุรี</option>
+									<option value="52">ลำปาง</option>
+									<option value="51">ลำพูน</option>
+									<option value="42">เลย</option>
+									<option value="33">ศรีสะเกษ</option>
+									<option value="47">สกลนคร</option>
+									<option value="90">สงขลา</option>
+									<option value="91">สตูล</option>
+									<option value="11">สมุทรปราการ</option>
+									<option value="75">สมุทรสงคราม</option>
+									<option value="74">สมุทรสาคร</option>
+									<option value="27">สระแก้ว</option>
+									<option value="19">สระบุรี</option>
+									<option value="17">สิงห์บุรี</option>
+									<option value="64">สุโขทัย</option>
+									<option value="72">สุพรรณบุรี</option>
+									<option value="84">สุราษฎร์ธานี</option>
+									<option value="32">สุรินทร์</option>
+									<option value="43">หนองคาย</option>
+									<option value="39">หนองบัวลำภู</option>
+									<option value="15">อ่างทอง</option>
+									<option value="37">อำนาจเจริญ</option>
+									<option value="41">อุดรธานี</option>
+									<option value="53">อุตรดิตถ์</option>
+									<option value="61">อุทัยธานี</option>
+									<option value="34">อุบลราชธานี</option>
+									</select>
+								   </div>								
+								</td>
+								<td>
+								<div class="form-group btn-xs">
+								 <select class="form-control btn-xs" name="district[]" :class="status(item.district)" v-model.trim="item.district.$model" @blur="item.district.$touch()">
+								 <option>พลับพลาชัย </option>
+								 <option>เมืองบุรีรัมย์</option>
+								 <option>คูเมือง</option>
+								 <option>กระสัง</option>
+								 <option>นางรอง</option>
+								 <option>ละหานทราย</option>
+								 <option>ประโคนชัย</option>
+								</select>
+							   </div>
+								</td>
+                                <td>
+                                  <div class="form-group">
+                                    <input type="number" name="nodeed" :class="status(item.nodeed)" v-model.trim="item.nodeed.$model" @blur="item.nodeed.$touch()" class="form-control btn-xs" placeholder="เลขที่โฉนด  ...">
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="form-group">
+                                    <input type="number" name="arearai[]"  :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="form-group">
+                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="form-group">
+                                    <input type="number" name="areatrw[]" :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
+                                  </div>
+                                </td>
+                                <td>
+                                <a href="javascript:void(0)" v-on:click="removeChapter5s(index)" class="btn-sm btn-danger"><i class="fas fa-trash"></i></a> 
+                                </td>
+                              </tr>  
+                              </template> 
                             </tbody>
-                          </table>
-
+                          </table> 
               </div>
             </div>
 
@@ -1213,7 +1084,7 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-6">
                 <div class="form-group">
                   <label>อื่นๆ :</label>
-                  <textarea class="form-control" name="txtOhterLandDesc" id="txtOhterLandDesc" rows="2" placeholder="อื่นๆ ..."></textarea>
+                  <textarea class="form-control" name="another" v-model.trim="famerdetaillists.another" rows="2" placeholder="อื่นๆ ..."></textarea>
                 </div>
               </div>
             </div>
@@ -1245,26 +1116,25 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-3">
                <div class="form-group">
                   <label>อาชีพในครัวเรือน:</label>
-                  <select class="form-control">
+                  <select class="form-control" name="familyhomecareer" id="familyhomecareer" :class="status($v.houseinforgeneral.familyhomecareer)" v-model.trim="$v.houseinforgeneral.familyhomecareer.$model" @blur="$v.houseinforgeneral.familyhomecareer.$touch()">
+					  <option v-for="(v, indexx) in listmas_occupation" :value="v.occup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.occup_name}}</option> 
+				 </select>
+                  <!-- <select class="form-control">
                     <option>ทำนา</option>
                     <option>ทำสวน</option>
                     <option>ประมง</option>
                     <option>ทำไร่</option>
                     <option>เลี้ยงสัตว์</option>
                     <option>อุตสหกรรมครัวเรือน</option>
-                    <option>รับจ้างทั่วไป</option>
-                  <!--  <option>ค้าขาย</option>
-                    <option>รับราชการ</option>
-                  -->
-                  </select>
-                </div>
-                <!-- /.form-group -->
+                    <option>รับจ้างทั่วไป</option> 
+                  </select> -->
+                </div> 
               </div>
 
               <div class="col-md-3">
                 <div class="form-group">
                   <label>เป้าหมายการผลิต :</label>
-                  <select class="form-control">
+                  <select class="form-control"  class="form-control" name="familyhomeproducttarget" id="familyhomeproducttarget" :class="status($v.houseinforgeneral.familyhomeproducttarget)" v-model.trim="$v.houseinforgeneral.familyhomeproducttarget.$model" @blur="$v.houseinforgeneral.familyhomeproducttarget.$touch()" >
                     <option>ผลิตเพื่อบริโภค</option>
                     <option>ผลิตเพื่อจำหน่าย</option>
                     <option>ผลิตเพื่อบริโภคและจำหน่าย</option>
@@ -1276,7 +1146,7 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-3">
                 <div class="form-group">
                   <label>แหล่งเงินทุน (ครัวเรือน) :</label>
-                  <select class="form-control">
+                  <select class="form-control"  class="form-control" name="familyhomesourceoffunds" id="familyhomesourceoffunds" :class="status($v.houseinforgeneral.familyhomesourceoffunds)" v-model.trim="$v.houseinforgeneral.familyhomesourceoffunds.$model" @blur="$v.houseinforgeneral.familyhomesourceoffunds.$touch()">
                     <option>เงินทุนส่วนตัว</option>
                     <option>กู้มาลงทุน</option>
                     <option>กู้บ้างสวน</option>
@@ -1300,7 +1170,7 @@ $listdepartments = $db::table("tbl_departments")
                                     <i class="far fa-calendar-alt"></i>
                                   </span>
                                 </div>
-                                <input type="text" class="form-control float-right" id="reservation">
+                                <input type="text" class="form-control float-right" class="form-control" name="familyhomeproductperiod" id="familyhomeproductperiod" :class="status($v.houseinforgeneral.familyhomeproductperiod)" v-model.trim="$v.houseinforgeneral.familyhomeproductperiod.$model" @blur="$v.houseinforgeneral.familyhomeproductperiod.$touch()">
                               </div>
                               <!-- /.input group -->
                             </div>
@@ -1310,7 +1180,7 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-6">
                 <div class="form-group">
                   <label>ต้นทุนการผลิต :</label>
-                  <textarea class="form-control" name="txtDesc" id="txtDesc" rows="1" placeholder="ต้นทุนการผลิต  ..."></textarea>
+                  <textarea class="form-control"  class="form-control" name="familyhomeproductioncost" id="familyhomeproductioncost" :class="status($v.houseinforgeneral.familyhomeproductioncost)" v-model.trim="$v.houseinforgeneral.familyhomeproductioncost.$model" @blur="$v.houseinforgeneral.familyhomeproductioncost.$touch()" rows="1" placeholder="ต้นทุนการผลิต  ..."></textarea>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -1327,7 +1197,7 @@ $listdepartments = $db::table("tbl_departments")
 					รถไถ แทรกเตอร์ </label>
                 </div>
                 <div class="form-group">
-                    <input type="number" id="inputSpentBudget" class="form-control" placeholder="จำนวน...คัน" value="" step="1">
+                    <input type="number" id="familyhometractor" v-model.trim="houseinforgeneral.familyhometractor" class="form-control" placeholder="จำนวน...คัน" value="" step="1">
                 </div>
                 </div>
                 <!-- /.form-group -->
@@ -1339,7 +1209,7 @@ $listdepartments = $db::table("tbl_departments")
 					รถไถเดินตาม</label>
                   </div>
                   <div class="form-group">
-                      <input type="number" id="inputSpentBudget" class="form-control" placeholder="จำนวน...คัน" value="" step="1">
+                      <input type="number" id="familyhomewalkingtractor" v-model.trim="houseinforgeneral.familyhomewalkingtractor" class="form-control" placeholder="จำนวน...คัน" value="" step="1">
                   </div>
                   </div>
                   <!-- /.form-group -->
@@ -1350,7 +1220,7 @@ $listdepartments = $db::table("tbl_departments")
 					รถตุ๊กตุ๊ก</label>
                     </div>
                     <div class="form-group">
-                        <input type="number" id="inputSpentBudget"  placeholder="จำนวน...คัน" class="form-control" value="" step="1">
+                        <input type="number" id="familyhomcartuktuk"  v-model.trim="houseinforgeneral.familyhomcartuktuk"  placeholder="จำนวน...คัน" class="form-control" value="" step="1">
                     </div>
                     </div>
                  <!-- /.form-group -->
@@ -1361,7 +1231,7 @@ $listdepartments = $db::table("tbl_departments")
 					รถเกี่ยว</label>
                   </div>
                   <div class="form-group">
-                      <input type="number" id="inputSpentBudget"  placeholder="จำนวน...คัน" class="form-control" value="" step="1">
+                      <input type="number" id="familyhomcarharvester"  v-model.trim="houseinforgeneral.familyhomcarharvester"   placeholder="จำนวน...คัน" class="form-control" value="" step="1">
                   </div>
                   </div>
             </div>
@@ -1373,7 +1243,7 @@ $listdepartments = $db::table("tbl_departments")
 					รถอัดฟาง</label>
                 </div>
                 <div class="form-group">
-                    <input type="number" id="inputSpentBudget" class="form-control" placeholder="จำนวน...คัน" value="" step="1">
+                    <input type="number"   id="familyhomcarbalers"  v-model.trim="houseinforgeneral.familyhomcarbalers"  class="form-control" placeholder="จำนวน...คัน" value="" step="1">
                 </div>
                 </div>
                 <!-- /.form-group -->
@@ -1385,7 +1255,7 @@ $listdepartments = $db::table("tbl_departments")
                     <input class="form-check-input" type="checkbox">อื่นๆ</label>
                   </div>
                   <div class="form-group">
-                      <textarea class="form-control" name="txtDesc" id="txtDesc" rows="1" placeholder="อื่นๆ  ..."></textarea>
+                      <textarea class="form-control" name="familyhomother" id="familyhomother"  v-model.trim="houseinforgeneral.familyhomother" rows="1" placeholder="อื่นๆ  ..."></textarea>
                   </div>
                   </div>
                   <!-- /.form-group -->
@@ -1418,17 +1288,17 @@ $listdepartments = $db::table("tbl_departments")
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนโค...ตัว">					
+                                   <input type="number" name="familycow" id="familycownum" class="form-control btn-xs" placeholder="จำนวนโค...ตัว">					
                                   </div>
                                 </td>
 								<td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนโค(รับวัคซีนแล้ว)...ตัว">					
+                                   <input type="number" name="familycowgetvaccine" id="familycowgetvaccine" class="form-control btn-xs" placeholder="จำนวนโค(รับวัคซีนแล้ว)...ตัว">					
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <textarea class="form-control btn-xs" name="txtCowDesc" id="txtCowDesc" rows="2" placeholder="รายละเอียดโค ..."></textarea>
+                                    <textarea class="form-control btn-xs" name="familycowdesc" id="familycowdesc" rows="2" placeholder="รายละเอียดโค ..."></textarea>
                                   </div>
                                 </td>                              
                               </tr>
@@ -1442,17 +1312,17 @@ $listdepartments = $db::table("tbl_departments")
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนโกระบือ...ตัว">					
+                                   <input type="number" name="familybuffalonum" id="familybuffalonum" class="form-control btn-xs" placeholder="จำนวนโกระบือ...ตัว">					
                                   </div>
                                 </td>
 								 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนโกระบือ(รับวัคซีนแล้ว)...ตัว">					
+                                   <input type="number" name="familybuffalogetvaccine" id="familybuffalogetvaccine" class="form-control btn-xs" placeholder="จำนวนโกระบือ(รับวัคซีนแล้ว)...ตัว">					
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <textarea class="form-control btn-xs" name="txtCowDesc" id="txtCowDesc" rows="2" placeholder="รายละเอียดกระบือ ..."></textarea>
+                                    <textarea class="form-control btn-xs" name="familybuffalodesc" id="familybuffalodesc" rows="2" placeholder="รายละเอียดกระบือ ..."></textarea>
                                   </div>
                                 </td>                              
                               </tr>
@@ -1466,17 +1336,17 @@ $listdepartments = $db::table("tbl_departments")
                                 </td>
 								<td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนสุกร...ตัว">					
+                                   <input type="number" name="familypigsnum" id="familypigsnum" class="form-control btn-xs" placeholder="จำนวนสุกร...ตัว">					
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนสุกร(รับวัคซีนแล้ว)...ตัว">					
+                                   <input type="number" name="familypigsgetvaccine" id="familypigsgetvaccine" class="form-control btn-xs" placeholder="จำนวนสุกร(รับวัคซีนแล้ว)...ตัว">					
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <textarea class="form-control btn-xs" name="txtCowDesc" id="txtCowDesc" rows="2" placeholder="รายละเอียดสุกร ..."></textarea>
+                                    <textarea class="form-control btn-xs" name="familypigsdisc" id="familypigsdisc rows="2" placeholder="รายละเอียดสุกร ..."></textarea>
                                   </div>
                                 </td>                              
                               </tr>							  
@@ -1490,17 +1360,17 @@ $listdepartments = $db::table("tbl_departments")
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนสุนัข...ตัว">					
+                                   <input type="number" name="familydognum" id="familydognum" class="form-control btn-xs" placeholder="จำนวนสุนัข...ตัว">					
                                   </div>
                                 </td>								
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนสุนัข(รับวัคซีนแล้ว)...ตัว">					
+                                   <input type="number" name="familydoggetvaccine" id="familydoggetvaccine" class="form-control btn-xs" placeholder="จำนวนสุนัข(รับวัคซีนแล้ว)...ตัว">					
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <textarea class="form-control btn-xs" name="txtCowDesc" id="txtCowDesc" rows="2" placeholder="รายละเอียดสุนัข ..."></textarea>
+                                    <textarea class="form-control btn-xs" name="familydogdisc" id="familydogdisc" rows="2" placeholder="รายละเอียดสุนัข ..."></textarea>
                                   </div>
                                 </td>                              
                               </tr>
@@ -1514,17 +1384,17 @@ $listdepartments = $db::table("tbl_departments")
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนแมว...ตัว">					
+                                   <input type="number" name="familycatnum" id="familycatnum" class="form-control btn-xs" placeholder="จำนวนแมว...ตัว">					
                                   </div>
                                 </td>								
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนแมว (รับวัคซีนแล้ว)...ตัว">					
+                                   <input type="number" name="familycatgetvaccine" id="familycatgetvaccine" class="form-control btn-xs" placeholder="จำนวนแมว (รับวัคซีนแล้ว)...ตัว">					
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <textarea class="form-control btn-xs" name="txtCowDesc" id="txtCowDesc" rows="2" placeholder="รายละเอียดแมว ..."></textarea>
+                                    <textarea class="form-control btn-xs" name="familycatdisc" id="familycatdisc" rows="2" placeholder="รายละเอียดแมว ..."></textarea>
                                   </div>
                                 </td>                              
                               </tr>
@@ -1538,17 +1408,17 @@ $listdepartments = $db::table("tbl_departments")
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนหนูนา...ตัว">					
+                                   <input type="number" name="familyratnum" id="familyratnum" class="form-control btn-xs" placeholder="จำนวนหนูนา...ตัว">					
                                   </div>
                                 </td>								
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนหนูนา(รับวัคซีนแล้ว)...ตัว">					
+                                   <input type="number" name="familyratgetvaccine" id="familyratgetvaccine" class="form-control btn-xs" placeholder="จำนวนหนูนา(รับวัคซีนแล้ว)...ตัว">					
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <textarea class="form-control btn-xs" name="txtCowDesc" id="txtCowDesc" rows="2" placeholder="รายละเอียดหนูนา ..."></textarea>
+                                    <textarea class="form-control btn-xs" name="familyratdisc" id="familyratdisc" rows="2" placeholder="รายละเอียดหนูนา ..."></textarea>
                                   </div>
                                 </td>                              
                               </tr>
@@ -1562,17 +1432,17 @@ $listdepartments = $db::table("tbl_departments")
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนไก่บ้าน...ตัว">					
+                                   <input type="number" name="familychickennum" id="familychickennum" class="form-control btn-xs" placeholder="จำนวนไก่บ้าน...ตัว">					
                                   </div>
                                 </td>								
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนไก่บ้าน(รับวัคซีนแล้ว)...ตัว">					
+                                   <input type="number" name="familychickengetvaccine" id="familychickengetvaccine" class="form-control btn-xs" placeholder="จำนวนไก่บ้าน(รับวัคซีนแล้ว)...ตัว">					
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <textarea class="form-control btn-xs" name="txtCowDesc" id="txtCowDesc" rows="2" placeholder="รายละเอียดไก่บ้าน ..."></textarea>
+                                    <textarea class="form-control btn-xs" name="familychickendisc" id="familychickendisc" rows="2" placeholder="รายละเอียดไก่บ้าน ..."></textarea>
                                   </div>
                                 </td>                              
                               </tr>
@@ -1586,17 +1456,17 @@ $listdepartments = $db::table("tbl_departments")
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนไก่ชน...ตัว">					
+                                   <input type="number" name="familychickenfightnum" id="familychickenfightnum" class="form-control btn-xs" placeholder="จำนวนไก่ชน...ตัว">					
                                   </div>
                                 </td>								
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนไก่ชน(รับวัคซีนแล้ว)...ตัว">					
+                                   <input type="number" name="familychickenfightgetvaccine" id="familychickenfightgetvaccine" class="form-control btn-xs" placeholder="จำนวนไก่ชน(รับวัคซีนแล้ว)...ตัว">					
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <textarea class="form-control btn-xs" name="txtCowDesc" id="txtCowDesc" rows="2" placeholder="รายละเอียดไก่ชน ..."></textarea>
+                                    <textarea class="form-control btn-xs" name="familychickenfightdisc" id="familychickenfightdisc" rows="2" placeholder="รายละเอียดไก่ชน ..."></textarea>
                                   </div>
                                 </td>                              
                               </tr>
@@ -1610,17 +1480,17 @@ $listdepartments = $db::table("tbl_departments")
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนกบ...ตัว">					
+                                   <input type="number" name="familyfrognum" id="familyfrognum" class="form-control btn-xs" placeholder="จำนวนกบ...ตัว">					
                                   </div>
                                 </td>								
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนกบ(รับวัคซีนแล้ว)...ตัว">					
+                                   <input type="number" name="familyfroggetvaccine" id="familyfroggetvaccine" class="form-control btn-xs" placeholder="จำนวนกบ(รับวัคซีนแล้ว)...ตัว">					
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <textarea class="form-control btn-xs" name="txtCowDesc" id="txtCowDesc" rows="2" placeholder="รายละเอียดกบ ..."></textarea>
+                                    <textarea class="form-control btn-xs" name="familyfrogdisc" id="familyfrogdisc" rows="2" placeholder="รายละเอียดกบ ..."></textarea>
                                   </div>
                                 </td>                              
                               </tr>
@@ -1634,17 +1504,17 @@ $listdepartments = $db::table("tbl_departments")
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนปลา...ตัว">					
+                                   <input type="number" name="familyfishnum" id="familyfishnum" class="form-control btn-xs" placeholder="จำนวนปลา...ตัว">					
                                   </div>
                                 </td>								
                                 <td>
                                   <div class="form-group">
-                                   <input type="number" name="txtHouseId" id="txtHouseId" class="form-control btn-xs" placeholder="จำนวนปลา (รับวัคซีนแล้ว)...ตัว">					
+                                   <input type="number" name="familyfishgetvaccine" id="familyfishgetvaccine" class="form-control btn-xs" placeholder="จำนวนปลา (รับวัคซีนแล้ว)...ตัว">					
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <textarea class="form-control btn-xs" name="txtCowDesc" id="txtCowDesc" rows="2" placeholder="รายละเอียดปลา  ..."></textarea>
+                                    <textarea class="form-control btn-xs" name="familyfishdisc" id="familyfishdisc" rows="2" placeholder="รายละเอียดปลา  ..."></textarea>
                                   </div>
                                 </td>                              
                               </tr>
@@ -1658,7 +1528,7 @@ $listdepartments = $db::table("tbl_departments")
                                 </td>
                                 <td colspan='2'>
                                   <div class="form-group">
-                                    <textarea class="form-control btn-xs" name="txtCowDesc" id="txtCowDesc" rows="2" placeholder="รายละเอียดอื่นๆ ..."></textarea>
+                                    <textarea class="form-control btn-xs" name="familyother" id="familyother" rows="2" placeholder="รายละเอียดอื่นๆ ..."></textarea>
                                   </div>
                                 </td>                              
                               </tr>
@@ -1684,7 +1554,7 @@ $listdepartments = $db::table("tbl_departments")
                       <input type="radio" id="radioPrimary9" name="xEnvironmental" checked>
                       <label for="radioPrimary9">มี (ระบุ)					  
                       </label>
-                        <textarea class="form-control" name="txtDesc" id="txtDesc" rows="1" placeholder="มี (ระบุ)..."></textarea>
+                        <textarea class="form-control" name="xEnvironmentaldisc" id="xEnvironmentaldisc" rows="1" placeholder="มี (ระบุ)..."></textarea>
                     </div>
                   </div>
                 </div>
@@ -1703,7 +1573,7 @@ $listdepartments = $db::table("tbl_departments")
                         <input type="radio" id="radioPrimary11" name="xEnvironmental2" checked>
                         <label for="radioPrimary11">มี(ระบุ)
                         </label>
-						 <textarea class="form-control" name="txtDesc" id="txtDesc" rows="1" placeholder="มี (ระบุ)..."></textarea>
+						 <textarea class="form-control" name="xEnvironmental2disc" id="xEnvironmental2disc" rows="1" placeholder="มี (ระบุ)..."></textarea>
                       </div>
                     </div>
                   </div>
@@ -1712,7 +1582,7 @@ $listdepartments = $db::table("tbl_departments")
                   <div class="col-md-4">
                       <div class="form-group">
                         <label class="form-check-label">การอนุรักษ์สิ่งแวดล้อม</label>
-                        <textarea class="form-control" name="txtDesc" id="txtDesc" rows="2" placeholder="การอนุรักษ์สิ่งแวดล้อม  ..."></textarea>
+                        <textarea class="form-control" name="greenxEnvironmentaldisc" id="greenxEnvironmentaldisc" rows="2" placeholder="การอนุรักษ์สิ่งแวดล้อม  ..."></textarea>
                       </div>
                     </div>
                     <!-- /.form-group -->
@@ -1726,22 +1596,22 @@ $listdepartments = $db::table("tbl_departments")
 			  	<label>ภัยธรรมชาติ</label>
                 <div class="form-check">
 				  <label class="form-check-label">
-                  <input class="form-check-input" type="checkbox">
+                  <input class="form-check-input" type="checkbox" name="drought" >
 					ภัยแล้ง </label>
                 </div>
                   <div class="form-check">
 				   <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox">
+                    <input class="form-check-input" type="checkbox" name="flood" >
 					น้ำท่วม</label>
                   </div>
                     <div class="form-check">
 					  <label class="form-check-label">
-                      <input class="form-check-input" type="checkbox">
+                      <input class="form-check-input" type="checkbox" name="windstorm" >
 					วาตภัย</label>
                     </div>	
 					<div class="form-check">
 					  <label class="form-check-label">
-					  <input class="form-check-input" type="checkbox">
+					  <input class="form-check-input" type="checkbox" name="fire" >
 						อัคคีภัย </label>
 					</div>					
                 </div>
@@ -1752,16 +1622,16 @@ $listdepartments = $db::table("tbl_departments")
 
                   <div class="form-check">
 				   <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox">
+                    <input class="form-check-input" type="checkbox" name="plague" >
 					โรคระบาด</label>
                   </div>
 				<div class="form-check">
 					<label class="form-check-label">
-                   <input class="form-check-input" type="checkbox">
+                   <input class="form-check-input" type="checkbox" name="othernaturaldisasters" >
 					อื่นๆ</label>
                 </div>
                 <div class="form-group">
-                     <textarea class="form-control" name="txtDesc" id="txtDesc" rows="1" placeholder="อื่นๆ  ..."></textarea>
+                     <textarea class="form-control" name="otherdisastersdisc" id="otherdisastersdisc" rows="1" placeholder="อื่นๆ  ..."></textarea>
                 </div>
                 </div>
                 <!-- /.form-group -->
@@ -1769,18 +1639,18 @@ $listdepartments = $db::table("tbl_departments")
                 <!-- /.form-group -->
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label >เคยได้รับความช่วยเหลือ :</label>
+                    <label >เคยได้รับความช่วยเหลือ :</label> 
                     <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary12" name="xEnvironmental2" >
+                        <input type="radio" id="radioPrimary12" name="helpme" >
                         <label for="radioPrimary12">ไม่เคย
                         </label>
                       </div>
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary13" name="xEnvironmental2" checked>
+                        <input type="radio" id="radioPrimary13" name="helpme" checked>
                         <label for="radioPrimary13">เคย(ระบุความช่วยเหลือจากหน่วยงานไหน)
                         </label>
-						 <textarea class="form-control" name="txtDesc" id="txtDesc" rows="2" placeholder="เคย (ความช่วยเหลือจากหน่วยงานไหน)..."></textarea>
+						 <textarea class="form-control" name="helpmedisc" id="helpmedisc" rows="2" placeholder="เคย (ความช่วยเหลือจากหน่วยงานไหน)..."></textarea>
                       </div>
                     </div>
                   </div>
@@ -1792,15 +1662,15 @@ $listdepartments = $db::table("tbl_departments")
             <div class="row">
               <div class="col-md-3">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox">
+                  <input class="form-check-input" type="checkbox" name="mouthtomouth" >
                   <label class="form-check-label">ปากต่อปาก</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
+                    <input class="form-check-input" type="checkbox" name="usingmobilephone" >
                     <label class="form-check-label">การใช้โทรศัพท์มือถือ</label>
                  </div>				
                  <div class="form-check">
-                      <input class="form-check-input" type="checkbox">
+                      <input class="form-check-input" type="checkbox" name="computers" >
                       <label class="form-check-label">การใช้คอมพิวเตอร์และอินเทอร์เน็ต</label>
                  </div>	
 				 
@@ -1810,15 +1680,15 @@ $listdepartments = $db::table("tbl_departments")
                 <div class="col-md-3">
 				
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
+                    <input class="form-check-input" type="checkbox" name="mailing" >
                     <label class="form-check-label">การส่งหนังสือแจ้ง/การส่งจดหมาย</label>
                   </div>
 				 <div class="form-check">
-                  <input class="form-check-input" type="checkbox">
+                  <input class="form-check-input" type="checkbox" name="broadcasttower" >
                   <label class="form-check-label">หอกระจายข่าว</label>
                 </div>
 				 <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
+                    <input class="form-check-input" type="checkbox" name="communityradio" >
                     <label class="form-check-label">วิทยุชุมชน</label>
                   </div>
 			  
@@ -1827,12 +1697,12 @@ $listdepartments = $db::table("tbl_departments")
                 <!-- /.form-group -->
                 <div class="col-md-3">
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox">
+                      <input class="form-check-input" type="checkbox" name="communityforum" >
                       <label class="form-check-label">เวทีประชุม/ประชาคม</label>
                     </div>					
                    <div class="form-group">
                      <label class="form-check-label">อื่นๆ</label>
-                     <textarea class="form-control" name="txtDesc" id="txtDesc" rows="1" placeholder="อื่นๆ  ..."></textarea>
+                     <textarea class="form-control" name="communityforumdisc" id="communityforumdisc" rows="1" placeholder="อื่นๆ  ..."></textarea>
                    </div>	
                  </div>
                  <!-- /.form-group -->
@@ -1843,9 +1713,9 @@ $listdepartments = $db::table("tbl_departments")
               <div class="col-md-3">
                 <div class="form-group">
                   <label>วันเดือนปีสำรวจ :</label>
-                  <div class="input-group date" id="reservationdate2" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate2"/>
-                      <div class="input-group-append" data-target="#reservationdate2" data-toggle="datetimepicker">
+                  <div class="input-group date" id="urvseydate" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" name="urvseydate"  data-target="#urvseydate"/>
+                      <div class="input-group-append" data-target="#urvseydate" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                       </div>
                   </div>
@@ -1859,8 +1729,8 @@ $listdepartments = $db::table("tbl_departments")
           <!-- /.card-header -->
 
           <!-- /.card-body -->
-          <div class="card-footer">
-          <a href="successPage2.html" type="submit" class="btn btn-primary">บันทึกข้อมูล</a>
+          <div class="card-footer"> 
+            <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
             <button type="reset" class="btn btn-warning">รีเซ็ท</button>
           </div>
         </div>

@@ -42,7 +42,9 @@ defined('ROOT') OR exit('No access allowed');
   <link rel="stylesheet" href="assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="assets/css/sweetalert2.min.css">  
   <link rel="stylesheet" href="assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <link rel="stylesheet" href="assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 
+  <link rel="stylesheet" href="assets/css/vue-thailand-address.min.css"> 
   <link rel="stylesheet" href="assets/css/adminlte.min.css"> 
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@200;300&display=swap" rel="stylesheet">
 
