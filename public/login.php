@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- icheck bootstrap -->
   <link rel="stylesheet" href="assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css"> 
+  
+  <link rel="stylesheet" href="assets/css/sweetalert2.min.css">
   <!-- Theme style --> 
   <link rel="stylesheet" href="assets/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
