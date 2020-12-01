@@ -45,7 +45,7 @@ $txtOther=(isset($_POST['txtOther']) ? $_POST['txtOther'] : '');
 
 $rows_old=null;
 if($id>0){
-$rows_old = $db::table("tbl_mas_vilage")
+   $rows_old = $db::table("tbl_mas_vilage")
     ->where('vil_id', '=', $id)
     ->select($db::raw("vil_id,vil_moo"))
     ->first();
