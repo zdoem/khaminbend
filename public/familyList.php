@@ -288,7 +288,7 @@ $data_date_survey= $db::table("fm_fam_hd")
  </script>
  <!-- Modal html-->
        <div class="modal fade" id="MyModal">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">แสดงข้อมูล</h4>
