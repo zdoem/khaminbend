@@ -210,8 +210,7 @@
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'ลบ',
-      cancelButtonText:'ยกเลิก',
-      closeOnConfirm: false 
+      cancelButtonText:'ยกเลิก' 
     }).then(function(result){
       if (!result.isConfirmed) return;
         $.ajax({

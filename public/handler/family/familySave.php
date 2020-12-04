@@ -1,8 +1,6 @@
 <?php
 require_once '../../bootstart.php'; 
-
-$_POST['id']=63121059; 
-
+  
 $action=@$_POST['action']; 
 $id=@$_POST['id']; 
  
@@ -46,29 +44,35 @@ $g_occupational_other = trim((isset($familylist['careeranother']) ? $familylist[
 $main_occupation_code= trim((isset($familylist['careermain']) ? $familylist['careermain'] : ''));
 $add_occupation_code = trim((isset($familylist['careersecond']) ? $familylist['careersecond'] : ''));
 $income_per_year= trim((isset($familylist['netIncome']) ? $familylist['netIncome'] : ''));
-
+// var_dump($_POST['Mfamilylists']);exit();
 
 // insert  ข้อมูลพื้นที่การเกษตร
 $famerdetaillists_deed=(isset($_POST['Mfamerdetaillists']['deeds']) ? $_POST['Mfamerdetaillists']['deeds'] : []);
 $famerdetaillists_norsor3kors = (isset($_POST['Mfamerdetaillists']['norsor3kors']) ? $_POST['Mfamerdetaillists']['norsor3kors'] : []);
 $famerdetaillists_spoks= (isset($_POST['Mfamerdetaillists']['spoks']) ? $_POST['Mfamerdetaillists']['spoks'] : []);
 $famerdetaillists_chapter5s= (isset($_POST['Mfamerdetaillists']['chapter5s']) ? $_POST['Mfamerdetaillists']['chapter5s'] : []);
-$fam_land_other = trim((isset($familylist['Mfamerdetaillists']['another']) ? $familylist['Mfamerdetaillists']['another'] : ''));
+$fam_land_other = trim((isset($_POST['Mfamerdetaillists']['another']) ? $_POST['Mfamerdetaillists']['another'] : ''));
 
-$eco_occupation_code=  trim((isset($familylist['Mhouseinforgeneral']['familyhomecareer']) ? $familylist['Mhouseinforgeneral']['familyhomecareer'] : ''));
-$eco_product_target_code = trim((isset($familylist['Mhouseinforgeneral']['familyhomeproducttarget']) ? $familylist['Mhouseinforgeneral']['familyhomeproducttarget'] : ''));
-$eco_capital_code = trim((isset($familylist['Mhouseinforgeneral']['familyhomesourceoffunds']) ? $familylist['Mhouseinforgeneral']['familyhomesourceoffunds'] : ''));
-$familyhomeproductioncost=trim((isset($familylist['Mhouseinforgeneral']['familyhomeproductioncost']) ? $familylist['Mhouseinforgeneral']['familyhomeproductioncost'] : ''));
+$eco_occupation_code=  trim((isset($_POST['Mhouseinforgeneral']['familyhomecareer']) ? $_POST['Mhouseinforgeneral']['familyhomecareer'] : ''));
+$eco_product_target_code = trim((isset($_POST['Mhouseinforgeneral']['familyhomeproducttarget']) ? $_POST['Mhouseinforgeneral']['familyhomeproducttarget'] : ''));
+$eco_capital_code = trim((isset($_POST['Mhouseinforgeneral']['familyhomesourceoffunds']) ? $_POST['Mhouseinforgeneral']['familyhomesourceoffunds'] : ''));
+$familyhomeproductioncost=trim((isset($_POST['Mhouseinforgeneral']['familyhomeproductioncost']) ? $_POST['Mhouseinforgeneral']['familyhomeproductioncost'] : ''));
+$familyhomeproductperiod = trim((isset($_POST['Mhouseinforgeneral']['familyhomeproductperiod']) ? preg_replace('/\s+/', '', $_POST['Mhouseinforgeneral']['familyhomeproductperiod'])  : ''));
+$b_period=explode('-',$familyhomeproductperiod); 
+$eco_product_from=trim((isset($b_period[0]) ? preg_replace("/(\d+)\/(\d+)\/(\d+)/","$3-$2-$1",$b_period[0]): ''));
+$eco_product_to=trim((isset($b_period[1]) ? preg_replace("/(\d+)\/(\d+)\/(\d+)/","$3-$2-$1",$b_period[1]): '')); 
+// var_dump($eco_product_from,$eco_product_to);exit();
 //สิ่งแวดล้อม
 $f_problem_env=trim((isset($_POST['xEnvironmental']) ? $_POST['xEnvironmental'] : ''));
 $problem_env_desc=(isset($_POST['xEnvironmentaldisc']) ? $_POST['xEnvironmentaldisc'] : '');
 $f_manage_env=trim((isset($_POST['xEnvironmental2']) ? $_POST['xEnvironmental2'] : ''));
 $manage_env_desc =(isset($_POST['xEnvironmental2disc']) ? $_POST['xEnvironmental2disc'] : '');
-$conserve_env=(isset($_POST['greenxEnvironmentaldisc']) ? $_POST['greenxEnvironmentaldisc'] : '');
-// f_problem_env,problem_env_desc,f_manage_env,manage_env_desc,conserve_env
+$conserve_env=(isset($_POST['greenxEnvironmentaldisc']) ? $_POST['greenxEnvironmentaldisc'] : ''); 
 $f_help=trim((isset($_POST['helpme']) ? $_POST['helpme'] : 'N'));
-$help_desc=(isset($_POST['helpmedisc']) ? $_POST['helpmedisc'] : '');
-$d_survey=(isset($_POST['survseydate']) ? date('Y-m-d H:i:s', strtotime(str_replace("pm","PM",$_POST['survseydate']))) : '');
+$help_desc=(isset($_POST['helpmedisc']) ? $_POST['helpmedisc'] : ''); 
+$survseydate=DateTime::createFromFormat('d/m/Y H:i A',$_POST['survseydate']); 
+$survseydate=$survseydate->format('Y-m-d H:i:s');
+$d_survey=(isset($survseydate) ? $survseydate: ''); 
 
 $select_facilities=(isset($_POST['Mlistmas_facilities']) ? $_POST['Mlistmas_facilities'] : []);
 $listmas_pet=(isset($_POST['listmas_pet']) ? $_POST['listmas_pet'] : []);
@@ -100,9 +104,7 @@ $listmas_facilities = $db::table("tbl_mas_facilities")
     ->where('f_status', '=', 'A')
     ->orderBy('fac_code', 'asc')
     ->get()->toArray();
-    
-
-
+     
 // validate   substr($id,0,2)
 $rows_old=null;
 if($id>0){
@@ -112,18 +114,17 @@ if($id>0){
     ->first();
       if($action!=3){
          if(!isset($rows_old->yearfam_id)||($rows_old->yearfam_id<$yearfam_id)){// ไม่มีข้อมูลเก่าหรือ idที่ใช้ปี<ปีปัจจุบัน insert ใหม่  
-         $action=1;  
+         $action=1;  var_dump($rows_old->yearfam_id<$yearfam_id);exit();
          }else if($rows_old->yearfam_id==$yearfam_id){// มีข้อมูลอยู่แล้วให้และปีเดี่ยวกัน update 
          $action=2; 
         }
     } 
 }else{
   $action=1;     
-} 
-
+}  
 // test
 // $action = 1;
-
+// var_dump($action);exit();
  if ($action == 1) {/*Insert Data*/ 
     try {  
           $tran_id=$db::select("SELECT CONCAT($tran_id,NEXTVAL(sfm_fam_hd)) AS tran_id")[0]->tran_id; 
@@ -132,12 +133,12 @@ if($id>0){
           $row =$db::insert("INSERT INTO fm_fam_hd (fam_id,house_no,house_moo,sub_district,district,province,post_code,pre_owner,owner_fname,owner_lname,citizen_id
           ,x_status,x_sex,national,reg_code,date_of_birth,education_code,relations_code,g_occupational_code,g_occupational_other,main_occupation_code,add_occupation_code
           ,income_per_year,d_create,fam_land_other,eco_occupation_code,eco_product_target_code,eco_capital_code,eco_product_cost,d_update,f_problem_env,problem_env_desc
-          ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,create_by,update_by,d_survey) 
-             VALUES($tran_id,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?)",
+          ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,create_by,update_by,d_survey,f_status,eco_product_from,eco_product_to) 
+             VALUES($tran_id,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,'A',?,?)",
              [$txtHouseId,$house_moo,$sub_district,$district,$province,$post_code,$pre_owner,$owner_fname,$owner_lname,$citizen_id,$x_status,$x_sex,$national,$reg_code
              ,$date_of_birth,$education_code,$relations_code,$g_occupational_code,$g_occupational_other,$main_occupation_code,$add_occupation_code,$income_per_year
              ,$fam_land_other,$eco_occupation_code,$eco_product_target_code,$eco_capital_code,$familyhomeproductioncost,$f_problem_env,$problem_env_desc,$f_manage_env
-             ,$manage_env_desc,$conserve_env,$f_help,$help_desc,@$_SESSION['user_id'],@$_SESSION['user_id'],$d_survey
+             ,$manage_env_desc,$conserve_env,$f_help,$help_desc,@$_SESSION['user_id'],@$_SESSION['user_id'],$d_survey,$eco_product_from,$eco_product_to
              ]); 
             $db::commit();
             $status='OK';  
@@ -159,12 +160,13 @@ if($id>0){
             ,education_code=?,relations_code=?,g_occupational_code=?,g_occupational_other=?,main_occupation_code=?
             ,add_occupation_code=?,income_per_year=?,fam_land_other=?,eco_occupation_code=?
             ,eco_product_target_code=?,eco_capital_code=?,eco_product_cost=?,d_update=NOW(),f_problem_env=?
-            ,problem_env_desc=?,f_manage_env=?,manage_env_desc=?,conserve_env=?,f_help=?,help_desc=?,update_by=?,d_survey=?
+            ,problem_env_desc=?,f_manage_env=?,manage_env_desc=?,conserve_env=?,f_help=?,help_desc=?,update_by=?,d_survey=?,eco_product_from=?,eco_product_to=?
             where fam_id = ?',
             [$txtHouseId,$house_moo,$sub_district,$district,$province,$post_code,$pre_owner,$owner_fname,$owner_lname,$citizen_id,$x_status,$x_sex,$national,$reg_code
              ,$date_of_birth,$education_code,$relations_code,$g_occupational_code,$g_occupational_other,$main_occupation_code,$add_occupation_code,$income_per_year
              ,$fam_land_other,$eco_occupation_code,$eco_product_target_code,$eco_capital_code,$familyhomeproductioncost,$f_problem_env,$problem_env_desc,$f_manage_env
-             ,$manage_env_desc,$conserve_env,$f_help,$help_desc,@$_SESSION['user_id'],$d_survey,$id
+             ,$manage_env_desc,$conserve_env,$f_help,$help_desc,@$_SESSION['user_id'],$d_survey,$eco_product_from,$eco_product_to
+             ,$id
             ]); 
             $db::commit(); 
             $status='OK';   
@@ -185,12 +187,59 @@ if($id>0){
        // echo json_encode(['status'=>$status,'token'=>\Volnix\CSRF\CSRF::getToken('token_village_frm')]); exit();
   }
 //}
-echo $status;exit(); 
+// echo $status;exit(); 
+
+if($action==1&&$status=='OK'){// insert
  ?> 
 <script type="text/javascript">
-window.location = "../../status_action.php?status=<?=$status?>&refer_urlmain=<?=$refer_urlmain?>";
+  Swal.fire({
+      title: 'บันทึกข้อมูลเรียบร้อยแล้ว', 
+      allowOutsideClick: false,
+      showDenyButton: false,
+      showCancelButton: true,
+      confirmButtonText: 'ดูรายการทั้งหมด', 
+      cancelButtonText:'ทำงานต่อ',
+    }).then(function(result) { 
+      if (result.isConfirmed) { 
+         window.location = "../familyList.php";
+      } 
+    }); 
 </script>
 <?php
+}else if(($action==2&&$status=='OK')||($action==3&&$status=='OK')){// update or deleted
+?>
+<script type="text/javascript">
+  Swal.fire({
+      title: '<?php if($action==2){?> แก้ไข้อมูลเรียบร้อยแล้ว <?php } else { ?> ลบข้อมูลเรียบร้อยแล้ว<?php } ?>',
+      allowOutsideClick: false,
+      showDenyButton: false,
+      showCancelButton: false,
+      confirmButtonText: 'ดูรายการทั้งหมด' 
+    }).then(function(result){
+      if (result.isConfirmed) {
+         window.location = "../familyList.php";
+      }
+    });
+</script>
+<?php
+}else {// error
+?>
+<script type="text/javascript">
+  Swal.fire({
+      title: 'ระบบผิดพลาด!',
+      allowOutsideClick: false,
+      showDenyButton: false,
+      showCancelButton: false,
+      confirmButtonText: 'ดูรายการทั้งหมด' 
+    }).then(function(result) {
+      if (result.isConfirmed) {
+         window.location = "../familyList.php";
+      }
+    });
+</script>
+<?php
+} 
+exit();
   // Clear old data
 function Ceardata($id){
 global $db;
@@ -234,7 +283,7 @@ function insertall($type,$tran_id){
                   $mem_fname = trim((isset($v['txtFName']) ? $v['txtFName'] : ''));
                   $mem_lname = trim((isset($v['txtLName']) ? $v['txtLName'] : ''));
                   $mem_citizen_id = trim((isset($v['txtCitizenId']) ? $v['txtCitizenId'] : ''));
-                  $mem_status = trim((isset($v['xFstatusRd']) ? $v['xFstatusRd'] : ''));
+                  $mem_status =2;
                   $mem_sex = trim((isset($v['sexRd']) ? $v['sexRd'] : ''));
                   $mem_national = trim((isset($v['txtNational']) ? $v['txtNational'] : ''));
                   $mem_religion_code = trim((isset($v['religion']) ? $v['religion'] : ''));
@@ -261,7 +310,7 @@ function insertall($type,$tran_id){
              $batc_insert_sql_deed=[]; 
               foreach ($famerdetaillists_deed as $k => $v) {  
                   $province = trim((isset($v['province']) ? $v['province'] : ''));
-                  $district = trim((isset($v['districtselect']) ? $v['districtselect'] : ''));
+                  $district = trim((isset($v['district']) ? $v['district'] : ''));
                   $nodeed = trim((isset($v['nodeed']) ? $v['nodeed'] : ''));
                   $arearai = trim((isset($v['arearai']) ? $v['arearai'] : ''));
                   $areawork = trim((isset($v['areawork']) ? $v['areawork'] : ''));
@@ -275,7 +324,7 @@ function insertall($type,$tran_id){
             $batc_insert_sql_norsor3kors=[]; 
               foreach ($famerdetaillists_norsor3kors as $k => $v) {  
                   $province = trim((isset($v['province']) ? $v['province'] : ''));
-                  $district = trim((isset($v['districtselect']) ? $v['districtselect'] : ''));
+                  $district = trim((isset($v['district']) ? $v['district'] : ''));
                   $nodeed = trim((isset($v['nodeed']) ? $v['nodeed'] : ''));
                   $arearai = trim((isset($v['arearai']) ? $v['arearai'] : ''));
                   $areawork = trim((isset($v['areawork']) ? $v['areawork'] : ''));
@@ -288,7 +337,7 @@ function insertall($type,$tran_id){
              $batc_insert_sql_spoks=[]; 
               foreach ($famerdetaillists_spoks as $k => $v) {  
                   $province = trim((isset($v['province']) ? $v['province'] : ''));
-                  $district = trim((isset($v['districtselect']) ? $v['districtselect'] : ''));
+                  $district = trim((isset($v['district']) ? $v['district'] : ''));
                   $nodeed = trim((isset($v['nodeed']) ? $v['nodeed'] : ''));
                   $arearai = trim((isset($v['arearai']) ? $v['arearai'] : ''));
                   $areawork = trim((isset($v['areawork']) ? $v['areawork'] : ''));
@@ -302,7 +351,7 @@ function insertall($type,$tran_id){
             $batc_insert_sql_chapter5s=[]; 
             foreach ($famerdetaillists_chapter5s as $k => $v) {  
                   $province = trim((isset($v['province']) ? $v['province'] : ''));
-                  $district = trim((isset($v['districtselect']) ? $v['districtselect'] : ''));
+                  $district = trim((isset($v['district']) ? $v['district'] : ''));
                   $nodeed = trim((isset($v['nodeed']) ? $v['nodeed'] : ''));
                   $arearai = trim((isset($v['arearai']) ? $v['arearai'] : ''));
                   $areawork = trim((isset($v['areawork']) ? $v['areawork'] : ''));
@@ -331,7 +380,7 @@ function insertall($type,$tran_id){
              // 3.เครื่องมืออำนวยความสะดวกทางการเกษตร
              $batc_insert_sql_facilities=[];
              foreach ($select_facilities as $k => $v) { 
-                  if(isset($v['select_fac_code'])&&@$v['select_fac_code']=='true'){ 
+                  if(isset($v['selected'])&&@$v['selected']=='true'){ 
                      foreach ($listmas_facilities as $k2 => $v2) { // เทียบกับ data จริง
                          if($v2->fac_code==$v['fac_code']){ 
                           $batc_insert_sql_facilities[]=['fac_fam_id'=>$tran_id,'fac_code'=>$v2->fac_code,'fac_name'=>$v2->fac_name,'fac_quantity'=>(int)$v['fac_quantity']];
@@ -395,6 +444,7 @@ function insertall($type,$tran_id){
        return true;
      } catch (\Exception $e) { 
        $db::rollBack();
+      //  var_dump($e->getMessage());exit();   
        return false;
     }
 }

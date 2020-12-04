@@ -41,7 +41,22 @@ Vue.component("date-picker2", {
       });
   }
 });
-
+Vue.component("datepickerrang", {
+  props: ['mdatarang'],
+  template: `<input type="text" class="form-control float-right" name="familyhomeproductperiod"  :value="mdatarang" ref="mdatarang">`,
+  mounted() {
+    var _this = this;
+       $(this.$refs.mdatarang).daterangepicker({
+         opens: 'left',
+          locale: {
+            format: 'DD/MM/YYYY'
+          }  
+         }, function(start, end, label) { 
+          _this.$emit("familyhomeproductperiod",start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+        });  
+  }
+}); 
+ 
 Vue.use(window.vuelidate.default); 
 var validationMixin = window.vuelidate.validationMixin;
 var required = validators.required;
@@ -68,6 +83,7 @@ window.app = new Vue({
     listmas_group_occup:window.Slistmas_group_occup,
     listmas_occupation:window.Slistmas_occupation,
     listprovinces:window.Slistprovinces,
+    
     famerdetaillists:window.Sfamerdetaillists, 
     listfamilyhomeproducttarget:window.listfamilyhomeproducttarget,
     listfamilyhomesourceoffunds:window.listfamilyhomesourceoffunds,
@@ -76,6 +92,10 @@ window.app = new Vue({
     tbl_mas_info3:window.tbl_mas_info3, 
     listmas_disaster1:window.listmas_disaster1,
     listmas_disaster2:window.listmas_disaster2,
+    distric_deeds:window.distric_deeds,
+    distric_norsor3kors:window.distric_norsor3kors,
+    distric_sorporkor:window.distric_sorporkor,
+    distric_chapter5s:window.distric_chapter5s,
     // for model  
     Mhouseinfor:window.Shouseinfor, 
     Mfamilylists:window.SSfamilylists,
@@ -86,8 +106,7 @@ window.app = new Vue({
     xEnvironmentaldisc:window.xEnvironmentaldisc,
     xEnvironmental2:window.xEnvironmental2,
     xEnvironmental2disc:window.xEnvironmental2disc,
-    greenxEnvironmentaldisc:window.greenxEnvironmentaldisc,
-    otherdisastersdisc:window.otherdisastersdisc,
+    greenxEnvironmentaldisc:window.greenxEnvironmentaldisc, 
     helpme:window.helpme,
     helpmedisc:window.helpmedisc, 
     listmas_pet:window.listmas_pet,
@@ -108,6 +127,7 @@ window.app = new Vue({
        //$(".datepicker-th-2").datepicker( "refresh" );  
           
      });  
+     
     // var tmfam=this.$el.dataset.famerdetaillists;
     // if(tmfam.hasOwnProperty('deeds')){
     //     this.famerdetaillists = JSON.parse(tmfam);
@@ -115,7 +135,8 @@ window.app = new Vue({
 
     // this.listmas_occupation = JSON.parse(this.$el.dataset.listmas_occupation); 
   },
-   validations: {
+ validations() {
+    return {
      Mhouseinforgeneral:{
         //  familyhomecareer:{required},
         //  familyhomeproducttarget:{required},
@@ -157,6 +178,7 @@ window.app = new Vue({
           },
          another:{}
      },  
+     
     Mfamilylists:{
         $each: {
          prefix:{required},   
@@ -170,11 +192,12 @@ window.app = new Vue({
          birthday:{ required },
          educationlevel:{ required },
          homerelations:{ required },
-         careergroup:{ required },
-         careeranother:{ required },
+         careergroup:{},
+         careeranother:{},
          careermain:{ required },
          careersecond:{ required },
          netIncome:{ required } 
+           
         } 
     },   
     Mhouseinfor:{
@@ -188,11 +211,27 @@ window.app = new Vue({
            minLength: minLength(5) 
         } 
     }
+   }
   },
   methods: {  
      getdata:function(){
        console.log('mas_info',this.Mdisaster);
+     }, 
+     up_familyhomeproductperiod:function(e){  
+       this.Mhouseinforgeneral.familyhomeproductperiod=e;
      },
+    getParameterByName:function(name, url) {
+    if (!url)
+     url = window.location.href;
+     name = name.replace(/[\[\]]/g, "\\$&");
+     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results)
+        return null;
+    if (!results[2])
+        return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+   },
     keymonitor: function(event) {
        		if(event.key == "Enter"){
          		// app.checkLogin();
@@ -201,15 +240,16 @@ window.app = new Vue({
      submit: function() {  
              var _this=this;
              this.$v.$touch();  
-             if (!this.$v.$invalid) { 
+             if (!this.$v.$invalid) { console.log('log',1);
                var tmp_disaster=[];
                var tmp_info_code=[];
                var tmp_helpme=[];
               //  $('input[name="disaster[]"]:checked').map(function() {tmp_disaster.push(this.value);});
               //  $('input[name="info_code[]"]:checked').map(function() {tmp_info_code.push(this.value);});
-              //  $('input[name="helpme"]:checked').map(function() {tmp_helpme.push(this.value);});
+              //  $('input[name="helpme"]:checked').map(function() {tmp_helpme.push(this.value);}); 
                var datasend={
                 //  frm_family:$('#frm_family').serializeArray(), 
+                 id:this.getParameterByName('id'),
                  Mhouseinfor:this.Mhouseinfor,
                  Mfamilylists:this.Mfamilylists, 
                  Mfamerdetaillists:this.Mfamerdetaillists, 
@@ -237,8 +277,7 @@ window.app = new Vue({
                  communityradio:this.communityradio,
                  communityforum:this.communityforum,
                  communityforumdisc:this.communityforumdisc,
-              };
-
+              }; 
                console.log('datasend',datasend);
                $.ajax({
                 beforeSend: function() {  
@@ -248,32 +287,26 @@ window.app = new Vue({
                 datatype : "application/json", 
                 url: "handler/family/familySave.php",
                 data: datasend, 
-                success: function(data){  
-                  console.log('data',data); 
+                success: function(data){   
+                  $('#xhtml').html(data);
                  _this.btn_save=false;
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
                   _this.btn_save=false; 
+                  $('#xhtml').html(data);
                 }       
             });
                
               } else {
+                console.log('log2',this.$v); 
                this.$nextTick(function(){
+                   
                    $('.error.dirty').each(function(index){
                      $(this).focus(); return false;   
                   }); 
                });
             } 
-        }, 
-      changedistrict:function(foriten,event,index){ 
-      var _this=this;  
-      switch (foriten) {
-            case 'deeds':  _this.Mfamerdetaillists.deeds[index].districtselect=event.target.value; break;
-            case 'norsor3kors': _this.Mfamerdetaillists.norsor3kors[index].districtselect=event.target.value;  break;
-            case 'spoks': _this.Mfamerdetaillists.spoks[index].districtselect=event.target.value;  break;
-            case 'chapter5s': _this.Mfamerdetaillists.chapter5s[index].districtselect=event.target.value;  break; 
-          } 
-      },        
+        },        
      getamphurbyprovince:function(foriten,event,index){ 
        var _this=this;  
       $.ajax({
@@ -283,14 +316,25 @@ window.app = new Vue({
         contentType: "application/json",
         dataType: "json",
         cache: false,
-        success: function(data){ 
-          //  console.log('_this.famerdetaillists.deeds[index]',_this.famerdetaillists.deeds); 
+        success: function(data){  
           switch (foriten) {  
-            case 'deeds':  _this.famerdetaillists.deeds[index].district=data; break;
-            case 'norsor3kors': _this.famerdetaillists.norsor3kors[index].district=data;break;
-            case 'spoks': _this.famerdetaillists.spoks[index].district=data;  break;
-            case 'chapter5s': _this.famerdetaillists.chapter5s[index].district=data;break; 
-          }  
+            case 'deeds':
+               _this.$set(_this.distric_deeds, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse());
+               _this.Mfamerdetaillists.deeds[index].district=null;
+             break;
+            case 'norsor3kors':
+              _this.$set(_this.distric_norsor3kors, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse());
+              _this.Mfamerdetaillists.norsor3kors[index].district=null;
+              break;
+            case 'spoks': 
+            _this.$set(_this.distric_sorporkor, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse());
+            _this.Mfamerdetaillists.spoks[index].district=null;
+            break;
+            case 'chapter5s':
+              _this.$set(_this.distric_chapter5s, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse());
+              _this.Mfamerdetaillists.chapter5s[index].district=null;
+               break; 
+          }   
         },
         error: function (jqXHR, textStatus, errorThrown){ 
           alert('error!');
@@ -304,6 +348,9 @@ window.app = new Vue({
       }
     },     
     addPeople: function () { 
+    if(this.Mfamilylists.length>0){
+       this.familylist.xFstatusRd='M'; 
+    }
     this.familylists.push(Vue.util.extend({}, this.familylist)); 
     this.Mfamilylists.push(Vue.util.extend({},this.familylist));   
     //  this.$nextTick(function(){  
@@ -387,21 +434,10 @@ Vue.nextTick(function () {
       // dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
       // monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
       // monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']});
- //Mhouseinforgeneral.familyhomeproductperiod
-      $('#survseydate').datetimepicker({autoclose: true});
-      $('input[name="familyhomeproductperiod"]').daterangepicker({
-          opens: 'left',
-          startDate: moment().startOf('hour'),
-          endDate: moment().startOf('hour').add(32, 'hour'),
-          format: 'DD/MMM/YYYY',
-          locale: {
-            format: 'DD/MM/YYYY'
-          }  
-        }, function(start, end, label) { 
-          window.app.Mhouseinforgeneral.familyhomeproductperiod=start.format('DD/MM/YYYY') + '-' + end.format('DD/MM/YYYY');
-          
-        });
-
+  
+      $('#survseydate').datetimepicker(window.d_survey);
+      // $('#survseydate').datetimepicker({defaultDate:'11/03/2020 13:52',format: 'DD/MM/YYYY HH:mm A'});
+      // $('input[name="familyhomeproductperiod"]').daterangepicker(window.ConfDaterang); 
    //$('#birthday,#reservationdate2').on("change.datetimepicker", function (e) {
        //console.log('log',$('#datetimepicker1').datetimepicker('viewDate')); 
        // window.app.familylists.birthday=122;//$('#datetimepicker1').datetimepicker('viewDate');  

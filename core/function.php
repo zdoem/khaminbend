@@ -106,4 +106,7 @@ function thai_date_short_number($time){   // 19-12-56
     $thai_date_return.= "-".substr((date("Y",$time)+543),-2);   
     return $thai_date_return;   
 }  
+function IsNullOrEmptyString($str){
+    return (!isset($str) || trim($str) === '');
+}
 ?>

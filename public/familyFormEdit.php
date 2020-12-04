@@ -44,7 +44,7 @@ $listmas_religion= $db::table("tbl_mas_religion")
 $listmas_pet = $db::table("tbl_mas_pet")
 ->select($db::raw("pet_code,pet_name,pet_type"))
 ->where('f_status', '=', 'A')
-->orderBy('pet_desc', 'asc')
+->orderBy('pet_code', 'asc')
 ->get()->toArray();
 
 $listmas_info = $db::table("tbl_mas_info")
@@ -377,8 +377,8 @@ $mooHouse=@$listmas_vilage[0]->vil_id;
                 <div class="form-group">
                   <label>สถานภาพ :</label>
                   <div class="form-group clearfix">
-                    <div class="icheck-primary d-inline"> 
-                      <input type="radio" :id="'radioPrimary1'+index" value="1" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()"> 
+                    <div class="icheck-primary d-inline"> {{Mfamilylists.length>1}}-{{item.xFstatusRd.$model}}
+                      <input type="radio" :id="'radioPrimary1'+index"  value="1" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()"> 
                       <label :for="'radioPrimary1'+index">เจ้าบ้าน 
                       </label>
                     </div>
@@ -502,56 +502,27 @@ $mooHouse=@$listmas_vilage[0]->vil_id;
 							 <select class="form-control" name="careermain" id="careermain" :class="status(item.careermain)" v-model.trim="item.careermain.$model" @blur="item.careermain.$touch()">  
                 <option v-for="(vv, indexx) in listmas_occupation" :value="vv.occup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{vv.occup_name}}</option> 
 							</select>
-					 </div>
-					   <!-- /.form-group -->
+					 </div> 
 				</div>
 				 <div class="col-md-3">
 					<div class="form-group">
 							<label>อาชีพรอง :</label>
 							 <select class="form-control" name="careersecond" id="careersecond" :class="status(item.careersecond)" v-model.trim="item.careersecond.$model" @blur="item.careersecond.$touch()">
-               <option v-for="(vv, indexx) in listmas_occupation" :value="vv.occup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{vv.occup_name}}</option> 
-                 <!-- <option>ไม่มี</option>
-							  <option>ทำนา</option>
-							 <option>ทำไร่</option>
-							 <option>ทำสวน</option>
-							 <option>เลี้ยงสัตย์</option>
-							 <option>เพาะเลี้ยงสัตย์น้ำ</option>
-							 <option>ทำประมง</option>
-							 <option>รับจ้างทั่วไป/ บริการ</option>
-							 <option>ทำงานบ้าน</option>
-							 <option>กรรมกร</option>
-							 <option>ค้าขาย/ ธุรกิจส่วนตัว</option>
-							 <option>อุตสาหกรรมในครัวเรือน</option>
-							 <option>อื่นๆ</option> -->
+               <option v-for="(vv, indexx) in listmas_occupation" :value="vv.occup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{vv.occup_name}}</option>  
 							</select>
-					 </div>
-					   <!-- /.form-group -->
+					 </div> 
 				</div>
 				<div class="col-md-3">
 					<div class="form-group">
 					  <label>รายได้/ต่อปี  :</label>								
 						<input type="number" name="netIncome" :class="status(item.netIncome)" v-model.trim="item.netIncome.$model" @blur="item.netIncome.$touch()" id="netIncome" class="form-control btn-xs" placeholder="รายได้/ต่อปี...">
-					</div>
-					<!-- /.form-group -->
-				 </div>
-
+					</div> 
+				 </div> 
               </div> 
               <hr v-if="showhr(Mfamilylists,index)">
-            </template> 
-            <!-- /row -->
-            <!-- row -->  
-          </div>
-          <!-- /.card-header -->
-
-          <!-- /.card-body
-          <div class="card-footer">
-          <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
-            <button type="reset" class="btn btn-warning">รีเซ็ท</button>
-          </div>  -->
-
-        </div>
-        <!-- /.card -->
-
+            </template>  
+          </div> 
+        </div> 
        <!-- SELECT2 EXAMPLE ข้อมูลพื้นที่การเกษตร -->
         <div class="card card-success">
           <div class="card-header">
@@ -953,10 +924,10 @@ $mooHouse=@$listmas_vilage[0]->vil_id;
               <div class="col-md-3">
                 <div class="form-check">
 				      <label class="form-check-label">
-                  <input class="form-check-input" type="checkbox" v-model="item.select_fac_code"> {{item.fac_name}} </label>
+                  <input class="form-check-input" type="checkbox" v-model="item.selected"> {{item.fac_name}} </label>
                 </div>
                 <div class="form-group">
-                    <input type="number" class="form-control" :disabled="!item.select_fac_code" v-model="item.fac_quantity" :placeholder="'จำนวน...' + item.fac_name"  value="">
+                    <input type="number" class="form-control" :disabled="!item.selected" v-model="item.fac_quantity" :placeholder="'จำนวน...' + item.fac_name"  value="">
                 </div>
                 </div>
                 <!-- /.form-group -->   
@@ -1066,7 +1037,7 @@ $mooHouse=@$listmas_vilage[0]->vil_id;
                 <label>ภัยธรรมชาติ</label>   
                 <template  v-for="(item, index) in listmas_disaster1">
                      <div class="form-check" v-if="item.dis_code!=99">
-                      <label class="form-check-label">
+                      <label class="form-check-label"> 
                       <input class="form-check-input" type="checkbox" name="disaster[]" v-model="Mdisaster.selected" :value="item.dis_code">
                       {{item.dis_name}}</label>
                     </div>
