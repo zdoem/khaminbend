@@ -66,13 +66,7 @@ $listmas_group_occup = $db::table("tbl_mas_group_occup")
     ->select($db::raw("goccup_code,goccup_name"))
     ->where('f_status', '=', 'A')
     ->orderBy('goccup_desc', 'asc')
-    ->get()->toArray();
-
-$listmas_facilities = $db::table("tbl_mas_facilities")
-    ->select($db::raw("fac_code,fac_name"))
-    ->where('f_status', '=', 'A')
-    ->orderBy('fac_code', 'asc')
-    ->get()->toArray();
+    ->get()->toArray(); 
 
 $listmas_educate = $db::table("tbl_mas_educate")
     ->select($db::raw("ed_code,ed_name"))
@@ -346,12 +340,21 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
   //ความสัมพันธ์ในครัวเรือน:
   var home_relations= <?=json_encode($listmas_relations);?>;
   window.Slistmas_relations=home_relations.reverse().concat({re_code: null, re_name: "กรุณาเลือกข้อมูล"}).reverse();
+    // อาชีพในครัวเรือน
+  var house_occup= <?=json_encode($listmas_house_occup); ?>;  
+  window.Slistmas_house_occup=house_occup.reverse().concat({hccup_code: null, hccup_name: "กรุณาเลือกข้อมูล"}).reverse();
+  window.Shouseinforgeneral=<?=json_encode($Shouseinforgeneral)?>;
+  window.Shouseinfor=<?=json_encode($Shouseinfor)?>; 
+  
   //กลุ่มอาชีพ:
   var group_occup= <?=json_encode($listmas_group_occup);?>;
   window.Slistmas_group_occup=group_occup.reverse().concat({goccup_code: null, goccup_name: "กรุณาเลือกข้อมูล"}).reverse();
-  // อาชีพหลัก/รอว
+  // อาชีพหลัก
   var occupation= <?=json_encode($listmas_occupation);?>;
   window.Slistmas_occupation=occupation.reverse().concat({occup_code: null, occup_name: "กรุณาเลือกข้อมูล"}).reverse();
+  //อาชีพรอง
+  var addition= <?=json_encode($listmas_addition); ?>;   
+  window.Slistlistmas_addition=addition.reverse().concat({add_code: null, add_name: "กรุณาเลือกข้อมูล"}).reverse();
   // ข้อมูลจังหวัด
   var provinces= <?=json_encode($listprovinces);?>;
   window.Slistprovinces=provinces.reverse().concat({code: null,id:null,name_en:'กรุณาเลือกข้อมูล',name_th: "กรุณาเลือกข้อมูล"}).reverse();
@@ -364,12 +367,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
     //เครื่องมืออำนวยความสะดวกทางการเกษตร
   window.Slistmas_facilities=<?=json_encode($list_fm_fam_facilities_dt3);?>;
   // สัตว์เลี้ยง
-  window.listmas_pet=<?=json_encode($list_fm_fam_pet_dt4);?>;
-
-  //อาชีพในครัวเรือน:
-  window.Shouseinforgeneral=<?=json_encode($Shouseinforgeneral)?>;
-
-  window.Shouseinfor=<?=json_encode($Shouseinfor)?>;
+  window.listmas_pet=<?=json_encode($list_fm_fam_pet_dt4);?>; 
 
   window.Sfamerdetaillists={deeds:<?=json_encode($deeds)?>,norsor3kors:<?=json_encode($norsor3kors)?>,spoks:<?=json_encode($sorporkor)?>,chapter5s:<?=json_encode($chapter5s)?>,another:'<?=$fam_land_other?>'};
   window.SSfamerdetaillists={deeds:<?=json_encode($deeds)?>,norsor3kors:<?=json_encode($norsor3kors)?>,spoks:<?=json_encode($sorporkor)?>,chapter5s:<?=json_encode($chapter5s)?>,another:'<?=$fam_land_other?>'};
@@ -380,7 +378,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
 
   window.Mfamilylist={prefix:null,txtFName: '',txtLName:'',txtCitizenId:'' ,xFstatusRd:'O',sexRd:'M',txtNational:'',religion:null,birthday:''
   ,educationlevel:null,homerelations:null,careergroup:null,careeranother:'',careermain:null,careersecond:null,netIncome:''};
-
+  //ข้อมูลพื้นที่การเกษตร
   window.Sfamerland={province:null,districtselect:null,district:'',nodeed:'',arearai:'',areawork:'',areatrw:''};
   //เป้าหมายการผลิต
   window.listfamilyhomeproducttarget=[{code:null,name:'กรุณาเลือกข้อมูล'}
@@ -677,7 +675,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
 					<div class="form-group">
 							<label>อาชีพรอง :</label>
 							 <select class="form-control" :id="'careersecond'+index" :class="status(item.careersecond)" v-model.trim="item.careersecond.$model" @blur="item.careersecond.$touch()">
-               <option v-for="(vv, indexx) in listmas_occupation" :value="vv.occup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{vv.occup_name}}</option> 
+               <option v-for="(vv, indexx) in listlistmas_addition" :value="vv.add_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{vv.add_name}}</option>  
 							</select>
 					 </div>
 				</div>
@@ -1028,7 +1026,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
                <div class="form-group">
                   <label>อาชีพในครัวเรือน:</label>
                   <select class="form-control" name="familyhomecareer" id="familyhomecareer" :class="status($v.Mhouseinforgeneral.familyhomecareer)" v-model.trim="$v.Mhouseinforgeneral.familyhomecareer.$model" @blur="$v.Mhouseinforgeneral.familyhomecareer.$touch()">
-					         <option v-for="(vv, indexx) in listmas_occupation" :value="vv.occup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{vv.occup_name}}</option> 
+					         <option v-for="(vv, indexx) in listmas_house_occup" :value="vv.hccup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{vv.hccup_name}}</option>  
 				         </select> 
                 </div> 
               </div>
@@ -1301,7 +1299,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
  
 		  	 <div class="row"> 
 
-               <div class="col-md-3"> 
+               <div class="col-md-4"> 
                 <div class="form-group">
                   <label>วันเดือนปีสำรวจ :</label>
                   <div class="input-group date datepickers" id="survseydate" data-target-input="nearest"> 

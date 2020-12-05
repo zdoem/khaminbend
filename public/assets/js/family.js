@@ -82,6 +82,8 @@ window.app = new Vue({
     listmas_relations:window.Slistmas_relations,
     listmas_group_occup:window.Slistmas_group_occup,
     listmas_occupation:window.Slistmas_occupation,
+    listmas_house_occup:window.Slistmas_house_occup,
+    listlistmas_addition:window.Slistlistmas_addition,
     listprovinces:window.Slistprovinces,
     
     famerdetaillists:window.Sfamerdetaillists, 
@@ -112,14 +114,6 @@ window.app = new Vue({
     listmas_pet:window.listmas_pet,
     Mdisaster:window.Sdisaster,
     Mmas_info:window.Smas_info,  
-    // usingmobilephone:'',
-    // computers:'',
-    // mailing:'',
-    // broadcasttower:'',
-    // communityradio:'',
-    // communityforum:'',
-    // communityforumdisc:'',  
-    // environmentdata:{ },
      survseydate:new Date().getTime() 
   },
   mounted: function () {
@@ -138,16 +132,11 @@ window.app = new Vue({
  validations() {
     return {
      Mhouseinforgeneral:{
-        //  familyhomecareer:{required},
-        //  familyhomeproducttarget:{required},
-        //  familyhomesourceoffunds:{required},
-        //  familyhomeproductperiod:{required},
-        //  familyhomeproductioncost:{required},
-         familyhomecareer:{},
-         familyhomeproducttarget:{},
-         familyhomesourceoffunds:{},
-         familyhomeproductperiod:{},
-         familyhomeproductioncost:{},
+         familyhomecareer:{required},
+         familyhomeproducttarget:{required},
+         familyhomesourceoffunds:{required},
+         familyhomeproductperiod:{required},
+         familyhomeproductioncost:{required}, 
      },  
      Mfamerdetaillists:{
           deeds:{
@@ -213,10 +202,7 @@ window.app = new Vue({
     }
    }
   },
-  methods: {  
-     getdata:function(){
-       console.log('mas_info',this.Mdisaster);
-     }, 
+  methods: {   
      up_familyhomeproductperiod:function(e){  
        this.Mhouseinforgeneral.familyhomeproductperiod=e;
      },
@@ -225,7 +211,7 @@ window.app = new Vue({
      url = window.location.href;
      name = name.replace(/[\[\]]/g, "\\$&");
      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
+     results = regex.exec(url);
     if (!results)
         return null;
     if (!results[2])
@@ -236,17 +222,12 @@ window.app = new Vue({
        		if(event.key == "Enter"){
          		// app.checkLogin();
         	}
-           },  
+     },  
      submit: function() {  
              var _this=this;
              this.$v.$touch();  
-             if (!this.$v.$invalid) { console.log('log',1);
-               var tmp_disaster=[];
-               var tmp_info_code=[];
-               var tmp_helpme=[];
-              //  $('input[name="disaster[]"]:checked').map(function() {tmp_disaster.push(this.value);});
-              //  $('input[name="info_code[]"]:checked').map(function() {tmp_info_code.push(this.value);});
-              //  $('input[name="helpme"]:checked').map(function() {tmp_helpme.push(this.value);}); 
+             if (!this.$v.$invalid) { console.log('log',1); 
+              //  $('input[name="disaster[]"]:checked').map(function() {tmp_disaster.push(this.value);}); 
                var datasend={
                 //  frm_family:$('#frm_family').serializeArray(), 
                  id:this.getParameterByName('id'),
@@ -265,20 +246,8 @@ window.app = new Vue({
                  Mmas_info_select:this.Mmas_info,
                  helpme:this.helpme,
                  helpmedisc:this.helpmedisc,
-                 survseydate:$('#assessment_date').val(),
-                //  otherdisastersdisc:this.otherdisastersdisc,
-                //  helpme:this.helpme,
-                //  helpmedisc:this.helpmedisc,
-                 mouthtomouth:this.mouthtomouth,
-                 usingmobilephone:this.usingmobilephone,
-                 computers:this.computers,
-                 mailing:this.mailing,
-                 broadcasttower:this.broadcasttower,
-                 communityradio:this.communityradio,
-                 communityforum:this.communityforum,
-                 communityforumdisc:this.communityforumdisc,
-              }; 
-               console.log('datasend',datasend);
+                 survseydate:$('#assessment_date').val(),  
+              };  
                $.ajax({
                 beforeSend: function() {  
                  _this.btn_save=true;
@@ -295,12 +264,10 @@ window.app = new Vue({
                   _this.btn_save=false; 
                   $('#xhtml').html(data);
                 }       
-            });
-               
+            }); 
               } else {
                 console.log('log2',this.$v); 
-               this.$nextTick(function(){
-                   
+                 this.$nextTick(function(){ 
                    $('.error.dirty').each(function(index){
                      $(this).focus(); return false;   
                   }); 
@@ -412,7 +379,7 @@ window.app = new Vue({
                 return true;
                 }  
             return false;
-        },    
+    },    
     clearMessage: function(){
         app.errorMessage = '';
         app.successMessage = '';
@@ -442,8 +409,7 @@ Vue.nextTick(function () {
        //console.log('log',$('#datetimepicker1').datetimepicker('viewDate')); 
        // window.app.familylists.birthday=122;//$('#datetimepicker1').datetimepicker('viewDate');  
    //});
-}); 
-
+});  
 // var dd= Swal.fire({
 //           title: 'Timer Test',
 //           text: 'This window has a 2s timer.',
