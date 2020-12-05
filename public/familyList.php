@@ -270,6 +270,15 @@ $data_date_survey= $db::table("fm_fam_hd")
             type: "POST",
             data: {'action':3,'id': id,'token_family_frm':$("input[name*='token_family_frm']").val()},
             dataType: "json",
+             beforeSend: function() {  
+              salert=Swal.fire({
+              title: 'กำลังทำการลบข้อมูล',
+              text: 'กรุณารอสักครู่...',
+              showCancelButton: false,
+              showConfirmButton: false, 
+              allowOutsideClick: false
+              });  
+              },
             success: function (data, status, xhr) {
                  if(data.status=='deleted'){
                   Swal.fire("Done!", "ลบข้อมูลเรียบร้อย !", "success");
@@ -277,9 +286,11 @@ $data_date_survey= $db::table("fm_fam_hd")
                   Swal.fire("Error deleting!", "Please try again", "error");
                  }
                 $("input[name*='token_family_frm']").val(data.token); 
+                salert.close();
                 table.ajax.reload();
             },
             error: function (xhr, ajaxOptions, thrownError) {
+              salert.close();
               Swal.fire("Error deleting!", "Please try again", "error");
             }
         });
@@ -318,6 +329,7 @@ $data_date_survey= $db::table("fm_fam_hd")
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
+<div style="display: none;" id="xhtml"></div>    
 <?php
  require_once 'components/footer.php';  
 ?>

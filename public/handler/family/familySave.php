@@ -70,10 +70,11 @@ $manage_env_desc =(isset($_POST['xEnvironmental2disc']) ? $_POST['xEnvironmental
 $conserve_env=(isset($_POST['greenxEnvironmentaldisc']) ? $_POST['greenxEnvironmentaldisc'] : ''); 
 $f_help=trim((isset($_POST['helpme']) ? $_POST['helpme'] : 'N'));
 $help_desc=(isset($_POST['helpmedisc']) ? $_POST['helpmedisc'] : ''); 
+if($action!=3){
 $survseydate=DateTime::createFromFormat('d/m/Y H:i A',$_POST['survseydate']); 
 $survseydate=$survseydate->format('Y-m-d H:i:s');
 $d_survey=(isset($survseydate) ? $survseydate: ''); 
-
+}
 $select_facilities=(isset($_POST['Mlistmas_facilities']) ? $_POST['Mlistmas_facilities'] : []);
 $listmas_pet=(isset($_POST['listmas_pet']) ? $_POST['listmas_pet'] : []);
 
@@ -114,7 +115,7 @@ if($id>0){
     ->first();
       if($action!=3){
          if(!isset($rows_old->yearfam_id)||($rows_old->yearfam_id<$yearfam_id)){// ไม่มีข้อมูลเก่าหรือ idที่ใช้ปี<ปีปัจจุบัน insert ใหม่  
-         $action=1;  var_dump($rows_old->yearfam_id<$yearfam_id);exit();
+         $action=1;   
          }else if($rows_old->yearfam_id==$yearfam_id){// มีข้อมูลอยู่แล้วให้และปีเดี่ยวกัน update 
          $action=2; 
         }
@@ -182,9 +183,9 @@ if($id>0){
           $db::table('fm_fam_hd')->where('fam_id', '=', $id)->delete(); 
 		    	$status='deleted'; 
           } catch (\Exception $e) { 
-          $status='deletefail';  
+          $status='Error';  
          }
-       // echo json_encode(['status'=>$status,'token'=>\Volnix\CSRF\CSRF::getToken('token_village_frm')]); exit();
+       echo json_encode(['status'=>$status,'token'=>\Volnix\CSRF\CSRF::getToken('token_family_frm')]); exit();
   }
 //}
 // echo $status;exit(); 
@@ -206,11 +207,11 @@ if($action==1&&$status=='OK'){// insert
     }); 
 </script>
 <?php
-}else if(($action==2&&$status=='OK')||($action==3&&$status=='OK')){// update or deleted
+}else if(($action==2&&$status=='OK')){// update or deleted
 ?>
 <script type="text/javascript">
   Swal.fire({
-      title: '<?php if($action==2){?> แก้ไข้อมูลเรียบร้อยแล้ว <?php } else { ?> ลบข้อมูลเรียบร้อยแล้ว<?php } ?>',
+      title: 'แก้ไข้อมูลเรียบร้อยแล้ว',
       allowOutsideClick: false,
       showDenyButton: false,
       showCancelButton: false,

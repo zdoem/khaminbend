@@ -71,6 +71,7 @@ window.app = new Vue({
     successMessage: "",
     errorMessage: "",  
     btn_save:false,
+    txtcopydata:'',
      // for view  
     listmas_vilage:window.Slistmas_vilage,
     familylist:window.Sfamilylist,
@@ -114,7 +115,7 @@ window.app = new Vue({
     listmas_pet:window.listmas_pet,
     Mdisaster:window.Sdisaster,
     Mmas_info:window.Smas_info,  
-     survseydate:new Date().getTime() 
+    survseydate:new Date().getTime() 
   },
   mounted: function () {
      this.$nextTick(function(){  
@@ -141,25 +142,25 @@ window.app = new Vue({
      Mfamerdetaillists:{
           deeds:{
               $each:{
-                  province:{required},district:{},nodeed:{},districtselect:{}
-                 ,arearai:{},areawork:{},areatrw:{},
+                  province:{required},district:{required},nodeed:{required}
+                 ,arearai:{required},areawork:{required},areatrw:{required},
               } 
           },
           norsor3kors:{
               $each:{
-                  province:{},district:{},nodeed:{},districtselect:{}
-                 ,arearai:{},areawork:{},areatrw:{},
+                  province:{required},district:{required},nodeed:{required}
+                 ,arearai:{required},areawork:{required},areatrw:{required},
               } 
           },
           spoks:{
               $each:{
-                  province:{},district:{},nodeed:{},districtselect:{}
-                 ,arearai:{},areawork:{},areatrw:{},
+                  province:{required},district:{required},nodeed:{required}
+                 ,arearai:{required},areawork:{required},areatrw:{required},
               } 
           },
           chapter5s:{
               $each:{
-                province:{},district:{},nodeed:{},districtselect:{}
+                province:{},district:{},nodeed:{}
                  ,arearai:{},areawork:{},areatrw:{},
                 //   province:{required},district:{},nodeed:{required},districtselect:{required}
                 //  ,arearai:{required},areawork:{required},areatrw:{required},
@@ -274,6 +275,47 @@ window.app = new Vue({
                });
             } 
         },        
+     copydata:function(id){ 
+       var _this=this;
+         $.ajax({
+                beforeSend: function() {  
+                 
+                },
+                type: "GET",  
+                cache: false,
+                datatype : "application/json", 
+                url: "handler/family/familycopydata.php",
+                data: {id:_this.txtcopydata}, 
+                success: function(data){    
+                    $('#xhtml').empty().html(data);
+                    // _this.Mfamilylists=window.SSfamilylists;
+                    _this.Mhouseinfor=window.Shouseinfor; 
+                    _this.Mhouseinforgeneral=window.Shouseinforgeneral; 
+                    _this.listmas_house_occup=window.Slistmas_house_occup; 
+                    _this.Mlistmas_facilities=window.Slistmas_facilities;
+                    _this.listmas_pet=window.listmas_pet;  
+                    _this.xEnvironmental=window.xEnvironmental;
+                    _this.xEnvironmentaldisc=window.xEnvironmentaldisc;
+                    _this.xEnvironmental2=window.xEnvironmental2;
+                    _this.xEnvironmental2disc=window.xEnvironmental2disc;
+                    _this.greenxEnvironmentaldisc=window.greenxEnvironmentaldisc;
+                    _this.helpme=window.helpme;
+                    _this.helpmedisc=window.helpmedisc; 
+                    _this.tbl_mas_info1=window.tbl_mas_info1;
+                    _this.tbl_mas_info2=window.tbl_mas_info2;
+                    _this.tbl_mas_info3=window.tbl_mas_info3;
+                    _this.Mmas_info=window.Smas_info;
+                    _this.listmas_disaster1=window.listmas_disaster1;
+                    _this.listmas_disaster2=window.listmas_disaster2;
+                    _this.Mdisaster=window.Sdisaster;
+                    _this.survseydate=window.d_survey;
+                    $('#xhtml').empty();   
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {  
+                  $('#xhtml').html(data);
+                }       
+            });
+     },   
      getamphurbyprovince:function(foriten,event,index){ 
        var _this=this;  
       $.ajax({

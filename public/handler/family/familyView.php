@@ -379,7 +379,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
   window.Mfamilylist={prefix:null,txtFName: '',txtLName:'',txtCitizenId:'' ,xFstatusRd:'O',sexRd:'M',txtNational:'',religion:null,birthday:''
   ,educationlevel:null,homerelations:null,careergroup:null,careeranother:'',careermain:null,careersecond:null,netIncome:''};
   //ข้อมูลพื้นที่การเกษตร
-  window.Sfamerland={province:null,districtselect:null,district:'',nodeed:'',arearai:'',areawork:'',areatrw:''};
+  window.Sfamerland={province:null,district:'',nodeed:'',arearai:'',areawork:'',areatrw:''};
   //เป้าหมายการผลิต
   window.listfamilyhomeproducttarget=[{code:null,name:'กรุณาเลือกข้อมูล'}
   ,{code:1,name:'ผลิตเพื่อบริโภค'}

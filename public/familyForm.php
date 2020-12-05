@@ -392,7 +392,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
   window.Mfamilylist={prefix:null,txtFName: '',txtLName:'',txtCitizenId:'' ,xFstatusRd:'O',sexRd:'M',txtNational:'',religion:null,birthday:''
   ,educationlevel:null,homerelations:null,careergroup:null,careeranother:'',careermain:null,careersecond:null,netIncome:''};  
   //ข้อมูลพื้นที่การเกษตร
-  window.Sfamerland={province:null,districtselect:null,district:'',nodeed:'',arearai:'',areawork:'',areatrw:''};
+  window.Sfamerland={province:null,district:'',nodeed:'',arearai:'',areawork:'',areatrw:''};
   //เป้าหมายการผลิต 
   window.listfamilyhomeproducttarget=[{code:null,name:'กรุณาเลือกข้อมูล'}
   ,{code:1,name:'ผลิตเพื่อบริโภค'}
@@ -494,8 +494,11 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
             <h3 class="card-title">ข้อมูลครัวเรือน [ที่อยู่ตามทะเบียนบ้าน]</h3>
 
             <div class="card-tools">
-              <!-- <button type="button" class="btn btn-tool" title="Copy ข้อมูลคนล่าสุด" ><i class="fas fa-copy"></i></button>  -->
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button> 
+              <div class="d-flex flex-row flex-nowrap align-items-center">
+                <div class="p-0"><input class="form-control form-control-sm input-sm" type="text" id="txtcopydata" autocomplete="on" name="txtcopydata" v-model="txtcopydata" placeholder="รหัสที่ต้องการ copy" title="กรอกรหัสที่ต้องการ copy"></div>
+                <div class="p-0"> <button type="button" class="btn btn-tool" @click="copydata" title="กด Copy ข้อมูล" ><i class="fas fa-copy"></i></button> </div>
+                <div class="p-0"><button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button> </div>
+              </div>                                      
             </div>
           </div>
           <!-- /.card-header -->
@@ -836,7 +839,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                         <td > 
                         <div class="form-group btn-xs"> 
                           <!-- :class="status(item.district)" v-model.trim="item.districtselect.$model" @blur="item.district.$touch()" -->    
-                        <select class="form-control btn-xs"  v-model.trim="item.district.$model"  @blur="item.district.$touch()"  required > 
+                        <select class="form-control btn-xs"  v-model.trim="item.district.$model"  @change="item.district.$touch()"  required > 
                             <template v-for="(vv, indexx) in distric_deeds[index]">  
                                <option :value="vv.code" v-bind:selected="indexx== 0 ? 'selected' : false" >{{vv.name_th}}</option>
                             </template> 
@@ -888,7 +891,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 <th style="width: 5%">#</th>
                                 <th style="width: 15%">จังหวัด</th>
                                 <th style="width: 25%">อำเภอ</th>
-                                <th style="width: 15%">เลขที่โฉนด</th>
+                                <th style="width: 15%">เลขที่นส.3ก</th>
                                 <th style="width: 10%">พื้นที่(ไร่)</th>
                                 <th style="width: 10%">พื้นที่(งาน)</th>
                                 <th style="width: 10%">พื้นที่(ตรว.)</th>
@@ -909,7 +912,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
 								</td>
 								<td>
 								<div class="form-group btn-xs">
-								 <select class="form-control btn-xs" v-model.trim="item.district.$model"  name="district[]"  :class="status(item.district)" @blur="item.district.$touch()"> 
+								 <select class="form-control btn-xs" v-model.trim="item.district.$model"  name="district[]" required  :class="status(item.district)" @blur="item.district.$touch()"> 
                    <template v-for="(vv, indexx) in distric_norsor3kors[index]">  
                              <option :value="vv.code" v-bind:selected="indexx== 0 ? 'selected' : false" >{{vv.name_th}}</option>
                     </template> 
@@ -918,7 +921,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
 								</td>								
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="nodeed[]" :class="status(item.nodeed)" v-model.trim="item.nodeed.$model" @blur="item.nodeed.$touch()" class="form-control btn-xs" placeholder="เลขที่โฉนด  ...">
+                                    <input type="number" name="nodeed[]" :class="status(item.nodeed)" v-model.trim="item.nodeed.$model" @blur="item.nodeed.$touch()" class="form-control btn-xs" placeholder="เลขที่นส.3ก  ...">
                                   </div>
                                 </td>
                                 <td>
@@ -960,7 +963,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 <th style="width: 5%">#</th>
                                 <th style="width: 15%">จังหวัด</th>
                                 <th style="width: 25%">อำเภอ</th>
-                                <th style="width: 15%">เลขที่โฉนด</th>
+                                <th style="width: 15%">เลขที่สปก.</th>
                                 <th style="width: 10%">พื้นที่(ไร่)</th>
                                 <th style="width: 10%">พื้นที่(งาน)</th>
                                 <th style="width: 10%">พื้นที่(ตรว.)</th>
@@ -968,7 +971,8 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                               </tr>
                             </thead>
                             <tbody>
-                            <tr class="table-warning" v-if="Mfamerdetaillists.spoks.length<=0"><td align="center" colspan="8">*** ยังไม่มีข้อมูล ***</td></tr>        
+                            <tr class="table-warning" v-if="Mfamerdetaillists.spoks.length<=0">
+                            <td align="center" colspan="8">*** ยังไม่มีข้อมูล ***</td></tr>        
                              <template v-for="(item, index) in $v.Mfamerdetaillists.spoks.$each.$iter">
                               <tr>
                                 <td>{{(index*1)+1}}.</td>
@@ -981,7 +985,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
 								</td>
 								<td>
 								<div class="form-group btn-xs">
-								 <select class="form-control btn-xs" v-model.trim="item.district.$model"  name="district[]" :class="status(item.district)"  @blur="item.district.$touch()">
+								 <select class="form-control btn-xs" v-model.trim="item.district.$model"  name="district[]" required :class="status(item.district)"  @blur="item.district.$touch()">
 								    <template v-for="(vv, indexx) in distric_sorporkor[index]">  
                               <option :value="vv.code" v-bind:selected="indexx== 0 ? 'selected' : false" >{{vv.name_th}}</option>
                     </template> 
@@ -990,7 +994,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
 								</td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="nodeed[]" :class="status(item.nodeed)" v-model.trim="item.nodeed.$model" @blur="item.nodeed.$touch()" class="form-control btn-xs" placeholder="เลขที่โฉนด  ...">
+                                    <input type="number" name="nodeed[]" :class="status(item.nodeed)" v-model.trim="item.nodeed.$model" @blur="item.nodeed.$touch()" class="form-control btn-xs" placeholder="เลขที่สปก....">
                                   </div>
                                 </td>
                                 <td>
@@ -1032,7 +1036,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 <th style="width: 5%">#</th>
                                 <th style="width: 15%">จังหวัด</th>
                                 <th style="width: 25%">อำเภอ</th>
-                                <th style="width: 15%">เลขที่โฉนด</th>
+                                <th style="width: 15%">เลขที่ภบท 5</th>
                                 <th style="width: 10%">พื้นที่(ไร่)</th>
                                 <th style="width: 10%">พื้นที่(งาน)</th>
                                 <th style="width: 10%">พื้นที่(ตรว.)</th>
@@ -1053,7 +1057,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
 								</td>
 								<td>
 								<div class="form-group btn-xs"> 
-								 <select class="form-control btn-xs" v-model.trim="item.district.$model"  name="district[]" :class="status(item.district)" @blur="item.district.$touch()">
+								 <select class="form-control btn-xs" v-model.trim="item.district.$model"  name="district[]" required :class="status(item.district)" @blur="item.district.$touch()">
 								   <template v-for="(vv, indexx) in distric_chapter5s[index]">  
                                <option :value="vv.code" v-bind:selected="indexx== 0 ? 'selected' : false" >{{vv.name_th}}</option>
                     </template> 
@@ -1062,7 +1066,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
 								</td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="nodeed" :class="status(item.nodeed)" v-model.trim="item.nodeed.$model" @blur="item.nodeed.$touch()" class="form-control btn-xs" placeholder="เลขที่โฉนด  ...">
+                                    <input type="number" name="nodeed" :class="status(item.nodeed)" v-model.trim="item.nodeed.$model" @blur="item.nodeed.$touch()" class="form-control btn-xs" placeholder="เลขที่ภบท 5  ...">
                                   </div>
                                 </td>
                                 <td>
@@ -1229,12 +1233,12 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                   </td>
                                   <td>
                                     <div class="form-group">
-                                    <input type="number" :id="'pet_quantity'+item.pet_code" v-model="item.pet_quantity" :disabled="!item.selected"  class="form-control btn-xs"  :placeholder="'จำนวน'+item.pet_name+'...ตัว'" >					
+                                    <input type="number" :id="'pet_quantity'+item.pet_code" required v-model="item.pet_quantity" :disabled="!item.selected"  class="form-control btn-xs"  :placeholder="'จำนวน'+item.pet_name+'...ตัว'" >					
                                     </div>
                                   </td>
                                 <td>
                                     <div class="form-group">
-                                    <input type="number" :id="'pet_vacine_qt'+item.pet_code"  v-model="item.pet_vacine_qt" :disabled="!item.selected" class="form-control btn-xs" :placeholder="'จำนวน'+item.pet_name+'(รับวัคซีนแล้ว)...ตัว'">					
+                                    <input type="number" :id="'pet_vacine_qt'+item.pet_code" required  v-model="item.pet_vacine_qt" :disabled="!item.selected" class="form-control btn-xs" :placeholder="'จำนวน'+item.pet_name+'(รับวัคซีนแล้ว)...ตัว'">					
                                     </div>
                                   </td>
                                   <td>
