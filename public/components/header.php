@@ -129,7 +129,7 @@ defined('ROOT') OR exit('No access allowed');
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false"> 
 
             <li class="nav-item">
-              <a href="familyList.php" class="nav-link active">
+              <a href="familyList.php" class="nav-link">
                 <em class="fa fa-address-card">&nbsp;</em>
                 <p>
                 หน้าจัดการข้อมูลครัวเรือน
@@ -205,5 +205,21 @@ defined('ROOT') OR exit('No access allowed');
     </aside>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+<script>
+ $(function () {
+    var url = window.location;
+    // for single sidebar menu
+    $('ul.nav-sidebar a').filter(function () {
+        return this.href == url;
+    }).addClass('active');
 
+    // for sidebar menu and treeview
+    $('ul.nav-treeview a').filter(function () {
+        return this.href == url;
+    }).parentsUntil(".nav-sidebar > .nav-treeview")
+        .css({'display': 'block'})
+        .addClass('menu-open').prev('a')
+        .addClass('active');
+});
+</script>
  
