@@ -1,0 +1,16 @@
+{
+    "name": "devni/farmer",
+    "authors": [
+        {
+            "name": "dev-pong",
+            "email": "dev.niwath@gmail.com"
+        }
+    ],
+    "config": {
+        "vendor-dir": "private/vendor/"
+    },
+    "require": { 
+	 "volnix/csrf": "~1.2",
+         "illuminate/database": "^7.2" 
+    }
+}
