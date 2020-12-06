@@ -53,7 +53,7 @@ $data_date_survey= $db::table("fm_fam_hd")
           <!-- /.card-header -->
           <div class="card-body">
             <div class="row">
-				<div class="col-md-3">
+				<!-- <div class="col-md-3">
 						<div class="form-group">
 						  <label>ปี :</label>
 						  <select class="form-control" name="date_survey" id="date_survey">
@@ -68,7 +68,7 @@ $data_date_survey= $db::table("fm_fam_hd")
 						  </select>
 
 						</div> 
-				</div>
+				</div> -->
               <div class="col-md-3">
                 <div class="form-group">
                   <label>บ้านเลขที่ :</label>
@@ -194,7 +194,7 @@ $data_date_survey= $db::table("fm_fam_hd")
           'url':'handler/family/familyDatalist.php',
           "data": function ( d ) {
             return $.extend( {}, d, {
-              "date_survey":$('#date_survey').val(),
+              "date_survey":'',
               "txtHouseNo": $('#txtHouseNo').val(),
               "owner_house": $('#owner_house').val(),
               "txtCitizenId": $('#txtCitizenId').val() 
