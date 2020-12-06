@@ -120,7 +120,7 @@ window.app = new Vue({
   mounted: function () {
      this.$nextTick(function(){  
        //$(".datepicker-th-2").datepicker( "refresh" );  
-          
+  
      });  
      
     // var tmfam=this.$el.dataset.famerdetaillists;
@@ -226,8 +226,21 @@ window.app = new Vue({
      },  
      submit: function() {  
              var _this=this;
+             var alertinert=moment($('#assessment_date').val()).diff(window.alert_survey, 'year');
+             if(alertinert>0&&alertinert!=NaN){
+                   Swal.fire({
+                      title: 'คุณกำลังจะสร้างข้อมูลใหม่ใช่หรือไม่?', 
+                      allowOutsideClick: false,
+                      showDenyButton: false,
+                      showCancelButton: true,
+                      confirmButtonText: 'ตกลง', 
+                      cancelButtonText:'ยกเลิก',
+                    }).then(function(result) { 
+                      if (!result.isConfirmed) { return; } 
+                  }); 
+             }  
              this.$v.$touch();  
-             if (!this.$v.$invalid) { console.log('log',1); 
+             if (!this.$v.$invalid) {  
               //  $('input[name="disaster[]"]:checked').map(function() {tmp_disaster.push(this.value);}); 
                var datasend={
                 //  frm_family:$('#frm_family').serializeArray(), 

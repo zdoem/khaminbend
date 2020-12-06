@@ -67,8 +67,7 @@ $data_date_survey= $db::table("fm_fam_hd")
               ?> 
 						  </select>
 
-						</div>
-						<!-- /.form-group -->
+						</div> 
 				</div>
               <div class="col-md-3">
                 <div class="form-group">
@@ -141,9 +140,9 @@ $data_date_survey= $db::table("fm_fam_hd")
 					               <th style="width: 20%">
 		                     ชื่อเจ้าบ้าน
                         </th>
-					             	<th style="width: 24%">
+					             	<!-- <th style="width: 24%">
 	                 	      ที่อยู่ตามทะเบียนบ้าน
-                        </th>
+                        </th> -->
                         <th style="width: 8%">
                          วันที่สำรวจ       
                         </th>
@@ -209,9 +208,9 @@ $data_date_survey= $db::table("fm_fam_hd")
          }},
          { data: 'house_no' }, 
          { data: 'owner_fname' },
-         { data: "house_no" , render : function ( data, type, row, meta ) {   
-              return `-`;
-         }},   
+        //  { data: "house_no" , render : function ( data, type, row, meta ) {   
+        //       return `-`;
+        //  }},   
          { data: 'd_survey' }, 
          {data:"d_update" , render : function ( data, type, row, meta ) {   
               return `${row.f_update}`;

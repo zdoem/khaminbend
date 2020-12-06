@@ -409,7 +409,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
    window.Sdisaster={selected:<?='["' . implode('", "', $list_fm_fam_disaster_dt5_selected) . '"]'?>,another:''};
 
   window.d_survey={autoclose: true,format: 'DD/MM/YYYY HH:mm A',defaultDate:'<?=$d_survey?>'};
-
+  window.alert_survey='';
  </script>
 
  <section class="content" id="app" v-cloak> 

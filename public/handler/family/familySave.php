@@ -12,7 +12,7 @@ $refer_urlmain='familyList.php';
 
 // check validating csrf token name
 
-//if (\Volnix\CSRF\CSRF::validate($_POST, 'token_familye_frm')){ 
+//if (\Volnix\CSRF\CSRF::validate($_POST, 'token_family_frm')){ 
   // var_dump($_POST['Mmas_info_select']);exit();
  
 $yearfam_id=substr(date("Y")+543, -2);
@@ -74,6 +74,8 @@ if($action!=3){
 $survseydate=DateTime::createFromFormat('d/m/Y H:i A',$_POST['survseydate']); 
 $survseydate=$survseydate->format('Y-m-d H:i:s');
 $d_survey=(isset($survseydate) ? $survseydate: ''); 
+$yearfam_id=substr($survseydate->format('Y')+543, -2);
+$tran_id=$yearfam_id.$survseydate->format('m');
 }
 $select_facilities=(isset($_POST['Mlistmas_facilities']) ? $_POST['Mlistmas_facilities'] : []);
 $listmas_pet=(isset($_POST['listmas_pet']) ? $_POST['listmas_pet'] : []);

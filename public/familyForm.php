@@ -134,7 +134,7 @@ $eco_product_from =''; //ช่วงเวลาการผลิต จาก
 $eco_product_to =''; //ช่วงเวลาการผลิต จาก 
 $familyhomeproductperiod=date('d/m/Y',time()).' - '.date("d/m/Y", strtotime("+3 month", time()));//ช่วงเวลาการผลิต จาก ช่วงเวลาการผลิต จาก
 $d_survey = date('d/m/Y h:i', time()); //วันเดือนปีสำรวจ 
-
+$alert_survey=date('d/m/Y h:i', time()); 
 if (isset($_GET['id'])) {// update 
   $data_fm_fam_hd = $db::table("fm_fam_hd")
     ->select($db::raw("fam_id,house_no,house_moo,sub_district,district,province,post_code,pre_owner,owner_fname,owner_lname,citizen_id,eco_product_from,eco_product_to
@@ -143,7 +143,7 @@ if (isset($_GET['id'])) {// update
       ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,d_survey"))
     ->where('fam_id', '=', $_GET['id'])
     ->first(); 
-
+    if (!IsNullOrEmptyString($data_fm_fam_hd->d_survey)) {$alert_survey = date('d/m/Y h:i', strtotime($data_fm_fam_hd->d_survey));}
     $house_no = (isset($data_fm_fam_hd->house_no) ? $data_fm_fam_hd->house_no : ''); //บ้านเลขที่
     $house_moo = ((isset($data_fm_fam_hd->house_moo)&&!IsNullOrEmptyString($data_fm_fam_hd->house_moo)) ? $data_fm_fam_hd->house_moo :null); //หมู่ที
     $sub_district = (isset($data_fm_fam_hd->sub_district) ? $data_fm_fam_hd->sub_district : ''); //ตำบล
@@ -422,7 +422,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
    window.Sdisaster={selected:<?='["' . implode('", "',$list_fm_fam_disaster_dt5_selected) . '"]'?>,another:''}; 
       
   window.d_survey={autoclose: true,format: 'DD/MM/YYYY HH:mm A',defaultDate:'<?=$d_survey?>'};
-
+  window.alert_survey='<?=$alert_survey?>';
  </script>
 <style> 
   .dirty {
@@ -1437,7 +1437,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 <div class="form-group">
                   <label>วันเดือนปีสำรวจ :</label>
                   <div class="input-group date datepickers" id="survseydate" data-target-input="nearest"> 
-	               <input id="assessment_date" name="assessment_date" type="text" data-target="#survseydate" data-toggle="datetimepicker" 
+	               <input id="assessment_date" name="assessment_date" type="text"  data-target="#survseydate" data-toggle="datetimepicker" 
                  class="form-control  col-md-8 datetimepicker-input assessment-date-keypress" data-target="#survseydate" autocomplete="off" required>
                   <div class="input-group-append" data-target="#survseydate" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
