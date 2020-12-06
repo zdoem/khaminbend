@@ -72,8 +72,8 @@ $f_help=trim((isset($_POST['helpme']) ? $_POST['helpme'] : 'N'));
 $help_desc=(isset($_POST['helpmedisc']) ? $_POST['helpmedisc'] : ''); 
 if($action!=3){
 $survseydate=DateTime::createFromFormat('d/m/Y H:i A',$_POST['survseydate']); 
-$survseydate=$survseydate->format('Y-m-d H:i:s');
-$d_survey=(isset($survseydate) ? $survseydate: ''); 
+$d_survseydate=$survseydate->format('Y-m-d H:i:s');
+$d_survey=(isset($d_survseydate) ? $d_survseydate: ''); 
 $yearfam_id=substr($survseydate->format('Y')+543, -2);
 $tran_id=$yearfam_id.$survseydate->format('m');
 }
