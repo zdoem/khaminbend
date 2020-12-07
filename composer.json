@@ -11,6 +11,8 @@
     },
     "require": { 
 	 "volnix/csrf": "~1.2",
-         "illuminate/database": "^7.2" 
+         "illuminate/database": "^7.2",
+        "tecnickcom/tcpdf": "^6.3",
+        "rundiz/thai-date": "^2.0" 
     }
 }
