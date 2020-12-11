@@ -92,16 +92,16 @@ $listmas_addition= $db::table("tbl_mas_addition")
  $sorporkor=[];$distric_sorporkor=[]; 
  $chapter5s=[];$distric_chapter5s=[];
  $temlistpeople=['prefix'=>null,'txtFName'=>'','txtLName'=>'','txtCitizenId'=>'','xFstatusRd'=>'O','sexRd'=>'M'
-  ,'txtNational'=>'','religion'=>null,'birthday'=>'','educationlevel'=>null,'homerelations'=>null,'careergroup'=>null
+  ,'txtNational'=>'ไทย','religion'=>'01','birthday'=>'','educationlevel'=>null,'homerelations'=>'01','careergroup'=>null
   ,'careeranother'=>'','careermain'=>null,'careersecond'=>null,'netIncome'=>'']; 
 $listpeople[]=$temlistpeople;
 //---------------------------------------------------------------------------------------------------------------
 $house_no = ''; //บ้านเลขที่
 $house_moo =null; //หมู่ที
-$sub_district = ''; //ตำบล
-$district =''; //อำเภอ
-$province =''; //จังหวัด
-$post_code ='';
+$sub_district = 'โคกขมิ้น'; //ตำบล
+$district ='พลับพลาชัย'; //อำเภอ
+$province ='จังหวัดบุรีรัมย์'; //จังหวัด
+$post_code ='31250';
 $pre_owner = '';
 $owner_fname ='';
 $owner_lname ='';
@@ -135,7 +135,9 @@ $eco_product_to =''; //ช่วงเวลาการผลิต จาก
 $familyhomeproductperiod=date('d/m/Y',time()).' - '.date("d/m/Y", strtotime("+3 month", time()));//ช่วงเวลาการผลิต จาก ช่วงเวลาการผลิต จาก
 $d_survey = date('d/m/Y h:i', time()); //วันเดือนปีสำรวจ 
 $alert_survey=date('d/m/Y h:i', time()); 
+$actions='I';
 if (isset($_GET['id'])) {// update 
+  $actions='U';
   $data_fm_fam_hd = $db::table("fm_fam_hd")
     ->select($db::raw("fam_id,house_no,house_moo,sub_district,district,province,post_code,pre_owner,owner_fname,owner_lname,citizen_id,eco_product_from,eco_product_to
       ,x_status,x_sex,national,reg_code,date_of_birth,education_code,relations_code,g_occupational_code,g_occupational_other,main_occupation_code,add_occupation_code
@@ -370,7 +372,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
   window.Slistlistmas_addition=addition.reverse().concat({add_code: null, add_name: "กรุณาเลือกข้อมูล"}).reverse();
   // ข้อมูลจังหวัด 
   var provinces= <?=json_encode($listprovinces); ?>; 
-  window.Slistprovinces=provinces.reverse().concat({code: null,id:null,name_en:'กรุณาเลือกข้อมูล',name_th: "กรุณาเลือกข้อมูล"}).reverse(); 
+  window.Slistprovinces=provinces.reverse().concat({code: null,id:null,name_en:'กรุณาเลือกข้อมูล',name_th: "กรุณาเลือกข้อมูล"}).reverse();  
   //-ช้อมูลอำเภอ
   window.distric_deeds=<?=json_encode($distric_deeds); ?>;
   window.distric_norsor3kors =<?=json_encode($distric_norsor3kors); ?>;
@@ -389,10 +391,10 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
   window.Sfamilylists=<?=json_encode($listpeople)?>;
   window.SSfamilylists=<?=json_encode($listpeople)?>;
 
-  window.Mfamilylist={prefix:null,txtFName: '',txtLName:'',txtCitizenId:'' ,xFstatusRd:'O',sexRd:'M',txtNational:'',religion:null,birthday:''
+  window.Mfamilylist={prefix:null,txtFName: '',txtLName:'',txtCitizenId:'' ,xFstatusRd:'O',sexRd:'M',txtNational:'ไทย',religion:'01',birthday:''
   ,educationlevel:null,homerelations:null,careergroup:null,careeranother:'',careermain:null,careersecond:null,netIncome:''};  
   //ข้อมูลพื้นที่การเกษตร
-  window.Sfamerland={province:null,district:'',nodeed:'',arearai:'',areawork:'',areatrw:''};
+  window.Sfamerland={province:20,district:3115,nodeed:'',arearai:0,areawork:0,areatrw:0};
   //เป้าหมายการผลิต 
   window.listfamilyhomeproducttarget=[{code:null,name:'กรุณาเลือกข้อมูล'}
   ,{code:1,name:'ผลิตเพื่อบริโภค'}
@@ -423,6 +425,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
       
   window.d_survey={autoclose: true,format: 'DD/MM/YYYY HH:mm A',defaultDate:'<?=$d_survey?>'};
   window.alert_survey='<?=$alert_survey?>';
+  window.actions='<?=$actions?>';
  </script>
 <style> 
   .dirty {
@@ -451,8 +454,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
 	to {
 		-webkit-transform: rotate(360deg);
 	}
-}
-
+} 
 @keyframes spin {
 	from {
 		transform: scale(1) rotate(0deg);
@@ -460,6 +462,14 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
 	to {
 		transform: scale(1) rotate(360deg);
 	}
+}
+.invalid-feedback{
+    display: block; 
+    width: 100%;
+    position: absolute;
+    margin:0;
+    font-size: 80%;
+    color: #dc3545;
 }
 
 </style> 
@@ -509,17 +519,19 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 <div class="form-group">
                   <label>บ้านเลขที่ :</label>
                   <input type="text" :class="status($v.Mhouseinfor.txtHouseId)" required v-model.trim="$v.Mhouseinfor.txtHouseId.$model" name="txtHouseId" id="txtHouseId" class="form-control" placeholder="บ้านเลขที่  ...">
+                  <div class="invalid-feedback order-last" v-if="!$v.Mhouseinfor.txtHouseId.Fn_txtHouseId">ต้องเป็นตัวเลขและ/เท่านั้น</div>
+                  <div class="invalid-feedback order-last" v-if="!$v.Mhouseinfor.txtHouseId.isUnique_txtHouseId&&!$v.Mhouseinfor.txtHouseId.$pending">มีข้อมูลอยู่แล้ว!.</div>
                 </div>
                 <!-- /.form-group -->
               </div>
 
               <div class="col-md-4">
                 <div class="form-group">
-                  <label>หมู่ที่ - ชื่อหมู่บ้าน :</label>
+                  <label>หมู่ที่ - ชื่อหมู่บ้าน :</label> 
 				       	<select class="form-control"  :class="status($v.Mhouseinfor.mooHouse)" required v-model.trim="$v.Mhouseinfor.mooHouse.$model" > 
                         <template v-for="(v, indexx) in listmas_vilage">
-                          <option v-if="(indexx*1)==0" v-bind:value="v.vil_id" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.vil_name}}</option> 
-                          <option v-if="(indexx*1)>0" v-bind:value="v.vil_id" v-bind:selected="indexx== 0 ? 'selected' : false">หมู่ที่ {{v.vil_moo}} - {{v.vil_name}}</option>
+                          <option v-if="(indexx*1)==0" :disabled="actions=='U'&&$v.Mhouseinfor.mooHouse.$model!=v.vil_id" v-bind:value="v.vil_id" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.vil_name}}</option> 
+                          <option v-if="(indexx*1)>0" :disabled="actions=='U'&&$v.Mhouseinfor.mooHouse.$model!=v.vil_id" v-bind:value="v.vil_id" v-bind:selected="indexx== 0 ? 'selected' : false">หมู่ที่ {{v.vil_moo}} - {{v.vil_name}}</option>
                         </template>
 					     </select> 
                 </div>
@@ -729,7 +741,8 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                     <div class="form-group">
                        <label>ความสัมพันธ์ในครัวเรือน  :</label>
                        <select class="form-control" :id="'homerelations'+index" :class="status(item.homerelations)" required v-model.trim="item.homerelations.$model" @blur="item.homerelations.$touch()">
-                          <option v-for="(v, indexx) in listmas_relations" :value="v.re_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.re_name}}</option>
+                          <option v-if="index==0"  v-for="(v, indexx) in listmas_relations" :value="v.re_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.re_name}}</option>
+                          <option v-if="index>0&&v.re_code!='01'"  v-for="(v, indexx) in listmas_relations" :value="v.re_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.re_name}}</option>
                        </select>
                      </div> 
                    </div>
@@ -837,8 +850,8 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                           </div>								
                         </td>
                         <td > 
-                        <div class="form-group btn-xs"> 
-                          <!-- :class="status(item.district)" v-model.trim="item.districtselect.$model" @blur="item.district.$touch()" -->    
+                        <div class="form-group btn-xs">   
+                          <!-- :class="status(item.district)" v-model.trim="item.districtselect.$model" @blur="item.district.$touch()" -->   
                         <select class="form-control btn-xs"  v-model.trim="item.district.$model"  @change="item.district.$touch()"  required > 
                             <template v-for="(vv, indexx) in distric_deeds[index]">  
                                <option :value="vv.code" v-bind:selected="indexx== 0 ? 'selected' : false" >{{vv.name_th}}</option>
@@ -853,17 +866,18 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="arearai[]"  :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
+                                    <input type="number" name="arearai[]"  :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="จำนวนเต็มเท่านั้น...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
+                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)0-4เท่านั้น...">
+                                    <div class="invalid-feedback order-last" v-if="!item.areawork.Fn_areawork">พื้นที่(งาน)0-4เท่านั้น</div>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areatrw[]" :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
+                                    <input type="number" step="any" name="areatrw[]" :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="ใส่จุดทศนิยมได้...">
                                   </div>
                                 </td>
                                 <td>
@@ -926,17 +940,17 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="arearai[]" :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
+                                    <input type="number" name="arearai[]" :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="จำนวนเต็มเท่านั้น...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
+                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)0-4เท่านั้น...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areatrw[]"  :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
+                                    <input type="number" name="areatrw[]"  :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="ใส่จุดทศนิยมได้...">
                                   </div>
                                 </td>
                                 <td>
@@ -999,17 +1013,17 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="arearai[]" :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
+                                    <input type="number" name="arearai[]" :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="จำนวนเต็มเท่านั้น...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
+                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)0-4เท่านั้น...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areatrw[]"  :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
+                                    <input type="number" name="areatrw[]"  :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="ใส่จุดทศนิยมได้...">
                                   </div>
                                 </td>
                                 <td>
@@ -1071,17 +1085,17 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="arearai[]"  :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
+                                    <input type="number" name="arearai[]"  :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="จำนวนเต็มเท่านั้น...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
+                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)0-4เท่านั้น...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areatrw[]" :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
+                                    <input type="number" name="areatrw[]" :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="ใส่จุดทศนิยมได้...">
                                   </div>
                                 </td>
                                 <td>
@@ -1192,20 +1206,19 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
             <!-- /row -->
 
             <label>เครื่องมืออำนวยความสะดวกทางการเกษตร</label>
-            <div class="row">
-              <template v-for="(item, index) in Mlistmas_facilities">   
+            <div class="row"> 
+              <template v-for="(item, index) in $v.Mlistmas_facilities.$each.$iter">   
               <div class="col-md-3">
                 <div class="form-check">
-				      <label class="form-check-label"> 
-                  <input class="form-check-input" type="checkbox" v-model="item.selected"> {{item.fac_name}} </label>
+				      <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" v-model="item.selected.$model"> {{item.fac_name.$model}} </label>
                 </div>
                 <div class="form-group">
-                    <input type="number" class="form-control" :disabled="!item.selected" v-model="item.fac_quantity" :placeholder="'จำนวน...' + item.fac_name"  value="">
+                    <input type="number" class="form-control" :class="status2(item.fac_quantity)" :disabled="!item.selected.$model"  v-model="item.fac_quantity.$model" @blur="item.fac_quantity.$touch()" :placeholder="'จำนวน...' + item.fac_name.$model"  value="">
                 </div>
-                </div>
-                <!-- /.form-group -->   
+                </div>  
               </template>
-            </div>
+            </div> 
 			     <label> สัตว์เลี้ยง</label>
 
             <div class="row">
@@ -1221,29 +1234,29 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 <th style="width: 50px">รายละเอียด</th>
                               </tr>
                             </thead>
-                            <tbody>
-                               <template v-for="(item, index) in listmas_pet">   
+                            <tbody> 
+                                <template v-for="(item, index) in $v.listmas_pet.$each.$iter">   
                                 <tr>
-                                  <td>{{index+1}}.</td>
+                                  <td>{{(index*1)+1}}.</td>
                                    <td>
                                 <div class="form-check">
-                                  <label class="form-check-label">
-                                  <input class="form-check-input"  type="checkbox" v-model="item.selected" :value="item.pet_code" :id="'apetcheck_'+item.pet_code"> {{item.pet_name}}</label>
+                                  <label class="form-check-label"> 
+                                  <input class="form-check-input"  type="checkbox"  v-model="item.selected.$model" :value="item.pet_code.$model" :id="'apetcheck_'+item.pet_code.$model"> {{item.pet_name.$model}}</label>
                                 </div>
                                   </td>
                                   <td>
                                     <div class="form-group">
-                                    <input type="number" :id="'pet_quantity'+item.pet_code" required v-model="item.pet_quantity" :disabled="!item.selected"  class="form-control btn-xs"  :placeholder="'จำนวน'+item.pet_name+'...ตัว'" >					
+                                    <input type="number" :id="'pet_quantity'+item.pet_code.$model" required :class="status2(item.pet_quantity)"  @blur="item.pet_quantity.$touch()" v-model="item.pet_quantity.$model" :disabled="!item.selected.$model"  class="form-control btn-xs"  :placeholder="'จำนวน'+item.pet_name.$model+'...ตัว'" >					
                                     </div>
                                   </td>
                                 <td>
                                     <div class="form-group">
-                                    <input type="number" :id="'pet_vacine_qt'+item.pet_code" required  v-model="item.pet_vacine_qt" :disabled="!item.selected" class="form-control btn-xs" :placeholder="'จำนวน'+item.pet_name+'(รับวัคซีนแล้ว)...ตัว'">					
+                                    <input type="number" :id="'pet_vacine_qt'+item.pet_code.$model" required :class="status2(item.pet_vacine_qt)"  @blur="item.pet_vacine_qt.$touch()" v-model="item.pet_vacine_qt.$model" :disabled="!item.selected.$model" class="form-control btn-xs" :placeholder="'จำนวน'+item.pet_name.$model+'(รับวัคซีนแล้ว)...ตัว'">					
                                     </div>
                                   </td>
                                   <td>
                                     <div class="form-group">
-                                      <textarea class="form-control btn-xs" :id="'pet_desc'+item.pet_code" :disabled="!item.selected" v-model="item.pet_desc" rows="2" :placeholder="'รายละเอียด'+item.pet_name+'...'"></textarea>
+                                      <textarea class="form-control btn-xs" :id="'pet_desc'+item.pet_code.$model" :class="status2(item.pet_desc)"  @blur="item.pet_desc.$touch()" :disabled="!item.selected.$model" v-model="item.pet_desc.$model" rows="2" :placeholder="'รายละเอียด'+item.pet_name.$model+'...'"></textarea>
                                     </div>
                                   </td>                              
                                 </tr> 
@@ -1261,15 +1274,15 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                   <label class="form-check-label">ปัญหาสิ่งแวดล้อมในครัวเรือน :</label>
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary8" v-model="xEnvironmental" name="xEnvironmental" value="N">
+                      <input type="radio" id="radioPrimary8" v-model="$v.xEnvironmental.$model" name="xEnvironmental" value="N">
                       <label for="radioPrimary8">ไม่มี
                       </label>
                     </div>
                     <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary9" v-model="xEnvironmental" name="xEnvironmental"  value="Y" checked>
+                      <input type="radio" id="radioPrimary9" v-model="$v.xEnvironmental.$model" name="xEnvironmental"  value="Y" checked>
                       <label for="radioPrimary9">มี (ระบุ)					  
-                      </label>
-                        <textarea class="form-control" v-model="xEnvironmentaldisc" id="xEnvironmentaldisc" rows="1" placeholder="มี (ระบุ)..." :disabled="xEnvironmental=='N'"></textarea>
+                      </label> 
+                        <textarea class="form-control" v-model="$v.xEnvironmentaldisc.$model" :class="status2($v.xEnvironmentaldisc)"  @blur="$v.xEnvironmentaldisc.$touch()" id="xEnvironmentaldisc" rows="1" placeholder="มี (ระบุ)..." :disabled="$v.xEnvironmental.$model=='N'"></textarea>
                     </div>
                   </div>
                 </div>
@@ -1280,15 +1293,15 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                     <label class="form-check-label">การจัดการสิ่งแวดล้อม :</label>
                     <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary101x" v-model="xEnvironmental2" name="radioPrimary101x" value="N">
+                        <input type="radio" id="radioPrimary101x" v-model="$v.xEnvironmental2.$model" name="radioPrimary101x" value="N">
                         <label for="radioPrimary101x">ไม่มี
                         </label>
                       </div>
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary102x" v-model="xEnvironmental2" name="radioPrimary101x" value="Y">
+                        <input type="radio" id="radioPrimary102x" v-model="$v.xEnvironmental2.$model" name="radioPrimary101x" value="Y">
                         <label for="radioPrimary102x">มี(ระบุ)
                         </label>
-				          		 <textarea class="form-control" v-model="xEnvironmental2disc" id="xEnvironmental2disc" rows="1" :disabled="xEnvironmental2=='N'" placeholder="มี (ระบุ)..."></textarea>
+				          		 <textarea class="form-control" v-model="$v.xEnvironmental2disc.$model" :class="status2($v.xEnvironmental2disc)"  @blur="$v.xEnvironmental2disc.$touch()" id="xEnvironmental2disc" rows="1" :disabled="$v.xEnvironmental2.$model=='N'" placeholder="มี (ระบุ)..."></textarea>
                       </div>
                     </div>
                   </div>
@@ -1342,15 +1355,15 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                     <label >เคยได้รับความช่วยเหลือ :</label> 
                     <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary12" name="helpme" v-model="helpme" value="N" >
+                        <input type="radio" id="radioPrimary12" name="helpme" v-model="$v.helpme.$model" value="N" >
                         <label for="radioPrimary12">ไม่เคย
                         </label>
                       </div>
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary13" name="helpme"  v-model="helpme"  value="Y" checked>
+                        <input type="radio" id="radioPrimary13" name="helpme"  v-model="$v.helpme.$model"  value="Y" checked>
                         <label for="radioPrimary13">เคย(ระบุความช่วยเหลือจากหน่วยงานไหน)
                         </label>
-				        		    <textarea class="form-control" name="helpmedisc" id="helpmedisc" v-model="helpmedisc" rows="2" :disabled="helpme=='N'"  placeholder="เคย (ความช่วยเหลือจากหน่วยงานไหน)..."></textarea>
+				        		    <textarea class="form-control" name="helpmedisc" id="helpmedisc"  :class="status2($v.helpmedisc)"  @blur="$v.helpmedisc.$touch()" v-model="$v.helpmedisc.$model" rows="2" :disabled="$v.helpme.$model=='N'"  placeholder="เคย (ความช่วยเหลือจากหน่วยงานไหน)..."></textarea>
                       </div>
                     </div>
                   </div>
@@ -1437,7 +1450,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 <div class="form-group">
                   <label>วันเดือนปีสำรวจ :</label>
                   <div class="input-group date datepickers" id="survseydate" data-target-input="nearest"> 
-	               <input id="assessment_date" name="assessment_date" type="text"  data-target="#survseydate" data-toggle="datetimepicker" 
+	               <input id="assessment_date" name="assessment_date" required type="text"  data-target="#survseydate" data-toggle="datetimepicker" 
                  class="form-control  col-md-8 datetimepicker-input assessment-date-keypress" data-target="#survseydate" autocomplete="off" required>
                   <div class="input-group-append" data-target="#survseydate" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>

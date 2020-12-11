@@ -43,7 +43,7 @@ Vue.component("date-picker2", {
 });
 Vue.component("datepickerrang", {
   props: ['mdatarang'],
-  template: `<input type="text" class="form-control float-right" name="familyhomeproductperiod"  :value="mdatarang" ref="mdatarang">`,
+  template: `<input type="text" class="form-control float-right" required name="familyhomeproductperiod"  :value="mdatarang" ref="mdatarang">`,
   mounted() {
     var _this = this;
        $(this.$refs.mdatarang).daterangepicker({
@@ -62,6 +62,31 @@ var validationMixin = window.vuelidate.validationMixin;
 var required = validators.required;
 var maxLength = validators.maxLength;
 var minLength=validators.minLength;
+var Fn_integer = validators.integer;
+var Fn_decimal = validators.decimal;
+var helpers=validators.helpers;
+var requiredIf=validators.requiredIf;
+
+var Fn_txtHouseId = function Fn_txtHouseId(v) {
+  return  !helpers.req(v) || !!(''+v).match(/^[0-9/]*$/);
+};
+var Fn_txtCitizenId = function Fn_txtCitizenId(v) {
+  return  !helpers.req(v) ||(!!(''+v).match(/([0-9]{1})([0-9]{4})([0-9]{5})([0-9]{2})([0-9]{1})$/)&&v.length==13);
+};
+var Fn_areawork = function Fn_areawork(v) {  
+  return  !helpers.req(v) ||(!!(''+v).match(/^[0-4]$/));
+};
+var Fn_plusinteger = function Fn_plusinteger(v) {  
+  return  !helpers.req(v) ||(!!(''+v).match(/^[0-9]*$/));
+};
+var validateIf = function validateIf(prop, validator) {
+  return helpers.withParams({
+    type: 'validatedIf',
+    prop: prop
+  }, function (value, parentVm) {
+    return helpers.ref(prop, this, parentVm) ? validator(value) : true;
+  });
+};
 var showonly_houseinforgeneral=["02", "03", "04", "07", "05","08", "12"];
 
 window.app = new Vue({
@@ -72,6 +97,7 @@ window.app = new Vue({
     errorMessage: "",  
     btn_save:false,
     txtcopydata:'',
+    actions:window.actions,
      // for view  
     listmas_vilage:window.Slistmas_vilage,
     familylist:window.Sfamilylist,
@@ -131,7 +157,7 @@ window.app = new Vue({
     // this.listmas_occupation = JSON.parse(this.$el.dataset.listmas_occupation); 
   },
  validations() {
-    return {
+    return { 
      Mhouseinforgeneral:{
          familyhomecareer:{required},
          familyhomeproducttarget:{required},
@@ -143,27 +169,25 @@ window.app = new Vue({
           deeds:{
               $each:{
                   province:{required},district:{required},nodeed:{required}
-                 ,arearai:{required},areawork:{required},areatrw:{required},
+                 ,arearai:{required,Fn_plusinteger},areawork:{required,Fn_plusinteger,Fn_areawork},areatrw:{required,Fn_decimal},
               } 
           },
           norsor3kors:{
               $each:{
                   province:{required},district:{required},nodeed:{required}
-                 ,arearai:{required},areawork:{required},areatrw:{required},
+                 ,arearai:{required,Fn_plusinteger},areawork:{required,Fn_plusinteger,Fn_areawork},areatrw:{required,Fn_decimal},
               } 
           },
           spoks:{
               $each:{
                   province:{required},district:{required},nodeed:{required}
-                 ,arearai:{required},areawork:{required},areatrw:{required},
+                ,arearai:{required,Fn_plusinteger},areawork:{required,Fn_plusinteger,Fn_areawork},areatrw:{required,Fn_decimal},
               } 
           },
           chapter5s:{
               $each:{
-                province:{},district:{},nodeed:{}
-                 ,arearai:{},areawork:{},areatrw:{},
-                //   province:{required},district:{},nodeed:{required},districtselect:{required}
-                //  ,arearai:{required},areawork:{required},areatrw:{required},
+                province:{required},district:{},nodeed:{required},districtselect:{required}
+               ,arearai:{required,Fn_plusinteger},areawork:{required,Fn_plusinteger,Fn_areawork},areatrw:{required,Fn_decimal}, 
               } 
           },
          another:{}
@@ -174,7 +198,7 @@ window.app = new Vue({
          prefix:{required},   
          txtFName:{ required },
          txtLName:{required},
-         txtCitizenId:{ required },
+         txtCitizenId:{ required,Fn_txtCitizenId },
          xFstatusRd:{ required },
          sexRd:{ required },
          txtNational:{ required },
@@ -185,7 +209,7 @@ window.app = new Vue({
          careergroup:{},
          careeranother:{},
          careermain:{ required },
-         careersecond:{ required },
+         careersecond:{  },
          netIncome:{ required } 
            
         } 
@@ -198,8 +222,69 @@ window.app = new Vue({
         txtPostalCode:{required},
         txtHouseId:{
            required,
-           minLength: minLength(5) 
+          isUnique_txtHouseId (value) {
+          if (value == '') return true;  
+            return new Promise(function(resolve, reject){
+                $.ajax({
+                  url: 'handler/family/family_duplicate_check.php',
+                  type: 'post', 
+                  datatype : "application/json", 
+                  data:{house_no:encodeURIComponent(value)},
+                  success: function (data) { 
+                    resolve((data.status=='nodupicate'))
+                  },
+                  error: function (error) {
+                    reject(true)
+                  },
+                })
+              });  
+          },
+           Fn_txtHouseId,
+           minLength: minLength(1) 
         } 
+    },
+    Mlistmas_facilities:{
+      $each: {
+        selected:{}, 
+        fac_name:{},
+        fac_quantity:{
+          Fn_plusinteger:validateIf(function (nestedModel) {
+               return !!nestedModel.selected;
+          },Fn_plusinteger),
+          required: requiredIf(function (nestedModel) {
+            return !!nestedModel.selected; 
+          })
+        }
+      }
+    },
+    listmas_pet:{
+      $each: {
+        selected:{}, 
+        pet_name:{},
+        pet_desc:{},
+        pet_code:{},
+        pet_vacine_qt:{},
+        pet_quantity:{
+          Fn_plusinteger:validateIf(function (nestedModel) {
+               return !!nestedModel.selected;
+          },Fn_plusinteger),
+          required: requiredIf(function (nestedModel) {
+            return !!nestedModel.selected; 
+          })
+        }
+      }
+    },
+    xEnvironmental:{},
+    xEnvironmentaldisc:{
+      minLength: validateIf('xEnvironmental', minLength(3)) 
+    },
+    xEnvironmental2:{},
+    xEnvironmental2disc:{
+      minLength: validateIf('xEnvironmental2', minLength(3)) 
+    },
+    helpme:{},
+    helpmedisc:{
+      minLength: validateIf('helpme', minLength(3)) 
     }
    }
   },
@@ -330,7 +415,7 @@ window.app = new Vue({
             });
      },   
      getamphurbyprovince:function(foriten,event,index){ 
-       var _this=this;  
+       var _this=this;  // console.log('index',index);
       $.ajax({
         url: 'handler/GetAmphurByProvince.php',
         type: 'get', 
@@ -342,21 +427,26 @@ window.app = new Vue({
           switch (foriten) {  
             case 'deeds':
                _this.$set(_this.distric_deeds, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse());
-               _this.Mfamerdetaillists.deeds[index].district=null;
+              //  _this.Mfamerdetaillists.deeds[index].district=null; 
+              _this.Mfamerdetaillists.deeds[index].district=_this.deed.district;
              break;
             case 'norsor3kors':
               _this.$set(_this.distric_norsor3kors, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse());
-              _this.Mfamerdetaillists.norsor3kors[index].district=null;
+              // _this.Mfamerdetaillists.norsor3kors[index].district=null;
+              _this.Mfamerdetaillists.norsor3kors[index].district=_this.deed.district;
               break;
             case 'spoks': 
-            _this.$set(_this.distric_sorporkor, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse());
-            _this.Mfamerdetaillists.spoks[index].district=null;
+             _this.$set(_this.distric_sorporkor, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse());
+             // _this.Mfamerdetaillists.spoks[index].district=null;
+             _this.Mfamerdetaillists.spoks[index].district=_this.deed.district;
             break;
             case 'chapter5s':
               _this.$set(_this.distric_chapter5s, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse());
-              _this.Mfamerdetaillists.chapter5s[index].district=null;
+              // _this.Mfamerdetaillists.chapter5s[index].district=null;
+              _this.Mfamerdetaillists.chapter5s[index].district=_this.deed.district;
                break; 
-          }   
+          } 
+            
         },
         error: function (jqXHR, textStatus, errorThrown){ 
           alert('error!');
@@ -367,12 +457,17 @@ window.app = new Vue({
     	return {
       	error: validation.$error,
         dirty: validation.$dirty
-      }
-    },     
+      } 
+    },status2(validation) {
+    	return {
+      	error: validation.$error 
+      } 
+    },      
     addPeople: function () { 
     if(this.Mfamilylists.length>0){
        this.familylist.xFstatusRd='M'; 
-    }
+       this.familylist.homerelations=null;
+    }  
     this.familylists.push(Vue.util.extend({}, this.familylist)); 
     this.Mfamilylists.push(Vue.util.extend({},this.familylist));   
     //  this.$nextTick(function(){  
@@ -393,9 +488,10 @@ window.app = new Vue({
     Vue.delete(this.familylists, index);
     Vue.delete(this.Mfamilylists, index);
     },
-   addDeed: function () { 
+   addDeed: function () {  
     this.famerdetaillists.deeds.push(Vue.util.extend({}, this.deed)); 
     this.Mfamerdetaillists.deeds.push(Vue.util.extend({}, this.deed)); 
+    this.getamphurbyprovince('deeds',{target:{value:this.deed.province}},this.famerdetaillists.deeds.length-1); 
     },
     removeDeed: function (index) {
     Vue.delete(this.famerdetaillists.deeds, index);
@@ -404,6 +500,7 @@ window.app = new Vue({
    addNorsor3kors: function () { 
     this.famerdetaillists.norsor3kors.push(Vue.util.extend({}, this.deed)); 
     this.Mfamerdetaillists.norsor3kors.push(Vue.util.extend({}, this.deed));
+    this.getamphurbyprovince('norsor3kors',{target:{value:this.deed.province}},this.famerdetaillists.norsor3kors.length-1); 
     },
     removeNorsor3kors: function (index) {
     Vue.delete(this.famerdetaillists.norsor3kors, index);
@@ -412,6 +509,7 @@ window.app = new Vue({
    addSpoks: function () { 
     this.famerdetaillists.spoks.push(Vue.util.extend({}, this.deed)); 
     this.Mfamerdetaillists.spoks.push(Vue.util.extend({}, this.deed)); 
+    this.getamphurbyprovince('spoks',{target:{value:this.deed.province}},this.famerdetaillists.spoks.length-1); 
     },
     removeSpoks: function (index) {
     Vue.delete(this.famerdetaillists.spoks, index);
@@ -420,6 +518,7 @@ window.app = new Vue({
    addChapter5s: function () { 
     this.famerdetaillists.chapter5s.push(Vue.util.extend({}, this.deed)); 
     this.Mfamerdetaillists.chapter5s.push(Vue.util.extend({}, this.deed));
+    this.getamphurbyprovince('chapter5s',{target:{value:this.deed.province}},this.famerdetaillists.chapter5s.length-1); 
     },
     removeChapter5s: function (index) {
     Vue.delete(this.famerdetaillists.chapter5s, index);
