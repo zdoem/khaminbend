@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : MaraiDB_LOCAL
- Source Server Type    : MariaDB
- Source Server Version : 100417
- Source Host           : localhost:33060
+ Source Server         : MYSQL_LOCAL
+ Source Server Type    : MySQL
+ Source Server Version : 50732
+ Source Host           : localhost:3306
  Source Schema         : db_khokkhamin
 
- Target Server Type    : MariaDB
- Target Server Version : 100417
+ Target Server Type    : MySQL
+ Target Server Version : 50732
  File Encoding         : 65001
 
- Date: 06/12/2020 10:42:43
+ Date: 13/12/2020 01:41:11
 */
 
 SET NAMES utf8mb4;
@@ -9914,6 +9914,9 @@ CREATE TABLE `fm_fam_disaster_dt5`  (
 -- Records of fm_fam_disaster_dt5
 -- ----------------------------
 INSERT INTO `fm_fam_disaster_dt5` VALUES ('63122008', '03', 'วาตภัย', NULL);
+INSERT INTO `fm_fam_disaster_dt5` VALUES ('631212', '01', 'ภัยแล้ง ', NULL);
+INSERT INTO `fm_fam_disaster_dt5` VALUES ('631213', '01', 'ภัยแล้ง ', NULL);
+INSERT INTO `fm_fam_disaster_dt5` VALUES ('631214', '01', 'ภัยแล้ง ', NULL);
 
 -- ----------------------------
 -- Table structure for fm_fam_facilities_dt3
@@ -9932,6 +9935,9 @@ CREATE TABLE `fm_fam_facilities_dt3`  (
 -- Records of fm_fam_facilities_dt3
 -- ----------------------------
 INSERT INTO `fm_fam_facilities_dt3` VALUES ('63122008', '01', 'รถไถ แทรกเตอร์ ', 10, NULL);
+INSERT INTO `fm_fam_facilities_dt3` VALUES ('631212', '01', 'รถไถ แทรกเตอร์ ', 10, NULL);
+INSERT INTO `fm_fam_facilities_dt3` VALUES ('631213', '01', 'รถไถ แทรกเตอร์ ', 10, NULL);
+INSERT INTO `fm_fam_facilities_dt3` VALUES ('631214', '01', 'รถไถ แทรกเตอร์ ', 20, NULL);
 
 -- ----------------------------
 -- Table structure for fm_fam_hd
@@ -9945,17 +9951,6 @@ CREATE TABLE `fm_fam_hd`  (
   `district` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `province` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `post_code` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `pre_owner` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `owner_fname` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `owner_lname` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `citizen_id` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `x_status` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `x_sex` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `national` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `reg_code` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `date_of_birth` date NULL DEFAULT NULL,
-  `education_code` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `relations_code` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `g_occupational_code` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `g_occupational_other` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `main_occupation_code` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -9993,7 +9988,9 @@ CREATE TABLE `fm_fam_hd`  (
 -- ----------------------------
 -- Records of fm_fam_hd
 -- ----------------------------
-INSERT INTO `fm_fam_hd` VALUES ('63122008', '78/566', '27', 'หลองแคน', 'ดงหลวง', 'มุกดาหาร', '49140', '03', 'test1', 'test1', '12345656666', 'O', 'M', 'ไทย', '02', '2020-12-07', '02', '02', '02', '', '03', '04', 100000, '', '13', '1', '2', '2020-12-04', '2020-12-16', '10', 'N', '', 'N', '', '', 'N', '', '2020-04-13', 'A', 'admin1', 'admin1', '2020-12-04 13:41:28', '2020-12-04 13:41:28', NULL, NULL, NULL, NULL);
+INSERT INTO `fm_fam_hd` VALUES ('631212', '71/31', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', '03', '333', '13', '02', 10000, '', '02', '2', '1', '2020-12-13', '2021-03-13', '1000', 'N', '', 'N', '', '', 'N', '', '2020-12-13', 'A', 'admin1', 'admin1', '2020-12-13 00:49:19', '2020-12-13 00:49:19', NULL, NULL, NULL, NULL);
+INSERT INTO `fm_fam_hd` VALUES ('631213', '71/312', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', '02', '', '03', '', 10000, '10000', '01', '1', '1', '2020-12-13', '2021-03-13', '10000', 'N', '', 'N', '', '', 'N', '', '2020-12-13', 'A', 'admin1', 'admin1', '2020-12-13 01:00:07', '2020-12-13 01:00:07', NULL, NULL, NULL, NULL);
+INSERT INTO `fm_fam_hd` VALUES ('631214', '74/225', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', '03', '', '11', '', 1000, '', '02', '2', '1', '2020-12-13', '2021-03-13', '1000', 'Y', '', 'N', '', '', 'N', '', '2020-12-13', 'A', 'admin1', 'admin1', '2020-12-13 01:21:57', '2020-12-13 01:21:57', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for fm_fam_info_dt6
@@ -10011,6 +10008,9 @@ CREATE TABLE `fm_fam_info_dt6`  (
 -- Records of fm_fam_info_dt6
 -- ----------------------------
 INSERT INTO `fm_fam_info_dt6` VALUES ('63122008', '03', 'การใช้คอมพิวเตอร์และอินเทอร์เน็ต', NULL);
+INSERT INTO `fm_fam_info_dt6` VALUES ('631212', '02', 'การใช้โทรศัพท์มือถือ', NULL);
+INSERT INTO `fm_fam_info_dt6` VALUES ('631213', '01', 'ปากต่อปาก', NULL);
+INSERT INTO `fm_fam_info_dt6` VALUES ('631214', '02', 'การใช้โทรศัพท์มือถือ', NULL);
 
 -- ----------------------------
 -- Table structure for fm_fam_land_dt2
@@ -10043,6 +10043,7 @@ INSERT INTO `fm_fam_land_dt2` VALUES ('63122008', 1, 'title_deed', NULL, '64', '
 INSERT INTO `fm_fam_land_dt2` VALUES ('63122008', 1, 'NorSor3Kor', NULL, '13', '2209', '10', 10, 10, 10, 'A', 'admin1', NULL, '2020-12-04 13:41:27', NULL);
 INSERT INTO `fm_fam_land_dt2` VALUES ('63122008', 1, 'sorporkor', NULL, '11', '2002', '10', 110, 10, 10, 'A', 'admin1', NULL, '2020-12-04 13:41:27', NULL);
 INSERT INTO `fm_fam_land_dt2` VALUES ('63122008', 1, 'porbortor5', NULL, '50', '6305', '10', 10, 10, 10, 'A', 'admin1', NULL, '2020-12-04 13:41:27', NULL);
+INSERT INTO `fm_fam_land_dt2` VALUES ('631213', 1, 'title_deed', NULL, '20', '3115', '10', 0, 0, 0, 'A', 'admin1', NULL, '2020-12-13 01:00:07', NULL);
 
 -- ----------------------------
 -- Table structure for fm_fam_members_dt1
@@ -10078,6 +10079,10 @@ CREATE TABLE `fm_fam_members_dt1`  (
 -- Records of fm_fam_members_dt1
 -- ----------------------------
 INSERT INTO `fm_fam_members_dt1` VALUES ('63122008', 2, '03', 'testtt', 'testttt', '12345666666', '2', 'M', 'ไทย', '02', '2020-12-15', '02', '04', '11', '09', 1000, 'A', 'admin1', NULL, '2020-12-04 13:41:27', NULL);
+INSERT INTO `fm_fam_members_dt1` VALUES ('631212', 1, '03', 'test', 'test', '1234565666666', 'O', 'M', 'ไทย', '01', '2020-12-08', '02', '01', '13', '02', 10000, 'A', 'admin1', NULL, '2020-12-13 00:49:18', NULL);
+INSERT INTO `fm_fam_members_dt1` VALUES ('631213', 1, '02', 'ffff', 'ffff', '1234565666667', 'O', 'M', 'ไทย', '01', '2020-12-22', '03', '01', '03', '', 10000, 'A', 'admin1', NULL, '2020-12-13 01:00:07', NULL);
+INSERT INTO `fm_fam_members_dt1` VALUES ('631213', 2, '02', 'test', 'testt', '5552345666666', 'M', 'M', 'ไทย', '01', '2020-12-09', '01', '04', '11', '07', 12000, 'A', 'admin1', NULL, '2020-12-13 01:00:07', NULL);
+INSERT INTO `fm_fam_members_dt1` VALUES ('631214', 1, '02', 'test', 'test', '1234565666668', 'O', 'M', 'ไทย', '01', '2020-12-11', '01', '01', '11', '', 1000, 'A', 'admin1', NULL, '2020-12-13 01:21:57', NULL);
 
 -- ----------------------------
 -- Table structure for fm_fam_pet_dt4
@@ -10097,6 +10102,9 @@ CREATE TABLE `fm_fam_pet_dt4`  (
 -- Records of fm_fam_pet_dt4
 -- ----------------------------
 INSERT INTO `fm_fam_pet_dt4` VALUES ('63122008', '01', 'โค ', 10, 10, '10');
+INSERT INTO `fm_fam_pet_dt4` VALUES ('631212', '01', 'โค ', 10, 0, '');
+INSERT INTO `fm_fam_pet_dt4` VALUES ('631213', '01', 'โค ', 10, 0, '');
+INSERT INTO `fm_fam_pet_dt4` VALUES ('631214', '02', 'กระบือ', 20, 0, '');
 
 -- ----------------------------
 -- Table structure for geographies
@@ -10213,64 +10221,23 @@ INSERT INTO `provinces` VALUES (76, '96', 'นราธิวาส', 'Narathiwa
 INSERT INTO `provinces` VALUES (77, '97', 'บึงกาฬ', 'buogkan', 3);
 
 -- ----------------------------
--- Table structure for sfm_fam_hd
+-- Table structure for sequence_data
 -- ----------------------------
-DROP TABLE IF EXISTS `sfm_fam_hd`;
-CREATE TABLE `sfm_fam_hd`  (
-  `next_not_cached_value` bigint(21) NOT NULL,
-  `minimum_value` bigint(21) NOT NULL,
-  `maximum_value` bigint(21) NOT NULL,
-  `start_value` bigint(21) NOT NULL COMMENT 'start value when sequences is created or value if RESTART is used',
-  `increment` bigint(21) NOT NULL COMMENT 'increment value',
-  `cache_size` bigint(21) UNSIGNED NOT NULL,
-  `cycle_option` tinyint(1) UNSIGNED NOT NULL COMMENT '0 if no cycles are allowed, 1 if the sequence should begin a new cycle when maximum_value is passed',
-  `cycle_count` bigint(21) NOT NULL COMMENT 'How many cycles have been done'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DEFAULT;
+DROP TABLE IF EXISTS `sequence_data`;
+CREATE TABLE `sequence_data`  (
+  `sequence_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `sequence_increment` int(11) UNSIGNED NOT NULL DEFAULT 1,
+  `sequence_min_value` int(11) UNSIGNED NOT NULL DEFAULT 1,
+  `sequence_max_value` bigint(20) UNSIGNED NOT NULL DEFAULT 18446744073709551615,
+  `sequence_cur_value` bigint(20) UNSIGNED NULL DEFAULT 1,
+  `sequence_cycle` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`sequence_name`) USING BTREE
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of sfm_fam_hd
+-- Records of sequence_data
 -- ----------------------------
-INSERT INTO `sfm_fam_hd` VALUES (4001, 1, 9223372036854775806, 1, 1, 1000, 0, 0);
-
--- ----------------------------
--- Table structure for sfm_fam_members_dt1
--- ----------------------------
-DROP TABLE IF EXISTS `sfm_fam_members_dt1`;
-CREATE TABLE `sfm_fam_members_dt1`  (
-  `next_not_cached_value` bigint(21) NOT NULL,
-  `minimum_value` bigint(21) NOT NULL,
-  `maximum_value` bigint(21) NOT NULL,
-  `start_value` bigint(21) NOT NULL COMMENT 'start value when sequences is created or value if RESTART is used',
-  `increment` bigint(21) NOT NULL COMMENT 'increment value',
-  `cache_size` bigint(21) UNSIGNED NOT NULL,
-  `cycle_option` tinyint(1) UNSIGNED NOT NULL COMMENT '0 if no cycles are allowed, 1 if the sequence should begin a new cycle when maximum_value is passed',
-  `cycle_count` bigint(21) NOT NULL COMMENT 'How many cycles have been done'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DEFAULT;
-
--- ----------------------------
--- Records of sfm_fam_members_dt1
--- ----------------------------
-INSERT INTO `sfm_fam_members_dt1` VALUES (1, 1, 9223372036854775806, 1, 1, 1000, 0, 0);
-
--- ----------------------------
--- Table structure for snextnum
--- ----------------------------
-DROP TABLE IF EXISTS `snextnum`;
-CREATE TABLE `snextnum`  (
-  `next_not_cached_value` bigint(21) NOT NULL,
-  `minimum_value` bigint(21) NOT NULL,
-  `maximum_value` bigint(21) NOT NULL,
-  `start_value` bigint(21) NOT NULL COMMENT 'start value when sequences is created or value if RESTART is used',
-  `increment` bigint(21) NOT NULL COMMENT 'increment value',
-  `cache_size` bigint(21) UNSIGNED NOT NULL,
-  `cycle_option` tinyint(1) UNSIGNED NOT NULL COMMENT '0 if no cycles are allowed, 1 if the sequence should begin a new cycle when maximum_value is passed',
-  `cycle_count` bigint(21) NOT NULL COMMENT 'How many cycles have been done'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DEFAULT;
-
--- ----------------------------
--- Records of snextnum
--- ----------------------------
-INSERT INTO `snextnum` VALUES (1001, 1, 9223372036854775806, 1, 1, 1000, 0, 0);
+INSERT INTO `sequence_data` VALUES ('sqfm_fam_hd', 1, 1, 18446744073709551615, 15, 0);
 
 -- ----------------------------
 -- Table structure for tbl_departments
@@ -10612,7 +10579,7 @@ CREATE TABLE `tbl_mas_vilage`  (
   `d_create` datetime(0) NOT NULL,
   `d_update` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`vil_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'ตารางข้อมูลหมู่บ้าน' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'ตารางข้อมูลหมู่บ้าน' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tbl_mas_vilage
@@ -10670,13 +10637,89 @@ INSERT INTO `tbl_users` VALUES ('admin1', '123456', 'admin1', 'admin1', 'admin1'
 INSERT INTO `tbl_users` VALUES ('user1', '123456', 'user1', 'user1', 'ทดสอบ', 'test@test.com', '0841013129', '1', '01', '01', 'A', 'sys', NULL, '2020-11-15 10:52:57', NULL);
 
 -- ----------------------------
--- Table structure for test
+-- Function structure for currval
 -- ----------------------------
-DROP TABLE IF EXISTS `test`;
-CREATE TABLE `test`  (
-  `id` int(11) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+DROP FUNCTION IF EXISTS `currval`;
+delimiter ;;
+CREATE FUNCTION `currval`(`seq_name` varchar(100))
+ RETURNS bigint(20)
+BEGIN
+    DECLARE cur_val bigint(20);
+ 
+    SELECT
+        sequence_cur_value INTO cur_val
+    FROM
+        sequence_data
+    WHERE
+        sequence_name = seq_name
+    ;
+ 
+    RETURN cur_val;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Function structure for nextval
+-- ----------------------------
+DROP FUNCTION IF EXISTS `nextval`;
+delimiter ;;
+CREATE FUNCTION `nextval`(`seq_name` varchar(100))
+ RETURNS bigint(20)
+BEGIN
+    DECLARE cur_val bigint(20);
+ 
+    SELECT
+        sequence_cur_value INTO cur_val
+    FROM
+        sequence_data
+    WHERE
+        sequence_name = seq_name
+    ;
+ 
+    IF cur_val IS NOT NULL THEN
+        UPDATE
+            sequence_data
+        SET
+            sequence_cur_value = IF (
+                (sequence_cur_value + sequence_increment) > sequence_max_value,
+                IF (
+                    sequence_cycle = TRUE,
+                    sequence_min_value,
+                    NULL
+                ),
+                sequence_cur_value + sequence_increment
+            )
+        WHERE
+            sequence_name = seq_name
+        ;
+    END IF;
+ 
+    RETURN cur_val;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Function structure for setval
+-- ----------------------------
+DROP FUNCTION IF EXISTS `setval`;
+delimiter ;;
+CREATE FUNCTION `setval`(`seq_name` varchar(100), `new_val` bigint(20))
+ RETURNS bigint(20)
+BEGIN
+    UPDATE
+		sequence_data
+	SET
+		sequence_cur_value = new_val
+    WHERE
+        sequence_name = seq_name
+    ;
+ 
+    RETURN new_val;
+END
+;;
+delimiter ;
 
 -- ----------------------------
 -- Procedure structure for user_auth

@@ -62,7 +62,7 @@ if($id>0){
     ->where('vil_moo', '=', $txtMoo)
     ->select($db::raw("vil_id,vil_moo"))
     ->first();
-     if($rows_old->vil_moo==$txtMoo){ 
+     if(@$rows_old->vil_moo==$txtMoo){ 
       $action='dupicate'; 
       $status ='dupicate'; 
      }
@@ -125,7 +125,7 @@ if($id>0){
      case 'deletefail': ?> alert('ลบข้อมูลไม่ได้!'); <?php break; 
    }
    ?>
- window.location = "../../<?=$refer_urlmain?>";
+ window.location = "../../<?=$refer_urlmain?>?house_moo=<?=$txtMoo?>";
 // window.location = "../../status_action.php?status=<?=$status?>&refer_urlmain=<?=$refer_urlmain?>";
 </script>
 <?php

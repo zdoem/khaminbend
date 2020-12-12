@@ -1,5 +1,6 @@
 <?php 
 defined('ROOT') OR exit('No access allowed');
+$current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,15 +85,15 @@ defined('ROOT') OR exit('No access allowed');
 		<li class="nav-item dropdown user-menu">
 			<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
 			  <img src="assets/img/user2-160x160.jpg" class="user-image img-circle elevation-2" alt="User Image">
-			  <span class="d-none d-md-inline">เสน่ห์ เพกประโคน</span>
+			  <span class="d-none d-md-inline"><?=@$_SESSION['fname'].' '.@$_SESSION['lname']?></span>
 			</a>
 			<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 			  <!-- User image -->
 			  <li class="user-header bg-primary">
 				<img src="assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
 
-				<p>
-				  เสน่ห์ เพกประโคน - Supervisor
+				<p>  
+          <?=@$_SESSION['fname'].' '.@$_SESSION['lname'].' - '.@$_SESSION['position_name']?>
 				  <small>กองส่งเสริมการเกษตร</small>
 				</p>
 			  </li> 
@@ -129,7 +130,7 @@ defined('ROOT') OR exit('No access allowed');
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false"> 
 
             <li class="nav-item">
-              <a href="familyList.php" class="nav-link">
+              <a href="familyList.php"  class="nav-link <?=(in_array($current_file_name,['familyList.php','familyForm.php']))?'active':'' ?>">
                 <em class="fa fa-address-card">&nbsp;</em>
                 <p>
                 หน้าจัดการข้อมูลครัวเรือน
@@ -138,7 +139,7 @@ defined('ROOT') OR exit('No access allowed');
             </li>
 
             <li class="nav-item">
-              <a href="villageList.php" class="nav-link ">
+              <a href="villageList.php" class="nav-link <?=(in_array($current_file_name,['villageList.php','villageForm.php','villageFormEdit.php']))?'active':'' ?>">
                 <em class="fa fa-university">&nbsp;</em>
                 <p>
                 หน้าจัดการข้อมูลหมู่บ้าน
@@ -205,21 +206,21 @@ defined('ROOT') OR exit('No access allowed');
     </aside>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-<script>
- $(function () {
-    var url = window.location;
+<script> 
+ $(function () { 
+    // var url = window.location;  
     // for single sidebar menu
-    $('ul.nav-sidebar a').filter(function () {
-        return this.href == url;
-    }).addClass('active');
+    // $('ul.nav-sidebar a').filter(function () { 
+    //     return this.href == url;
+    // }).addClass('active');
 
     // for sidebar menu and treeview
-    $('ul.nav-treeview a').filter(function () {
-        return this.href == url;
-    }).parentsUntil(".nav-sidebar > .nav-treeview")
-        .css({'display': 'block'})
-        .addClass('menu-open').prev('a')
-        .addClass('active');
+    // $('ul.nav-treeview a.active').filter(function () {
+    //     return this.href == url;
+    // }).parentsUntil(".nav-sidebar > .nav-treeview")
+    //     .css({'display': 'block'})
+    //     .addClass('menu-open').prev('a')
+    //     .addClass('active');
 });
 </script>
  

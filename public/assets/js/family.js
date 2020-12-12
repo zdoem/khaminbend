@@ -164,6 +164,8 @@ window.app = new Vue({
          familyhomesourceoffunds:{required},
          familyhomeproductperiod:{required},
          familyhomeproductioncost:{required}, 
+         g_occupational_code:{required},
+         g_occupational_other:{}
      },  
      Mfamerdetaillists:{
           deeds:{
@@ -225,9 +227,7 @@ window.app = new Vue({
          religion:{ required },
          birthday:{ required },
          educationlevel:{ required },
-         homerelations:{ required },
-         careergroup:{},
-         careeranother:{},
+         homerelations:{ required }, 
          careermain:{ required },
          careersecond:{  },
          netIncome:{ required }, 

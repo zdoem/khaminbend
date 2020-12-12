@@ -92,8 +92,7 @@ $listmas_addition= $db::table("tbl_mas_addition")
  $sorporkor=[];$distric_sorporkor=[]; 
  $chapter5s=[];$distric_chapter5s=[];
  $temlistpeople=['prefix'=>null,'txtFName'=>'','txtLName'=>'','txtCitizenId'=>'','xFstatusRd'=>'O','sexRd'=>'M'
-  ,'txtNational'=>'ไทย','religion'=>'01','birthday'=>'','educationlevel'=>null,'homerelations'=>'01','careergroup'=>null
-  ,'careeranother'=>'','careermain'=>null,'careersecond'=>null,'netIncome'=>'','memF_status'=>'A']; 
+  ,'txtNational'=>'ไทย','religion'=>'01','birthday'=>'','educationlevel'=>null,'homerelations'=>'01','careermain'=>null,'careersecond'=>null,'netIncome'=>'','memF_status'=>'A']; 
 $listpeople[]=$temlistpeople;
 //---------------------------------------------------------------------------------------------------------------
 $house_no = ''; //บ้านเลขที่
@@ -119,7 +118,7 @@ $main_occupation_code =''; //อาชีพหลัก
 $add_occupation_code =''; //อาชีพรอง/อาชีพเสริม
 $income_per_year ='';
 $fam_land_other =''; //ที่ดินอื่นๆ
-$eco_occupation_code =''; //อาชีพในครัวเรือน
+$eco_occupation_code =null; //อาชีพในครัวเรือน
 $eco_product_target_code =null; //เป้าหมายการผลิต : 01=ผลิตเพื่อบริโภค,02=ผลิตเพื่อจำหน่าย,03=ผลิตเพื่อบริโภคและจำหน่าย
 $eco_capital_code =null; //แหล่งเงินทุน (ครัวเรือน) :01=เงินทุนส่วนตัว,02=กู้มาลงทุน,03=กู้บางส่วน
 $eco_product_cost =''; //ต้นทุนการผลิต
@@ -133,7 +132,7 @@ $help_desc ='';
 $eco_product_from =''; //ช่วงเวลาการผลิต จาก
 $eco_product_to =''; //ช่วงเวลาการผลิต จาก 
 $familyhomeproductperiod=date('d/m/Y',time()).' - '.date("d/m/Y", strtotime("+3 month", time()));//ช่วงเวลาการผลิต จาก ช่วงเวลาการผลิต จาก
-$d_survey = date('d/m/Y h:i', time()); //วันเดือนปีสำรวจ 
+$d_survey = date('Y/m/d h:i', time()); //วันเดือนปีสำรวจ 
 $alert_survey=date('d/m/Y h:i', time()); 
 $actions='I';
 if (isset($_GET['id'])) {// update 
@@ -195,7 +194,7 @@ if (isset($_GET['id'])) {// update
     if (!IsNullOrEmptyString($eco_product_to)) {$eco_product_to = date('d/m/Y', strtotime($eco_product_to));}
     if(!IsNullOrEmptyString($eco_product_from)&&!IsNullOrEmptyString($eco_product_to)){$familyhomeproductperiod=$eco_product_from.' - '.$eco_product_to;}
     $d_survey = (isset($data_fm_fam_hd->d_survey) ? $data_fm_fam_hd->d_survey : ''); //วันเดือนปีสำรวจ
-    if (!IsNullOrEmptyString($d_survey)) {$d_survey = date('d/m/Y h:i', strtotime($d_survey));} 
+    if (!IsNullOrEmptyString($d_survey)) {$d_survey = date('Y/m/d h:i', strtotime($d_survey));} 
  
     // echo '<pre>';print_r($data_fm_fam_hd);exit();
     // var_dump($d_survey);exit();
@@ -227,7 +226,7 @@ if (isset($_GET['id'])) {// update
     ->select($db::raw("mem_pre AS prefix,b.f_status,mem_fname AS txtFName,mem_lname AS txtLName,mem_citizen_id AS txtCitizenId,mem_status AS xFstatusRd
       ,mem_sex AS sexRd,mem_national AS txtNational,mem_religion_code AS religion,mem_df_birth AS birthday,mem_education_code AS educationlevel
       ,mem_relations_code AS homerelations,b.g_occupational_code AS careergroup,b.g_occupational_other AS careeranother
-      ,xmain_occupation_code AS careermain,xadditional_occupation_code AS careersecond ,xincome_per_year AS netIncome,mem_seq,a.F_status AS memF_status"))
+      ,xmain_occupation_code AS careermain,NULLIF(xadditional_occupation_code,'') AS careersecond ,xincome_per_year AS netIncome,mem_seq,a.F_status AS memF_status"))
     ->Join('fm_fam_hd AS b', 'b.fam_id', 'a.mem_fam_id')
     ->where('a.mem_fam_id', '=', $id)
     ->orderBy('mem_seq', 'asc')->get()->toArray();   
@@ -315,7 +314,7 @@ $base_join = $db::table('fm_fam_pet_dt4')
     ->select($db::raw('pet_code,pet_quantity,pet_vacine_qt,pet_desc'))
     ->where('pet_fam_id', $id); 
 $list_fm_fam_pet_dt4 = $db::table('tbl_mas_pet AS a')
-    ->select($db::raw("a.pet_code,a.pet_name,b.pet_quantity,b.pet_vacine_qt,b.pet_desc
+    ->select($db::raw("a.pet_code,a.pet_name,b.pet_quantity,IFNULL(b.pet_vacine_qt,0)AS pet_vacine_qt,b.pet_desc
         ,CASE
         WHEN b.pet_code IS NOT NULL THEN 'true'
         WHEN b.pet_code IS NULL THEN null
@@ -338,8 +337,9 @@ $disaster_datarows = splitMyArray($listmas_disaster, 2);
 $listmas_disaster1 = (isset($disaster_datarows[0]) ? $disaster_datarows[0] : []);
 $listmas_disaster2 = (isset($disaster_datarows[1]) ? $disaster_datarows[1] : []);
    
-$Shouseinforgeneral=['familyhomecareer'=>$g_occupational_code,'familyhomeproducttarget'=>$eco_product_target_code
-,'familyhomesourceoffunds'=>$eco_capital_code,'familyhomeproductperiod'=>$familyhomeproductperiod,'familyhomeproductioncost'=>$eco_product_cost];
+$Shouseinforgeneral=['familyhomecareer'=>$eco_occupation_code,'familyhomeproducttarget'=>$eco_product_target_code
+,'familyhomesourceoffunds'=>$eco_capital_code,'familyhomeproductperiod'=>$familyhomeproductperiod,'familyhomeproductioncost'=>$eco_product_cost
+,'g_occupational_code'=>$g_occupational_code,'g_occupational_other'=>$g_occupational_other];
 $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$sub_district,'txtDistrict'=>$district,'txtProvince'=>$province
 ,'txtPostalCode'=>$post_code];  
  
@@ -395,7 +395,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
   window.SSfamilylists=<?=json_encode($listpeople)?>;
 
   window.Mfamilylist={prefix:null,txtFName: '',txtLName:'',txtCitizenId:'' ,xFstatusRd:'O',sexRd:'M',txtNational:'ไทย',religion:'01',birthday:''
-  ,educationlevel:null,homerelations:null,careergroup:null,careeranother:'',careermain:null,careersecond:null,netIncome:'',memF_status:'A'};  
+  ,educationlevel:null,homerelations:null,careermain:null,careersecond:null,netIncome:'',memF_status:'A'};  
   //ข้อมูลพื้นที่การเกษตร
   window.Sfamerland={province:20,district:3115,nodeed:'',arearai:0,areawork:0,areatrw:0};
   //เป้าหมายการผลิต 
@@ -481,14 +481,14 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">เพิ่มข้อมูลครัวเรือน</h1>
+            <h1 class="m-0 text-dark"><?=$webtitle?></h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item">
                 	<em class="fa fa-home"></em>
                 <a href="#">Home</a></li>
-              <li class="breadcrumb-item active">เพิ่มข้อมูลครัวเรือน</li>
+              <li class="breadcrumb-item active"><?=$webtitle?></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -590,9 +590,12 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
         <!-- /.card -->
 
         <!-- SELECT2 EXAMPLE ข้อมูลสมาชิกในครัวเรือน -->
-        <div class="card card-warning">
+        <div class="card card-light">
           <div class="card-header">
             <h3 class="card-title">ข้อมูลสมาชิกในครัวเรือน</h3> &nbsp;  &nbsp; 
+            <a class="btn btn-info btn-sm text-white" href="javascript:void(0)" v-on:click="addPeople">
+            <i class="fa fa-user-plus" aria-hidden="true"></i> เพิ่มสมาชิกในครัวเรือน
+            </a> 
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
               <!--<button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>-->
@@ -601,10 +604,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
           <!-- /.card-header -->
           <div class="card-body">
          <template v-for="(item, index) in $v.Mfamilylists.$each.$iter"> 
-            <h5>ลำดับที่ : {{(index*1)+1}} 
-				<a class="btn btn-info btn-sm" href="javascript:void(0)" v-if="index==0" v-on:click="addPeople">
-				  <i class="fas fa-plus-square"></i> เพิ่มสมาชิกในครัวเรือน
-                </a>
+            <h5>ลำดับที่ : {{(index*1)+1}}  
                 <a href="javascript:void(0)" class="btn-sm btn-danger" v-if="index>0" v-on:click="removePeople(index)"><i class="fas fa-trash"></i></a>
 		    	</h5>
             <div class="row">
@@ -618,12 +618,17 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 </div>
                 <!-- /.form-group -->
               </div>
-              <div class="col-md-3">
+              <div class="col-md-3" v-if="index==0">
                 <div class="form-group">
                   <label>ชื่อเจ้าบ้าน :</label>
                   <input type="text" :id="'txtFName'+index" :class="status(item.txtFName)" required v-model.trim="item.txtFName.$model" @blur="item.txtFName.$touch()" class="form-control" placeholder="ชื่อเจ้าบ้าน...">
-                </div>
-                <!-- /.form-group -->
+                </div> 
+              </div>
+               <div class="col-md-3" v-if="index>0">
+                <div class="form-group">
+                  <label>ชื่อผู้อยู่อาศัย :</label>
+                  <input type="text" :id="'txtFName'+index" :class="status(item.txtFName)" required v-model.trim="item.txtFName.$model" @blur="item.txtFName.$touch()" class="form-control" placeholder="ชื่อผู้อยู่อาศัย...">
+                </div> 
               </div>
 
               <div class="col-md-3">
@@ -750,24 +755,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                        </select>
                      </div> 
                    </div>
-               <!-- /.col -->
-
-               <div class="col-md-3" v-if="index==0">
-                    <div class="form-group">
-                            <label>กลุ่มอาชีพ :</label>
-                             <select class="form-control" :id="'careergroup'+index" :class="status(item.careergroup)" required v-model.trim="item.careergroup.$model" @blur="item.careergroup.$touch()">
-                             <option v-for="(v, indexx) in listmas_group_occup" :value="v.goccup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.goccup_name}}</option> 
-                            </select>
-                     </div> 
-                </div>
-              <div class="col-md-3" v-if="index==0">
-                <div class="form-group">
-                  <label>กลุ่มอาชีพอื่นๆ  :</label>
-                  <textarea class="form-control" :id="'careeranother'+index"  rows="1" placeholder="กลุ่มอาชีพอื่นๆ ระบุ  ..." :class="status(item.careeranother)" v-model.trim="item.careeranother.$model" @blur="item.careeranother.$touch()">
-                      {{item.careeranother}}
-                  </textarea>
-                </div>
-              </div>
+               <!-- /.col --> 
 				<div class="col-md-3">
 					<div class="form-group">
 							<label>อาชีพหลัก :</label>
@@ -1160,7 +1148,8 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
           <!-- /.card-header -->
           <div class="card-body">
             <h5> เศรษฐกิจครัวเรือน</h5>
-            <div class="row">             
+            <div class="row">   
+
               <div class="col-md-3">
                <div class="form-group">
                   <label>อาชีพในครัวเรือน:</label>
@@ -1168,6 +1157,23 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
 					         <option v-for="(vv, indexx) in listmas_house_occup" :value="vv.hccup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{vv.hccup_name}}</option> 
 				         </select> 
                 </div> 
+              </div>
+              
+            <div class="col-md-3">
+                    <div class="form-group">
+                            <label>กลุ่มอาชีพ :</label>
+                             <select class="form-control" :class="status($v.Mhouseinforgeneral.g_occupational_code)" required v-model.trim="$v.Mhouseinforgeneral.g_occupational_code.$model" @blur="$v.Mhouseinforgeneral.g_occupational_code.$touch()">
+                             <option v-for="(v, indexx) in listmas_group_occup" :value="v.goccup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.goccup_name}}</option> 
+                            </select>
+                     </div> 
+                </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>กลุ่มอาชีพอื่นๆ  :</label>
+                  <textarea class="form-control" rows="1" placeholder="กลุ่มอาชีพอื่นๆ ระบุ  ..." :class="status($v.Mhouseinforgeneral.g_occupational_other)" v-model.trim="$v.Mhouseinforgeneral.g_occupational_other.$model" @blur="$v.Mhouseinforgeneral.g_occupational_other.$touch()">
+                      {{$v.Mhouseinforgeneral.g_occupational_other}}
+                  </textarea>
+                </div>
               </div>
 
               <div class="col-md-3">
@@ -1180,6 +1186,10 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 <!-- /.form-group -->
               </div>
 
+            </div>
+            <!-- /row -->
+            <div class="row"> 
+
               <div class="col-md-3">
                 <div class="form-group">
                   <label>แหล่งเงินทุน (ครัวเรือน) :</label>
@@ -1190,11 +1200,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 <!-- /.form-group -->
               </div>
 
-            </div>
-            <!-- /row -->
-            <div class="row">
-
-              <div class="col-md-4">
+              <div class="col-md-3">
                             <!-- Date range -->
                             <div class="form-group">
                               <label>ช่วงเวลาการผลิต:</label> 
@@ -1214,7 +1220,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                             <!-- /.form group -->
               </div>
 
-              <div class="col-md-6">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>ต้นทุนการผลิต :</label>
                   <textarea class="form-control"  class="form-control" name="familyhomeproductioncost" id="familyhomeproductioncost" :class="status($v.Mhouseinforgeneral.familyhomeproductioncost)" v-model.trim="$v.Mhouseinforgeneral.familyhomeproductioncost.$model" @blur="$v.Mhouseinforgeneral.familyhomeproductioncost.$touch()" rows="1" placeholder="ต้นทุนการผลิต  ..."></textarea>

@@ -46,7 +46,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>หมู่ที่ :</label>
-                  <input type="text" name="txtMoo"  id="txtMoo" class="form-control" placeholder="หมู่ที่ ...">
+                  <input type="text" name="txtMoo"  id="txtMoo" value="<?=(isset($_GET['house_moo'])?$_GET['house_moo']:'')?>" class="form-control" placeholder="หมู่ที่ ...">
                 </div>
                 <!-- /.form-group -->
               </div>

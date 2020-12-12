@@ -41,8 +41,9 @@ $familylist=@$familylists[0];
 // $education_code = trim((isset($familylist['educationlevel']) ? $familylist['educationlevel'] : ''));
 // $relations_code = trim((isset($familylist['homerelations']) ? $familylist['homerelations'] : ''));
 
-$g_occupational_code = trim((isset($familylist['careergroup']) ? $familylist['careergroup'] : ''));
-$g_occupational_other = trim((isset($familylist['careeranother']) ? $familylist['careeranother'] : ''));
+// $g_occupational_code = trim((isset($familylist['careergroup']) ? $familylist['careergroup'] : ''));
+// $g_occupational_other = trim((isset($familylist['careeranother']) ? $familylist['careeranother'] : ''));
+
 $main_occupation_code= trim((isset($familylist['careermain']) ? $familylist['careermain'] : ''));
 $add_occupation_code = trim((isset($familylist['careersecond']) ? $familylist['careersecond'] : ''));
 $income_per_year= trim((isset($familylist['netIncome']) ? $familylist['netIncome'] : ''));
@@ -55,7 +56,9 @@ $famerdetaillists_spoks= (isset($_POST['Mfamerdetaillists']['spoks']) ? $_POST['
 $famerdetaillists_chapter5s= (isset($_POST['Mfamerdetaillists']['chapter5s']) ? $_POST['Mfamerdetaillists']['chapter5s'] : []);
 $fam_land_other = trim((isset($_POST['Mfamerdetaillists']['another']) ? $_POST['Mfamerdetaillists']['another'] : ''));
 
-$eco_occupation_code=  trim((isset($_POST['Mhouseinforgeneral']['familyhomecareer']) ? $_POST['Mhouseinforgeneral']['familyhomecareer'] : ''));
+$g_occupational_code = trim((isset($_POST['Mhouseinforgeneral']['g_occupational_code']) ? $_POST['Mhouseinforgeneral']['g_occupational_code']: NULL));
+$g_occupational_other = trim((isset($_POST['Mhouseinforgeneral']['g_occupational_other']) ? $_POST['Mhouseinforgeneral']['g_occupational_other'] : NULL));
+$eco_occupation_code=  trim((isset($_POST['Mhouseinforgeneral']['familyhomecareer']) ? $_POST['Mhouseinforgeneral']['familyhomecareer'] : NULL));
 $eco_product_target_code = trim((isset($_POST['Mhouseinforgeneral']['familyhomeproducttarget']) ? $_POST['Mhouseinforgeneral']['familyhomeproducttarget'] : ''));
 $eco_capital_code = trim((isset($_POST['Mhouseinforgeneral']['familyhomesourceoffunds']) ? $_POST['Mhouseinforgeneral']['familyhomesourceoffunds'] : ''));
 $familyhomeproductioncost=trim((isset($_POST['Mhouseinforgeneral']['familyhomeproductioncost']) ? $_POST['Mhouseinforgeneral']['familyhomeproductioncost'] : ''));
@@ -143,7 +146,7 @@ $query = $db::table("fm_fam_hd")
     ->where('house_no', '=', $txtHouseId)
     ->select($db::raw("fam_id,SUBSTRING(fam_id,1,2) AS yearfam_id,house_no,house_moo"));
 if (isset($_POST['id']) && strlen(trim(@$_POST['id'])) > 0) {
-    $query->whereNotIn('fam_id', [$_POST['id']]);
+    $query->whereNotIn('fam_id', [$id]);
 }
 $rows_old = $query->first();
  if(isset($rows_old->house_no)){
@@ -181,7 +184,7 @@ if($id>0){
 // var_dump($action);exit();
  if ($action == 1) {/*Insert Data*/ 
     try {    
-          $tran_id=$db::select("SELECT CONCAT($tran_id,NEXTVAL(sfm_fam_hd)) AS tran_id")[0]->tran_id; 
+          $tran_id=$db::select("SELECT CONCAT($tran_id,nextval('sqfm_fam_hd')) AS tran_id")[0]->tran_id; 
           if(!insertall('insert',$tran_id)){throw new Exception("Error Processing insertall", 1);} 
           $db::beginTransaction(); 
           //pre_owner,owner_fname,owner_lname,citizen_id,x_status,x_sex,national,reg_code,date_of_birth,education_code,relations_code
