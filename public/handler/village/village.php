@@ -64,10 +64,10 @@ if($id>0){
     ->first();
      if($rows_old->vil_moo==$txtMoo){ 
       $action='dupicate'; 
-      $action ='dupicate'; 
+      $status ='dupicate'; 
      }
 }  
-//var_dump($action);exit();
+
  if ($action == 1) {/*Insert Data*/ 
     try { 
           $row =$db::insert("INSERT INTO tbl_mas_vilage (vil_moo,vil_name,vil_desc,water,water_desc,water_tap,water_tap_desc,bowels,bowels_desc
@@ -111,11 +111,12 @@ if($id>0){
         }
         echo json_encode(['status'=>$status,'token'=>\Volnix\CSRF\CSRF::getToken('token_village_frm')]); exit();
   }
-}
+} 
+
  ?>
  
 <script type="text/javascript"> 
-   <?php
+   <?php 
    switch ($status) {
      case 'OK': ?> alert('บันทึกข้อมูลแล้ว!'); <?php break;
      case 'dupicate': ?> alert('ข้อมูลซ้ำ!'); <?php  break;
