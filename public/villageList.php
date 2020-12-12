@@ -221,7 +221,9 @@
             success: function (data, status, xhr) {
                  if(data.status=='deleted'){
                   Swal.fire("Done!", "ลบข้อมูลเรียบร้อย !", "success");
-                 }else{
+                 }else if(data.status=='delete_used'){
+                  Swal.fire("มีการใช้อยู่ไม่สามารถลบข้อมูลได้ !", "Please try again", "error");
+                 }else {
                   Swal.fire("Error deleting!", "Please try again", "error");
                  }
                 $("input[name*='token_village_frm']").val(data.token); 

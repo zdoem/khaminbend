@@ -68,7 +68,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
               <div class="col-md-4">
                 <div class="form-group">
                   <label>หมู่ที่ :</label>
-                  <input type="text" name="txtMoo" id="txtMoo" class="form-control" value="<?=$rows_edit->vil_moo?>" placeholder="หมู่ที่ ...">
+                  <input type="text" name="txtMoo" id="txtMoo" class="form-control" readonly required pattern="[0-9]" title="ตัวเลขเท่านั้น" value="<?=$rows_edit->vil_moo?>" placeholder="หมู่ที่ ...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -76,7 +76,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
               <div class="col-md-4">
                 <div class="form-group">
                   <label>ชื่อหมู่บ้าน :</label>
-                  <input type="text" name="txtVillageName" id="txtVillageName" class="form-control" value="<?=$rows_edit->vil_name?>" placeholder="ชื่อหมู่บ้าน...">
+                  <input type="text" name="txtVillageName" id="txtVillageName" required class="form-control" value="<?=$rows_edit->vil_name?>" placeholder="ชื่อหมู่บ้าน...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -84,7 +84,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
               <div class="col-md-4">
                 <div class="form-group">
                   <label>รายละเอียดพอสังเขป :</label>
-                  <textarea class="form-control" name="txthomeDesc" id="txthomeDesc" rows="2"  placeholder="รายละเอียดพอสังเขป  ..."><?=$rows_edit->vil_desc?></textarea>
+                  <textarea class="form-control" name="txthomeDesc" id="txthomeDesc" rows="2"   placeholder="รายละเอียดพอสังเขป  ..."><?=$rows_edit->vil_desc?></textarea>
                 </div>
                 <!-- /.form-group -->
               </div>

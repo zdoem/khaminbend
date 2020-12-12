@@ -23,7 +23,7 @@ Vue.component("date-picker2", {
   props: ['mdata'],
   template: `<div class="input-group date" ref="mdate" data-target-input="nearest">
                       <input type="text" :value="mdata" ref="mdate" required class="form-control" />
-                      <div class="input-group-append"  data-toggle="datetimepicker">
+                      <div class="input-group-append"  ref="mdate" style="cursor: pointer;">
                           <div class="input-group-text"><i class="fa fa-calendar"></i></div> 
                       </div>
                   </div> `,
@@ -186,7 +186,7 @@ window.app = new Vue({
           },
           chapter5s:{
               $each:{
-                province:{required},district:{},nodeed:{required},districtselect:{required}
+                province:{required},district:{required},nodeed:{required}
                ,arearai:{required,Fn_plusinteger},areawork:{required,Fn_plusinteger,Fn_areawork},areatrw:{required,Fn_decimal}, 
               } 
           },
@@ -198,7 +198,27 @@ window.app = new Vue({
          prefix:{required},   
          txtFName:{ required },
          txtLName:{required},
-         txtCitizenId:{ required,Fn_txtCitizenId },
+         txtCitizenId:{ 
+          required,
+          isUnique (value) {
+          if ((value == '')||(''+value).length!=13) return true;   
+            let _this=this;
+            return new Promise(function(resolve, reject){
+                $.ajax({
+                  url: 'handler/family/family_duplicate_nationid.php',
+                  type: 'post', 
+                  datatype : "application/json", 
+                  data:{id:_this.getParameterByName('id'),mem_citizen_id:encodeURIComponent(value)},
+                  success: function (data) { 
+                    resolve((data.status=='nodupicate'))
+                  },
+                  error: function (error) {
+                    reject(true)
+                  },
+                })
+              });  
+          },
+          Fn_txtCitizenId },
          xFstatusRd:{ required },
          sexRd:{ required },
          txtNational:{ required },
@@ -210,8 +230,8 @@ window.app = new Vue({
          careeranother:{},
          careermain:{ required },
          careersecond:{  },
-         netIncome:{ required } 
-           
+         netIncome:{ required }, 
+         memF_status:{required}  
         } 
     },   
     Mhouseinfor:{
@@ -222,14 +242,15 @@ window.app = new Vue({
         txtPostalCode:{required},
         txtHouseId:{
            required,
-          isUnique_txtHouseId (value) {
-          if (value == '') return true;  
+          isUnique (value) {
+          if ((value == '')||(''+value).length<=0) return true;  
+            let _this=this;
             return new Promise(function(resolve, reject){
                 $.ajax({
-                  url: 'handler/family/family_duplicate_check.php',
+                  url: 'handler/family/family_duplicate_mouseid.php',
                   type: 'post', 
                   datatype : "application/json", 
-                  data:{house_no:encodeURIComponent(value)},
+                  data:{id:_this.getParameterByName('id'),house_no:encodeURIComponent(value)},
                   success: function (data) { 
                     resolve((data.status=='nodupicate'))
                   },
@@ -364,9 +385,13 @@ window.app = new Vue({
                   $('#xhtml').html(data);
                 }       
             }); 
-              } else {
-                console.log('log2',this.$v); 
+              } else {  
                  this.$nextTick(function(){ 
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: 'โปรดตรวจสอบการกรอกข้อมูลอีกครั้ง!',
+                    }); 
                    $('.error.dirty').each(function(index){
                      $(this).focus(); return false;   
                   }); 

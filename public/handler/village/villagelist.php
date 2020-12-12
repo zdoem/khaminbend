@@ -9,7 +9,7 @@ $columnName = $_POST['columns'][$columnIndex]['data']; // Column name
 $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
 $searchValue = addslashes($_POST['vil_moo']); // Search value
 $searchValue2 = addslashes($_POST['vil_name']); // Search value
-// var_dump($_POST);exit();
+// var_dump($columnName);exit();
 ## Search
 $searchQuery = " ";
 $filtering=$db::table("tbl_mas_vilage")->select($db::raw('count(*) as allcount'))->whereRaw('1');

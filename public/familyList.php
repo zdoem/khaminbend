@@ -196,7 +196,7 @@ $data_date_survey= $db::table("fm_fam_hd")
             return $.extend( {}, d, {
               "date_survey":'',
               "txtHouseNo": $('#txtHouseNo').val(),
-              "owner_house": $('#owner_house').val(),
+              "mem_fname": $('#owner_house').val(),
               "txtCitizenId": $('#txtCitizenId').val() 
             });
           } 
@@ -207,7 +207,7 @@ $data_date_survey= $db::table("fm_fam_hd")
               return `${row.f_vil_moo}`;
          }},
          { data: 'house_no' }, 
-         { data: 'owner_fname' },
+         { data: 'mem_fname' },
         //  { data: "house_no" , render : function ( data, type, row, meta ) {   
         //       return `-`;
         //  }},   

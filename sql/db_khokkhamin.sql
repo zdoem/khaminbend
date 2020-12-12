@@ -10225,7 +10225,7 @@ CREATE TABLE `sfm_fam_hd`  (
   `cache_size` bigint(21) UNSIGNED NOT NULL,
   `cycle_option` tinyint(1) UNSIGNED NOT NULL COMMENT '0 if no cycles are allowed, 1 if the sequence should begin a new cycle when maximum_value is passed',
   `cycle_count` bigint(21) NOT NULL COMMENT 'How many cycles have been done'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DEFAULT;
 
 -- ----------------------------
 -- Records of sfm_fam_hd
@@ -10245,7 +10245,7 @@ CREATE TABLE `sfm_fam_members_dt1`  (
   `cache_size` bigint(21) UNSIGNED NOT NULL,
   `cycle_option` tinyint(1) UNSIGNED NOT NULL COMMENT '0 if no cycles are allowed, 1 if the sequence should begin a new cycle when maximum_value is passed',
   `cycle_count` bigint(21) NOT NULL COMMENT 'How many cycles have been done'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DEFAULT;
 
 -- ----------------------------
 -- Records of sfm_fam_members_dt1
@@ -10265,7 +10265,7 @@ CREATE TABLE `snextnum`  (
   `cache_size` bigint(21) UNSIGNED NOT NULL,
   `cycle_option` tinyint(1) UNSIGNED NOT NULL COMMENT '0 if no cycles are allowed, 1 if the sequence should begin a new cycle when maximum_value is passed',
   `cycle_count` bigint(21) NOT NULL COMMENT 'How many cycles have been done'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DEFAULT;
 
 -- ----------------------------
 -- Records of snextnum

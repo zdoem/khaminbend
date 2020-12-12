@@ -5,7 +5,7 @@ $webtitle='แก้ไขข้อมูลครัวเรือน';
 } 
 require 'bootstart.php';
 require ROOT . '/core/security.php';
-require_once 'components/header.php';
+require_once 'components/header.php'; 
 
 $listprovinces= $db::table("provinces")
     ->select($db::raw("id,code,name_th,name_en")) 
@@ -93,7 +93,7 @@ $listmas_addition= $db::table("tbl_mas_addition")
  $chapter5s=[];$distric_chapter5s=[];
  $temlistpeople=['prefix'=>null,'txtFName'=>'','txtLName'=>'','txtCitizenId'=>'','xFstatusRd'=>'O','sexRd'=>'M'
   ,'txtNational'=>'ไทย','religion'=>'01','birthday'=>'','educationlevel'=>null,'homerelations'=>'01','careergroup'=>null
-  ,'careeranother'=>'','careermain'=>null,'careersecond'=>null,'netIncome'=>'']; 
+  ,'careeranother'=>'','careermain'=>null,'careersecond'=>null,'netIncome'=>'','memF_status'=>'A']; 
 $listpeople[]=$temlistpeople;
 //---------------------------------------------------------------------------------------------------------------
 $house_no = ''; //บ้านเลขที่
@@ -138,13 +138,22 @@ $alert_survey=date('d/m/Y h:i', time());
 $actions='I';
 if (isset($_GET['id'])) {// update 
   $actions='U';
-  $data_fm_fam_hd = $db::table("fm_fam_hd")
-    ->select($db::raw("fam_id,house_no,house_moo,sub_district,district,province,post_code,pre_owner,owner_fname,owner_lname,citizen_id,eco_product_from,eco_product_to
-      ,x_status,x_sex,national,reg_code,date_of_birth,education_code,relations_code,g_occupational_code,g_occupational_other,main_occupation_code,add_occupation_code
+
+  $base_join = $db::table('fm_fam_members_dt1')
+    ->select($db::raw('mem_fam_id,mem_status,mem_pre,mem_fname,mem_lname,mem_citizen_id,mem_sex,mem_national,mem_religion_code,mem_df_birth,mem_education_code,mem_relations_code,f_status'))
+    ->where('mem_status', 'O')
+    ->where('mem_fam_id', '=', $_GET['id'])
+    ->groupBy('mem_fam_id'); 
+  $data_fm_fam_hd = $db::table('fm_fam_hd AS a')
+    ->select($db::raw("fam_id,house_no,house_moo,sub_district,district,province,post_code,cc.mem_pre,cc.mem_fname,cc.mem_lname,cc.mem_citizen_id
+      ,eco_product_from,eco_product_to ,mem_status AS x_status,mem_sex AS x_sex,mem_national AS national,mem_religion_code AS reg_code,mem_df_birth AS date_of_birth,mem_education_code AS education_code
+      ,mem_relations_code AS relations_code,g_occupational_code,g_occupational_other,main_occupation_code,add_occupation_code
       ,income_per_year,fam_land_other,eco_occupation_code,eco_product_target_code,eco_capital_code,eco_product_cost,f_problem_env,problem_env_desc
       ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,d_survey"))
-    ->where('fam_id', '=', $_GET['id'])
-    ->first(); 
+    ->leftJoinSub($base_join, 'cc', function ($join) {
+        $join->on('a.fam_id', '=', 'cc.mem_fam_id');
+    })->where('fam_id', '=', $_GET['id'])->first();  
+
     if (!IsNullOrEmptyString($data_fm_fam_hd->d_survey)) {$alert_survey = date('d/m/Y h:i', strtotime($data_fm_fam_hd->d_survey));}
     $house_no = (isset($data_fm_fam_hd->house_no) ? $data_fm_fam_hd->house_no : ''); //บ้านเลขที่
     $house_moo = ((isset($data_fm_fam_hd->house_moo)&&!IsNullOrEmptyString($data_fm_fam_hd->house_moo)) ? $data_fm_fam_hd->house_moo :null); //หมู่ที
@@ -192,27 +201,38 @@ if (isset($_GET['id'])) {// update
     // var_dump($d_survey);exit();
 
   // $listpeople
-  $c_fm_fam_hd = $db::table("fm_fam_members_dt1 AS a")
-      ->select($db::raw("mem_pre AS prefix,f_status,mem_fname AS txtFName,mem_lname AS txtLName,mem_citizen_id AS txtCitizenId,mem_status AS xFstatusRd
+  // $c_fm_fam_hd = $db::table("fm_fam_members_dt1 AS a")
+  //     ->select($db::raw("mem_pre AS prefix,f_status,mem_fname AS txtFName,mem_lname AS txtLName,mem_citizen_id AS txtCitizenId,mem_status AS xFstatusRd
+  //     ,mem_sex AS sexRd,mem_national AS txtNational,mem_religion_code AS religion,mem_df_birth AS birthday,mem_education_code AS educationlevel
+  //     ,mem_relations_code AS homerelations,null AS careergroup,null AS careeranother
+  //     ,xmain_occupation_code AS careermain,xadditional_occupation_code AS careersecond ,xincome_per_year AS netIncome,mem_seq,a.F_status AS memF_status"))
+  //     ->where('a.mem_fam_id', '=', $id);
+  //->where('a.f_status', '=','A');
+
+  // $p_fm_fam_hd = $db::table("fm_fam_hd AS a")
+  //     ->select($db::raw("pre_owner AS prefix,f_status,owner_fname AS txtFName,owner_lname AS txtLName,citizen_id AS txtCitizenId ,x_status AS xFstatusRd
+  //     ,x_sex AS sexRd,national AS txtNational,reg_code AS religion,date_of_birth AS birthday,education_code AS educationlevel
+  //     ,relations_code AS homerelations
+  //     ,g_occupational_code AS careergroup,g_occupational_other AS  careeranother,main_occupation_code AS careermain,add_occupation_code AS careersecond
+  //     ,income_per_year AS netIncome,1 AS mem_seq,a.F_status AS memF_status"))
+  //     ->where('a.fam_id', '=', $id)
+  //     ->orderBy('mem_seq', 'asc')->toSql();
+  //->where('a.f_status', '=','A');
+   
+  // $final_query = $p_fm_fam_hd->unionall($c_fm_fam_hd);
+  // $querySql = $final_query->toSql();
+  // $all_content_query = $db::table($db::raw("($querySql) as t"))->mergeBindings($final_query);
+  // $listpeople = $all_content_query->select($db::raw("t.*"))->orderBy('mem_seq', 'asc')->toSql();//get()->toArray(); 
+  $listpeople = $db::table("fm_fam_members_dt1 AS a")
+    ->select($db::raw("mem_pre AS prefix,b.f_status,mem_fname AS txtFName,mem_lname AS txtLName,mem_citizen_id AS txtCitizenId,mem_status AS xFstatusRd
       ,mem_sex AS sexRd,mem_national AS txtNational,mem_religion_code AS religion,mem_df_birth AS birthday,mem_education_code AS educationlevel
-      ,mem_relations_code AS homerelations,null AS careergroup,null AS careeranother
-      ,xmain_occupation_code AS careermain,xadditional_occupation_code AS careersecond ,xincome_per_year AS netIncome,mem_seq"))
-      ->where('a.mem_fam_id', '=', $id);
-  //->where('a.f_status', '=','A');
+      ,mem_relations_code AS homerelations,b.g_occupational_code AS careergroup,b.g_occupational_other AS careeranother
+      ,xmain_occupation_code AS careermain,xadditional_occupation_code AS careersecond ,xincome_per_year AS netIncome,mem_seq,a.F_status AS memF_status"))
+    ->Join('fm_fam_hd AS b', 'b.fam_id', 'a.mem_fam_id')
+    ->where('a.mem_fam_id', '=', $id)
+    ->orderBy('mem_seq', 'asc')->get()->toArray();   
+    // echo $listpeople;exit();
 
-  $p_fm_fam_hd = $db::table("fm_fam_hd AS a")
-      ->select($db::raw("pre_owner AS prefix,f_status,owner_fname AS txtFName,owner_lname AS txtLName,citizen_id AS txtCitizenId ,x_status AS xFstatusRd
-      ,x_sex AS sexRd,national AS txtNational,reg_code AS religion,date_of_birth AS birthday,education_code AS educationlevel
-      ,relations_code AS homerelations
-      ,g_occupational_code AS careergroup,g_occupational_other AS  careeranother,main_occupation_code AS careermain,add_occupation_code AS careersecond
-      ,income_per_year AS netIncome,1 AS mem_seq"))
-      ->where('a.fam_id', '=', $id);
-  //->where('a.f_status', '=','A');
-
-  $final_query = $p_fm_fam_hd->unionall($c_fm_fam_hd);
-  $querySql = $final_query->toSql();
-  $all_content_query = $db::table($db::raw("($querySql) as t"))->mergeBindings($final_query);
-  $listpeople = $all_content_query->select($db::raw("t.*"))->orderBy('mem_seq', 'asc')->get()->toArray(); 
   // ข้อมูลพื้นที่การเกษตร 
   $list_fm_fam_land_dt2= $db::table("fm_fam_land_dt2")
       ->select($db::raw("land_type,land_desc,province,district,title_deed_id AS nodeed,area1_rai AS arearai,area2_work AS areawork,area3_sqw AS areatrw,f_status")) 
@@ -271,24 +291,7 @@ if (isset($_GET['id'])) {// update
   
   foreach ($list_fm_fam_info_dt6 as $k => $v) {
       $list_fm_fam_info_dt6_selected[] = $v->info_code;
-  }
-  /*
-  $base_join = $db::table('fm_fam_info_dt6')
-  ->select($db::raw('info_code,info_name,info_desc'))
-  ->where('info_fam_id', '=', $_GET['id']);
-
-  $list_fm_fam_info_dt6 = $db::table('tbl_mas_info AS a')
-  ->select($db::raw("a.info_code,a.info_name,b.info_code,b.info_name,b.info_desc
-  ,CASE
-  WHEN b.info_code IS NOT NULL THEN 'true'
-  WHEN b.info_code IS NULL THEN null
-  ELSE null
-  END AS selected"))
-  ->leftJoinSub($base_join, 'b', function ($join) {
-  $join->on('a.info_code', '=', 'b.info_code');
-  })
-  //->orderBy('info_code', 'asc')
-  ->get()->toArray(); */
+  } 
  
 }    
 //3.เครื่องมืออำนวยความสะดวกทางการเกษตร fm_fam_facilities_dt3
@@ -392,7 +395,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
   window.SSfamilylists=<?=json_encode($listpeople)?>;
 
   window.Mfamilylist={prefix:null,txtFName: '',txtLName:'',txtCitizenId:'' ,xFstatusRd:'O',sexRd:'M',txtNational:'ไทย',religion:'01',birthday:''
-  ,educationlevel:null,homerelations:null,careergroup:null,careeranother:'',careermain:null,careersecond:null,netIncome:''};  
+  ,educationlevel:null,homerelations:null,careergroup:null,careeranother:'',careermain:null,careersecond:null,netIncome:'',memF_status:'A'};  
   //ข้อมูลพื้นที่การเกษตร
   window.Sfamerland={province:20,district:3115,nodeed:'',arearai:0,areawork:0,areatrw:0};
   //เป้าหมายการผลิต 
@@ -520,7 +523,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                   <label>บ้านเลขที่ :</label>
                   <input type="text" :class="status($v.Mhouseinfor.txtHouseId)" required v-model.trim="$v.Mhouseinfor.txtHouseId.$model" name="txtHouseId" id="txtHouseId" class="form-control" placeholder="บ้านเลขที่  ...">
                   <div class="invalid-feedback order-last" v-if="!$v.Mhouseinfor.txtHouseId.Fn_txtHouseId">ต้องเป็นตัวเลขและ/เท่านั้น</div>
-                  <div class="invalid-feedback order-last" v-if="!$v.Mhouseinfor.txtHouseId.isUnique_txtHouseId&&!$v.Mhouseinfor.txtHouseId.$pending">มีข้อมูลอยู่แล้ว!.</div>
+                  <div class="invalid-feedback order-last" v-if="!$v.Mhouseinfor.txtHouseId.isUnique&&!$v.Mhouseinfor.txtHouseId.$pending">มีข้อมูลอยู่แล้ว!.</div>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -530,8 +533,8 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                   <label>หมู่ที่ - ชื่อหมู่บ้าน :</label> 
 				       	<select class="form-control"  :class="status($v.Mhouseinfor.mooHouse)" required v-model.trim="$v.Mhouseinfor.mooHouse.$model" > 
                         <template v-for="(v, indexx) in listmas_vilage">
-                          <option v-if="(indexx*1)==0" :disabled="actions=='U'&&$v.Mhouseinfor.mooHouse.$model!=v.vil_id" v-bind:value="v.vil_id" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.vil_name}}</option> 
-                          <option v-if="(indexx*1)>0" :disabled="actions=='U'&&$v.Mhouseinfor.mooHouse.$model!=v.vil_id" v-bind:value="v.vil_id" v-bind:selected="indexx== 0 ? 'selected' : false">หมู่ที่ {{v.vil_moo}} - {{v.vil_name}}</option>
+                          <option v-if="(indexx*1)==0" v-bind:value="v.vil_id" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.vil_name}}</option> 
+                          <option v-if="(indexx*1)>0" v-bind:value="v.vil_id" v-bind:selected="indexx== 0 ? 'selected' : false">หมู่ที่ {{v.vil_moo}} - {{v.vil_name}}</option>
                         </template>
 					     </select> 
                 </div>
@@ -635,6 +638,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 <div class="form-group">
                   <label>เลขที่ประจำตัวประชาชน  :</label>
                     <input type="text" :id="'txtCitizenId'+index" :class="status(item.txtCitizenId)" required v-model.trim="item.txtCitizenId.$model" @blur="item.txtCitizenId.$touch()" class="form-control" placeholder="เลขที่ประจำตัวประชาชน  ...">
+                    <div class="invalid-feedback order-last" v-if="!item.txtCitizenId.isUnique&&!item.txtCitizenId.$pending">มีข้อมูลอยู่แล้ว!.</div>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -784,9 +788,25 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
 					<div class="form-group">
 					  <label>รายได้/ต่อปี  :</label>								
 						<input type="number" :id="'netIncome'+index" :class="status(item.netIncome)" v-model.trim="item.netIncome.$model" @blur="item.netIncome.$touch()" class="form-control btn-xs" placeholder="รายได้/ต่อปี...">
-					</div>
-					<!-- /.form-group -->
-				 </div>
+					</div> 
+         </div>
+         
+         <div class="col-md-3">
+					 <div class="form-group">
+                  <label>สถานะ  :</label>
+                  <div class="form-group clearfix">
+                    <div class="icheck-primary d-inline">
+                      <input type="radio" :id="'radioF_status1'+index" required v-model="item.memF_status.$model" value="A" :class="status(item.memF_status)" @blur="item.memF_status.$touch()">
+                      <label :for="'radioF_status1'+index">ยังมีชีวิตอยู่</label>
+                    </div>
+                    <div class="icheck-primary d-inline">
+                      <input type="radio" :id="'radioF_status2'+index" required v-model="item.memF_status.$model"  value="D" :class="status(item.memF_status)" @blur="item.memF_status.$touch()">
+                      <label :for="'radioF_status2'+index">ถึงแก่กรรม
+                      </label>
+                    </div> 
+                  </div>
+                </div>
+				  </div>
 
               </div> 
               <hr v-if="showhr(Mfamilylists,index)">
