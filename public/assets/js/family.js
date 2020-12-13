@@ -382,7 +382,7 @@ window.app = new Vue({
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
                   _this.btn_save=false; 
-                  $('#xhtml').html(data);
+                  $('#xhtml').html('');
                 }       
             }); 
               } else {  

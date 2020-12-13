@@ -33,6 +33,7 @@ require_once ROOTJS.'/bootstart.php';
                <script src="assets/js/vue.runtime.min.js"></script>   
                <script src="assets/js/vuelidate.min.js"></script>
                <script src="assets/js/validators.min.js"></script> 
+               <script src="assets/js/app.js"></script> 
                <?php
                break;  
               case 'dev':
@@ -64,6 +65,7 @@ require_once ROOTJS.'/bootstart.php';
                   <script src="assets/js/vue.js"></script>
                   <script src="assets/js/vuelidate.min.js"></script> 
                   <script src="assets/js/validators.min.js"></script>
+                  <script src="assets/js/app.js"></script>
                <?php
                break; 
    }

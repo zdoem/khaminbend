@@ -84,14 +84,15 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
 
 		<li class="nav-item dropdown user-menu">
 			<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-			  <img src="assets/img/user2-160x160.jpg" class="user-image img-circle elevation-2" alt="User Image">
+			  <!-- <img src="assets/img/user2-160x160.jpg" class="user-image img-circle elevation-2" alt="User Image"> -->
+         <i class="fa fa-user" aria-hidden="true"></i>
 			  <span class="d-none d-md-inline"><?=@$_SESSION['fname'].' '.@$_SESSION['lname']?></span>
 			</a>
 			<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 			  <!-- User image -->
 			  <li class="user-header bg-primary">
-				<img src="assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-
+				<!-- <img src="assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> -->
+          <i class="fa fa-user" aria-hidden="true"></i>
 				<p>  
           <?=@$_SESSION['fname'].' '.@$_SESSION['lname'].' - '.@$_SESSION['position_name']?>
 				  <small>กองส่งเสริมการเกษตร</small>

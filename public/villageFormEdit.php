@@ -1,5 +1,6 @@
 <?php
- require 'bootstart.php';   
+ require 'bootstart.php'; 
+ require ROOT . '/core/security.php';  
  require_once 'components/header.php'; 
 
 $ID=filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT); 

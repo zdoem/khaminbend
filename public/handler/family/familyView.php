@@ -1,6 +1,6 @@
 <?php
 require_once '../../bootstart.php';    
- 
+require ROOT . '/core/security.php';
 $id=@$_GET['id']; 
 $row= $db::table("fm_fam_hd AS a")  
     ->where('fam_id', '=', $id)

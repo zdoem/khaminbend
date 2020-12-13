@@ -1,5 +1,6 @@
 <?php 
  require 'bootstart.php';   
+ require ROOT . '/core/security.php';
  require_once 'components/header.php';   
 ?>
 <style>
@@ -218,7 +219,7 @@
             type: "POST",
             data: {'action':3,'id': id,'token_village_frm':$("input[name*='token_village_frm']").val()},
             dataType: "json",
-            success: function (data, status, xhr) {
+            success: function (data, status, xhr) { 
                  if(data.status=='deleted'){
                   Swal.fire("Done!", "ลบข้อมูลเรียบร้อย !", "success");
                  }else if(data.status=='delete_used'){

@@ -1,5 +1,6 @@
 <?php
  require 'bootstart.php';   
+ require ROOT . '/core/security.php';
  require_once 'components/headerPortal.php';  
  
  //require 'bootstart.php';

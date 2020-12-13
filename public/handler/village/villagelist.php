@@ -1,5 +1,6 @@
 <?php
-require_once '../../bootstart.php';    
+require_once '../../bootstart.php';  
+require ROOT . '/core/security.php';  
 ## Read value
 $draw = $_POST['draw'];
 $row = $_POST['start'];

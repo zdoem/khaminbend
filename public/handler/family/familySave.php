@@ -1,6 +1,6 @@
 <?php
 require_once '../../bootstart.php'; 
-  
+require ROOT . '/core/security.php';
 $action=@$_POST['action']; 
 $id=@$_POST['id']; 
  
