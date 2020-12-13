@@ -18,7 +18,7 @@ $citizen_id = addslashes($_POST['txtCitizenId']); // Search value
 $searchQuery = " ";
 
 $base_join = $db::table('fm_fam_members_dt1')
-    ->select($db::raw('mem_fam_id,mem_status,mem_fname,mem_lname,f_status'))
+    ->select($db::raw('mem_fam_id,mem_status,mem_fname,mem_lname,f_status,mem_citizen_id'))
     ->where('mem_status', 'O')
     ->groupBy('mem_fam_id');
 
@@ -33,7 +33,7 @@ $filtering = $db::table("fm_fam_hd AS a")->select($db::raw('count(*) as allcount
 //             ->whereRaw('1');
  
 $fetchrecords = $db::table('fm_fam_hd AS a')
-    ->select($db::raw("a.fam_id,a.d_create,a.d_survey,a.d_update,vil_moo,vil_name,house_no,cc.mem_fname,cc.mem_lname,cc.f_status"))
+    ->select($db::raw("a.fam_id,a.d_create,a.d_survey,a.d_update,vil_moo,vil_name,house_no,cc.mem_fname,cc.mem_lname,cc.mem_citizen_id,cc.f_status"))
     ->Join('tbl_mas_vilage AS b', 'a.house_moo', 'b.vil_id')
     ->leftJoinSub($base_join, 'cc', function ($join) {
         $join->on('a.fam_id', '=', 'cc.mem_fam_id');
@@ -56,8 +56,8 @@ if ($mem_fname != '') {
     $fetchrecords->where('mem_fname', 'like', "%{$mem_fname}%");
 }
 if ($citizen_id != '') {
-    $filtering->where('citizen_id', 'like', "%{$citizen_id}%");
-    $fetchrecords->where('citizen_id', 'like', "%{$citizen_id}%");
+    $filtering->where('mem_citizen_id', 'like', "%{$citizen_id}%");
+    $fetchrecords->where('mem_citizen_id', 'like', "%{$citizen_id}%");
 } 
 
 ## Total number of records without filtering
