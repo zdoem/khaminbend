@@ -4,7 +4,7 @@ defined('ROOT') or exit('No access allowed');
    
 
   <!-- Main Footer -->
-  <footer class="main-footer">
+  <footer class="main-footer" style="font-size: .8em;">
     <!-- To the right 
     <div class="float-right d-none d-sm-inline">
       Dev Team. 
@@ -12,7 +12,7 @@ defined('ROOT') or exit('No access allowed');
     <!-- Default to the left -->
     Copyright &copy; 2020
      <strong> สำนักงานเทศบาลตำบลโคกขมิ้น </strong> All rights reserved.<br>
-         224 หมู่ที่ 11 ถนนประโคนชัย-กรสัง ตำบลโคกขมิ้น อำเภอพลับพลาชัย จังหวัดบุรีรัมย์  31250  โทรศัพท์/โทรสาร . 0-4466-6300
+         224 หมู่ที่ 11 ถนนประโคนชัย-กระสัง ตำบลโคกขมิ้น อำเภอพลับพลาชัย จังหวัดบุรีรัมย์  31250  โทรศัพท์/โทรสาร . 0-4466-6300
      <br>FACEBOOK :<a href="https://www.facebook.com/abt.kokkhamin"> เทศบาลโคกขมิ้น </a>
      <br>websiet :<a href="http://www.kokkhamin.go.th"> www.kokkhamin.go.th </a>
      <div class="float-right d-none d-sm-inline-block" id="parent">
