@@ -18,6 +18,17 @@ defined('ROOT') or exit('No access allowed');
        </div>     
     </div>
   </footer>
+  
+  <style>
+<!--
+#hover-content {
+    display:none;
+}
+#parent:hover #hover-content {
+    display:block;
+}
+-->
+</style>
 
   </div><!-- wrapper End app-->    
 </body>
