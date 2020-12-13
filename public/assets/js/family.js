@@ -160,10 +160,10 @@ window.app = new Vue({
     return { 
      Mhouseinforgeneral:{
          familyhomecareer:{required},
-         familyhomeproducttarget:{required},
+         familyhomeproducttarget:{},
          familyhomesourceoffunds:{required},
          familyhomeproductperiod:{required},
-         familyhomeproductioncost:{required}, 
+         familyhomeproductioncost:{}, 
          g_occupational_code:{required},
          g_occupational_other:{}
      },  
