@@ -2,77 +2,77 @@
 require '../../bootstart.php';
 require ROOT . '/core/security.php'; 
 if (!isset($_GET['id'])) { throw new Exception("Error Processing Bad Request", 1);} 
-$listprovinces = $db::table("provinces")
-    ->select($db::raw("id,code,name_th,name_en"))
+$listprovinces= $db::table("provinces")
+    ->select($db::raw("id,code,name_th,name_en")) 
     ->orderBy('name_th', 'asc')
-    ->get()->toArray();
+    ->get()->toArray();   
 
-$listmas_vilage = $db::table("tbl_mas_vilage")
+$listmas_vilage= $db::table("tbl_mas_vilage")
     ->select($db::raw("vil_id,vil_moo,vil_name,vil_desc"))
     ->where('f_status', '=', 'A')
     ->orderBy('vil_moo', 'asc')
     ->get()->toArray();
 
-$listmas_occupation = $db::table("tbl_mas_occupation")
+$listmas_occupation=$db::table("tbl_mas_occupation") 
     ->select($db::raw("occup_code,occup_name"))
-    ->where('f_status', '=', 'A')
+    ->where('f_status', '=','A')
     ->orderBy('occup_desc', 'asc')
-    ->get()->toArray();
+    ->get()->toArray(); 
 
-$listmas_relations = $db::table("tbl_mas_relations")
+$listmas_relations= $db::table("tbl_mas_relations")
     ->select($db::raw("re_code,re_name"))
     ->where('f_status', '=', 'A')
     ->orderBy('re_desc', 'asc')
     ->get()->toArray();
 
-$listmas_prefix = $db::table("tbl_mas_prefix")
+$listmas_prefix= $db::table("tbl_mas_prefix")
     ->select($db::raw("pre_code,pre_name"))
     ->where('f_status', '=', 'A')
     ->orderBy('pre_desc', 'asc')
-    ->get()->toArray();
-
-$listmas_religion = $db::table("tbl_mas_religion")
+    ->get()->toArray(); 
+  
+$listmas_religion= $db::table("tbl_mas_religion")
     ->select($db::raw("reg_code,reg_name"))
     ->where('f_status', '=', 'A')
     ->orderBy('reg_desc', 'asc')
-    ->get()->toArray();
+    ->get()->toArray(); 
 
 $listmas_pet = $db::table("tbl_mas_pet")
-    ->select($db::raw("pet_code,pet_name,pet_type"))
-    ->where('f_status', '=', 'A')
-    ->orderBy('pet_code', 'asc')
-    ->get()->toArray();
+->select($db::raw("pet_code,pet_name,pet_type"))
+->where('f_status', '=', 'A')
+->orderBy('pet_code', 'asc')
+->get()->toArray();
 
 $listmas_info = $db::table("tbl_mas_info")
     ->select($db::raw("info_code,info_name"))
-    ->where('f_status', '=', 'A')
+    ->where('f_status', '=', 'A') 
     ->get()->toArray();
 
-$listmas_house_occup = $db::table("tbl_mas_house_occup")
+$listmas_house_occup= $db::table("tbl_mas_house_occup")
     ->select($db::raw("hccup_code,hccup_name"))
     ->where('f_status', '=', 'A')
     ->orderBy('hccup_desc', 'asc')
     ->get()->toArray();
 
-$listmas_group_occup = $db::table("tbl_mas_group_occup")
+$listmas_group_occup= $db::table("tbl_mas_group_occup")
     ->select($db::raw("goccup_code,goccup_name"))
     ->where('f_status', '=', 'A')
     ->orderBy('goccup_desc', 'asc')
     ->get()->toArray();
 
-$listmas_educate = $db::table("tbl_mas_educate")
+$listmas_educate= $db::table("tbl_mas_educate")
     ->select($db::raw("ed_code,ed_name"))
     ->where('f_status', '=', 'A')
     ->orderBy('ed_desc', 'asc')
     ->get()->toArray();
 
-$listmas_disaster = $db::table("tbl_mas_disaster")
+$listmas_disaster= $db::table("tbl_mas_disaster")
     ->select($db::raw("dis_code,dis_name"))
     ->where('f_status', '=', 'A')
     ->orderBy('dis_code', 'asc')
     ->get()->toArray();
 
-$listmas_addition = $db::table("tbl_mas_addition")
+$listmas_addition= $db::table("tbl_mas_addition")
     ->select($db::raw("add_code,add_name"))
     ->where('f_status', '=', 'A')
     ->orderBy('add_desc', 'asc')
@@ -80,75 +80,77 @@ $listmas_addition = $db::table("tbl_mas_addition")
 
 //-------------------------Data Update Query---------------------------------------------------------------------------------------------------
 $id = @$_GET['id'];
-$data_fm_fam_hd = [];
-$list_fm_fam_facilities_dt3 = [];
-$list_fm_fam_pet_dt4 = [];
-$list_fm_fam_info_dt6_selected = [];
-$list_fm_fam_disaster_dt5_selected = [];
-$deeds = [];
-$distric_deeds = [];
-$listpeople = [];
-$norsor3kors = [];
-$distric_norsor3kors = [];
-$sorporkor = [];
-$distric_sorporkor = [];
-$chapter5s = [];
-$distric_chapter5s = [];
-$temlistpeople = ['prefix' => null, 'txtFName' => '', 'txtLName' => '', 'txtCitizenId' => '', 'xFstatusRd' => 'O', 'sexRd' => 'M'
-    , 'txtNational' => '', 'religion' => null, 'birthday' => '', 'educationlevel' => null, 'homerelations' => null, 'careergroup' => null
-    , 'careeranother' => '', 'careermain' => null, 'careersecond' => null, 'netIncome' => ''];
-$listpeople[] = $temlistpeople;
+ $data_fm_fam_hd=[];$list_fm_fam_facilities_dt3=[];$list_fm_fam_pet_dt4=[];
+ $list_fm_fam_info_dt6_selected = [];$list_fm_fam_disaster_dt5_selected = [];
+ $deeds=[];$distric_deeds=[];$listpeople=[];
+ $norsor3kors=[];$distric_norsor3kors=[];
+ $sorporkor=[];$distric_sorporkor=[]; 
+ $chapter5s=[];$distric_chapter5s=[];
+ $temlistpeople=['prefix'=>null,'txtFName'=>'','txtLName'=>'','txtCitizenId'=>'','xFstatusRd'=>'O','sexRd'=>'M'
+  ,'txtNational'=>'ไทย','religion'=>'01','birthday'=>'','educationlevel'=>null,'homerelations'=>'01','careermain'=>null,'careersecond'=>null,'netIncome'=>'','memF_status'=>'A']; 
+$listpeople[]=$temlistpeople;
 //---------------------------------------------------------------------------------------------------------------
 $house_no = ''; //บ้านเลขที่
-$house_moo = null; //หมู่ที
-$sub_district = ''; //ตำบล
-$district = ''; //อำเภอ
-$province = ''; //จังหวัด
-$post_code = '';
+$house_moo =null; //หมู่ที
+$sub_district = 'โคกขมิ้น'; //ตำบล
+$district ='พลับพลาชัย'; //อำเภอ
+$province ='จังหวัดบุรีรัมย์'; //จังหวัด
+$post_code ='31250';
 $pre_owner = '';
-$owner_fname = '';
-$owner_lname = '';
+$owner_fname ='';
+$owner_lname ='';
 $citizen_id = '';
-$x_status = 'O'; //สถานภาพ O =owner , M=Member
-$x_sex = 'M'; // เพศ M,W, หรือ O
+$x_status ='O'; //สถานภาพ O =owner , M=Member
+$x_sex ='M'; // เพศ M,W, หรือ O
 $national = ''; //สัญชาติ
-$reg_code = ''; //ศาสนา 01=พุทธ,02=อิสลาม 03=คริสต์ศาสนา 99 = อื่นๆ
-$date_of_birth = '';
-$education_code = '';
-$relations_code = ''; //ความสัมพันธ์ในครัวเรือน 01 =หัวหน้าครอบครัว
-$g_occupational_code = null; //กลุ่มอาชีพ 01 =กลุ่มอาชีพ1
-$g_occupational_other = ''; //กลุุ่้มอาชีพอื่นๆ
-$main_occupation_code = ''; //อาชีพหลัก
-$add_occupation_code = ''; //อาชีพรอง/อาชีพเสริม
-$income_per_year = '';
-$fam_land_other = ''; //ที่ดินอื่นๆ
-$eco_occupation_code = ''; //อาชีพในครัวเรือน
-$eco_product_target_code = null; //เป้าหมายการผลิต : 01=ผลิตเพื่อบริโภค,02=ผลิตเพื่อจำหน่าย,03=ผลิตเพื่อบริโภคและจำหน่าย
-$eco_capital_code = null; //แหล่งเงินทุน (ครัวเรือน) :01=เงินทุนส่วนตัว,02=กู้มาลงทุน,03=กู้บางส่วน
-$eco_product_cost = ''; //ต้นทุนการผลิต
-$f_problem_env = 'N'; //ปัญหาสิ่งแวดล้อมในครัวเรือน Y/N
-$problem_env_desc = ''; //รายละเอียดปัญหาสิ่งแวดล้อมในครัวเรือน
-$f_manage_env = 'N'; //การจัดการสิ่งแวดล้อม Y/N
-$manage_env_desc = ''; //รายละเอียดการจัดการสิ่งแวดล้อม
-$conserve_env = ''; //การอนุรักษ์สิ่งแวดล้อม
-$f_help = 'N'; //เคยได้รับความช่วยเหลือ Y/N
-$help_desc = '';
-$eco_product_from = ''; //ช่วงเวลาการผลิต จาก
-$eco_product_to = ''; //ช่วงเวลาการผลิต จาก
-$familyhomeproductperiod = date('d/m/Y', time()) . ' - ' . date("d/m/Y", strtotime("+3 month", time())); //ช่วงเวลาการผลิต จาก ช่วงเวลาการผลิต จาก
-$d_survey = date('d/m/Y h:i', time()); //วันเดือนปีสำรวจ
+$reg_code =''; //ศาสนา 01=พุทธ,02=อิสลาม 03=คริสต์ศาสนา 99 = อื่นๆ
+$date_of_birth ='';
+$education_code ='';
+$relations_code =''; //ความสัมพันธ์ในครัวเรือน 01 =หัวหน้าครอบครัว
+$g_occupational_code =null; //กลุ่มอาชีพ 01 =กลุ่มอาชีพ1
+$g_occupational_other =''; //กลุุ่้มอาชีพอื่นๆ
+$main_occupation_code =''; //อาชีพหลัก
+$add_occupation_code =''; //อาชีพรอง/อาชีพเสริม
+$income_per_year ='';
+$fam_land_other =''; //ที่ดินอื่นๆ
+$eco_occupation_code =null; //อาชีพในครัวเรือน
+$eco_product_target_code =null; //เป้าหมายการผลิต : 01=ผลิตเพื่อบริโภค,02=ผลิตเพื่อจำหน่าย,03=ผลิตเพื่อบริโภคและจำหน่าย
+$eco_capital_code =null; //แหล่งเงินทุน (ครัวเรือน) :01=เงินทุนส่วนตัว,02=กู้มาลงทุน,03=กู้บางส่วน
+$eco_product_cost =''; //ต้นทุนการผลิต
+$f_problem_env ='N'; //ปัญหาสิ่งแวดล้อมในครัวเรือน Y/N
+$problem_env_desc =''; //รายละเอียดปัญหาสิ่งแวดล้อมในครัวเรือน
+$f_manage_env ='N'; //การจัดการสิ่งแวดล้อม Y/N
+$manage_env_desc =''; //รายละเอียดการจัดการสิ่งแวดล้อม
+$conserve_env =''; //การอนุรักษ์สิ่งแวดล้อม
+$f_help ='N'; //เคยได้รับความช่วยเหลือ Y/N
+$help_desc ='';
+$eco_product_from =''; //ช่วงเวลาการผลิต จาก
+$eco_product_to =''; //ช่วงเวลาการผลิต จาก 
+$familyhomeproductperiod=date('d/m/Y',time()).' - '.date("d/m/Y", strtotime("+3 month", time()));//ช่วงเวลาการผลิต จาก ช่วงเวลาการผลิต จาก
+$d_survey = date('Y/m/d h:i', time()); //วันเดือนปีสำรวจ 
+$alert_survey=date('d/m/Y h:i', time()); 
+$actions='I';
+if (isset($_GET['id'])) {// update 
+  $actions='U';
 
-if (isset($_GET['id'])) { // update
-    $data_fm_fam_hd = $db::table("fm_fam_hd")
-        ->select($db::raw("fam_id,house_no,house_moo,sub_district,district,province,post_code,pre_owner,owner_fname,owner_lname,citizen_id,eco_product_from,eco_product_to
-      ,x_status,x_sex,national,reg_code,date_of_birth,education_code,relations_code,g_occupational_code,g_occupational_other,main_occupation_code,add_occupation_code
+  $base_join = $db::table('fm_fam_members_dt1')
+    ->select($db::raw('mem_fam_id,mem_status,mem_pre,mem_fname,mem_lname,mem_citizen_id,mem_sex,mem_national,mem_religion_code,mem_df_birth,mem_education_code,mem_relations_code,f_status'))
+    ->where('mem_status', 'O')
+    ->where('mem_fam_id', '=', $_GET['id'])
+    ->groupBy('mem_fam_id'); 
+  $data_fm_fam_hd = $db::table('fm_fam_hd AS a')
+    ->select($db::raw("fam_id,house_no,house_moo,sub_district,district,province,post_code,cc.mem_pre,cc.mem_fname,cc.mem_lname,cc.mem_citizen_id
+      ,eco_product_from,eco_product_to ,mem_status AS x_status,mem_sex AS x_sex,mem_national AS national,mem_religion_code AS reg_code,mem_df_birth AS date_of_birth,mem_education_code AS education_code
+      ,mem_relations_code AS relations_code,g_occupational_code,g_occupational_other,main_occupation_code,add_occupation_code
       ,income_per_year,fam_land_other,eco_occupation_code,eco_product_target_code,eco_capital_code,eco_product_cost,f_problem_env,problem_env_desc
       ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,d_survey"))
-        ->where('fam_id', '=', $_GET['id'])
-        ->first();
+    ->leftJoinSub($base_join, 'cc', function ($join) {
+        $join->on('a.fam_id', '=', 'cc.mem_fam_id');
+    })->where('fam_id', '=', $_GET['id'])->first();  
 
+    if (!IsNullOrEmptyString($data_fm_fam_hd->d_survey)) {$alert_survey = date('d/m/Y h:i', strtotime($data_fm_fam_hd->d_survey));}
     $house_no = (isset($data_fm_fam_hd->house_no) ? $data_fm_fam_hd->house_no : ''); //บ้านเลขที่
-    $house_moo = ((isset($data_fm_fam_hd->house_moo) && !IsNullOrEmptyString($data_fm_fam_hd->house_moo)) ? $data_fm_fam_hd->house_moo : null); //หมู่ที
+    $house_moo = ((isset($data_fm_fam_hd->house_moo)&&!IsNullOrEmptyString($data_fm_fam_hd->house_moo)) ? $data_fm_fam_hd->house_moo :null); //หมู่ที
     $sub_district = (isset($data_fm_fam_hd->sub_district) ? $data_fm_fam_hd->sub_district : ''); //ตำบล
     $district = (isset($data_fm_fam_hd->district) ? $data_fm_fam_hd->district : ''); //อำเภอ
     $province = (isset($data_fm_fam_hd->province) ? $data_fm_fam_hd->province : ''); //จังหวัด
@@ -164,15 +166,15 @@ if (isset($_GET['id'])) { // update
     $date_of_birth = (isset($data_fm_fam_hd->date_of_birth) ? $data_fm_fam_hd->date_of_birth : '');
     $education_code = (isset($data_fm_fam_hd->education_code) ? $data_fm_fam_hd->education_code : '');
     $relations_code = (isset($data_fm_fam_hd->relations_code) ? $data_fm_fam_hd->relations_code : ''); //ความสัมพันธ์ในครัวเรือน 01 =หัวหน้าครอบครัว
-    $g_occupational_code = ((isset($data_fm_fam_hd->g_occupational_code) && !IsNullOrEmptyString($data_fm_fam_hd->g_occupational_code)) ? $data_fm_fam_hd->g_occupational_code : null); //กลุ่มอาชีพ 01 =กลุ่มอาชีพ1
+    $g_occupational_code =((isset($data_fm_fam_hd->g_occupational_code)&&!IsNullOrEmptyString($data_fm_fam_hd->g_occupational_code)) ? $data_fm_fam_hd->g_occupational_code :null); //กลุ่มอาชีพ 01 =กลุ่มอาชีพ1
     $g_occupational_other = (isset($data_fm_fam_hd->g_occupational_other) ? $data_fm_fam_hd->g_occupational_other : ''); //กลุุ่้มอาชีพอื่นๆ
     $main_occupation_code = (isset($data_fm_fam_hd->main_occupation_code) ? $data_fm_fam_hd->main_occupation_code : null); //อาชีพหลัก
     $add_occupation_code = (isset($data_fm_fam_hd->add_occupation_code) ? $data_fm_fam_hd->add_occupation_code : null); //อาชีพรอง/อาชีพเสริม
     $income_per_year = (isset($data_fm_fam_hd->income_per_year) ? $data_fm_fam_hd->income_per_year : '');
     $fam_land_other = (isset($data_fm_fam_hd->fam_land_other) ? $data_fm_fam_hd->fam_land_other : ''); //ที่ดินอื่นๆ
     $eco_occupation_code = (isset($data_fm_fam_hd->eco_occupation_code) ? $data_fm_fam_hd->eco_occupation_code : ''); //อาชีพในครัวเรือน
-    $eco_product_target_code = ((isset($data_fm_fam_hd->eco_product_target_code) && !IsNullOrEmptyString($data_fm_fam_hd->eco_product_target_code)) ? $data_fm_fam_hd->eco_product_target_code : null); //เป้าหมายการผลิต : 01=ผลิตเพื่อบริโภค,02=ผลิตเพื่อจำหน่าย,03=ผลิตเพื่อบริโภคและจำหน่าย
-    $eco_capital_code = ((isset($data_fm_fam_hd->eco_capital_code) && !IsNullOrEmptyString($data_fm_fam_hd->eco_capital_code)) ? $data_fm_fam_hd->eco_capital_code : null); //แหล่งเงินทุน (ครัวเรือน) :01=เงินทุนส่วนตัว,02=กู้มาลงทุน,03=กู้บางส่วน
+    $eco_product_target_code=((isset($data_fm_fam_hd->eco_product_target_code)&&!IsNullOrEmptyString($data_fm_fam_hd->eco_product_target_code)) ? $data_fm_fam_hd->eco_product_target_code :null); //เป้าหมายการผลิต : 01=ผลิตเพื่อบริโภค,02=ผลิตเพื่อจำหน่าย,03=ผลิตเพื่อบริโภคและจำหน่าย
+    $eco_capital_code=((isset($data_fm_fam_hd->eco_capital_code)&&!IsNullOrEmptyString($data_fm_fam_hd->eco_capital_code)) ? $data_fm_fam_hd->eco_capital_code :null); //แหล่งเงินทุน (ครัวเรือน) :01=เงินทุนส่วนตัว,02=กู้มาลงทุน,03=กู้บางส่วน
     $eco_product_cost = (isset($data_fm_fam_hd->eco_product_cost) ? $data_fm_fam_hd->eco_product_cost : 0); //ต้นทุนการผลิต
     $f_problem_env = (isset($data_fm_fam_hd->f_problem_env) ? $data_fm_fam_hd->f_problem_env : 'N'); //ปัญหาสิ่งแวดล้อมในครัวเรือน Y/N
     $problem_env_desc = (isset($data_fm_fam_hd->problem_env_desc) ? $data_fm_fam_hd->problem_env_desc : ''); //รายละเอียดปัญหาสิ่งแวดล้อมในครัวเรือน
@@ -185,35 +187,23 @@ if (isset($_GET['id'])) { // update
     $eco_product_to = (isset($data_fm_fam_hd->eco_product_to) ? $data_fm_fam_hd->eco_product_to : ''); //ช่วงเวลาการผลิต จาก
     if (!IsNullOrEmptyString($eco_product_from)) {$eco_product_from = date('d/m/Y', strtotime($eco_product_from));}
     if (!IsNullOrEmptyString($eco_product_to)) {$eco_product_to = date('d/m/Y', strtotime($eco_product_to));}
-    if (!IsNullOrEmptyString($eco_product_from) && !IsNullOrEmptyString($eco_product_to)) {$familyhomeproductperiod = $eco_product_from . ' - ' . $eco_product_to;}
+    if(!IsNullOrEmptyString($eco_product_from)&&!IsNullOrEmptyString($eco_product_to)){$familyhomeproductperiod=$eco_product_from.' - '.$eco_product_to;}
     $d_survey = (isset($data_fm_fam_hd->d_survey) ? $data_fm_fam_hd->d_survey : ''); //วันเดือนปีสำรวจ
-    if (!IsNullOrEmptyString($d_survey)) {$d_survey = date('d/m/Y h:i', strtotime($d_survey));}
+    if (!IsNullOrEmptyString($d_survey)) {$d_survey = date('Y/m/d h:i', strtotime($d_survey));} 
 
     // echo '<pre>';print_r($data_fm_fam_hd);exit();
     // var_dump($d_survey);exit();
 
     // $listpeople
-    $c_fm_fam_hd = $db::table("fm_fam_members_dt1 AS a")
-        ->select($db::raw("mem_pre AS prefix,f_status,mem_fname AS txtFName,mem_lname AS txtLName,mem_citizen_id AS txtCitizenId,mem_status AS xFstatusRd
+     $listpeople = $db::table("fm_fam_members_dt1 AS a")
+    ->select($db::raw("mem_pre AS prefix,b.f_status,mem_fname AS txtFName,mem_lname AS txtLName,mem_citizen_id AS txtCitizenId,mem_status AS xFstatusRd
       ,mem_sex AS sexRd,mem_national AS txtNational,mem_religion_code AS religion,mem_df_birth AS birthday,mem_education_code AS educationlevel
-      ,mem_relations_code AS homerelations,null AS careergroup,null AS careeranother
-      ,xmain_occupation_code AS careermain,xadditional_occupation_code AS careersecond ,xincome_per_year AS netIncome,mem_seq"))
-        ->where('a.mem_fam_id', '=', $id);
-    //->where('a.f_status', '=','A');
-
-    $p_fm_fam_hd = $db::table("fm_fam_hd AS a")
-        ->select($db::raw("pre_owner AS prefix,f_status,owner_fname AS txtFName,owner_lname AS txtLName,citizen_id AS txtCitizenId ,x_status AS xFstatusRd
-      ,x_sex AS sexRd,national AS txtNational,reg_code AS religion,date_of_birth AS birthday,education_code AS educationlevel
-      ,relations_code AS homerelations
-      ,g_occupational_code AS careergroup,g_occupational_other AS  careeranother,main_occupation_code AS careermain,add_occupation_code AS careersecond
-      ,income_per_year AS netIncome,1 AS mem_seq"))
-        ->where('a.fam_id', '=', $id);
-    //->where('a.f_status', '=','A');
-
-    $final_query = $p_fm_fam_hd->unionall($c_fm_fam_hd);
-    $querySql = $final_query->toSql();
-    $all_content_query = $db::table($db::raw("($querySql) as t"))->mergeBindings($final_query);
-    $listpeople = $all_content_query->select($db::raw("t.*"))->orderBy('mem_seq', 'asc')->get()->toArray();
+      ,mem_relations_code AS homerelations,b.g_occupational_code AS careergroup,b.g_occupational_other AS careeranother
+      ,xmain_occupation_code AS careermain,NULLIF(xadditional_occupation_code,'') AS careersecond ,xincome_per_year AS netIncome,mem_seq,a.F_status AS memF_status"))
+    ->Join('fm_fam_hd AS b', 'b.fam_id', 'a.mem_fam_id')
+    ->where('a.mem_fam_id', '=', $id)
+    ->orderBy('mem_seq', 'asc')->get()->toArray();
+    
     // ข้อมูลพื้นที่การเกษตร
     $list_fm_fam_land_dt2 = $db::table("fm_fam_land_dt2")
         ->select($db::raw("land_type,land_desc,province,district,title_deed_id AS nodeed,area1_rai AS arearai,area2_work AS areawork,area3_sqw AS areatrw,f_status"))
@@ -322,65 +312,65 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
 
 ?>
 <script>
-  // config data for vue
-  var vilage = <?=json_encode($listmas_vilage);?>;
+  // config data for vue  
+  var vilage = <?=json_encode($listmas_vilage); ?>; 
   window.Slistmas_vilage=vilage.reverse().concat({vil_id: null, vil_moo:null, vil_name: "กรุณาเลือกข้อมูล", vil_desc: ""}).reverse();
-  var mas_prefix = <?=json_encode($listmas_prefix);?>;
+  var mas_prefix = <?=json_encode($listmas_prefix); ?>; 
   window.Slistmas_prefix=mas_prefix.reverse().concat({pre_code: null,pre_name: "กรุณาเลือกข้อมูล"}).reverse();
     //ศาสนา
-  var religion = <?=json_encode($listmas_religion);?>;
+  var religion = <?=json_encode($listmas_religion); ?>; 
   window.Slistmas_religion=religion.reverse().concat({reg_code: null, reg_name: "กรุณาเลือกข้อมูล"}).reverse();
-  //ระดับการศึกษา:
-  var educate = <?=json_encode($listmas_educate);?>;
+  //ระดับการศึกษา: 
+  var educate = <?=json_encode($listmas_educate); ?>; 
   window.Slistmas_educate=educate.reverse().concat({ed_code: null, ed_name: "กรุณาเลือกข้อมูล"}).reverse();
   //ความสัมพันธ์ในครัวเรือน:
-  var home_relations= <?=json_encode($listmas_relations);?>;
+  var home_relations= <?=json_encode($listmas_relations); ?>; 
   window.Slistmas_relations=home_relations.reverse().concat({re_code: null, re_name: "กรุณาเลือกข้อมูล"}).reverse();
   // อาชีพในครัวเรือน
-  var house_occup= <?=json_encode($listmas_house_occup);?>;
+  var house_occup= <?=json_encode($listmas_house_occup); ?>;  
   window.Slistmas_house_occup=house_occup.reverse().concat({hccup_code: null, hccup_name: "กรุณาเลือกข้อมูล"}).reverse();
   window.Shouseinforgeneral=<?=json_encode($Shouseinforgeneral)?>;
-  window.Shouseinfor=<?=json_encode($Shouseinfor)?>;
+  window.Shouseinfor=<?=json_encode($Shouseinfor)?>; 
   //กลุ่มอาชีพ:
-  var group_occup= <?=json_encode($listmas_group_occup);?>;
+  var group_occup= <?=json_encode($listmas_group_occup); ?>; 
   window.Slistmas_group_occup=group_occup.reverse().concat({goccup_code: null, goccup_name: "กรุณาเลือกข้อมูล"}).reverse();
   // อาชีพหลัก
-  var occupation= <?=json_encode($listmas_occupation);?>;
+  var occupation= <?=json_encode($listmas_occupation); ?>;  
   window.Slistmas_occupation=occupation.reverse().concat({occup_code: null, occup_name: "กรุณาเลือกข้อมูล"}).reverse();
     ///อาชีพรอง
- var addition= <?=json_encode($listmas_addition);?>;
+ var addition= <?=json_encode($listmas_addition); ?>;   
   window.Slistlistmas_addition=addition.reverse().concat({add_code: null, add_name: "กรุณาเลือกข้อมูล"}).reverse();
-  // ข้อมูลจังหวัด
-  var provinces= <?=json_encode($listprovinces);?>;
-  window.Slistprovinces=provinces.reverse().concat({code: null,id:null,name_en:'กรุณาเลือกข้อมูล',name_th: "กรุณาเลือกข้อมูล"}).reverse();
+  // ข้อมูลจังหวัด 
+  var provinces= <?=json_encode($listprovinces); ?>; 
+  window.Slistprovinces=provinces.reverse().concat({code: null,id:null,name_en:'กรุณาเลือกข้อมูล',name_th: "กรุณาเลือกข้อมูล"}).reverse();  
   //-ช้อมูลอำเภอ
-  window.distric_deeds=<?=json_encode($distric_deeds);?>;
-  window.distric_norsor3kors =<?=json_encode($distric_norsor3kors);?>;
-  window.distric_sorporkor =<?=json_encode($distric_sorporkor);?>;
-  window.distric_chapter5s =<?=json_encode($distric_chapter5s);?>;
-
-    //เครื่องมืออำนวยความสะดวกทางการเกษตร
-  window.Slistmas_facilities=<?=json_encode($list_fm_fam_facilities_dt3);?>;
-  // สัตว์เลี้ยง
-  window.listmas_pet=<?=json_encode($list_fm_fam_pet_dt4);?>;
-
+  window.distric_deeds=<?=json_encode($distric_deeds); ?>;
+  window.distric_norsor3kors =<?=json_encode($distric_norsor3kors); ?>;
+  window.distric_sorporkor =<?=json_encode($distric_sorporkor); ?>;
+  window.distric_chapter5s =<?=json_encode($distric_chapter5s); ?>;
+  
+    //เครื่องมืออำนวยความสะดวกทางการเกษตร 
+  window.Slistmas_facilities=<?=json_encode($list_fm_fam_facilities_dt3); ?>;  
+  // สัตว์เลี้ยง 
+  window.listmas_pet=<?=json_encode($list_fm_fam_pet_dt4); ?>;   
+  
   window.Sfamerdetaillists={deeds:<?=json_encode($deeds)?>,norsor3kors:<?=json_encode($norsor3kors)?>,spoks:<?=json_encode($sorporkor)?>,chapter5s:<?=json_encode($chapter5s)?>,another:'<?=$fam_land_other?>'};
   window.SSfamerdetaillists={deeds:<?=json_encode($deeds)?>,norsor3kors:<?=json_encode($norsor3kors)?>,spoks:<?=json_encode($sorporkor)?>,chapter5s:<?=json_encode($chapter5s)?>,another:'<?=$fam_land_other?>'};
 
-  window.Sfamilylist=<?=json_encode($temlistpeople)?>;
+  window.Sfamilylist=<?=json_encode($temlistpeople)?>; 
   window.Sfamilylists=<?=json_encode($listpeople)?>;
   window.SSfamilylists=<?=json_encode($listpeople)?>;
 
-  window.Mfamilylist={prefix:null,txtFName: '',txtLName:'',txtCitizenId:'' ,xFstatusRd:'O',sexRd:'M',txtNational:'',religion:null,birthday:''
-  ,educationlevel:null,homerelations:null,careergroup:null,careeranother:'',careermain:null,careersecond:null,netIncome:''};
+  window.Mfamilylist={prefix:null,txtFName: '',txtLName:'',txtCitizenId:'' ,xFstatusRd:'O',sexRd:'M',txtNational:'ไทย',religion:'01',birthday:''
+  ,educationlevel:null,homerelations:null,careermain:null,careersecond:null,netIncome:'',memF_status:'A'};  
   //ข้อมูลพื้นที่การเกษตร
-  window.Sfamerland={province:null,district:'',nodeed:'',arearai:'',areawork:'',areatrw:''};
-  //เป้าหมายการผลิต
+  window.Sfamerland={province:20,district:3115,nodeed:'',arearai:0,areawork:0,areatrw:0};
+  //เป้าหมายการผลิต 
   window.listfamilyhomeproducttarget=[{code:null,name:'กรุณาเลือกข้อมูล'}
   ,{code:1,name:'ผลิตเพื่อบริโภค'}
   ,{code:2,name:'ผลิตเพื่อจำหน่าย'}
   ,{code:3,name:'ผลิตเพื่อบริโภคและจำหน่าย'}];
-//แหล่งเงินทุน (ครัวเรือน)
+//แหล่งเงินทุน (ครัวเรือน) 
   window.listfamilyhomesourceoffunds=[{code:null,name:'กรุณาเลือกข้อมูล'}
   ,{code:1,name:'เงินทุนส่วนตัว'}
   ,{code:2,name:'กู้มาลงทุน'}
@@ -390,20 +380,22 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
    window.xEnvironmentaldisc='<?=$problem_env_desc?>';
    window.xEnvironmental2='<?=$f_manage_env?>';
    window.xEnvironmental2disc='<?=$manage_env_desc?>';
-   window.greenxEnvironmentaldisc='<?=$conserve_env?>';
+   window.greenxEnvironmentaldisc='<?=$conserve_env?>'; 
    window.helpme='<?=$f_help?>';
    window.helpmedisc='<?=$help_desc?>';
    //ข่าวสารทางด้านการเกษตร
-   window.tbl_mas_info1=<?=json_encode($tbl_mas_info1);?>;
-   window.tbl_mas_info2=<?=json_encode($tbl_mas_info2);?>;
-   window.tbl_mas_info3=<?=json_encode($tbl_mas_info3);?>;
-   window.Smas_info={selected:<?='["' . implode('", "', $list_fm_fam_info_dt6_selected) . '"]'?>,another:''};
+   window.tbl_mas_info1=<?=json_encode($tbl_mas_info1); ?>; 
+   window.tbl_mas_info2=<?=json_encode($tbl_mas_info2); ?>;
+   window.tbl_mas_info3=<?=json_encode($tbl_mas_info3); ?>;
+   window.Smas_info={selected:<?='["' . implode('", "',$list_fm_fam_info_dt6_selected) . '"]'?>,another:''};
    //ภัยธรรมชาติ
-   window.listmas_disaster1=<?=json_encode($listmas_disaster1);?>;
-   window.listmas_disaster2=<?=json_encode($listmas_disaster2);?>;
-   window.Sdisaster={selected:<?='["' . implode('", "', $list_fm_fam_disaster_dt5_selected) . '"]'?>,another:''};
-
+   window.listmas_disaster1=<?=json_encode($listmas_disaster1); ?>; 
+   window.listmas_disaster2=<?=json_encode($listmas_disaster2); ?>;
+   window.Sdisaster={selected:<?='["' . implode('", "',$list_fm_fam_disaster_dt5_selected) . '"]'?>,another:''}; 
+      
   window.d_survey={autoclose: true,format: 'DD/MM/YYYY HH:mm A',defaultDate:'<?=$d_survey?>'};
+  window.alert_survey='<?=$alert_survey?>';
+  window.actions='<?=$actions?>';
   
 <?php if(IsNullOrEmptyString($house_no)){
 ?>
