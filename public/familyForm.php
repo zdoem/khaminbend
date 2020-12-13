@@ -115,7 +115,7 @@ $relations_code =''; //ความสัมพันธ์ในครัวเ
 $g_occupational_code =null; //กลุ่มอาชีพ 01 =กลุ่มอาชีพ1
 $g_occupational_other =''; //กลุุ่้มอาชีพอื่นๆ
 $main_occupation_code =''; //อาชีพหลัก
-$add_occupation_code =''; //อาชีพรอง/อาชีพเสริม
+$add_occupation_code ='01'; //อาชีพรอง/อาชีพเสริม
 $income_per_year ='';
 $fam_land_other =''; //ที่ดินอื่นๆ
 $eco_occupation_code =null; //อาชีพในครัวเรือน
@@ -174,7 +174,7 @@ if (isset($_GET['id'])) {// update
     $g_occupational_code =((isset($data_fm_fam_hd->g_occupational_code)&&!IsNullOrEmptyString($data_fm_fam_hd->g_occupational_code)) ? $data_fm_fam_hd->g_occupational_code :null); //กลุ่มอาชีพ 01 =กลุ่มอาชีพ1
     $g_occupational_other = (isset($data_fm_fam_hd->g_occupational_other) ? $data_fm_fam_hd->g_occupational_other : ''); //กลุุ่้มอาชีพอื่นๆ
     $main_occupation_code = (isset($data_fm_fam_hd->main_occupation_code) ? $data_fm_fam_hd->main_occupation_code : null); //อาชีพหลัก
-    $add_occupation_code = (isset($data_fm_fam_hd->add_occupation_code) ? $data_fm_fam_hd->add_occupation_code : null); //อาชีพรอง/อาชีพเสริม
+    $add_occupation_code = (isset($data_fm_fam_hd->add_occupation_code) ? $data_fm_fam_hd->add_occupation_code : '01'); //อาชีพรอง/อาชีพเสริม
     $income_per_year = (isset($data_fm_fam_hd->income_per_year) ? $data_fm_fam_hd->income_per_year : '');
     $fam_land_other = (isset($data_fm_fam_hd->fam_land_other) ? $data_fm_fam_hd->fam_land_other : ''); //ที่ดินอื่นๆ
     $eco_occupation_code = (isset($data_fm_fam_hd->eco_occupation_code) ? $data_fm_fam_hd->eco_occupation_code : ''); //อาชีพในครัวเรือน
