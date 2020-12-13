@@ -954,6 +954,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 <td>
                                   <div class="form-group">
                                     <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)0-4เท่านั้น...">
+                                    <div class="invalid-feedback order-last" v-if="!item.areawork.Fn_areawork">พื้นที่(งาน)0-4เท่านั้น</div>
                                   </div>
                                 </td>
                                 <td>
@@ -1027,6 +1028,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 <td>
                                   <div class="form-group">
                                     <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)0-4เท่านั้น...">
+                                    <div class="invalid-feedback order-last" v-if="!item.areawork.Fn_areawork">พื้นที่(งาน)0-4เท่านั้น</div> 
                                   </div>
                                 </td>
                                 <td>
@@ -1099,6 +1101,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 <td>
                                   <div class="form-group">
                                     <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)0-4เท่านั้น...">
+                                    <div class="invalid-feedback order-last" v-if="!item.areawork.Fn_areawork">พื้นที่(งาน)0-4เท่านั้น</div>
                                   </div>
                                 </td>
                                 <td>
