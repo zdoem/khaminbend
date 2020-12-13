@@ -958,7 +958,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areatrw[]"  :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="ใส่จุดทศนิยมได้...">
+                                    <input type="number" step="any" name="areatrw[]"  :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="ใส่จุดทศนิยมได้...">
                                   </div>
                                 </td>
                                 <td>
@@ -1031,7 +1031,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areatrw[]"  :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="ใส่จุดทศนิยมได้...">
+                                    <input type="number" step="any" name="areatrw[]"  :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="ใส่จุดทศนิยมได้...">
                                   </div>
                                 </td>
                                 <td>
@@ -1103,7 +1103,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areatrw[]" :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="ใส่จุดทศนิยมได้...">
+                                    <input type="number" step="any" name="areatrw[]" :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="ใส่จุดทศนิยมได้...">
                                   </div>
                                 </td>
                                 <td>
