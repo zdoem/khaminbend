@@ -92,7 +92,7 @@ $listmas_addition= $db::table("tbl_mas_addition")
  $sorporkor=[];$distric_sorporkor=[]; 
  $chapter5s=[];$distric_chapter5s=[];
  $temlistpeople=['prefix'=>null,'txtFName'=>'','txtLName'=>'','txtCitizenId'=>'','xFstatusRd'=>'O','sexRd'=>'M'
-  ,'txtNational'=>'ไทย','religion'=>'01','birthday'=>'','educationlevel'=>null,'homerelations'=>'01','careermain'=>null,'careersecond'=>null,'netIncome'=>'','memF_status'=>'A']; 
+  ,'txtNational'=>'ไทย','religion'=>'01','birthday'=>'','educationlevel'=>null,'homerelations'=>'01','careermain'=>null,'careersecond'=>'01','netIncome'=>'','memF_status'=>'A']; 
 $listpeople[]=$temlistpeople;
 //---------------------------------------------------------------------------------------------------------------
 $house_no = ''; //บ้านเลขที่
@@ -226,7 +226,7 @@ if (isset($_GET['id'])) {// update
     ->select($db::raw("mem_pre AS prefix,b.f_status,mem_fname AS txtFName,mem_lname AS txtLName,mem_citizen_id AS txtCitizenId,mem_status AS xFstatusRd
       ,mem_sex AS sexRd,mem_national AS txtNational,mem_religion_code AS religion,mem_df_birth AS birthday,mem_education_code AS educationlevel
       ,mem_relations_code AS homerelations,b.g_occupational_code AS careergroup,b.g_occupational_other AS careeranother
-      ,xmain_occupation_code AS careermain,NULLIF(xadditional_occupation_code,'') AS careersecond ,xincome_per_year AS netIncome,mem_seq,a.F_status AS memF_status"))
+      ,xmain_occupation_code AS careermain,xadditional_occupation_code AS careersecond ,xincome_per_year AS netIncome,mem_seq,a.F_status AS memF_status"))
     ->Join('fm_fam_hd AS b', 'b.fam_id', 'a.mem_fam_id')
     ->where('a.mem_fam_id', '=', $id)
     ->orderBy('mem_seq', 'asc')->get()->toArray();   
@@ -395,7 +395,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
   window.SSfamilylists=<?=json_encode($listpeople)?>;
 
   window.Mfamilylist={prefix:null,txtFName: '',txtLName:'',txtCitizenId:'' ,xFstatusRd:'O',sexRd:'M',txtNational:'ไทย',religion:'01',birthday:''
-  ,educationlevel:null,homerelations:null,careermain:null,careersecond:null,netIncome:'',memF_status:'A'};  
+  ,educationlevel:null,homerelations:null,careermain:null,careersecond:'01',netIncome:'',memF_status:'A'};  
   //ข้อมูลพื้นที่การเกษตร
   window.Sfamerland={province:20,district:3115,nodeed:'',arearai:0,areawork:0,areatrw:0};
   //เป้าหมายการผลิต 

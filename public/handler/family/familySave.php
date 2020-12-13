@@ -45,7 +45,7 @@ $familylist=@$familylists[0];
 // $g_occupational_other = trim((isset($familylist['careeranother']) ? $familylist['careeranother'] : ''));
 
 $main_occupation_code= trim((isset($familylist['careermain']) ? $familylist['careermain'] : ''));
-$add_occupation_code = trim((isset($familylist['careersecond']) ? $familylist['careersecond'] : ''));
+$add_occupation_code = trim(((isset($familylist['careersecond'])&&@$familylist['careersecond']!='') ? $familylist['careersecond'] : '01'));
 $income_per_year= trim((isset($familylist['netIncome']) ? $familylist['netIncome'] : ''));
 //  var_dump($_POST['Mfamilylists']);exit();
 
@@ -61,7 +61,7 @@ $g_occupational_other = trim((isset($_POST['Mhouseinforgeneral']['g_occupational
 $eco_occupation_code=  trim((isset($_POST['Mhouseinforgeneral']['familyhomecareer']) ? $_POST['Mhouseinforgeneral']['familyhomecareer'] : NULL));
 $eco_product_target_code = trim((isset($_POST['Mhouseinforgeneral']['familyhomeproducttarget']) ? $_POST['Mhouseinforgeneral']['familyhomeproducttarget'] : null));
 $eco_capital_code = trim((isset($_POST['Mhouseinforgeneral']['familyhomesourceoffunds']) ? $_POST['Mhouseinforgeneral']['familyhomesourceoffunds'] : ''));
-$familyhomeproductioncost=trim((isset($_POST['Mhouseinforgeneral']['familyhomeproductioncost']) ? $_POST['Mhouseinforgeneral']['familyhomeproductioncost'] : '01'));
+$familyhomeproductioncost=trim((isset($_POST['Mhouseinforgeneral']['familyhomeproductioncost']) ? $_POST['Mhouseinforgeneral']['familyhomeproductioncost'] : ''));
 $familyhomeproductperiod = trim((isset($_POST['Mhouseinforgeneral']['familyhomeproductperiod']) ? preg_replace('/\s+/', '', $_POST['Mhouseinforgeneral']['familyhomeproductperiod'])  : ''));
 $b_period=explode('-',$familyhomeproductperiod); 
 $eco_product_from=trim((isset($b_period[0]) ? preg_replace("/(\d+)\/(\d+)\/(\d+)/","$3-$2-$1",$b_period[0]): ''));
@@ -349,7 +349,7 @@ function insertall($type,$tran_id){
                   $mem_education_code = trim((isset($v['educationlevel']) ? $v['educationlevel'] : ''));
                   $mem_relations_code = trim((isset($v['homerelations']) ? $v['homerelations'] : ''));  
                   $xmain_occupation_code = trim((isset($v['careermain']) ? $v['careermain'] : '')); 
-                  $xadditional_occupation_code = trim((isset($v['careersecond']) ? $v['careersecond'] : ''));
+                  $xadditional_occupation_code = trim(((isset($v['careersecond'])&&@$v['careersecond']!='') ? $v['careersecond'] : '01'));
                   $xincome_per_year = trim((isset($v['netIncome']) ? $v['netIncome'] : ''));
                
                   $batc_insert_sql_people[] =['mem_fam_id' =>$tran_id, 'd_create' =>$db::raw('NOW()') , 'f_status' =>$f_status, 'create_by' =>@$_SESSION['user_id'], 'mem_pre' =>$mem_pre
