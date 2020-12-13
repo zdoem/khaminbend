@@ -331,8 +331,10 @@ window.app = new Vue({
         	}
      },  
      submit: function() {  
-             var _this=this;
-             var alertinert=moment($('#assessment_date').val()).diff(window.alert_survey, 'year');
+             var _this=this; 
+             var y1=moment($('#assessment_date').val(),'DD/MM/YYYY').format('YYYY/MM/DD'); 
+             var y2=moment(window.alert_survey,'DD/MM/YYYY').format('YYYY/MM/DD'); 
+             var alertinert=moment(y1).diff(y2, 'year');
              if(alertinert>0&&alertinert!=NaN){
                    Swal.fire({
                       title: 'คุณกำลังจะสร้างข้อมูลใหม่ใช่หรือไม่?', 

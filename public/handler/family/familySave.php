@@ -167,10 +167,10 @@ $rows_old=null;
 if($id>0){
    $rows_old = $db::table("fm_fam_hd")
     ->where('fam_id', '=', $id)
-    ->select($db::raw("fam_id,SUBSTRING(fam_id,1,2) AS yearfam_id,house_no,house_moo"))
+    ->select($db::raw("fam_id,RIGHT(YEAR(d_survey)+543,2) AS yearfam_id,house_no,house_moo"))
     ->first();
-      if($action!=3){
-         if(!isset($rows_old->yearfam_id)||($rows_old->yearfam_id<$yearfam_id)){// ไม่มีข้อมูลเก่าหรือ idที่ใช้ปี<ปีปัจจุบัน insert ใหม่  
+      if($action!=3){ 
+         if(!isset($rows_old->yearfam_id)||($rows_old->yearfam_id<substr(date("Y")+543, -2))){// ไม่มีข้อมูลเก่าหรือ idที่ใช้ปี<ปีปัจจุบัน insert ใหม่  
          $action=1;   
          }else if($rows_old->yearfam_id==$yearfam_id){// มีข้อมูลอยู่แล้วให้และปีเดี่ยวกัน update 
          $action=2; 
