@@ -426,7 +426,8 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
    window.listmas_disaster2=<?=json_encode($listmas_disaster2); ?>;
    window.Sdisaster={selected:<?='["' . implode('", "',$list_fm_fam_disaster_dt5_selected) . '"]'?>,another:''}; 
       
-  window.d_survey={autoclose: true,format: 'DD/MM/YYYY HH:mm A',defaultDate:'<?=$d_survey?>'};
+  window.d_survey={autoclose: true,format: 'DD/MM/YYYY HH:mm A',defaultDate:'<?=$d_survey?>',buttons: { showToday: true },
+            icons: { today: 'fas fa-calendar-day',time:'fas fa-clock'},tooltips:{today:'วันนี้'}}; 
   window.alert_survey='<?=$alert_survey?>';
   window.actions='<?=$actions?>';
  </script>
