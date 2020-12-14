@@ -65,7 +65,7 @@
             </div> -->
 			 <div class="icheck-primary">
               <p class="mb-1">
-				<a href="forgot-password.html">ฉันลืมรหัสผ่าน</a>
+				<a href="passwordforgot.php">ฉันลืมรหัสผ่าน</a>
 			  </p>
             </div> 
 			
