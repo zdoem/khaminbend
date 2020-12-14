@@ -11,7 +11,7 @@
  Target Server Version : 50732
  File Encoding         : 65001
 
- Date: 13/12/2020 01:41:11
+ Date: 14/12/2020 20:23:50
 */
 
 SET NAMES utf8mb4;
@@ -9917,6 +9917,9 @@ INSERT INTO `fm_fam_disaster_dt5` VALUES ('63122008', '03', 'วาตภัย'
 INSERT INTO `fm_fam_disaster_dt5` VALUES ('631212', '01', 'ภัยแล้ง ', NULL);
 INSERT INTO `fm_fam_disaster_dt5` VALUES ('631213', '01', 'ภัยแล้ง ', NULL);
 INSERT INTO `fm_fam_disaster_dt5` VALUES ('631214', '01', 'ภัยแล้ง ', NULL);
+INSERT INTO `fm_fam_disaster_dt5` VALUES ('631217', '01', 'ภัยแล้ง ', NULL);
+INSERT INTO `fm_fam_disaster_dt5` VALUES ('630519', '01', 'ภัยแล้ง ', NULL);
+INSERT INTO `fm_fam_disaster_dt5` VALUES ('631220', '01', 'ภัยแล้ง ', NULL);
 
 -- ----------------------------
 -- Table structure for fm_fam_facilities_dt3
@@ -9938,6 +9941,9 @@ INSERT INTO `fm_fam_facilities_dt3` VALUES ('63122008', '01', 'รถไถ แ�
 INSERT INTO `fm_fam_facilities_dt3` VALUES ('631212', '01', 'รถไถ แทรกเตอร์ ', 10, NULL);
 INSERT INTO `fm_fam_facilities_dt3` VALUES ('631213', '01', 'รถไถ แทรกเตอร์ ', 10, NULL);
 INSERT INTO `fm_fam_facilities_dt3` VALUES ('631214', '01', 'รถไถ แทรกเตอร์ ', 20, NULL);
+INSERT INTO `fm_fam_facilities_dt3` VALUES ('631217', '01', 'รถไถ แทรกเตอร์ ', 10, NULL);
+INSERT INTO `fm_fam_facilities_dt3` VALUES ('630519', '01', 'รถไถ แทรกเตอร์ ', 10, NULL);
+INSERT INTO `fm_fam_facilities_dt3` VALUES ('631220', '01', 'รถไถ แทรกเตอร์ ', 10, NULL);
 
 -- ----------------------------
 -- Table structure for fm_fam_hd
@@ -9951,7 +9957,7 @@ CREATE TABLE `fm_fam_hd`  (
   `district` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `province` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `post_code` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `g_occupational_code` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `g_occupational_code` int(11) NULL DEFAULT NULL,
   `g_occupational_other` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `main_occupation_code` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `add_occupation_code` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -9981,16 +9987,20 @@ CREATE TABLE `fm_fam_hd`  (
   `cancel_by` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `d_cancel` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`fam_id`) USING BTREE,
-  UNIQUE INDEX `house_no`(`house_no`) USING BTREE,
-  INDEX `fam_id`(`fam_id`) USING BTREE
+  INDEX `fam_id`(`fam_id`) USING BTREE,
+  INDEX `house_no`(`house_no`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'table หลักสำหรับครัวเรือน' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of fm_fam_hd
 -- ----------------------------
-INSERT INTO `fm_fam_hd` VALUES ('631212', '71/31', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', '03', '333', '13', '02', 10000, '', '02', '2', '1', '2020-12-13', '2021-03-13', '1000', 'N', '', 'N', '', '', 'N', '', '2020-12-13', 'A', 'admin1', 'admin1', '2020-12-13 00:49:19', '2020-12-13 00:49:19', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631213', '71/312', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', '02', '', '03', '', 10000, '10000', '01', '1', '1', '2020-12-13', '2021-03-13', '10000', 'N', '', 'N', '', '', 'N', '', '2020-12-13', 'A', 'admin1', 'admin1', '2020-12-13 01:00:07', '2020-12-13 01:00:07', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631214', '74/225', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', '03', '', '11', '', 1000, '', '02', '2', '1', '2020-12-13', '2021-03-13', '1000', 'Y', '', 'N', '', '', 'N', '', '2020-12-13', 'A', 'admin1', 'admin1', '2020-12-13 01:21:57', '2020-12-13 01:21:57', NULL, NULL, NULL, NULL);
+INSERT INTO `fm_fam_hd` VALUES ('630519', '71/315', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 2, '', '06', '01', 10000, '', '03', '', '1', '2020-12-13', '2021-03-13', '', 'N', '', 'N', '', '', 'N', '', '2019-05-06', 'A', 'admin1', 'admin1', '2020-12-13 18:02:35', '2020-12-13 18:02:35', NULL, NULL, NULL, NULL);
+INSERT INTO `fm_fam_hd` VALUES ('631212', '71/315', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 3, '333', '13', '02', 10000, '', '02', '2', '1', '2020-12-13', '2021-03-13', '1000', 'N', '', 'N', '', '', 'N', '', '2018-12-13', 'A', 'admin1', 'admin1', '2020-12-13 00:49:19', '2020-12-13 00:49:19', NULL, NULL, NULL, NULL);
+INSERT INTO `fm_fam_hd` VALUES ('631213', '71/312', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 2, '', '03', '', 10000, '10000', '01', '1', '1', '2020-12-13', '2021-03-13', '10000', 'N', '', 'N', '', '', 'N', '', '2020-12-13', 'A', 'admin1', 'admin1', '2020-12-13 01:00:07', '2020-12-13 01:00:07', NULL, NULL, NULL, NULL);
+INSERT INTO `fm_fam_hd` VALUES ('631214', '74/225', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 3, '', '11', '', 1000, '', '02', '2', '1', '2020-12-13', '2021-03-13', '1000', 'Y', '', 'N', '', '', 'N', '', '2020-12-13', 'A', 'admin1', 'admin1', '2020-12-13 01:21:57', '2020-12-13 01:21:57', NULL, NULL, NULL, NULL);
+INSERT INTO `fm_fam_hd` VALUES ('631215', '71/7114', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 3, '', '08', '', 1200, '', '03', '1', '1', '2020-12-13', '2021-03-13', '100', 'N', '', 'N', '', '', 'N', '', '2020-12-13', 'A', 'admin1', 'admin1', '2020-12-13 11:26:30', '2020-12-13 11:26:30', NULL, NULL, NULL, NULL);
+INSERT INTO `fm_fam_hd` VALUES ('631217', '71/316', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 2, '', '06', '', 10000, '', '03', '', '1', '2020-12-13', '2021-03-13', '', 'N', '', 'N', '', '', 'N', '', '2018-12-13', 'A', 'admin1', 'admin1', '2020-12-13 15:04:40', '2020-12-13 15:04:40', NULL, NULL, NULL, NULL);
+INSERT INTO `fm_fam_hd` VALUES ('631220', '71/315', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 2, '', '06', '01', 10000, '', '03', '', '1', '2020-12-13', '2021-03-13', '', 'N', '', 'N', '', '', 'N', '', '2020-12-15', 'A', 'admin1', 'admin1', '2020-12-14 13:35:21', '2020-12-14 13:36:16', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for fm_fam_info_dt6
@@ -10011,6 +10021,9 @@ INSERT INTO `fm_fam_info_dt6` VALUES ('63122008', '03', 'การใช้ค�
 INSERT INTO `fm_fam_info_dt6` VALUES ('631212', '02', 'การใช้โทรศัพท์มือถือ', NULL);
 INSERT INTO `fm_fam_info_dt6` VALUES ('631213', '01', 'ปากต่อปาก', NULL);
 INSERT INTO `fm_fam_info_dt6` VALUES ('631214', '02', 'การใช้โทรศัพท์มือถือ', NULL);
+INSERT INTO `fm_fam_info_dt6` VALUES ('631217', '01', 'ปากต่อปาก', NULL);
+INSERT INTO `fm_fam_info_dt6` VALUES ('630519', '01', 'ปากต่อปาก', NULL);
+INSERT INTO `fm_fam_info_dt6` VALUES ('631220', '01', 'ปากต่อปาก', NULL);
 
 -- ----------------------------
 -- Table structure for fm_fam_land_dt2
@@ -10044,6 +10057,9 @@ INSERT INTO `fm_fam_land_dt2` VALUES ('63122008', 1, 'NorSor3Kor', NULL, '13', '
 INSERT INTO `fm_fam_land_dt2` VALUES ('63122008', 1, 'sorporkor', NULL, '11', '2002', '10', 110, 10, 10, 'A', 'admin1', NULL, '2020-12-04 13:41:27', NULL);
 INSERT INTO `fm_fam_land_dt2` VALUES ('63122008', 1, 'porbortor5', NULL, '50', '6305', '10', 10, 10, 10, 'A', 'admin1', NULL, '2020-12-04 13:41:27', NULL);
 INSERT INTO `fm_fam_land_dt2` VALUES ('631213', 1, 'title_deed', NULL, '20', '3115', '10', 0, 0, 0, 'A', 'admin1', NULL, '2020-12-13 01:00:07', NULL);
+INSERT INTO `fm_fam_land_dt2` VALUES ('631217', 1, 'title_deed', NULL, '20', '3115', '522', 0, 0, 33.33, 'A', 'admin1', NULL, '2020-12-13 15:04:40', NULL);
+INSERT INTO `fm_fam_land_dt2` VALUES ('630519', 1, 'title_deed', NULL, '20', '3115', '522', 0, 0, 33.33, 'A', 'admin1', NULL, '2020-12-13 18:02:35', NULL);
+INSERT INTO `fm_fam_land_dt2` VALUES ('631220', 1, 'title_deed', NULL, '20', '3115', '522', 0, 0, 33.33, 'A', 'admin1', NULL, '2020-12-14 13:36:16', NULL);
 
 -- ----------------------------
 -- Table structure for fm_fam_members_dt1
@@ -10083,6 +10099,10 @@ INSERT INTO `fm_fam_members_dt1` VALUES ('631212', 1, '03', 'test', 'test', '123
 INSERT INTO `fm_fam_members_dt1` VALUES ('631213', 1, '02', 'ffff', 'ffff', '1234565666667', 'O', 'M', 'ไทย', '01', '2020-12-22', '03', '01', '03', '', 10000, 'A', 'admin1', NULL, '2020-12-13 01:00:07', NULL);
 INSERT INTO `fm_fam_members_dt1` VALUES ('631213', 2, '02', 'test', 'testt', '5552345666666', 'M', 'M', 'ไทย', '01', '2020-12-09', '01', '04', '11', '07', 12000, 'A', 'admin1', NULL, '2020-12-13 01:00:07', NULL);
 INSERT INTO `fm_fam_members_dt1` VALUES ('631214', 1, '02', 'test', 'test', '1234565666668', 'O', 'M', 'ไทย', '01', '2020-12-11', '01', '01', '11', '', 1000, 'A', 'admin1', NULL, '2020-12-13 01:21:57', NULL);
+INSERT INTO `fm_fam_members_dt1` VALUES ('631215', 1, '02', 'test', 'test', '1234565666664', 'O', 'M', 'ไทย', '01', '2020-12-15', '02', '01', '08', '', 1200, 'A', 'admin1', NULL, '2020-12-13 11:26:30', NULL);
+INSERT INTO `fm_fam_members_dt1` VALUES ('631217', 1, '01', 'test', 'test', '5234565666667', 'O', 'M', 'ไทย', '01', '2020-12-08', '02', '01', '06', '', 10000, 'A', 'admin1', NULL, '2020-12-13 15:04:40', NULL);
+INSERT INTO `fm_fam_members_dt1` VALUES ('630519', 1, '01', 'test', 'test', '5234565666666', 'O', 'M', 'ไทย', '01', '2020-12-08', '02', '01', '06', '01', 10000, 'A', 'admin1', NULL, '2020-12-13 18:02:35', NULL);
+INSERT INTO `fm_fam_members_dt1` VALUES ('631220', 1, '01', 'test', 'test', '5234565666666', 'O', 'M', 'ไทย', '01', '2020-12-08', '02', '01', '06', '01', 10000, 'A', 'admin1', NULL, '2020-12-14 13:36:16', NULL);
 
 -- ----------------------------
 -- Table structure for fm_fam_pet_dt4
@@ -10105,6 +10125,9 @@ INSERT INTO `fm_fam_pet_dt4` VALUES ('63122008', '01', 'โค ', 10, 10, '10');
 INSERT INTO `fm_fam_pet_dt4` VALUES ('631212', '01', 'โค ', 10, 0, '');
 INSERT INTO `fm_fam_pet_dt4` VALUES ('631213', '01', 'โค ', 10, 0, '');
 INSERT INTO `fm_fam_pet_dt4` VALUES ('631214', '02', 'กระบือ', 20, 0, '');
+INSERT INTO `fm_fam_pet_dt4` VALUES ('631217', '01', 'โค ', 10, 0, '');
+INSERT INTO `fm_fam_pet_dt4` VALUES ('630519', '01', 'โค ', 10, 0, '');
+INSERT INTO `fm_fam_pet_dt4` VALUES ('631220', '01', 'โค ', 10, 0, '');
 
 -- ----------------------------
 -- Table structure for geographies
@@ -10237,7 +10260,7 @@ CREATE TABLE `sequence_data`  (
 -- ----------------------------
 -- Records of sequence_data
 -- ----------------------------
-INSERT INTO `sequence_data` VALUES ('sqfm_fam_hd', 1, 1, 18446744073709551615, 15, 0);
+INSERT INTO `sequence_data` VALUES ('sqfm_fam_hd', 1, 1, 18446744073709551615, 21, 0);
 
 -- ----------------------------
 -- Table structure for tbl_departments
@@ -10359,21 +10382,22 @@ INSERT INTO `tbl_mas_facilities` VALUES ('99', 'อื่นๆ', NULL, 'A');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_mas_group_occup`;
 CREATE TABLE `tbl_mas_group_occup`  (
-  `goccup_code` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `goccup_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `goccup_desc` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `f_status` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `goccup_code` int(5) NOT NULL AUTO_INCREMENT,
+  `goccup_name` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `goccup_desc` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `f_status` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`goccup_code`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'ข้อมูลตารางกลุ่มอาชีพ' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 106 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'ข้อมูลตารางกลุ่มอาชีพ' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tbl_mas_group_occup
 -- ----------------------------
-INSERT INTO `tbl_mas_group_occup` VALUES ('01', 'กลุ่มอาชีพ 1', NULL, 'A');
-INSERT INTO `tbl_mas_group_occup` VALUES ('02', 'กลุ่มอาชีพ 2', NULL, 'A');
-INSERT INTO `tbl_mas_group_occup` VALUES ('03', 'กลุ่มอาชีพ 3', NULL, 'A');
-INSERT INTO `tbl_mas_group_occup` VALUES ('04', 'กลุ่มอาชีพ 4', NULL, 'A');
-INSERT INTO `tbl_mas_group_occup` VALUES ('99', 'กลุ่มอาชีพอื่นๆ', NULL, 'A');
+INSERT INTO `tbl_mas_group_occup` VALUES (2, 'กลุ่มอาชีพ 2', NULL, 'A');
+INSERT INTO `tbl_mas_group_occup` VALUES (3, 'กลุ่มอาชีพ 3', NULL, 'A');
+INSERT INTO `tbl_mas_group_occup` VALUES (4, 'กลุ่มอาชีพ 4', NULL, 'A');
+INSERT INTO `tbl_mas_group_occup` VALUES (99, 'กลุ่มอาชีพอื่นๆ', NULL, 'A');
+INSERT INTO `tbl_mas_group_occup` VALUES (104, 'test11111', 'test1111', 'A');
+INSERT INTO `tbl_mas_group_occup` VALUES (105, 'test15566', '5555', 'C');
 
 -- ----------------------------
 -- Table structure for tbl_mas_house_occup
@@ -10584,8 +10608,22 @@ CREATE TABLE `tbl_mas_vilage`  (
 -- ----------------------------
 -- Records of tbl_mas_vilage
 -- ----------------------------
-INSERT INTO `tbl_mas_vilage` VALUES (27, '1', 'ชื่อหมู่บ้าน', 'xxxxxxxxxx', 5, '', 6, '', 7, '', 8, '', 9, '', 10, '', 11, '', '', 'A', 'admin1', NULL, '2020-11-16 13:53:56', '2020-11-17 22:01:26');
+INSERT INTO `tbl_mas_vilage` VALUES (27, '1', 'ชื่อหมู่บ้าน', 'xxxxxxxxxx', 5, 'ทดสสอบ', 6, '', 7, '', 8, '', 9, '', 10, '0', 11, '', '', 'A', 'admin1', NULL, '2020-11-16 13:53:56', '2020-12-13 11:45:58');
 INSERT INTO `tbl_mas_vilage` VALUES (28, '2', 'ชื่อหมู่บ้าน2', 'fffffffff', 5, '', 6, '', 7, '', 8, '', 9, '', 10, '', 11, '', '', 'A', 'admin1', NULL, '2020-11-16 15:57:52', '2020-11-09 22:01:33');
+
+-- ----------------------------
+-- Table structure for tbl_password_reset
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_password_reset`;
+CREATE TABLE `tbl_password_reset`  (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `token` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `expires` bigint(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `IX_email`(`email`) USING BTREE,
+  INDEX `IX_TOKEN`(`token`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tbl_role
@@ -10634,7 +10672,7 @@ CREATE TABLE `tbl_users`  (
 -- Records of tbl_users
 -- ----------------------------
 INSERT INTO `tbl_users` VALUES ('admin1', '123456', 'admin1', 'admin1', 'admin1', 'admin1@dd.com', '1234567890', '9', '01', '99', 'A', 'sys', NULL, '2020-11-15 10:54:06', NULL);
-INSERT INTO `tbl_users` VALUES ('user1', '123456', 'user1', 'user1', 'ทดสอบ', 'test@test.com', '0841013129', '1', '01', '01', 'A', 'sys', NULL, '2020-11-15 10:52:57', NULL);
+INSERT INTO `tbl_users` VALUES ('user1', '7b8b66b8f43e9914ddc29c3e28d0c8d8', 'user1', 'user1', 'ทดสอบ', 'test@test.com', '0841013129', '1', '01', '01', 'A', 'sys', NULL, '2020-11-15 10:52:57', NULL);
 
 -- ----------------------------
 -- Function structure for currval
@@ -10669,13 +10707,9 @@ CREATE FUNCTION `nextval`(`seq_name` varchar(100))
 BEGIN
     DECLARE cur_val bigint(20);
  
-    SELECT
-        sequence_cur_value INTO cur_val
+    SELECT   sequence_cur_value INTO cur_val
     FROM
-        sequence_data
-    WHERE
-        sequence_name = seq_name
-    ;
+     sequence_data WHERE sequence_name = seq_name  ;
  
     IF cur_val IS NOT NULL THEN
         UPDATE
@@ -10690,11 +10724,8 @@ BEGIN
                 ),
                 sequence_cur_value + sequence_increment
             )
-        WHERE
-            sequence_name = seq_name
-        ;
-    END IF;
- 
+        WHERE  sequence_name = seq_name; 
+    END IF; 
     RETURN cur_val;
 END
 ;;
