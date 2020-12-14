@@ -14,7 +14,7 @@ if (empty($_POST['username'])) {
     exit();
  } else {  
     $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
+    $password = md5(S_SALT.trim($_POST['password'])); 
 
     $rowsdata = $db::select("CALL user_auth('{$username}','{$password}')")[0];
  
