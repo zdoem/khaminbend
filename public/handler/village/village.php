@@ -99,7 +99,7 @@ if($id>0){
         try {
            $countdelete = $db::table("fm_fam_hd AS a")
           ->Join('tbl_mas_vilage AS b', 'a.house_moo', 'b.vil_id') 
-          ->select($db::raw("house_moo"))->count(); 
+          ->select($db::raw("house_moo"))->where('a.house_moo', '=', $id)->count(); 
           if($countdelete<=0){
             $row =$db::table('tbl_mas_vilage')->where('vil_id', '=', $id)->delete(); 
 			      $status='deleted'; 

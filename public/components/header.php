@@ -148,7 +148,7 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
                 </p>
               </a>
             </li>			
-			<li class="nav-item has-treeview">
+			<li class="nav-item has-treeview <?=(in_array($current_file_name,['careergroupinfoForm.php','careergroupinfolist.php']))?'menu-open':'' ?>">
               <a href="#" class="nav-link">
                 <em class="fa fa-bars">&nbsp;</em>
                 <p>
@@ -157,8 +157,8 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
+                <li class="nav-item"> 
+                  <a href="careergroupinfolist.php" class="nav-link <?=(in_array($current_file_name,['careergroupinfoForm.php','careergroupinfolist.php']))?'active':'' ?>">
                       <i class="fas fa-angle-right left"></i>
                     <p>ข้อมูลกลุ่มอาชีพ</p>
                   </a>

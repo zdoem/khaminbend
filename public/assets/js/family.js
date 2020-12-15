@@ -141,7 +141,7 @@ window.app = new Vue({
     listmas_pet:window.listmas_pet,
     Mdisaster:window.Sdisaster,
     Mmas_info:window.Smas_info,  
-    survseydate:new Date().getTime() 
+    survseydate:window.d_survey 
   },
   mounted: function () {
      this.$nextTick(function(){  
@@ -210,7 +210,7 @@ window.app = new Vue({
                   url: 'handler/family/family_duplicate_nationid.php',
                   type: 'post', 
                   datatype : "application/json", 
-                  data:{id:_this.getParameterByName('id'),mem_citizen_id:encodeURIComponent(value)},
+                  data:{id:_this.getParameterByName('id'),survseydate:_this.getsurvseydate(),mem_citizen_id:encodeURIComponent(value)},
                   success: function (data) { 
                     resolve((data.status=='nodupicate'))
                   },
@@ -250,7 +250,7 @@ window.app = new Vue({
                   url: 'handler/family/family_duplicate_mouseid.php',
                   type: 'post', 
                   datatype : "application/json", 
-                  data:{id:_this.getParameterByName('id'),house_no:encodeURIComponent(value)},
+                  data:{id:_this.getParameterByName('id'),survseydate:_this.getsurvseydate(),house_no:encodeURIComponent(value)},
                   success: function (data) { 
                     resolve((data.status=='nodupicate'))
                   },
@@ -309,7 +309,10 @@ window.app = new Vue({
     }
    }
   },
-  methods: {   
+  methods: {    
+    getsurvseydate:function(){
+       return $('#assessment_date').val();    
+    },
      up_familyhomeproductperiod:function(e){  
        this.Mhouseinforgeneral.familyhomeproductperiod=e;
      },

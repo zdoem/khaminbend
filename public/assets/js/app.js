@@ -2,7 +2,7 @@
 	app_init();
    $(document).ajaxComplete(function( event, xhr, settings ) { 
        switch(xhr.status) {
-            case 301: case 404: case 403: redirect_to_login(); break;
+            case 403: redirect_to_login(); break;
         }
    });  
 

@@ -16,6 +16,7 @@ $refer_urlmain='familyList.php';
   // var_dump($_POST['Mmas_info_select']);exit();
  
 $yearfam_id=substr(date("Y")+543, -2);
+$tran_yearfam_id=$yearfam_id;
 $tran_id=$yearfam_id.date("m");
 
 $txtHouseId=trim((isset($_POST['Mhouseinfor']['txtHouseId']) ? $_POST['Mhouseinfor']['txtHouseId'] : ''));
@@ -114,19 +115,41 @@ $listmas_facilities = $db::table("tbl_mas_facilities")
     ->get()->toArray();
 
 // validate  data in server site.----------------------------------------------------------------------
-$temp_mem_citizen_id=[];
+
+if(isset($_POST['id'])&&strlen(trim($id))>0&&($yearfam_id<$tran_yearfam_id||$yearfam_id>$tran_yearfam_id)){ 
+    ?>
+    <script type="text/javascript">
+     Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      html: 'แก้ไขข้อมูลวันสำรวจต้องเป็นปีปัจจุบันเท่านั้น!',
+      });  
+    </script>
+    <?php
+    exit(); 
+}
+//----------------------------------------------------------------------------------------------------
+$temp_mem_citizen_id=[]; 
 foreach ($familylists as $k => $v) { 
   $temp_mem_citizen_id[] = trim((isset($v['txtCitizenId']) ? $v['txtCitizenId'] : ''));  
-  } 
-$query = $db::table("fm_fam_members_dt1") 
-    ->whereIn('mem_citizen_id',$temp_mem_citizen_id)
-    ->select($db::raw("mem_citizen_id"));
-if (isset($_POST['id']) && strlen(trim(@$_POST['id'])) > 0) {
-    $query->whereNotIn('mem_fam_id', [$id]);
-}
-$rows_old = $query->get()->toArray();
+  }  
+
+if(isset($_POST['id'])&&strlen(trim($id))>0){
+    $rows_old =$db::select("SELECT house_no,mem_citizen_id FROM  fm_fam_hd AS a INNER JOIN fm_fam_members_dt1 AS b ON a.fam_id=b.mem_fam_id
+    WHERE  mem_citizen_id IN(?) AND mem_fam_id!=? AND YEAR(d_survey)  IN (
+        SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE mem_fam_id=? 
+    )", [implode(',',$temp_mem_citizen_id), $id,$id] );
+}else{
+    $survseydate=DateTime::createFromFormat('d/m/Y H:i A',@$_POST['survseydate']); 
+    $d_survseydate=$survseydate->format('Y');
+    $rows_old =$db::select("SELECT house_no,mem_citizen_id FROM  fm_fam_hd AS a INNER JOIN fm_fam_members_dt1 AS b ON a.fam_id=b.mem_fam_id
+    WHERE  mem_citizen_id IN(?) AND YEAR(d_survey)  IN (
+        SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE YEAR(d_survey)=? 
+    )",[implode(',',$temp_mem_citizen_id),$d_survseydate]);
+} 
+ 
 $dupi_mem_citizen_id=[];
-foreach ($rows_old as $k => $v) { 
+foreach (@$rows_old as $k => $v) { 
    $dupi_mem_citizen_id[]=$v->mem_citizen_id;
 }
  if(sizeof($dupi_mem_citizen_id)>0){
@@ -135,21 +158,28 @@ foreach ($rows_old as $k => $v) {
     Swal.fire({
     icon: 'error',
     title: 'Oops...',
-    html: 'มีข้อมูลเลขที่บัตรประชาชน <?=implode(",",$dupi_mem_citizen_id);?> ในระบบแล้ว!',
+    html: 'มีข้อมูลเลขที่บัตรประชาชน <?=implode(",",$dupi_mem_citizen_id);?> ในระบบแล้ว ในบ้านเลขที่ <?=@$rows_old[0]->house_no?>!',
     }); 
   </script>
   <?php
   exit();
  } 
-//-----------------------------------------------------------------------------------------------------
-$query = $db::table("fm_fam_hd")
-    ->where('house_no', '=', $txtHouseId)
-    ->select($db::raw("fam_id,SUBSTRING(fam_id,1,2) AS yearfam_id,house_no,house_moo"));
-if (isset($_POST['id']) && strlen(trim(@$_POST['id'])) > 0) {
-    $query->whereNotIn('fam_id', [$id]);
-}
-$rows_old = $query->first();
- if(isset($rows_old->house_no)){
+//----------------------------------------------------------------------------------------------------- 
+if(isset($_POST['id'])&&strlen(trim($id))>0){
+    $rows_old =$db::select("SELECT fam_id,d_survey,house_no,house_moo FROM  fm_fam_hd AS a 
+    WHERE  house_no=? AND fam_id!=? AND YEAR(d_survey) IN (
+        SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE fam_id=? 
+    )", [$txtHouseId, $id,$id] );
+}else{
+    $survseydate=DateTime::createFromFormat('d/m/Y H:i A',@$_POST['survseydate']); 
+    $d_survseydate=$survseydate->format('Y');
+    $rows_old =$db::select("SELECT fam_id,d_survey,house_no,house_moo FROM  fm_fam_hd AS a 
+    WHERE  house_no=? AND YEAR(d_survey) IN (
+        SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE YEAR(d_survey)=? 
+    )",[$txtHouseId,$d_survseydate]);
+} 
+
+ if(isset($rows_old[0]->house_no)){
    ?>
   <script type="text/javascript">
     Swal.fire({
@@ -166,13 +196,30 @@ $rows_old = $query->first();
 $rows_old=null;
 if($id>0){
    $rows_old = $db::table("fm_fam_hd")
-    ->where('fam_id', '=', $id)
-    ->select($db::raw("fam_id,RIGHT(YEAR(d_survey)+543,2) AS yearfam_id,house_no,house_moo"))
+    ->where('fam_id', '=', $id)  
+    ->select($db::raw("fam_id,RIGHT(YEAR(d_survey)+543,2) AS yearfam_id,d_survey,house_no,house_moo"))
     ->first();
       if($action!=3){ 
-         if(!isset($rows_old->yearfam_id)||($rows_old->yearfam_id<substr(date("Y")+543, -2))){// ไม่มีข้อมูลเก่าหรือ idที่ใช้ปี<ปีปัจจุบัน insert ใหม่  
-         $action=1;   
-         }else if($rows_old->yearfam_id==$yearfam_id){// มีข้อมูลอยู่แล้วให้และปีเดี่ยวกัน update 
+         if(!isset($rows_old->yearfam_id)||(@$rows_old->yearfam_id<substr(date("Y")+543, -2))){// ไม่มีข้อมูลเก่าหรือ idที่ใช้ปี<ปีปัจจุบัน insert ใหม่  
+           $action=1;   
+           $rows_old_dupi = $db::table("fm_fam_hd")
+          ->where('house_no', '=', $rows_old->house_no)  
+          ->whereYear('d_survey', date("Y", strtotime($d_survey)))
+          ->select($db::raw("fam_id,house_no,house_moo"))
+          ->first();
+          if(isset($rows_old_dupi->house_no)){
+            ?>
+          <script type="text/javascript">
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              html: 'มีข้อมูลบ้านเลขที่ <?=$rows_old_dupi->house_no?> ภายในปีสำรวจ <?=date("Y", strtotime($d_survey))?> ในระบบแล้ว!',
+              });  
+          </script>
+            <?php
+            exit();
+          } 
+         }else if(@$rows_old->yearfam_id==$yearfam_id){// มีข้อมูลอยู่แล้วให้และปีเดี่ยวกัน update 
          $action=2; 
         }
     } 
