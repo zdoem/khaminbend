@@ -99,6 +99,7 @@ window.app = new Vue({
     txtcopydata:'',
     actions:window.actions,
      // for view  
+    OwnerHomelistfamily:'',
     listmas_vilage:window.Slistmas_vilage,
     familylist:window.Sfamilylist,
     deed:window.Sfamerland,
@@ -310,6 +311,37 @@ window.app = new Vue({
    }
   },
   methods: {    
+    setOwnerfamily:function(type,pindex){ 
+       let _this=this;
+       _this.OwnerHomelistfamily=pindex;  
+       
+       if(_this.Mfamilylists.length>1){
+         var vv=_this.Mfamilylists[pindex];
+         var f_txtFName=vv.txtFName;
+         var f_txt='เปลี่ยนให้เจ้าบ้านใหม่';
+         vv.xFstatusRd=type; 
+         if(type=='O'){
+           vv.homerelations='01';
+          if(f_txtFName.length>0){f_txt='เปลี่ยนให้'+f_txtFName+'เป็นเจ้าบ้านแล้ว!';}
+           Swal.fire({
+            title:f_txt,
+            allowOutsideClick: false,
+            showDenyButton: false,
+            showCancelButton: false 
+            }); 
+           }else{
+           vv.homerelations=null;
+          }
+         _this.$set(_this.Mfamilylists, pindex, vv); 
+         this.Mfamilylists.forEach(function(v,index){ 
+          if(pindex!=index){
+           if(v.xFstatusRd=='O'){v.homerelations=null;}  
+           v.xFstatusRd='M'; 
+          _this.$set(_this.Mfamilylists, index, v);
+          }  
+        }); 
+       }   
+    },
     getsurvseydate:function(){
        return $('#assessment_date').val();    
     },
@@ -350,11 +382,25 @@ window.app = new Vue({
                       if (!result.isConfirmed) { return; } 
                   }); 
              }  
+             let checkOwner=undefined;
+             this.Mfamilylists.forEach(function(v,index){
+                  if(v.xFstatusRd=='O'){ checkOwner=index;this.OwnerHomelistfamily=checkOwner;}
+             });
+             if(checkOwner==undefined){
+                Swal.fire({
+                title:'กรุณาเลือกเจ้าบ้าน 1 คน ก่อนค่ะ!',
+                allowOutsideClick: false,
+                showDenyButton: false,
+                showCancelButton: false 
+                }); 
+                return;
+             }
              this.$v.$touch();  
              if (!this.$v.$invalid) {  
               //  $('input[name="disaster[]"]:checked').map(function() {tmp_disaster.push(this.value);}); 
                var datasend={
-                //  frm_family:$('#frm_family').serializeArray(), 
+                //  frm_family:$('#frm_family').serializeArray(),
+                 OwnerHomelistfamily:this.OwnerHomelistfamily, 
                  id:this.getParameterByName('id'),
                  Mhouseinfor:this.Mhouseinfor,
                  Mfamilylists:this.Mfamilylists, 
@@ -497,6 +543,9 @@ window.app = new Vue({
     if(this.Mfamilylists.length>0){
        this.familylist.xFstatusRd='M'; 
        this.familylist.homerelations=null;
+    }else{ 
+       this.familylist.xFstatusRd='O'; 
+       this.familylist.homerelations='01';
     }  
     this.familylists.push(Vue.util.extend({}, this.familylist)); 
     this.Mfamilylists.push(Vue.util.extend({},this.familylist));   
@@ -515,8 +564,34 @@ window.app = new Vue({
     //  }); 
     },
     removePeople: function (index) {
-    Vue.delete(this.familylists, index);
-    Vue.delete(this.Mfamilylists, index);
+    let _this=this;
+    Swal.fire({
+      title: 'ลบสมาชิกในครัวเรือน?',
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'ลบ',
+      cancelButtonText:'ยกเลิก' 
+    }).then(function(result){
+      if (!result.isConfirmed) return; 
+      Vue.delete(_this.familylists, index);
+      Vue.delete(_this.Mfamilylists, index); 
+      if(_this.Mfamilylists.length>0){
+      let checkOwner=undefined;
+      _this.Mfamilylists.forEach(function(v,index){
+          if(v.xFstatusRd=='O'){checkOwner=v;}  
+      });
+        if(checkOwner==undefined){
+          var vv=_this.Mfamilylists[0];
+          vv.xFstatusRd='O'; 
+          vv.homerelations='01';
+          _this.$set(_this.Mfamilylists, 0, vv);
+        } 
+      } 
+    });
+    
     },
    addDeed: function () {  
     this.famerdetaillists.deeds.push(Vue.util.extend({}, this.deed)); 
@@ -524,8 +599,21 @@ window.app = new Vue({
     this.getamphurbyprovince('deeds',{target:{value:this.deed.province}},this.famerdetaillists.deeds.length-1); 
     },
     removeDeed: function (index) {
-    Vue.delete(this.famerdetaillists.deeds, index);
-    Vue.delete(this.Mfamerdetaillists.deeds, index);
+    let _this=this;
+    Swal.fire({
+      title: 'ลบรายการ โฉนด '+_this.famerdetaillists.deeds[index].nodeed+'?',
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'ลบ',
+      cancelButtonText:'ยกเลิก' 
+    }).then(function(result){
+    Vue.delete(_this.famerdetaillists.deeds, index);
+    Vue.delete(_this.Mfamerdetaillists.deeds, index);
+    });
+
     },
    addNorsor3kors: function () { 
     this.famerdetaillists.norsor3kors.push(Vue.util.extend({}, this.deed)); 
@@ -533,8 +621,21 @@ window.app = new Vue({
     this.getamphurbyprovince('norsor3kors',{target:{value:this.deed.province}},this.famerdetaillists.norsor3kors.length-1); 
     },
     removeNorsor3kors: function (index) {
-    Vue.delete(this.famerdetaillists.norsor3kors, index);
-    Vue.delete(this.Mfamerdetaillists.norsor3kors, index);
+    let _this=this;
+    Swal.fire({
+      title: 'ลบรายการ นส.3ก '+_this.famerdetaillists.norsor3kors[index].nodeed+'?',
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'ลบ',
+      cancelButtonText:'ยกเลิก' 
+    }).then(function(result){
+    Vue.delete(_this.famerdetaillists.norsor3kors, index);
+    Vue.delete(_this.Mfamerdetaillists.norsor3kors, index);
+    });
+
     },
    addSpoks: function () { 
     this.famerdetaillists.spoks.push(Vue.util.extend({}, this.deed)); 
@@ -542,8 +643,21 @@ window.app = new Vue({
     this.getamphurbyprovince('spoks',{target:{value:this.deed.province}},this.famerdetaillists.spoks.length-1); 
     },
     removeSpoks: function (index) {
-    Vue.delete(this.famerdetaillists.spoks, index);
-    Vue.delete(this.Mfamerdetaillists.spoks, index);
+    let _this=this;
+    Swal.fire({
+      title: 'ลบรายการ สปก. '+_this.famerdetaillists.spoks[index].nodeed+'?',
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'ลบ',
+      cancelButtonText:'ยกเลิก' 
+    }).then(function(result){
+    Vue.delete(_this.famerdetaillists.spoks, index);
+    Vue.delete(_this.Mfamerdetaillists.spoks, index);
+    });
+
     },
    addChapter5s: function () { 
     this.famerdetaillists.chapter5s.push(Vue.util.extend({}, this.deed)); 
@@ -551,8 +665,21 @@ window.app = new Vue({
     this.getamphurbyprovince('chapter5s',{target:{value:this.deed.province}},this.famerdetaillists.chapter5s.length-1); 
     },
     removeChapter5s: function (index) {
-    Vue.delete(this.famerdetaillists.chapter5s, index);
-    Vue.delete(this.Mfamerdetaillists.chapter5s, index);
+    let _this=this;
+    Swal.fire({
+      title: 'ลบรายการ ภบท 5 '+_this.famerdetaillists.chapter5s[index].nodeed+'?',
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'ลบ',
+      cancelButtonText:'ยกเลิก' 
+    }).then(function(result){
+    Vue.delete(_this.famerdetaillists.chapter5s, index);
+    Vue.delete(_this.Mfamerdetaillists.chapter5s, index);
+    });
+
     },
     showinhomeonly:function(code_ck){
        if(showonly_houseinforgeneral.indexOf(code_ck) != -1) {return true}

@@ -225,7 +225,7 @@ $data_date_survey= $db::table("fm_fam_hd")
         {"className": "text-center" ,"orderable": false,"targets": 1},
         {"className": "text-center" ,"orderable": false,"targets": 2},
         {"className": "text-center" ,"orderable": false,"targets": 3},
-        {"className": "text-center" ,"orderable": false,"targets": 4},
+        {"className": "text-center" ,"orderable": true,"targets": 4},
         {
         "className": "text-center", 
         "searchable": false,
@@ -243,7 +243,7 @@ $data_date_survey= $db::table("fm_fam_hd")
     // },
     { orderable: false, searchable: false, targets: -1,"className": "text-center" } //Ultima columna no ordenable para botones
    ],
-   "order": [[5, 'DESC']] 
+   "order": [[5, 'DESC'],[ 4, "DESC" ]] 
     }); 
  
     $('#btn_search').on('click', function () { 

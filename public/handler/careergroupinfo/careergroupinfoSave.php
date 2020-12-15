@@ -23,16 +23,12 @@ $f_status=(isset($_POST['f_status']) ? $_POST['f_status'] : 'A');
 $rows_old=null;
 if($id>0){
    $rows_old = $db::table("tbl_mas_group_occup")
-    ->where('goccup_code', '=', $id)
+    ->where('goccup_name', '=', $goccup_name)
     ->select($db::raw("goccup_code,goccup_name"))
-    ->first();
+    ->first(); 
   if($action!=3){
-         if(!isset($rows_old->goccup_code)){// ไม่มีข้อมูลเก่าให้ insert ใหม่ 
-         $action=1;  
-         }else if($rows_old->goccup_name==$goccup_name){// มีข้อมูลอยู่แล้วให้ update 
-         $action=2;  
-         }
-    } 
+        $action=2;  
+     } 
 }else{
   $action=1;     
    $rows_old = $db::table("tbl_mas_group_occup")
@@ -44,32 +40,32 @@ if($id>0){
       $status ='dupicate'; 
      }
 }  
-
+//  var_dump($action);exit();
  if ($action == 1) {/*Insert Data*/ 
     try {  
            $row =$db::insert("INSERT INTO tbl_mas_group_occup (goccup_name,goccup_desc,f_status) 
              VALUES(?,?,'A')",[$goccup_name, $goccup_desc, $f_status]);
             $status='OK'; 
     } catch (\Exception $e) { 
-		 $status='Error';    var_dump($e->getMessage());exit(); 
+		 $status='Error';    
     } 
 }else if($action == 2){// update data
 
     try {  
             $row =$db::update('update tbl_mas_group_occup set goccup_name=?,goccup_desc=?,f_status=? where goccup_code = ?',
-            [$goccup_desc, $goccup_desc,$f_status,$id]);
+            [$goccup_name, $goccup_desc,$f_status,$id]);
 
             $status='OK';  
 
     } catch (\Exception $e) { 
-		 $status='Error';   
+		 $status='Error';   var_dump($e->getMessage());exit();
     } 
  
 } else if($action == 3) {// Deleted 
         try {
            $countdelete = $db::table("fm_fam_hd AS a")
           ->Join('tbl_mas_group_occup AS b', 'a.g_occupational_code', 'b.goccup_code') 
-          ->select($db::raw("g_occupational_code"))->where('a.g_occupational_code', '=', $id)->toSql();  echo $countdelete;exit();
+          ->select($db::raw("g_occupational_code"))->where('a.g_occupational_code', '=', $id)->count();  //echo $countdelete;exit();
           if($countdelete<=0){
             $row =$db::table('tbl_mas_group_occup')->where('goccup_code', '=', $id)->delete(); 
 			      $status='deleted'; 

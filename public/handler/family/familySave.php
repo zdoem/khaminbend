@@ -27,7 +27,7 @@ $province=trim((isset($_POST['Mhouseinfor']['txtProvince']) ? $_POST['Mhouseinfo
 $post_code = trim((isset($_POST['Mhouseinfor']['txtPostalCode']) ? $_POST['Mhouseinfor']['txtPostalCode'] : ''));
  
 $familylists=(isset($_POST['Mfamilylists']) ? $_POST['Mfamilylists']:[]);
-$familylist=@$familylists[0];
+$familylist=@$familylists[@$_POST['OwnerHomelistfamily']];
 
 // $pre_owner=trim((isset($familylist['prefix']) ? $familylist['prefix']: ''));
 // $owner_fname = trim((isset($familylist['txtFName']) ? $familylist['txtFName'] : ''));

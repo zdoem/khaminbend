@@ -30,6 +30,7 @@
       <form action="handler/careergroupinfo/careergroupinfoSave.php" method="post">  
       <?= \Volnix\CSRF\CSRF::getHiddenInputString('token_careergroupinfo_frm') ?>
       <input type="hidden" id="action" name="action" value="2">
+      <input type="hidden" id="id" name="id" value="<?=$id?>">
       <div class="container-fluid">
         <!-- SELECT2 EXAMPLE -->
         <div class="card card-default">
@@ -66,11 +67,11 @@
                 <div class="form-group"> 
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary8" name="f_status" <?=((@$row->f_status=='A') ? 'checked' : '' )?>>
+                      <input type="radio" id="radioPrimary8" value="A" name="f_status" <?=((@$row->f_status=='A') ? 'checked' : '' )?>>
                       <label for="radioPrimary8">เปิด </label>
                     </div>
                     <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary9" name="f_status" <?=((@$row->f_status=='C') ? 'checked' : '' )?>>
+                      <input type="radio" id="radioPrimary9" value="C" name="f_status" <?=((@$row->f_status=='C') ? 'checked' : '' )?>>
                       <label for="radioPrimary9">ปิด </label> 
                     </div>
                   </div>

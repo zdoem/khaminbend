@@ -557,7 +557,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
                   <label>สถานภาพ :</label>
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline">
-                      <input type="radio" :id="'radioPrimary1'+index" :disabled="index>0" value="O" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()"> 
+                      <input type="radio" :id="'radioPrimary1'+index" value="O" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()"> 
                       <label :for="'radioPrimary1'+index">เจ้าบ้าน 
                       </label>
                     </div>
