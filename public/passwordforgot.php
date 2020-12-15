@@ -33,7 +33,7 @@
                 beforeSend: function() {  
                 s_alert= Swal.fire({
                         title: 'รอสักครู่...',
-                        text: 'กำลังส่งข้อมูลการเปลี่ยนรหัส!.',
+                        text: 'กำลังส่งข้อมูลการเปลี่ยนรหัสผ่านใหม่!.',
                         showCancelButton: false,
                         showConfirmButton: false,
                         closeOnConfirm: false,

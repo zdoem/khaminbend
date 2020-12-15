@@ -62,11 +62,11 @@
                 <div class="form-group"> 
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary8" name="f_status" checked>
+                      <input type="radio" id="radioPrimary8" value="A" name="f_status" checked>
                       <label for="radioPrimary8">เปิด </label>
                     </div>
                     <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary9" name="f_status">
+                      <input type="radio" id="radioPrimary9" value="C" name="f_status">
                       <label for="radioPrimary9">ปิด </label> 
                     </div>
                   </div>

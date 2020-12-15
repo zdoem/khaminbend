@@ -1,4 +1,7 @@
 <?php 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 require '../bootstart.php';   
 if (isset($_POST['action'])&&@$_POST['action']=='reset-password') { 
   $email = addslashes($_POST['email']); 
@@ -23,14 +26,70 @@ if (isset($_POST['action'])&&@$_POST['action']=='reset-password') {
    $token = bin2hex(random_bytes(50)); 
    $expires = new DateTime('NOW');
    $expires->add(new DateInterval('PT01H'));  
+   $db::table('tbl_password_reset')->where('email', '=', $email)->delete(); 
    $results =$db::table('tbl_password_reset')->insert(['email'=>$email,'token'=>$token,'expires'=>$expires->format('U')]);
- 
-    // $to = $email;
-    // $subject = "Reset your password on examplesite.com";
-    // $msg = "Hi there, click on this <a href=\"new_password.php?token=" . $token . "\">link</a> to reset your password on our site";
-    // $msg = wordwrap($msg,70);
-    // $headers = "From: info@examplesite.com";
-    // mail($to, $subject, $msg, $headers);
+   
+    $output = '<p>เรียนผู้ใช้งาน</p>';
+    $output .= '<b>กรุณาคลิกที่ลิงค์ต่อไปนี้เพื่อรีเซ็ตรหัสผ่านของคุณ.</b>';
+    $output .= '<p>---------------------------------------------------------------------------------------------------------------------</p>';
+    $output .= '<p><a href="' . Getbaseurl() . '/passwordrecover.php?token=' . $token . '" target="_blank">
+    ' . Getbaseurl() . '/passwordrecover.php?token=' . $token . '</a></p>';
+    $output .= '<p>---------------------------------------------------------------------------------------------------------------------</p>';
+    $output .= '<p>โปรดอย่าลืมคัดลอกลิงก์ทั้งหมดลงในเบราว์เซอร์ของคุณ ลิงก์จะหมดอายุหลังจาก 1 ชั่วโมงด้วยเหตุผลด้านความปลอดภัย.</p>';
+    $output .= '<p>หากคุณไม่ได้ขออีเมลที่ลืมรหัสผ่านนี้ไม่จำเป็นต้องดำเนินการใด ๆ รหัสผ่านของคุณจะไม่ถูกรีเซ็ต อย่างไรก็ตามคุณอาจต้องการลงชื่อเข้าใช้บัญชีของคุณและเปลี่ยนรหัสผ่านความปลอดภัยของคุณเนื่องจากอาจมีคนเดาได้.</p>';
+    $output .= '<p>ขออภัยในความไม่สะดวก</p>';
+    $output .= '<p>ระบบสำรวจมูลครัวเรือน.com</p>';
+    $body = $output;
+
+    $subject = "กู้คืนรหัสผ่าน - ระบบสำรวจมูลครัวเรือน.com";
+    $email_to = $email;
+    $fromserver = "noreply@yourwebsite.com";
+
+    try {
+        $mail = new PHPMailer(true);
+        $mail->IsSMTP();
+        $mail->Host = MAIL_HOST; // Enter your host here
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = MAIL_ENCRYPTION;
+        $mail->Username = MAIL_USERNAME; // Enter your email here
+        $mail->Password = MAIL_PASSWORD; //Enter your password here
+        $mail->Port = MAIL_PORT;
+        $mail->IsHTML(true);
+        $mail->CharSet = "utf-8";
+        $mail->From = "noreply@yourwebsite.com";
+        $mail->FromName = "ระบบสำรวจมูลครัวเรือน";
+        $mail->Sender = $fromserver; // indicates ReturnPath header
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+        $mail->AddAddress($email_to);
+        if (!$mail->Send()) {
+            // echo "Mailer Error: " . $mail->ErrorInfo;
+             ?>
+             <script type="text/javascript">
+             Swal.fire({
+              title: 'ระบบได้ไม่สามารถส่งคำขอเปลี่ยนรหัสผ่านใหม่ได้ กรุณาติด admin !',
+              allowOutsideClick: false,
+              showDenyButton: false,
+              showCancelButton: false 
+              });
+            </script>  
+              <?php
+              exit();
+        }
+    } catch (Exception $e) {
+       ?>
+       <script type="text/javascript">
+       Swal.fire({
+        title: 'ระบบได้ไม่สามารถส่งคำขอเปลี่ยนรหัสผ่านใหม่ได้ กรุณาติด admin !',
+        allowOutsideClick: false,
+        showDenyButton: false,
+        showCancelButton: false 
+        });
+       </script>   
+      <?php
+      exit();
+        // echo 'Email could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+    } 
      ?>
     <script type="text/javascript">
        Swal.fire({
