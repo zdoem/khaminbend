@@ -141,10 +141,9 @@ $f_help = 'N'; //เคยได้รับความช่วยเหลื
 $help_desc = '';
 $eco_product_from = ''; //ช่วงเวลาการผลิต จาก
 $eco_product_to = ''; //ช่วงเวลาการผลิต จาก
-$familyhomeproductperiod = date('d/m/Y', time()) . ' - ' . date("d/m/Y", strtotime("+3 month", time())); //ช่วงเวลาการผลิต จาก ช่วงเวลาการผลิต จาก
-$d_survey = date('Y/m/d h:i', time()); //วันเดือนปีสำรวจ 
-$alert_survey=date('d/m/Y h:i', time()); 
-$actions='I';
+$d_survey = DateConvert('topsre','d/m/Y',date('d/m/Y', time()),'/');//วันเดือนปีสำรวจ 
+$alert_survey=DateConvert('topsre','d/m/Y h:i',date('d/m/Y h:i', time()),'/'); 
+$actions='I'; 
 
 if (isset($_GET['id'])) { // update
 
@@ -155,15 +154,17 @@ if (isset($_GET['id'])) { // update
     ->groupBy('mem_fam_id');
 $data_fm_fam_hd = $db::table('fm_fam_hd AS a')
     ->select($db::raw("fam_id,house_no,house_moo,sub_district,district,province,post_code,cc.mem_pre,cc.mem_fname,cc.mem_lname,cc.mem_citizen_id
-      ,eco_product_from,eco_product_to ,mem_status AS x_status,mem_sex AS x_sex,mem_national AS national,mem_religion_code AS reg_code,mem_df_birth AS date_of_birth,mem_education_code AS education_code
+      ,CONCAT(DATE_FORMAT(eco_product_from,'%d') ,'/', DATE_FORMAT(eco_product_from ,'%m'),'/',DATE_FORMAT(eco_product_from ,'%Y')+543) AS eco_product_from
+      ,CONCAT(DATE_FORMAT(eco_product_to,'%d') ,'/', DATE_FORMAT(eco_product_to ,'%m'),'/',DATE_FORMAT(eco_product_to ,'%Y')+543) AS eco_product_to 
+      ,mem_status AS x_status,mem_sex AS x_sex,mem_national AS national,mem_religion_code AS reg_code,mem_df_birth AS date_of_birth,mem_education_code AS education_code
       ,mem_relations_code AS relations_code,g_occupational_code,g_occupational_other,main_occupation_code,add_occupation_code
       ,income_per_year,fam_land_other,eco_occupation_code,eco_product_target_code,eco_capital_code,eco_product_cost,f_problem_env,problem_env_desc
-      ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,d_survey"))
+      ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,CONCAT(DATE_FORMAT(d_survey,'%m') ,'/', DATE_FORMAT(d_survey ,'%d'),'/',DATE_FORMAT(d_survey ,'%Y')+543) AS d_survey"))
     ->leftJoinSub($base_join, 'cc', function ($join) {
         $join->on('a.fam_id', '=', 'cc.mem_fam_id');
     })->where('fam_id', '=', $_GET['id'])->first();
  
-
+    if (!IsNullOrEmptyString($data_fm_fam_hd->d_survey)) {$alert_survey = date('d/m/Y', strtotime($data_fm_fam_hd->d_survey));}
     $house_no = (isset($data_fm_fam_hd->house_no) ? $data_fm_fam_hd->house_no : ''); //บ้านเลขที่
     $house_moo = ((isset($data_fm_fam_hd->house_moo) && !IsNullOrEmptyString($data_fm_fam_hd->house_moo)) ? $data_fm_fam_hd->house_moo : null); //หมู่ที
     $sub_district = (isset($data_fm_fam_hd->sub_district) ? $data_fm_fam_hd->sub_district : ''); //ตำบล
@@ -199,12 +200,8 @@ $data_fm_fam_hd = $db::table('fm_fam_hd AS a')
     $f_help = (isset($data_fm_fam_hd->f_help) ? $data_fm_fam_hd->f_help : 'N'); //เคยได้รับความช่วยเหลือ Y/N
     $help_desc = (isset($data_fm_fam_hd->help_desc) ? $data_fm_fam_hd->help_desc : '');
     $eco_product_from = (isset($data_fm_fam_hd->eco_product_from) ? $data_fm_fam_hd->eco_product_from : ''); //ช่วงเวลาการผลิต จาก
-    $eco_product_to = (isset($data_fm_fam_hd->eco_product_to) ? $data_fm_fam_hd->eco_product_to : ''); //ช่วงเวลาการผลิต จาก
-    if (!IsNullOrEmptyString($eco_product_from)) {$eco_product_from = date('d/m/Y', strtotime($eco_product_from));}
-    if (!IsNullOrEmptyString($eco_product_to)) {$eco_product_to = date('d/m/Y', strtotime($eco_product_to));}
-    if (!IsNullOrEmptyString($eco_product_from) && !IsNullOrEmptyString($eco_product_to)) {$familyhomeproductperiod = $eco_product_from . ' - ' . $eco_product_to;}
+    $eco_product_to = (isset($data_fm_fam_hd->eco_product_to) ? $data_fm_fam_hd->eco_product_to : ''); //ช่วงเวลาการผลิต จาก 
     $d_survey = (isset($data_fm_fam_hd->d_survey) ? $data_fm_fam_hd->d_survey : ''); //วันเดือนปีสำรวจ
-    if (!IsNullOrEmptyString($d_survey)) {$d_survey = date('Y/m/d h:i', strtotime($d_survey));}
 
     // echo '<pre>';print_r($data_fm_fam_hd);exit();
     // var_dump($d_survey);exit();
@@ -212,7 +209,8 @@ $data_fm_fam_hd = $db::table('fm_fam_hd AS a')
     // $listpeople
   $listpeople = $db::table("fm_fam_members_dt1 AS a")
     ->select($db::raw("mem_pre AS prefix,b.f_status,mem_fname AS txtFName,mem_lname AS txtLName,mem_citizen_id AS txtCitizenId,mem_status AS xFstatusRd
-      ,mem_sex AS sexRd,mem_national AS txtNational,mem_religion_code AS religion,mem_df_birth AS birthday,mem_education_code AS educationlevel
+      ,mem_sex AS sexRd,mem_national AS txtNational,mem_religion_code AS religion
+      ,CONCAT(DATE_FORMAT(mem_df_birth,'%d') ,'/', DATE_FORMAT(mem_df_birth ,'%m'),'/',DATE_FORMAT(mem_df_birth ,'%Y')+543) AS birthday,mem_education_code AS educationlevel
       ,mem_relations_code AS homerelations,b.g_occupational_code AS careergroup,b.g_occupational_other AS careeranother
       ,xmain_occupation_code AS careermain,NULLIF(xadditional_occupation_code,'') AS careersecond ,xincome_per_year AS netIncome,mem_seq,a.F_status AS memF_status"))
     ->Join('fm_fam_hd AS b', 'b.fam_id', 'a.mem_fam_id')
@@ -318,7 +316,7 @@ $listmas_disaster1 = (isset($disaster_datarows[0]) ? $disaster_datarows[0] : [])
 $listmas_disaster2 = (isset($disaster_datarows[1]) ? $disaster_datarows[1] : []);
 
 $Shouseinforgeneral = ['familyhomecareer' => $eco_occupation_code, 'familyhomeproducttarget' => $eco_product_target_code
-    , 'familyhomesourceoffunds' => $eco_capital_code, 'familyhomeproductperiod' => $familyhomeproductperiod, 'familyhomeproductioncost' => $eco_product_cost
+    , 'familyhomesourceoffunds' => $eco_capital_code, 'eco_product_from' => $eco_product_from,'eco_product_to' => $eco_product_to, 'familyhomeproductioncost' => $eco_product_cost
     ,'g_occupational_code'=>$g_occupational_code,'g_occupational_other'=>$g_occupational_other];
 $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstrict' => $sub_district, 'txtDistrict' => $district, 'txtProvince' => $province
     , 'txtPostalCode' => $post_code];
@@ -407,8 +405,8 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
    window.listmas_disaster2=<?=json_encode($listmas_disaster2);?>;
    window.Sdisaster={selected:<?='["' . implode('", "', $list_fm_fam_disaster_dt5_selected) . '"]'?>,another:''};
 
-  window.d_survey={autoclose: true,format: 'DD/MM/YYYY HH:mm A',defaultDate:'<?=$d_survey?>'};
-  window.alert_survey='';
+  window.d_survey='<?=$d_survey?>'; 
+  window.alert_survey='<?=$alert_survey?>';
  </script>
 
  <section class="content" id="app" v-cloak> 
@@ -557,12 +555,12 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
                   <label>สถานภาพ :</label>
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline">
-                      <input type="radio" :id="'radioPrimary1'+index" value="O" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()"> 
+                      <input type="radio" :id="'radioPrimary1'+index" v-on:change="setOwnerfamily('O',index)" value="O" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()"> 
                       <label :for="'radioPrimary1'+index">เจ้าบ้าน 
                       </label>
                     </div>
                     <div class="icheck-primary d-inline"> 
-                      <input type="radio" :id="'radioPrimary2' + index" value="M" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()">
+                      <input type="radio" :id="'radioPrimary2' + index" v-on:change="setOwnerfamily('M',index)" value="M" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()">
                       <label :for="'radioPrimary2'+index">ผู้อยู่อาศัย 
                       </label>
                     </div>
@@ -619,7 +617,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
               <div class="col-md-3">
                 <div class="form-group">
                   <label>วันเดือนปีเกิด :</label>  
-                   <date-picker2  v-model.trim="item.birthday.$model" @blur="item.birthday.$touch()"  required  :class="status(item.birthday)" :mdata="item.birthday.$model"></date-picker2>  
+                   <date-picker  v-model.trim="item.birthday.$model" @blur="item.birthday.$touch()"  required  :class="status(item.birthday)" :mdata="item.birthday.$model"></date-picker>  
                 </div>
 
               </div>
@@ -1069,24 +1067,28 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
                   </select>
                 </div> 
               </div>
+              
               <div class="col-md-3">
-                            <!-- Date range -->
-                            <div class="form-group">
-                              <label>ช่วงเวลาการผลิต:</label> 
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text">
-                                    <i class="far fa-calendar-alt"></i>
-                                  </span>
-                                </div>
-                                <!--  :class="status($v.Mhouseinforgeneral.familyhomeproductperiod)" v-model.trim="$v.Mhouseinforgeneral.familyhomeproductperiod.$model"@blur="$v.Mhouseinforgeneral.familyhomeproductperiod.$touch()" --> 
-                                <!-- <input type="text" class="form-control float-right" class="form-control"  name="daterange" value="01/01/2018 - 01/12/2018" />      -->
-                                 <datepickerrang :mdatarang="'<?=$familyhomeproductperiod?>'" @familyhomeproductperiod='up_familyhomeproductperiod' v-model="$v.Mhouseinforgeneral.familyhomeproductperiod.$model"></datepickerrang>  
-                                <!-- <input type="text" class="form-control float-right" class="form-control" name="familyhomeproductperiod" id="familyhomeproductperiod" value="01/01/2018 - 01/12/2018"  > -->
-                              </div>
-                              <!-- /.input group -->
-                            </div>
-                            <!-- /.form group -->
+                    <div class="form-group">
+                      <label>ช่วงเวลาการผลิต(เริ่ม) :</label> 
+                      <div class="input-group date" data-target-input="nearest">
+                          <input type="text" class="form-control datetimepicker-input" id="eco_product_from" :class="status($v.Mhouseinforgeneral.eco_product_from)" v-model.trim="$v.Mhouseinforgeneral.eco_product_from.$model" @blur="$v.Mhouseinforgeneral.eco_product_from.$touch()"> 
+                          <div class="input-group-append eco_product_from" style="cursor: pointer;">
+                              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                          </div>
+                      </div>
+                    </div> 
+                  </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>ช่วงเวลาการผลิต(หมด) :</label> 
+                  <div class="input-group date" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input"  id="eco_product_to" :class="status($v.Mhouseinforgeneral.eco_product_to)" v-model.trim="$v.Mhouseinforgeneral.eco_product_to.$model" @blur="$v.Mhouseinforgeneral.eco_product_to.$touch()"> 
+                      <div class="input-group-append eco_product_to" style="cursor: pointer;">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
+                  </div>
+                </div> 
               </div> 
 
               <div class="col-md-3">
@@ -1313,18 +1315,18 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
  
 		  	 <div class="row"> 
 
-               <div class="col-md-4"> 
+                <div class="col-md-3"> 
                 <div class="form-group">
                   <label>วันเดือนปีสำรวจ :</label>
-                  <div class="input-group date datepickers" id="survseydate" data-target-input="nearest"> 
-	               <input id="assessment_date" name="assessment_date" type="text" data-target="#survseydate" data-toggle="datetimepicker" 
-                 class="form-control  col-md-8 datetimepicker-input assessment-date-keypress" data-target="#survseydate" autocomplete="off" required>
-                  <div class="input-group-append" data-target="#survseydate" data-toggle="datetimepicker">
-                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                  <div class="input-group date datepickers" > 
+	               <input id="survseydate" name="survseydate" v-model="survseydate" required type="text" data-toggle="datetimepicker" 
+                 class="form-control  col-md-8 datetimepicker-input"   autocomplete="off" required>
+                  <div class="input-group-append survseydate" style="cursor: pointer;">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                  </div>
                 </div> 
                 </div>
-              </div>  
+              </div>   
 
 
 		    	</div>

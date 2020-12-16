@@ -12,7 +12,7 @@ if(isset($_POST['id'])&&strlen(trim(@$_POST['id']))>0){
         SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE mem_fam_id=? 
     )", [$mem_citizen_id, @$_POST['id'],@$_POST['id']] );
 }else{
-    $survseydate=DateTime::createFromFormat('d/m/Y H:i A',@$_POST['survseydate']); 
+    $survseydate=DateTime::createFromFormat('d/m/Y',DateConvert('toadre','d/m/Y',$_POST['survseydate'],'/')); 
     $d_survseydate=$survseydate->format('Y');
     $rows_old =$db::select("SELECT mem_citizen_id FROM  fm_fam_hd AS a INNER JOIN fm_fam_members_dt1 AS b ON a.fam_id=b.mem_fam_id
     WHERE  mem_citizen_id=? AND YEAR(d_survey)  IN (

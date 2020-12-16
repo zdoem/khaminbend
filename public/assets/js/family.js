@@ -1,22 +1,39 @@
 Vue.component("date-picker", {
-  props: ["value"],
-  template: `<input type="text" class="form-control" placeholder="วันเดือนปีเกิด" required>`,
+  props: ["mdata"],
+  template: `<div class="input-group date"  data-target-input="nearest">
+                      <input type="text" :value="mdata" ref="mdate" required class="form-control" />
+                      <div class="input-group-append" style="cursor: pointer;" v-on:click="showdatebtn">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div> 
+                      </div>
+                  </div>`,
   mounted() {
     var _this = this; 
      this.$nextTick(function(){   
-      // var mydate = new Date();
-      // var toDay = mydate.getDate() + '/' + (mydate.getMonth() + 1) + '/' + (mydate.getFullYear() + 543);
-      // $(this.$el).datepicker({ 
-      //  onSelect: function(date) { 
-      //     _this.$emit("input", date);
-      //  },
-      // changeMonth: true, changeYear: true,dateFormat: 'dd/mm/yy', isBuddhist: true, defaultDate: toDay
-      // ,dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
-      // dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
-      // monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
-      // monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']});
-
+      var mydate = new Date();
+      var toDay = mydate.getDate() + '/' + (mydate.getMonth() + 1) + '/' + (mydate.getFullYear() + 543); 
+      $(this.$refs.mdate).datepicker({ 
+       dateFormat: "dd/mm/yy", 
+       yearRange: '2450:'+(new Date().getFullYear()+543),
+       beforeShow: function (input, calendar) {
+           $(calendar.dpDiv).removeClass('eco_product'); 
+        },
+       onSelect: function(date) { 
+          _this.$emit("input", date);
+       },
+      changeMonth: true, changeYear: true, isBuddhist: true, defaultDate: toDay
+      ,dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
+      dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
+      monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
+      monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']}); 
      });
+  },
+  methods: {
+        showdatebtn:function(){
+          let _this=this;
+          this.$nextTick(function(){   
+             $(_this.$refs.mdate).datepicker('show'); 
+          });
+        }
   }
 }); 
 Vue.component("date-picker2", {
@@ -28,32 +45,17 @@ Vue.component("date-picker2", {
                       </div>
                   </div> `,
   mounted() {
-    var _this = this;
-    $(this.$refs.mdate).datepicker({
-      autoclose: true,
-      format: "dd/mm/yyyy",
-      todayHighlight: true
-    });
-    $(this.$refs.mdate)
-      .datepicker()
-      .on("changeDate", function (e) { 
-        _this.$emit("input", e.format(0, "dd/mm/yyyy"));
-      });
-  }
-});
-Vue.component("datepickerrang", {
-  props: ['mdatarang'],
-  template: `<input type="text" class="form-control float-right" required name="familyhomeproductperiod"  :value="mdatarang" ref="mdatarang">`,
-  mounted() {
-    var _this = this;
-       $(this.$refs.mdatarang).daterangepicker({
-         opens: 'left',
-          locale: {
-            format: 'DD/MM/YYYY'
-          }  
-         }, function(start, end, label) { 
-          _this.$emit("familyhomeproductperiod",start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
-        });  
+    // var _this = this;
+    // $(this.$refs.mdate).datepicker({
+    //   autoclose: true,
+    //   format: "dd/mm/yyyy",
+    //   todayHighlight: true
+    // });
+    // $(this.$refs.mdate)
+    //   .datepicker()
+    //   .on("changeDate", function (e) { 
+    //     _this.$emit("input", e.format(0, "dd/mm/yyyy"));
+    //   });
   }
 }); 
  
@@ -162,8 +164,9 @@ window.app = new Vue({
      Mhouseinforgeneral:{
          familyhomecareer:{required},
          familyhomeproducttarget:{},
-         familyhomesourceoffunds:{required},
-         familyhomeproductperiod:{required},
+         familyhomesourceoffunds:{required}, 
+         eco_product_from:{required},
+         eco_product_to:{required},
          familyhomeproductioncost:{}, 
          g_occupational_code:{required},
          g_occupational_other:{}
@@ -211,7 +214,7 @@ window.app = new Vue({
                   url: 'handler/family/family_duplicate_nationid.php',
                   type: 'post', 
                   datatype : "application/json", 
-                  data:{id:_this.getParameterByName('id'),survseydate:_this.getsurvseydate(),mem_citizen_id:encodeURIComponent(value)},
+                  data:{id:_this.getParameterByName('id'),survseydate:_this.survseydate,mem_citizen_id:encodeURIComponent(value)},
                   success: function (data) { 
                     resolve((data.status=='nodupicate'))
                   },
@@ -251,7 +254,7 @@ window.app = new Vue({
                   url: 'handler/family/family_duplicate_mouseid.php',
                   type: 'post', 
                   datatype : "application/json", 
-                  data:{id:_this.getParameterByName('id'),survseydate:_this.getsurvseydate(),house_no:encodeURIComponent(value)},
+                  data:{id:_this.getParameterByName('id'),survseydate:_this.survseydate,house_no:encodeURIComponent(value)},
                   success: function (data) { 
                     resolve((data.status=='nodupicate'))
                   },
@@ -344,10 +347,7 @@ window.app = new Vue({
     },
     getsurvseydate:function(){
        return $('#assessment_date').val();    
-    },
-     up_familyhomeproductperiod:function(e){  
-       this.Mhouseinforgeneral.familyhomeproductperiod=e;
-     },
+    }, 
     getParameterByName:function(name, url) {
     if (!url)
      url = window.location.href;
@@ -417,7 +417,7 @@ window.app = new Vue({
                  Mmas_info_select:this.Mmas_info,
                  helpme:this.helpme,
                  helpmedisc:this.helpmedisc,
-                 survseydate:$('#assessment_date').val(),  
+                 survseydate:this.survseydate,  
               };  
                $.ajax({
                 beforeSend: function() {  
@@ -548,20 +548,7 @@ window.app = new Vue({
        this.familylist.homerelations='01';
     }  
     this.familylists.push(Vue.util.extend({}, this.familylist)); 
-    this.Mfamilylists.push(Vue.util.extend({},this.familylist));   
-    //  this.$nextTick(function(){  
-    //   var mydate = new Date();
-    //   var toDay = mydate.getDate() + '/' + (mydate.getMonth() + 1) + '/' + (mydate.getFullYear() + 543);
-    //   $(".datepicker-th-2").datepicker({ 
-    //    onSelect: function(date) {
-    //        console.log('log',this); 
-    //    },
-    //   changeMonth: true, changeYear: true,dateFormat: 'dd/mm/yy', isBuddhist: true, defaultDate: toDay
-    //   ,dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
-    //   dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
-    //   monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
-    //   monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']});
-    //  }); 
+    this.Mfamilylists.push(Vue.util.extend({},this.familylist));    
     },
     removePeople: function (index) {
     let _this=this;
@@ -610,6 +597,7 @@ window.app = new Vue({
       confirmButtonText: 'ลบ',
       cancelButtonText:'ยกเลิก' 
     }).then(function(result){
+    if (!result.isConfirmed) return;   
     Vue.delete(_this.famerdetaillists.deeds, index);
     Vue.delete(_this.Mfamerdetaillists.deeds, index);
     });
@@ -632,6 +620,7 @@ window.app = new Vue({
       confirmButtonText: 'ลบ',
       cancelButtonText:'ยกเลิก' 
     }).then(function(result){
+    if (!result.isConfirmed) return; 
     Vue.delete(_this.famerdetaillists.norsor3kors, index);
     Vue.delete(_this.Mfamerdetaillists.norsor3kors, index);
     });
@@ -654,6 +643,7 @@ window.app = new Vue({
       confirmButtonText: 'ลบ',
       cancelButtonText:'ยกเลิก' 
     }).then(function(result){
+    if (!result.isConfirmed) return;   
     Vue.delete(_this.famerdetaillists.spoks, index);
     Vue.delete(_this.Mfamerdetaillists.spoks, index);
     });
@@ -676,6 +666,7 @@ window.app = new Vue({
       confirmButtonText: 'ลบ',
       cancelButtonText:'ยกเลิก' 
     }).then(function(result){
+    if (!result.isConfirmed) return;   
     Vue.delete(_this.famerdetaillists.chapter5s, index);
     Vue.delete(_this.Mfamerdetaillists.chapter5s, index);
     });
@@ -697,23 +688,123 @@ window.app = new Vue({
     }
   }
 });    
-Vue.nextTick(function () {  
-      //   $('#birthday,#reservationdate2').datetimepicker({
-      //   format: 'L'
-      // });  
-      // var mydate = new Date();
-      // var toDay = mydate.getDate() + '/' + (mydate.getMonth() + 1) + '/' + (mydate.getFullYear() + 543);
-      // $(".datepicker-th-2").datepicker({ 
-      //  onSelect: function(date) {
-      //      console.log('log',this); 
-      //  },
-      // changeMonth: true, changeYear: true,dateFormat: 'dd/mm/yy', isBuddhist: true, defaultDate: toDay
-      // ,dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
-      // dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
-      // monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
-      // monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']});
-  
-      $('#survseydate').datetimepicker(window.d_survey);
+Vue.nextTick(function () {    
+      var mydate = new Date();
+      var toDay = mydate.getDate() + '/' + (mydate.getMonth() + 1) + '/' + (mydate.getFullYear() + 543);
+      $("#survseydate").datepicker({ 
+       showButtonPanel: true,
+       currentText: "วันนี้",
+       closeText: "ปิด",
+       beforeShow: function (input, calendar) {
+           $(calendar.dpDiv).removeClass('eco_product'); 
+        },
+       onSelect: function(date) {
+           window.app.$data.survseydate= date; 
+       },
+      changeMonth: true, changeYear: true,dateFormat: 'dd/mm/yy', isBuddhist: true, defaultDate: toDay
+      ,dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
+      dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
+      monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
+      monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']});
+      $(document).on("click", ".survseydate", function () {
+        $('#survseydate').datepicker('show');   
+       });
+     //----------------------------------------------------------------------------------------------------------------------
+      var dpmode = '';
+      var startDate = '0';
+      var endDate = '0'; 
+      $(document).on("click", ".eco_product_from", function () {
+        $('#eco_product_from').datepicker('show');   
+       });
+       $(document).on("click", ".eco_product_to", function () {
+        $('#eco_product_to').datepicker('show');   
+       });
+      $("#eco_product_from").datepicker({
+        minDate: 0,
+        dateFormat: "dd/mm/yy",
+        showButtonPanel: true, 
+        changeMonth: true,
+        numberOfMonths: 2,
+        changeYear: true, isBuddhist: true, defaultDate: toDay
+        ,dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
+        dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
+        monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
+        monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],
+        beforeShow: function (input, calendar) {
+           $(calendar.dpDiv).addClass('eco_product');
+          dpmode = 'depart';
+        },
+        beforeShowDay: function (date) {
+          var date1 = $.datepicker.parseDate("dd/mm/yy", $("#eco_product_from").val());
+          var date2 = $.datepicker.parseDate("dd/mm/yy", $("#eco_product_to").val());
+          return [true, date1 && date2 && ((date.getTime() == date1.getTime()) || (date2 && date >= date1 && date <= date2)) ? "dp-highlight" : ""];
+
+        },
+        onClose: function (selectedDate) {
+           window.app.$data.Mhouseinforgeneral.eco_product_from= selectedDate;
+           $("#eco_product_to").datepicker("option", "minDate", selectedDate);
+           $('#eco_product_to').datepicker('show'); 
+           startDate = selectedDate; 
+        } 
+      });
+
+      $("#eco_product_to").datepicker({
+        dateFormat: "dd/mm/yy",
+        minDate: 2,
+        setDate: new Date(), 
+        showButtonPanel: true, 
+        numberOfMonths: 2,
+        changeMonth: true, changeYear: true,isBuddhist: true, defaultDate: toDay
+        ,dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
+        dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
+        monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
+        monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],
+        beforeShow: function (input, calendar) {
+          $(calendar.dpDiv).addClass('eco_product');
+          dpmode = 'return';
+        },
+        beforeShowDay: function (date) {
+          var date1 = $.datepicker.parseDate("dd/mm/yy", $("#eco_product_from").val());
+          var date2 = $.datepicker.parseDate("dd/mm/yy", $("#eco_product_to").val());
+          return [true, date1 && date2 && ((date.getTime() == date1.getTime()) || (date2 && date >= date1 && date <= date2)) ? "dp-highlight" : ""];
+        }, 
+        onClose: function (selectedDate) {
+          $("#eco_product_from").datepicker("option", "maxDate", selectedDate); 
+          window.app.$data.Mhouseinforgeneral.eco_product_to= selectedDate;
+          endDate = selectedDate; 
+        }
+      });
+
+      $('#ui-datepicker-div').delegate('.eco_product .ui-datepicker-calendar td', 'mouseover', function () {
+        if ($(this).data('year') == undefined) return;
+        if (dpmode == 'depart' && endDate == '0') return;
+        if (dpmode == 'return' && startDate == '0') return;
+
+        var currentDate =  $('a',this).html()+ '/' + ($(this).data('month') + 1)+'/'+ $(this).data('year'); 
+        currentDate = $.datepicker.parseDate("dd/mm/yy", currentDate).getTime();
+        if (dpmode == 'depart') {
+          var StartDate = currentDate;
+          var EndDate = $.datepicker.parseDate("dd/mm/yy", endDate).getTime();
+        } else {
+          var StartDate = $.datepicker.parseDate("dd/mm/yy", startDate).getTime();
+          var EndDate = currentDate;
+        };
+        $('#ui-datepicker-div.eco_product td').each(function (index, el) {
+          if ($(this).data('year') == undefined) return;
+
+          var currentDate = $('a',this).html()+ '/' + ($(this).data('month') + 1)+'/'+ $(this).data('year'); 
+          currentDate = $.datepicker.parseDate("dd/mm/yy", currentDate).getTime();
+          if (currentDate >= StartDate && currentDate <= EndDate) {
+            $(this).addClass('dp-highlight')
+          } else {
+            $(this).removeClass('dp-highlight')
+          };
+        });
+      });
+
+
+
+      // $('#survseydate').datetimepicker(window.d_survey);
       // $('#survseydate').datetimepicker({defaultDate:'11/03/2020 13:52',format: 'DD/MM/YYYY HH:mm A'});
       // $('input[name="familyhomeproductperiod"]').daterangepicker(window.ConfDaterang); 
    //$('#birthday,#reservationdate2').on("change.datetimepicker", function (e) {
