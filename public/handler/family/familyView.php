@@ -49,12 +49,7 @@ $listmas_pet = $db::table("tbl_mas_pet")
     ->select($db::raw("pet_code,pet_name,pet_type"))
     ->where('f_status', '=', 'A')
     ->orderBy('pet_code', 'asc')
-    ->get()->toArray();
-
-$listmas_info = $db::table("tbl_mas_info")
-    ->select($db::raw("info_code,info_name"))
-    ->where('f_status', '=', 'A')
-    ->get()->toArray();
+    ->get()->toArray(); 
 
 $listmas_house_occup = $db::table("tbl_mas_house_occup")
     ->select($db::raw("hccup_code,hccup_name"))
@@ -72,13 +67,7 @@ $listmas_educate = $db::table("tbl_mas_educate")
     ->select($db::raw("ed_code,ed_name"))
     ->where('f_status', '=', 'A')
     ->orderBy('ed_desc', 'asc')
-    ->get()->toArray();
-
-$listmas_disaster = $db::table("tbl_mas_disaster")
-    ->select($db::raw("dis_code,dis_name"))
-    ->where('f_status', '=', 'A')
-    ->orderBy('dis_code', 'asc')
-    ->get()->toArray();
+    ->get()->toArray(); 
 
 $listmas_addition = $db::table("tbl_mas_addition")
     ->select($db::raw("add_code,add_name"))
@@ -104,6 +93,29 @@ $distric_chapter5s = [];
 $temlistpeople = ['prefix' => null, 'txtFName' => '', 'txtLName' => '', 'txtCitizenId' => '', 'xFstatusRd' => 'O', 'sexRd' => 'M'
     , 'txtNational' => '', 'religion' => null, 'birthday' => '', 'educationlevel' => null, 'homerelations' => null, 'careermain' => null, 'careersecond' => null, 'netIncome' => ''];
 $listpeople[] = $temlistpeople;
+
+$base_join = $db::table('fm_fam_info_dt6')
+    ->select($db::raw('info_fam_id,info_code,info_name,info_desc'))
+    ->where('info_fam_id', $id);
+$listmas_info = $db::table('tbl_mas_info AS a')
+    ->select($db::raw("a.info_code,a.info_name,b.info_desc"))
+    ->leftJoinSub($base_join, 'b', function ($join) {
+        $join->on('a.info_code', '=', 'b.info_code');
+    })
+    ->orderBy('info_code', 'asc')
+    ->get()->toArray();
+
+$base_join = $db::table('fm_fam_disaster_dt5')
+    ->select($db::raw('dis_fam_id,dis_code,dis_name,dis_desc'))
+    ->where('dis_fam_id', $id);
+$listmas_disaster = $db::table('tbl_mas_disaster AS a')
+    ->select($db::raw("a.dis_code,a.dis_name,a.dis_desc,b.dis_desc AS dt_dis_desc"))
+    ->leftJoinSub($base_join, 'b', function ($join) {
+        $join->on('a.dis_code', '=', 'b.dis_code');
+    })
+    ->orderBy('a.dis_code', 'asc')
+    ->get()->toArray();
+
 //---------------------------------------------------------------------------------------------------------------
 $house_no = ''; //บ้านเลขที่
 $house_moo = null; //หมู่ที
@@ -1210,12 +1222,9 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
                         <label class="form-check-label">การอนุรักษ์สิ่งแวดล้อม</label>
                         <textarea class="form-control" v-model="greenxEnvironmentaldisc" id="greenxEnvironmentaldisc" rows="2" placeholder="การอนุรักษ์สิ่งแวดล้อม  ..."></textarea>
                       </div>
-                    </div>
-    
-
+                    </div> 
             </div>
-			
-  
+			 
             <div class="row">
               <div class="col-md-3">
                 <label>ภัยธรรมชาติ</label>   
@@ -1226,12 +1235,12 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
                       {{item.dis_name}}</label>
                     </div>
                     <div class="form-group" v-if="item.dis_code==99">
-                        <textarea class="form-control" v-model="Mdisaster.another"  rows="1" placeholder="อื่นๆ  ..."></textarea>
+                        <textarea class="form-control dt_dis_desc" rows="1" v-model="item.dt_dis_desc"  :placeholder="''+item.dis_name+'...'"></textarea>
                     </div>
                 </template>			
                </div>
 				
-
+                <!-- /.form-group -->
 			   <div class="col-md-3">
          <label>&nbsp;</label>
                  <template  v-for="(item, index) in listmas_disaster2">
@@ -1241,50 +1250,50 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
                       {{item.dis_name}}</label>
                     </div>
                     <div class="form-group" v-if="item.dis_code==99">
-                        <textarea class="form-control" v-model="Mdisaster.another"  rows="1" placeholder="อื่นๆ  ..."></textarea>
+                        <textarea class="form-control dt_dis_desc" rows="1" v-model="item.dt_dis_desc"  :placeholder="''+item.dis_name+'...'"></textarea>
                     </div>
                 </template>	 	 
                 </div>
-
+                <!-- /.form-group -->
   
-
+                <!-- /.form-group -->
                 <div class="col-md-6">
                   <div class="form-group">
                     <label >เคยได้รับความช่วยเหลือ :</label> 
                     <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary12" name="helpme" v-model="helpme" value="N" >
+                        <input type="radio" id="radioPrimary12" name="helpme" v-model="$v.helpme.$model" value="N" >
                         <label for="radioPrimary12">ไม่เคย
                         </label>
                       </div>
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary13" name="helpme"  v-model="helpme"  value="Y" checked>
+                        <input type="radio" id="radioPrimary13" name="helpme"  v-model="$v.helpme.$model"  value="Y" checked>
                         <label for="radioPrimary13">เคย(ระบุความช่วยเหลือจากหน่วยงานไหน)
                         </label>
-				        		    <textarea class="form-control" name="helpmedisc" id="helpmedisc" v-model="helpmedisc" rows="2" :disabled="helpme=='N'"  placeholder="เคย (ความช่วยเหลือจากหน่วยงานไหน)..."></textarea>
+				        		    <textarea class="form-control" name="helpmedisc" id="helpmedisc"  :class="status2($v.helpmedisc)"  @blur="$v.helpmedisc.$touch()" v-model="$v.helpmedisc.$model" rows="2" :disabled="$v.helpme.$model=='N'"  placeholder="เคย (ความช่วยเหลือจากหน่วยงานไหน)..."></textarea>
                       </div>
                     </div>
                   </div>
                   </div>
-  				  
+                  <!-- /.form-group -->				  
             </div>
 
             <label>ข่าวสารทางด้านการเกษตร</label> 
-            <div class="row">  
+              <div class="row">  
               <div class="col-md-3"> 
                   <template  v-for="(item, index) in tbl_mas_info1">
                         <div class="form-check" v-if="item.info_code!=99" :key="item.info_code">
                         <input class="form-check-input" type="checkbox" name="info_code[]" v-model="Mmas_info.selected"  :value="item.info_code">
                         <label class="form-check-label">{{item.info_name}}</label>
                       </div>
-                      <div class="form-group" v-if="item.info_code==99" :key="item.info_code">
-                       <label class="form-check-label">อื่นๆ</label>
-                        <textarea class="form-control" name="info_code[]" v-model="Mmas_info.another" rows="1" placeholder="อื่นๆ  ..."></textarea>
+                      <div class="form-group" v-if="item.info_code==99" >
+                       <label class="form-check-label">{{item.info_name}}</label>  
+                        <textarea class="form-control info_desc" rows="1" v-model="item.info_desc"  :placeholder="''+item.info_name+'...'"></textarea>
                      </div>	
                  </template> 
                 </div>
                 
- 
+                <!-- /.form-group --> 
                 <div class="col-md-3">
                   <template  v-for="(item, index) in tbl_mas_info2">
                         <div class="form-check" v-if="item.info_code!=99" :key="item.info_code">
@@ -1292,25 +1301,25 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
                         <label class="form-check-label">{{item.info_name}}</label>
                       </div>
                       <div class="form-group" v-if="item.info_code==99" :key="item.info_code">
-                       <label class="form-check-label">อื่นๆ</label>
-                        <textarea class="form-control" name="info_code[]" v-model="Mmas_info.another" rows="1" placeholder="อื่นๆ  ..."></textarea>
+                       <label class="form-check-label">{{item.info_name}}</label>  
+                        <textarea class="form-control info_desc" name="info_desc[]" rows="1" v-model="item.info_desc"  :placeholder="''+item.info_name+'...'"></textarea>
                      </div>	
                  </template>
                 </div>
-
+                <!-- /.form-group -->
                 <div class="col-md-3">
                        <template  v-for="(item, index) in tbl_mas_info3">
-                        <div class="form-check" v-if="item.info_code!=99" :key="item.info_code">
+                        <div class="form-check" v-if="item.info_code!=99" >
                         <input class="form-check-input" type="checkbox" name="info_code[]" v-model="Mmas_info.selected"  :value="item.info_code">
                         <label class="form-check-label">{{item.info_name}}</label>
                       </div>
-                      <div class="form-group" v-if="item.info_code==99" :key="item.info_code">
-                       <label class="form-check-label">อื่นๆ</label>
-                        <textarea class="form-control" name="info_code[]" v-model="Mmas_info.another" rows="1" placeholder="อื่นๆ  ..."></textarea>
+                      <div class="form-group" v-if="item.info_code==99">
+                       <label class="form-check-label">{{item.info_name}}</label> 
+                        <textarea class="form-control info_desc" name="info_desc[]" rows="1" v-model="item.info_desc"  :placeholder="''+item.info_name+'...'"></textarea>
                      </div>	
                  </template>
                  </div>
- 
+                 <!-- /.form-group -->
             </div>
  
 		  	 <div class="row"> 

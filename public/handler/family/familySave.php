@@ -87,10 +87,10 @@ $select_facilities=(isset($_POST['Mlistmas_facilities']) ? $_POST['Mlistmas_faci
 $listmas_pet=(isset($_POST['listmas_pet']) ? $_POST['listmas_pet'] : []);
 
 $disaster=(isset($_POST['Mdisaster']['selected']) ? $_POST['Mdisaster']['selected'] : []);
-$disaster_another=(!IsNullOrEmptyString(@$_POST['Mdisaster']['another']) ? $_POST['Mdisaster']['another'] :'');
+$disaster_another=(!IsNullOrEmptyString(@$_POST['dt_dis_desc']) ? $_POST['dt_dis_desc'] :'');
 
 $mas_info_select=(isset($_POST['Mmas_info_select']['selected']) ? $_POST['Mmas_info_select']['selected'] : []);
-$mas_info_select_another=(isset($_POST['Mmas_info_select']['info_desc']) ? $_POST['Mmas_info_select']['info_desc'] : '');
+$mas_info_select_another=(!IsNullOrEmptyString(@$_POST['info_desc']) ? $_POST['info_desc'] : '');
 
 //  data เทียบ 
 $data_mas_pet = $db::table("tbl_mas_pet")
@@ -380,7 +380,7 @@ try {
 function insertall($type,$tran_id){
      global $db,$familylists,$famerdetaillists_deed,$famerdetaillists_norsor3kors
     ,$famerdetaillists_spoks,$famerdetaillists_chapter5s,$select_facilities
-    ,$listmas_pet,$disaster,$mas_info_select,$mas_info_select_another,$listmas_disaster,$listmas_info,$data_mas_pet,$listmas_facilities;
+    ,$listmas_pet,$disaster,$disaster_another,$mas_info_select,$mas_info_select_another,$listmas_disaster,$listmas_info,$data_mas_pet,$listmas_facilities;
     try { 
               $db::beginTransaction(); 
               // Clear old data
@@ -530,10 +530,15 @@ function insertall($type,$tran_id){
             
             // 5.ภัยธรรมชาติ
              $batc_insert_sql_mas_pet=[];
+             if(!IsNullOrEmptyString($disaster_another)){
+                array_push($disaster,99);
+             }
              foreach ($disaster as $k => $v) { 
+                  $desc='';
                   foreach ($listmas_disaster as $k2 => $v2) { // เทียบกับ data จริง
                     if($v2->dis_code==$v){ 
-                      $batc_insert_sql_mas_pet[]=['dis_fam_id'=>$tran_id,'dis_code'=>$v2->dis_code,'dis_name'=>$v2->dis_name];
+                       if($v==99){$desc=$disaster_another;}
+                      $batc_insert_sql_mas_pet[]=['dis_fam_id'=>$tran_id,'dis_code'=>$v2->dis_code,'dis_name'=>$v2->dis_name,'dis_desc'=>$desc];
                        break;
                     }
                   } 

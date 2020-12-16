@@ -41,12 +41,7 @@ $listmas_pet = $db::table("tbl_mas_pet")
 ->select($db::raw("pet_code,pet_name,pet_type"))
 ->where('f_status', '=', 'A')
 ->orderBy('pet_code', 'asc')
-->get()->toArray();
-
-$listmas_info = $db::table("tbl_mas_info")
-    ->select($db::raw("info_code,info_name"))
-    ->where('f_status', '=', 'A') 
-    ->get()->toArray();
+->get()->toArray(); 
 
 $listmas_house_occup= $db::table("tbl_mas_house_occup")
     ->select($db::raw("hccup_code,hccup_name"))
@@ -64,13 +59,7 @@ $listmas_educate= $db::table("tbl_mas_educate")
     ->select($db::raw("ed_code,ed_name"))
     ->where('f_status', '=', 'A')
     ->orderBy('ed_desc', 'asc')
-    ->get()->toArray();
-
-$listmas_disaster= $db::table("tbl_mas_disaster")
-    ->select($db::raw("dis_code,dis_name"))
-    ->where('f_status', '=', 'A')
-    ->orderBy('dis_code', 'asc')
-    ->get()->toArray();
+    ->get()->toArray(); 
 
 $listmas_addition= $db::table("tbl_mas_addition")
     ->select($db::raw("add_code,add_name"))
@@ -89,6 +78,29 @@ $id = @$_GET['id'];
  $temlistpeople=['prefix'=>null,'txtFName'=>'','txtLName'=>'','txtCitizenId'=>'','xFstatusRd'=>'O','sexRd'=>'M'
   ,'txtNational'=>'ไทย','religion'=>'01','birthday'=>'','educationlevel'=>null,'homerelations'=>'01','careermain'=>null,'careersecond'=>'01','netIncome'=>'','memF_status'=>'A']; 
 $listpeople[]=$temlistpeople;
+
+$base_join = $db::table('fm_fam_info_dt6')
+    ->select($db::raw('info_fam_id,info_code,info_name,info_desc'))
+    ->where('info_fam_id', $id);
+$listmas_info = $db::table('tbl_mas_info AS a')
+    ->select($db::raw("a.info_code,a.info_name,b.info_desc"))
+    ->leftJoinSub($base_join, 'b', function ($join) {
+        $join->on('a.info_code', '=', 'b.info_code');
+    })
+    ->orderBy('info_code', 'asc')
+    ->get()->toArray();
+
+$base_join = $db::table('fm_fam_disaster_dt5')
+    ->select($db::raw('dis_fam_id,dis_code,dis_name,dis_desc'))
+    ->where('dis_fam_id', $id);
+$listmas_disaster = $db::table('tbl_mas_disaster AS a')
+    ->select($db::raw("a.dis_code,a.dis_name,a.dis_desc,b.dis_desc AS dt_dis_desc"))
+    ->leftJoinSub($base_join, 'b', function ($join) {
+        $join->on('a.dis_code', '=', 'b.dis_code');
+    })
+    ->orderBy('a.dis_code', 'asc')
+    ->get()->toArray();
+
 //---------------------------------------------------------------------------------------------------------------
 $house_no = ''; //บ้านเลขที่
 $house_moo =null; //หมู่ที

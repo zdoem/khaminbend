@@ -400,6 +400,8 @@ window.app = new Vue({
               //  $('input[name="disaster[]"]:checked').map(function() {tmp_disaster.push(this.value);}); 
                var datasend={
                 //  frm_family:$('#frm_family').serializeArray(),
+                 info_desc:$(".info_desc").val(),
+                 dt_dis_desc:$(".dt_dis_desc").val(),
                  OwnerHomelistfamily:this.OwnerHomelistfamily, 
                  id:this.getParameterByName('id'),
                  Mhouseinfor:this.Mhouseinfor,
