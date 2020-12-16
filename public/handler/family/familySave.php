@@ -136,20 +136,32 @@ foreach ($familylists as $k => $v) {
   $temp_mem_citizen_id[] = trim((isset($v['txtCitizenId']) ? $v['txtCitizenId'] : ''));  
   }  
 
-if(isset($_POST['id'])&&strlen(trim($id))>0){
-    $rows_old =$db::select("SELECT house_no,mem_citizen_id FROM  fm_fam_hd AS a INNER JOIN fm_fam_members_dt1 AS b ON a.fam_id=b.mem_fam_id
-    WHERE  mem_citizen_id IN(?) AND mem_fam_id!=? AND YEAR(d_survey)  IN (
-        SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE mem_fam_id=? 
-    )", [implode(',',$temp_mem_citizen_id), $id,$id] );
-}else{
-    $survseydate=DateTime::createFromFormat('d/m/Y',@$_POST['survseydate']); 
-    $d_survseydate=$survseydate->format('Y');
-    $rows_old =$db::select("SELECT house_no,mem_citizen_id FROM  fm_fam_hd AS a INNER JOIN fm_fam_members_dt1 AS b ON a.fam_id=b.mem_fam_id
-    WHERE  mem_citizen_id IN(?) AND YEAR(d_survey)  IN (
-        SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE YEAR(d_survey)=? 
-    )",[implode(',',$temp_mem_citizen_id),$d_survseydate]);
-} 
- 
+if(isset($_POST['id'])&&strlen(trim($id))>0){ 
+    $rows_old=$db::table('fm_fam_hd AS a')
+    ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
+    ->select($db::raw('house_no,mem_citizen_id'))
+    ->whereIn('mem_citizen_id',$temp_mem_citizen_id)
+    ->where('mem_fam_id','!=',$id)
+    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query) {
+        $query->selectRaw('YEAR(d_survey)')
+            ->from('fm_fam_hd')
+            ->where('fam_id','=',[$id]);
+    })
+    ->get()->toArray();  
+}else{ 
+    $survseydate=DateTime::createFromFormat('d/m/Y',DateConvert('toadre','d/m/Y',$_POST['survseydate'],'/')); 
+    $d_survseydate=$survseydate->format('Y');   
+    $rows_old=$db::table('fm_fam_hd AS a')
+    ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
+    ->select($db::raw('house_no,mem_citizen_id'))
+    ->whereIn('mem_citizen_id',$temp_mem_citizen_id)
+    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query) {
+        $query->selectRaw('YEAR(d_survey)')
+            ->from('fm_fam_hd')
+            ->whereRaw('YEAR(d_survey)=?',[$d_survseydate]);
+    })
+    ->get()->toArray();  
+}  
 $dupi_mem_citizen_id=[];
 foreach (@$rows_old as $k => $v) { 
    $dupi_mem_citizen_id[]=$v->mem_citizen_id;
@@ -173,7 +185,7 @@ if(isset($_POST['id'])&&strlen(trim($id))>0){
         SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE fam_id=? 
     )", [$txtHouseId, $id,$id] );
 }else{
-    $survseydate=DateTime::createFromFormat('d/m/Y',@$_POST['survseydate']); 
+    $survseydate=DateTime::createFromFormat('d/m/Y',DateConvert('toadre','d/m/Y',@$_POST['survseydate'],'/')); 
     $d_survseydate=$survseydate->format('Y');
     $rows_old =$db::select("SELECT fam_id,d_survey,house_no,house_moo FROM  fm_fam_hd AS a 
     WHERE  house_no=? AND YEAR(d_survey) IN (
@@ -187,7 +199,7 @@ if(isset($_POST['id'])&&strlen(trim($id))>0){
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
-      html: 'มีข้อมูลบ้านเลขที่ <?=$rows_old->house_no?> ในระบบแล้ว!',
+      html: 'มีข้อมูลบ้านเลขที่ <?=$rows_old[0]->house_no?> ในระบบแล้ว!',
       });  
   </script>
   <?php

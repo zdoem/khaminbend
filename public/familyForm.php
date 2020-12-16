@@ -1203,7 +1203,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 <div class="form-group">
                   <label>ช่วงเวลาการผลิต(เริ่ม) :</label> 
                   <div class="input-group date" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" id="eco_product_from" :class="status($v.Mhouseinforgeneral.eco_product_from)" v-model.trim="$v.Mhouseinforgeneral.eco_product_from.$model" @blur="$v.Mhouseinforgeneral.eco_product_from.$touch()"> 
+                      <input type="text" class="form-control datetimepicker-input" autocomplete="off" required id="eco_product_from" :class="status($v.Mhouseinforgeneral.eco_product_from)" v-model.trim="$v.Mhouseinforgeneral.eco_product_from.$model" @blur="$v.Mhouseinforgeneral.eco_product_from.$touch()"> 
                       <div class="input-group-append eco_product_from" style="cursor: pointer;">
                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                       </div>
@@ -1214,7 +1214,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 <div class="form-group">
                   <label>ช่วงเวลาการผลิต(หมด) :</label> 
                   <div class="input-group date" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input"  id="eco_product_to" :class="status($v.Mhouseinforgeneral.eco_product_to)" v-model.trim="$v.Mhouseinforgeneral.eco_product_to.$model" @blur="$v.Mhouseinforgeneral.eco_product_to.$touch()"> 
+                      <input type="text" class="form-control datetimepicker-input" autocomplete="off" required id="eco_product_to" :class="status($v.Mhouseinforgeneral.eco_product_to)" v-model.trim="$v.Mhouseinforgeneral.eco_product_to.$model" @blur="$v.Mhouseinforgeneral.eco_product_to.$touch()"> 
                       <div class="input-group-append eco_product_to" style="cursor: pointer;">
                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                       </div>

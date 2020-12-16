@@ -36,8 +36,9 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
   <link rel="stylesheet" href="assets/css/sweetalert2.min.css">  
   <link rel="stylesheet" href="assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css"> 
 
-  <link rel="stylesheet" href="assets/css/ui-lightness/jquery-ui-1.8.10.custom.css">  
-  <link rel="stylesheet" href="assets/plugins/date-dange-picker/jquery.comiseo.daterangepicker.css"> 
+  <!-- <link rel="stylesheet" href="assets/css/ui-lightness/jquery-ui-1.8.10.custom.css">    -->
+  <link rel="stylesheet" href="assets/plugins/jquery-ui/jquery-ui.min.css">
+  <link rel="stylesheet" href="assets/plugins/jquery-ui/jquery-ui.theme.min.css">   
   <link rel="stylesheet" href="assets/css/adminlte.min.css"> 
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@200;300&display=swap" rel="stylesheet">
 
@@ -47,7 +48,7 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
     font-family: 'Prompt', sans-serif; !important; 
   } 
    .dp-highlight .ui-state-default {
-    background: #FAAE2A;
+    background: #33aeff;
     color: #FFF;
   }
   [v-cloak] {display: none}
