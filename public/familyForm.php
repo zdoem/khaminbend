@@ -1408,7 +1408,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                         <label class="form-check-label">{{item.info_name}}</label>
                       </div>
                       <div class="form-group" v-if="item.info_code==99" :key="item.info_code">
-                       <label class="form-check-label">อื่นๆ</label>{{Mmas_info.info_desc}}
+                       <label class="form-check-label">{{item.info_name}}</label>  
                         <textarea class="form-control" v-model="Mmas_info.info_desc" rows="1" placeholder="อื่นๆ  ..."></textarea>
                      </div>	
                  </template> 
@@ -1422,7 +1422,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                         <label class="form-check-label">{{item.info_name}}</label>
                       </div>
                       <div class="form-group" v-if="item.info_code==99" :key="item.info_code">
-                       <label class="form-check-label">อื่นๆ</label>{{Mmas_info.info_desc}}
+                       <label class="form-check-label">{{item.info_name}}</label>  
                         <textarea class="form-control" v-model="Mmas_info.info_desc" rows="1" placeholder="อื่นๆ  ..."></textarea>
                      </div>	
                  </template>
@@ -1435,7 +1435,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                         <label class="form-check-label">{{item.info_name}}</label>
                       </div>
                       <div class="form-group" v-if="item.info_code==99" :key="item.info_code">
-                       <label class="form-check-label">อื่นๆ</label>{{Mmas_info.info_desc}}
+                       <label class="form-check-label">{{item.info_name}}</label> 
                         <textarea class="form-control"  v-model="Mmas_info.info_desc" rows="1" placeholder="อื่นๆ  ..."></textarea>
                      </div>	
                  </template>

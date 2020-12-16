@@ -142,7 +142,7 @@ if(isset($_POST['id'])&&strlen(trim($id))>0){
     ->select($db::raw('house_no,mem_citizen_id'))
     ->whereIn('mem_citizen_id',$temp_mem_citizen_id)
     ->where('mem_fam_id','!=',$id)
-    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query) {
+    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query)use ($id) {
         $query->selectRaw('YEAR(d_survey)')
             ->from('fm_fam_hd')
             ->where('fam_id','=',[$id]);
@@ -155,7 +155,7 @@ if(isset($_POST['id'])&&strlen(trim($id))>0){
     ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
     ->select($db::raw('house_no,mem_citizen_id'))
     ->whereIn('mem_citizen_id',$temp_mem_citizen_id)
-    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query) {
+    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query)use ($d_survseydate) {
         $query->selectRaw('YEAR(d_survey)')
             ->from('fm_fam_hd')
             ->whereRaw('YEAR(d_survey)=?',[$d_survseydate]);
@@ -545,6 +545,9 @@ function insertall($type,$tran_id){
          
              //6. ข่าวสารทางด้านการเกษตร
              $batc_insert_sql_fam_info=[];
+             if(!IsNullOrEmptyString($mas_info_select_another)){
+                array_push($mas_info_select,99);
+             }
              foreach ($mas_info_select as $k => $v) {
                    $info_desc='';
                   foreach ($listmas_info as $k2 => $v2) { // เทียบกับ data จริง 
