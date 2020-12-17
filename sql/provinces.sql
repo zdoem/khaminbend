@@ -28,11 +28,11 @@
 
 CREATE TABLE IF NOT EXISTS `amphures` (
   `id` int(5) NOT NULL,
-  `code` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
-  `name_th` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
-  `name_en` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  `code` varchar(4) COLLATE utf8_general_ci NOT NULL,
+  `name_th` varchar(150) COLLATE utf8_general_ci NOT NULL,
+  `name_en` varchar(150) COLLATE utf8_general_ci NOT NULL,
   `province_id` int(5) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM AUTO_INCREMENT=1007 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=1007 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `amphures`
@@ -9946,11 +9946,11 @@ INSERT INTO `geographies` (`id`, `name`) VALUES
 
 CREATE TABLE IF NOT EXISTS `provinces` (
   `id` int(5) NOT NULL,
-  `code` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `name_th` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
-  `name_en` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  `code` varchar(2) COLLATE utf8_general_ci NOT NULL,
+  `name_th` varchar(150) COLLATE utf8_general_ci NOT NULL,
+  `name_en` varchar(150) COLLATE utf8_general_ci NOT NULL,
   `geography_id` int(5) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM AUTO_INCREMENT=78 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=78 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `provinces`

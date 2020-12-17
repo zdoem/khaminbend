@@ -53,7 +53,7 @@ $data_date_survey= $db::table("fm_fam_hd")
           <!-- /.card-header -->
           <div class="card-body">
             <div class="row">
-				<div class="col-md-3">
+				<!-- <div class="col-md-3">
 						<div class="form-group">
 						  <label>ปี :</label>
 						  <select class="form-control" name="date_survey" id="date_survey">
@@ -67,9 +67,8 @@ $data_date_survey= $db::table("fm_fam_hd")
               ?> 
 						  </select>
 
-						</div>
-						<!-- /.form-group -->
-				</div>
+						</div> 
+				</div> -->
               <div class="col-md-3">
                 <div class="form-group">
                   <label>บ้านเลขที่ :</label>
@@ -141,9 +140,9 @@ $data_date_survey= $db::table("fm_fam_hd")
 					               <th style="width: 20%">
 		                     ชื่อเจ้าบ้าน
                         </th>
-					             	<th style="width: 24%">
+					             	<!-- <th style="width: 24%">
 	                 	      ที่อยู่ตามทะเบียนบ้าน
-                        </th>
+                        </th> -->
                         <th style="width: 8%">
                          วันที่สำรวจ       
                         </th>
@@ -195,9 +194,9 @@ $data_date_survey= $db::table("fm_fam_hd")
           'url':'handler/family/familyDatalist.php',
           "data": function ( d ) {
             return $.extend( {}, d, {
-              "date_survey":$('#date_survey').val(),
+              "date_survey":'',
               "txtHouseNo": $('#txtHouseNo').val(),
-              "owner_house": $('#owner_house').val(),
+              "mem_fname": $('#owner_house').val(),
               "txtCitizenId": $('#txtCitizenId').val() 
             });
           } 
@@ -208,10 +207,10 @@ $data_date_survey= $db::table("fm_fam_hd")
               return `${row.f_vil_moo}`;
          }},
          { data: 'house_no' }, 
-         { data: 'owner_fname' },
-         { data: "house_no" , render : function ( data, type, row, meta ) {   
-              return `-`;
-         }},   
+         { data: 'mem_fname' },
+        //  { data: "house_no" , render : function ( data, type, row, meta ) {   
+        //       return `-`;
+        //  }},   
          { data: 'd_survey' }, 
          {data:"d_update" , render : function ( data, type, row, meta ) {   
               return `${row.f_update}`;
@@ -226,7 +225,7 @@ $data_date_survey= $db::table("fm_fam_hd")
         {"className": "text-center" ,"orderable": false,"targets": 1},
         {"className": "text-center" ,"orderable": false,"targets": 2},
         {"className": "text-center" ,"orderable": false,"targets": 3},
-        {"className": "text-center" ,"orderable": false,"targets": 4},
+        {"className": "text-center" ,"orderable": true,"targets": 4},
         {
         "className": "text-center", 
         "searchable": false,
@@ -244,7 +243,7 @@ $data_date_survey= $db::table("fm_fam_hd")
     // },
     { orderable: false, searchable: false, targets: -1,"className": "text-center" } //Ultima columna no ordenable para botones
    ],
-   "order": [[5, 'DESC']] 
+   "order": [[5, 'DESC'],[ 4, "DESC" ]] 
     }); 
  
     $('#btn_search').on('click', function () { 

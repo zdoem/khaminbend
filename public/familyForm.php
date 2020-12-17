@@ -5,425 +5,11 @@ $webtitle='แก้ไขข้อมูลครัวเรือน';
 } 
 require 'bootstart.php';
 require ROOT . '/core/security.php';
-require_once 'components/header.php';
-
-$listprovinces= $db::table("provinces")
-    ->select($db::raw("id,code,name_th,name_en")) 
-    ->orderBy('name_th', 'asc')
-    ->get()->toArray();   
-
-$listmas_vilage= $db::table("tbl_mas_vilage")
-    ->select($db::raw("vil_id,vil_moo,vil_name,vil_desc"))
-    ->where('f_status', '=', 'A')
-    ->orderBy('vil_moo', 'asc')
-    ->get()->toArray();
-
-$listmas_occupation=$db::table("tbl_mas_occupation") 
-    ->select($db::raw("occup_code,occup_name"))
-    ->where('f_status', '=','A')
-    ->orderBy('occup_desc', 'asc')
-    ->get()->toArray(); 
-
-$listmas_relations= $db::table("tbl_mas_relations")
-    ->select($db::raw("re_code,re_name"))
-    ->where('f_status', '=', 'A')
-    ->orderBy('re_desc', 'asc')
-    ->get()->toArray();
-
-$listmas_prefix= $db::table("tbl_mas_prefix")
-    ->select($db::raw("pre_code,pre_name"))
-    ->where('f_status', '=', 'A')
-    ->orderBy('pre_desc', 'asc')
-    ->get()->toArray(); 
-  
-$listmas_religion= $db::table("tbl_mas_religion")
-    ->select($db::raw("reg_code,reg_name"))
-    ->where('f_status', '=', 'A')
-    ->orderBy('reg_desc', 'asc')
-    ->get()->toArray(); 
-
-$listmas_pet = $db::table("tbl_mas_pet")
-->select($db::raw("pet_code,pet_name,pet_type"))
-->where('f_status', '=', 'A')
-->orderBy('pet_code', 'asc')
-->get()->toArray();
-
-$listmas_info = $db::table("tbl_mas_info")
-    ->select($db::raw("info_code,info_name"))
-    ->where('f_status', '=', 'A') 
-    ->get()->toArray();
-
-$listmas_house_occup= $db::table("tbl_mas_house_occup")
-    ->select($db::raw("hccup_code,hccup_name"))
-    ->where('f_status', '=', 'A')
-    ->orderBy('hccup_desc', 'asc')
-    ->get()->toArray();
-
-$listmas_group_occup= $db::table("tbl_mas_group_occup")
-    ->select($db::raw("goccup_code,goccup_name"))
-    ->where('f_status', '=', 'A')
-    ->orderBy('goccup_desc', 'asc')
-    ->get()->toArray();
-
-$listmas_educate= $db::table("tbl_mas_educate")
-    ->select($db::raw("ed_code,ed_name"))
-    ->where('f_status', '=', 'A')
-    ->orderBy('ed_desc', 'asc')
-    ->get()->toArray();
-
-$listmas_disaster= $db::table("tbl_mas_disaster")
-    ->select($db::raw("dis_code,dis_name"))
-    ->where('f_status', '=', 'A')
-    ->orderBy('dis_code', 'asc')
-    ->get()->toArray();
-
-$listmas_addition= $db::table("tbl_mas_addition")
-    ->select($db::raw("add_code,add_name"))
-    ->where('f_status', '=', 'A')
-    ->orderBy('add_desc', 'asc')
-    ->get()->toArray();
-
- //-------------------------Data Update Query--------------------------------------------------------------------------------------------------- 
- $id = @$_GET['id'];
- $data_fm_fam_hd=[];$list_fm_fam_facilities_dt3=[];$list_fm_fam_pet_dt4=[];
- $list_fm_fam_info_dt6_selected = [];$list_fm_fam_disaster_dt5_selected = [];
- $deeds=[];$distric_deeds=[];$listpeople=[];
- $norsor3kors=[];$distric_norsor3kors=[];
- $sorporkor=[];$distric_sorporkor=[]; 
- $chapter5s=[];$distric_chapter5s=[];
- $temlistpeople=['prefix'=>null,'txtFName'=>'','txtLName'=>'','txtCitizenId'=>'','xFstatusRd'=>'O','sexRd'=>'M'
-  ,'txtNational'=>'','religion'=>null,'birthday'=>'','educationlevel'=>null,'homerelations'=>null,'careergroup'=>null
-  ,'careeranother'=>'','careermain'=>null,'careersecond'=>null,'netIncome'=>'']; 
-$listpeople[]=$temlistpeople;
-//---------------------------------------------------------------------------------------------------------------
-$house_no = ''; //บ้านเลขที่
-$house_moo =null; //หมู่ที
-$sub_district = ''; //ตำบล
-$district =''; //อำเภอ
-$province =''; //จังหวัด
-$post_code ='';
-$pre_owner = '';
-$owner_fname ='';
-$owner_lname ='';
-$citizen_id = '';
-$x_status ='O'; //สถานภาพ O =owner , M=Member
-$x_sex ='M'; // เพศ M,W, หรือ O
-$national = ''; //สัญชาติ
-$reg_code =''; //ศาสนา 01=พุทธ,02=อิสลาม 03=คริสต์ศาสนา 99 = อื่นๆ
-$date_of_birth ='';
-$education_code ='';
-$relations_code =''; //ความสัมพันธ์ในครัวเรือน 01 =หัวหน้าครอบครัว
-$g_occupational_code =null; //กลุ่มอาชีพ 01 =กลุ่มอาชีพ1
-$g_occupational_other =''; //กลุุ่้มอาชีพอื่นๆ
-$main_occupation_code =''; //อาชีพหลัก
-$add_occupation_code =''; //อาชีพรอง/อาชีพเสริม
-$income_per_year ='';
-$fam_land_other =''; //ที่ดินอื่นๆ
-$eco_occupation_code =''; //อาชีพในครัวเรือน
-$eco_product_target_code =null; //เป้าหมายการผลิต : 01=ผลิตเพื่อบริโภค,02=ผลิตเพื่อจำหน่าย,03=ผลิตเพื่อบริโภคและจำหน่าย
-$eco_capital_code =null; //แหล่งเงินทุน (ครัวเรือน) :01=เงินทุนส่วนตัว,02=กู้มาลงทุน,03=กู้บางส่วน
-$eco_product_cost =''; //ต้นทุนการผลิต
-$f_problem_env ='N'; //ปัญหาสิ่งแวดล้อมในครัวเรือน Y/N
-$problem_env_desc =''; //รายละเอียดปัญหาสิ่งแวดล้อมในครัวเรือน
-$f_manage_env ='N'; //การจัดการสิ่งแวดล้อม Y/N
-$manage_env_desc =''; //รายละเอียดการจัดการสิ่งแวดล้อม
-$conserve_env =''; //การอนุรักษ์สิ่งแวดล้อม
-$f_help ='N'; //เคยได้รับความช่วยเหลือ Y/N
-$help_desc ='';
-$eco_product_from =''; //ช่วงเวลาการผลิต จาก
-$eco_product_to =''; //ช่วงเวลาการผลิต จาก 
-$familyhomeproductperiod=date('d/m/Y',time()).' - '.date("d/m/Y", strtotime("+3 month", time()));//ช่วงเวลาการผลิต จาก ช่วงเวลาการผลิต จาก
-$d_survey = date('d/m/Y h:i', time()); //วันเดือนปีสำรวจ 
-
-if (isset($_GET['id'])) {// update 
-  $data_fm_fam_hd = $db::table("fm_fam_hd")
-    ->select($db::raw("fam_id,house_no,house_moo,sub_district,district,province,post_code,pre_owner,owner_fname,owner_lname,citizen_id,eco_product_from,eco_product_to
-      ,x_status,x_sex,national,reg_code,date_of_birth,education_code,relations_code,g_occupational_code,g_occupational_other,main_occupation_code,add_occupation_code
-      ,income_per_year,fam_land_other,eco_occupation_code,eco_product_target_code,eco_capital_code,eco_product_cost,f_problem_env,problem_env_desc
-      ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,d_survey"))
-    ->where('fam_id', '=', $_GET['id'])
-    ->first(); 
-
-    $house_no = (isset($data_fm_fam_hd->house_no) ? $data_fm_fam_hd->house_no : ''); //บ้านเลขที่
-    $house_moo = ((isset($data_fm_fam_hd->house_moo)&&!IsNullOrEmptyString($data_fm_fam_hd->house_moo)) ? $data_fm_fam_hd->house_moo :null); //หมู่ที
-    $sub_district = (isset($data_fm_fam_hd->sub_district) ? $data_fm_fam_hd->sub_district : ''); //ตำบล
-    $district = (isset($data_fm_fam_hd->district) ? $data_fm_fam_hd->district : ''); //อำเภอ
-    $province = (isset($data_fm_fam_hd->province) ? $data_fm_fam_hd->province : ''); //จังหวัด
-    $post_code = (isset($data_fm_fam_hd->post_code) ? $data_fm_fam_hd->post_code : '');
-    $pre_owner = (isset($data_fm_fam_hd->pre_owner) ? $data_fm_fam_hd->pre_owner : '');
-    $owner_fname = (isset($data_fm_fam_hd->owner_fname) ? $data_fm_fam_hd->owner_fname : '');
-    $owner_lname = (isset($data_fm_fam_hd->owner_lname) ? $data_fm_fam_hd->owner_lname : '');
-    $citizen_id = (isset($data_fm_fam_hd->citizen_id) ? $data_fm_fam_hd->citizen_id : '');
-    $x_status = (isset($data_fm_fam_hd->x_status) ? $data_fm_fam_hd->x_status : 'O'); //สถานภาพ O =owner , M=Member
-    $x_sex = (isset($data_fm_fam_hd->x_sex) ? $data_fm_fam_hd->x_sex : 'M'); // เพศ M,W, หรือ O
-    $national = (isset($data_fm_fam_hd->national) ? $data_fm_fam_hd->national : ''); //สัญชาติ
-    $reg_code = (isset($data_fm_fam_hd->reg_code) ? $data_fm_fam_hd->reg_code : null); //ศาสนา 01=พุทธ,02=อิสลาม 03=คริสต์ศาสนา 99 = อื่นๆ
-    $date_of_birth = (isset($data_fm_fam_hd->date_of_birth) ? $data_fm_fam_hd->date_of_birth : '');
-    $education_code = (isset($data_fm_fam_hd->education_code) ? $data_fm_fam_hd->education_code : '');
-    $relations_code = (isset($data_fm_fam_hd->relations_code) ? $data_fm_fam_hd->relations_code : ''); //ความสัมพันธ์ในครัวเรือน 01 =หัวหน้าครอบครัว
-    $g_occupational_code =((isset($data_fm_fam_hd->g_occupational_code)&&!IsNullOrEmptyString($data_fm_fam_hd->g_occupational_code)) ? $data_fm_fam_hd->g_occupational_code :null); //กลุ่มอาชีพ 01 =กลุ่มอาชีพ1
-    $g_occupational_other = (isset($data_fm_fam_hd->g_occupational_other) ? $data_fm_fam_hd->g_occupational_other : ''); //กลุุ่้มอาชีพอื่นๆ
-    $main_occupation_code = (isset($data_fm_fam_hd->main_occupation_code) ? $data_fm_fam_hd->main_occupation_code : null); //อาชีพหลัก
-    $add_occupation_code = (isset($data_fm_fam_hd->add_occupation_code) ? $data_fm_fam_hd->add_occupation_code : null); //อาชีพรอง/อาชีพเสริม
-    $income_per_year = (isset($data_fm_fam_hd->income_per_year) ? $data_fm_fam_hd->income_per_year : '');
-    $fam_land_other = (isset($data_fm_fam_hd->fam_land_other) ? $data_fm_fam_hd->fam_land_other : ''); //ที่ดินอื่นๆ
-    $eco_occupation_code = (isset($data_fm_fam_hd->eco_occupation_code) ? $data_fm_fam_hd->eco_occupation_code : ''); //อาชีพในครัวเรือน
-    $eco_product_target_code=((isset($data_fm_fam_hd->eco_product_target_code)&&!IsNullOrEmptyString($data_fm_fam_hd->eco_product_target_code)) ? $data_fm_fam_hd->eco_product_target_code :null); //เป้าหมายการผลิต : 01=ผลิตเพื่อบริโภค,02=ผลิตเพื่อจำหน่าย,03=ผลิตเพื่อบริโภคและจำหน่าย
-    $eco_capital_code=((isset($data_fm_fam_hd->eco_capital_code)&&!IsNullOrEmptyString($data_fm_fam_hd->eco_capital_code)) ? $data_fm_fam_hd->eco_capital_code :null); //แหล่งเงินทุน (ครัวเรือน) :01=เงินทุนส่วนตัว,02=กู้มาลงทุน,03=กู้บางส่วน
-    $eco_product_cost = (isset($data_fm_fam_hd->eco_product_cost) ? $data_fm_fam_hd->eco_product_cost : 0); //ต้นทุนการผลิต
-    $f_problem_env = (isset($data_fm_fam_hd->f_problem_env) ? $data_fm_fam_hd->f_problem_env : 'N'); //ปัญหาสิ่งแวดล้อมในครัวเรือน Y/N
-    $problem_env_desc = (isset($data_fm_fam_hd->problem_env_desc) ? $data_fm_fam_hd->problem_env_desc : ''); //รายละเอียดปัญหาสิ่งแวดล้อมในครัวเรือน
-    $f_manage_env = (isset($data_fm_fam_hd->f_manage_env) ? $data_fm_fam_hd->f_manage_env : 'N'); //การจัดการสิ่งแวดล้อม Y/N
-    $manage_env_desc = (isset($data_fm_fam_hd->manage_env_desc) ? $data_fm_fam_hd->manage_env_desc : ''); //รายละเอียดการจัดการสิ่งแวดล้อม
-    $conserve_env = (isset($data_fm_fam_hd->conserve_env) ? $data_fm_fam_hd->conserve_env : ''); //การอนุรักษ์สิ่งแวดล้อม
-    $f_help = (isset($data_fm_fam_hd->f_help) ? $data_fm_fam_hd->f_help : 'N'); //เคยได้รับความช่วยเหลือ Y/N
-    $help_desc = (isset($data_fm_fam_hd->help_desc) ? $data_fm_fam_hd->help_desc : '');
-    $eco_product_from = (isset($data_fm_fam_hd->eco_product_from) ? $data_fm_fam_hd->eco_product_from : ''); //ช่วงเวลาการผลิต จาก
-    $eco_product_to = (isset($data_fm_fam_hd->eco_product_to) ? $data_fm_fam_hd->eco_product_to : ''); //ช่วงเวลาการผลิต จาก
-    if (!IsNullOrEmptyString($eco_product_from)) {$eco_product_from = date('d/m/Y', strtotime($eco_product_from));}
-    if (!IsNullOrEmptyString($eco_product_to)) {$eco_product_to = date('d/m/Y', strtotime($eco_product_to));}
-    if(!IsNullOrEmptyString($eco_product_from)&&!IsNullOrEmptyString($eco_product_to)){$familyhomeproductperiod=$eco_product_from.' - '.$eco_product_to;}
-    $d_survey = (isset($data_fm_fam_hd->d_survey) ? $data_fm_fam_hd->d_survey : ''); //วันเดือนปีสำรวจ
-    if (!IsNullOrEmptyString($d_survey)) {$d_survey = date('d/m/Y h:i', strtotime($d_survey));} 
- 
-    // echo '<pre>';print_r($data_fm_fam_hd);exit();
-    // var_dump($d_survey);exit();
-
-  // $listpeople
-  $c_fm_fam_hd = $db::table("fm_fam_members_dt1 AS a")
-      ->select($db::raw("mem_pre AS prefix,f_status,mem_fname AS txtFName,mem_lname AS txtLName,mem_citizen_id AS txtCitizenId,mem_status AS xFstatusRd
-      ,mem_sex AS sexRd,mem_national AS txtNational,mem_religion_code AS religion,mem_df_birth AS birthday,mem_education_code AS educationlevel
-      ,mem_relations_code AS homerelations,null AS careergroup,null AS careeranother
-      ,xmain_occupation_code AS careermain,xadditional_occupation_code AS careersecond ,xincome_per_year AS netIncome,mem_seq"))
-      ->where('a.mem_fam_id', '=', $id);
-  //->where('a.f_status', '=','A');
-
-  $p_fm_fam_hd = $db::table("fm_fam_hd AS a")
-      ->select($db::raw("pre_owner AS prefix,f_status,owner_fname AS txtFName,owner_lname AS txtLName,citizen_id AS txtCitizenId ,x_status AS xFstatusRd
-      ,x_sex AS sexRd,national AS txtNational,reg_code AS religion,date_of_birth AS birthday,education_code AS educationlevel
-      ,relations_code AS homerelations
-      ,g_occupational_code AS careergroup,g_occupational_other AS  careeranother,main_occupation_code AS careermain,add_occupation_code AS careersecond
-      ,income_per_year AS netIncome,1 AS mem_seq"))
-      ->where('a.fam_id', '=', $id);
-  //->where('a.f_status', '=','A');
-
-  $final_query = $p_fm_fam_hd->unionall($c_fm_fam_hd);
-  $querySql = $final_query->toSql();
-  $all_content_query = $db::table($db::raw("($querySql) as t"))->mergeBindings($final_query);
-  $listpeople = $all_content_query->select($db::raw("t.*"))->orderBy('mem_seq', 'asc')->get()->toArray(); 
-  // ข้อมูลพื้นที่การเกษตร 
-  $list_fm_fam_land_dt2= $db::table("fm_fam_land_dt2")
-      ->select($db::raw("land_type,land_desc,province,district,title_deed_id AS nodeed,area1_rai AS arearai,area2_work AS areawork,area3_sqw AS areatrw,f_status")) 
-      ->orderBy('land_type', 'asc')
-      ->orderBy('land_seq', 'asc')
-      ->where('land_fam_id', '=',$id)
-      ->get()->toArray();
-  $deeds=[]; $norsor3kors=[];$sorporkor=[];$chapter5s=[]; $another=''; 
-  $distric_deeds=[]; $distric_norsor3kors=[];$distric_sorporkor=[];$distric_chapter5s=[];
-  foreach ($list_fm_fam_land_dt2 as $k => $v) { 
-      $list_district=$db::table("amphures")
-      ->select($db::raw("code,name_th,name_en,province_id"))
-      ->where('province_id', '=', $v->province)
-      ->orderBy('id', 'asc')
-      ->get()->toArray();    
-      switch ($v->land_type) {
-        case 'title_deed': $deeds[]=$v;$distric_deeds[]=$list_district;  break;
-        case 'NorSor3Kor': $norsor3kors[]=$v;$distric_norsor3kors[]=$list_district;  break;
-        case 'sorporkor': $sorporkor[]=$v;$distric_sorporkor[]=$list_district;  break; 
-        case 'porbortor5': $chapter5s[]=$v;$distric_chapter5s[]=$list_district;  break;
-        default:   break;
-      }
-  }  
-  //5. ภัยธรรมชาติ fm_fam_disaster_dt5
-  $list_fm_fam_disaster_dt5 = $db::table('fm_fam_disaster_dt5')
-      ->select($db::raw('dis_code,dis_name,dis_desc'))
-      ->where('dis_fam_id', $_GET['id'])
-      ->get()->toArray();
-  /*
-  $base_join = $db::table('fm_fam_disaster_dt5')
-  ->select($db::raw('dis_code,dis_name,dis_desc'))
-  ->where('dis_fam_id', $_GET['id']);
-
-  $list_fm_fam_disaster_dt5 = $db::table('tbl_mas_disaster AS a')
-  ->select($db::raw("a.dis_code,a.dis_name,a.dis_name,b.dis_desc
-  ,CASE
-  WHEN b.dis_code IS NOT NULL THEN b.dis_code
-  WHEN b.dis_code IS NULL THEN null
-  ELSE null
-  END AS selected"))
-  ->leftJoinSub($base_join, 'b', function ($join) {
-  $join->on('a.dis_code', '=', 'b.dis_code');
-  })
-  //->orderBy('dis_code', 'asc')
-  ->get()->toArray(); */ 
-  foreach ($list_fm_fam_disaster_dt5 as $k => $v) {
-      $list_fm_fam_disaster_dt5_selected[] = $v->dis_code;
-  }
-  // var_dump($list_fm_fam_disaster_dt5_array);exit();
-  // echo json_encode($list_fm_fam_disaster_dt5);exit();
-  // 6. ข่าวสารทางด้านการเกษตร fm_fam_info_dt6
-  $list_fm_fam_info_dt6 = $db::table('fm_fam_info_dt6')
-      ->select($db::raw('info_code,info_name,info_desc'))
-      ->where('info_fam_id', '=', $_GET['id'])
-      ->get()->toArray();
-  
-  foreach ($list_fm_fam_info_dt6 as $k => $v) {
-      $list_fm_fam_info_dt6_selected[] = $v->info_code;
-  }
-  /*
-  $base_join = $db::table('fm_fam_info_dt6')
-  ->select($db::raw('info_code,info_name,info_desc'))
-  ->where('info_fam_id', '=', $_GET['id']);
-
-  $list_fm_fam_info_dt6 = $db::table('tbl_mas_info AS a')
-  ->select($db::raw("a.info_code,a.info_name,b.info_code,b.info_name,b.info_desc
-  ,CASE
-  WHEN b.info_code IS NOT NULL THEN 'true'
-  WHEN b.info_code IS NULL THEN null
-  ELSE null
-  END AS selected"))
-  ->leftJoinSub($base_join, 'b', function ($join) {
-  $join->on('a.info_code', '=', 'b.info_code');
-  })
-  //->orderBy('info_code', 'asc')
-  ->get()->toArray(); */
- 
-}    
-//3.เครื่องมืออำนวยความสะดวกทางการเกษตร fm_fam_facilities_dt3
-$base_join = $db::table('fm_fam_facilities_dt3')
-    ->select($db::raw('fac_code,fac_name,fac_quantity,fac_desc'))
-    ->where('fac_fam_id', $id);
-
-$list_fm_fam_facilities_dt3 = $db::table('tbl_mas_facilities AS a')
-    ->select($db::raw("a.fac_code,a.fac_name,b.fac_quantity,b.fac_desc
-        ,CASE
-        WHEN b.fac_code IS NOT NULL THEN 'true'
-        WHEN b.fac_code IS NULL THEN null
-        ELSE null
-      END AS selected"))
-    ->leftJoinSub($base_join, 'b', function ($join) {
-        $join->on('a.fac_code', '=', 'b.fac_code');
-    })->get()->toArray(); 
-
-//4. สัตว์เลี้ยง fm_fam_pet_dt4
-$base_join = $db::table('fm_fam_pet_dt4')
-    ->select($db::raw('pet_code,pet_quantity,pet_vacine_qt,pet_desc'))
-    ->where('pet_fam_id', $id); 
-$list_fm_fam_pet_dt4 = $db::table('tbl_mas_pet AS a')
-    ->select($db::raw("a.pet_code,a.pet_name,b.pet_quantity,b.pet_vacine_qt,b.pet_desc
-        ,CASE
-        WHEN b.pet_code IS NOT NULL THEN 'true'
-        WHEN b.pet_code IS NULL THEN null
-        ELSE null
-      END AS selected"))
-    ->leftJoinSub($base_join, 'b', function ($join) {
-        $join->on('a.pet_code', '=', 'b.pet_code');
-    })->get()->toArray();
-
-// var_dump($list_fm_fam_pet_dt4);exit();
- 
-//-------------------------End Data Update Query---------------------------------------------------------------------------------------------------
-
-$tbl_mas_info_base = splitMyArray($listmas_info, 3);
-$tbl_mas_info1 = (isset($tbl_mas_info_base[0]) ? $tbl_mas_info_base[0] : []);
-$tbl_mas_info2 = (isset($tbl_mas_info_base[1]) ? $tbl_mas_info_base[1] : []);
-$tbl_mas_info3 = (isset($tbl_mas_info_base[2]) ? $tbl_mas_info_base[2] : []);
-//ภัยธรรมชาติ
-$disaster_datarows = splitMyArray($listmas_disaster, 2);
-$listmas_disaster1 = (isset($disaster_datarows[0]) ? $disaster_datarows[0] : []);
-$listmas_disaster2 = (isset($disaster_datarows[1]) ? $disaster_datarows[1] : []);
-   
-$Shouseinforgeneral=['familyhomecareer'=>$g_occupational_code,'familyhomeproducttarget'=>$eco_product_target_code
-,'familyhomesourceoffunds'=>$eco_capital_code,'familyhomeproductperiod'=>$familyhomeproductperiod,'familyhomeproductioncost'=>$eco_product_cost];
-$Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$sub_district,'txtDistrict'=>$district,'txtProvince'=>$province
-,'txtPostalCode'=>$post_code];  
- 
+require_once 'components/header.php'; 
 ?>
-<script> 
-  // config data for vue  
-  var vilage = <?=json_encode($listmas_vilage); ?>; 
-  window.Slistmas_vilage=vilage.reverse().concat({vil_id: null, vil_moo:null, vil_name: "กรุณาเลือกข้อมูล", vil_desc: ""}).reverse();
-  var mas_prefix = <?=json_encode($listmas_prefix); ?>; 
-  window.Slistmas_prefix=mas_prefix.reverse().concat({pre_code: null,pre_name: "กรุณาเลือกข้อมูล"}).reverse();
-    //ศาสนา
-  var religion = <?=json_encode($listmas_religion); ?>; 
-  window.Slistmas_religion=religion.reverse().concat({reg_code: null, reg_name: "กรุณาเลือกข้อมูล"}).reverse();
-  //ระดับการศึกษา: 
-  var educate = <?=json_encode($listmas_educate); ?>; 
-  window.Slistmas_educate=educate.reverse().concat({ed_code: null, ed_name: "กรุณาเลือกข้อมูล"}).reverse();
-  //ความสัมพันธ์ในครัวเรือน:
-  var home_relations= <?=json_encode($listmas_relations); ?>; 
-  window.Slistmas_relations=home_relations.reverse().concat({re_code: null, re_name: "กรุณาเลือกข้อมูล"}).reverse();
-  // อาชีพในครัวเรือน
-  var house_occup= <?=json_encode($listmas_house_occup); ?>;  
-  window.Slistmas_house_occup=house_occup.reverse().concat({hccup_code: null, hccup_name: "กรุณาเลือกข้อมูล"}).reverse();
-  window.Shouseinforgeneral=<?=json_encode($Shouseinforgeneral)?>;
-  window.Shouseinfor=<?=json_encode($Shouseinfor)?>; 
-  //กลุ่มอาชีพ:
-  var group_occup= <?=json_encode($listmas_group_occup); ?>; 
-  window.Slistmas_group_occup=group_occup.reverse().concat({goccup_code: null, goccup_name: "กรุณาเลือกข้อมูล"}).reverse();
-  // อาชีพหลัก
-  var occupation= <?=json_encode($listmas_occupation); ?>;  
-  window.Slistmas_occupation=occupation.reverse().concat({occup_code: null, occup_name: "กรุณาเลือกข้อมูล"}).reverse();
-    ///อาชีพรอง
- var addition= <?=json_encode($listmas_addition); ?>;   
-  window.Slistlistmas_addition=addition.reverse().concat({add_code: null, add_name: "กรุณาเลือกข้อมูล"}).reverse();
-  // ข้อมูลจังหวัด 
-  var provinces= <?=json_encode($listprovinces); ?>; 
-  window.Slistprovinces=provinces.reverse().concat({code: null,id:null,name_en:'กรุณาเลือกข้อมูล',name_th: "กรุณาเลือกข้อมูล"}).reverse(); 
-  //-ช้อมูลอำเภอ
-  window.distric_deeds=<?=json_encode($distric_deeds); ?>;
-  window.distric_norsor3kors =<?=json_encode($distric_norsor3kors); ?>;
-  window.distric_sorporkor =<?=json_encode($distric_sorporkor); ?>;
-  window.distric_chapter5s =<?=json_encode($distric_chapter5s); ?>;
-  
-    //เครื่องมืออำนวยความสะดวกทางการเกษตร 
-  window.Slistmas_facilities=<?=json_encode($list_fm_fam_facilities_dt3); ?>;  
-  // สัตว์เลี้ยง 
-  window.listmas_pet=<?=json_encode($list_fm_fam_pet_dt4); ?>;   
-  
-  window.Sfamerdetaillists={deeds:<?=json_encode($deeds)?>,norsor3kors:<?=json_encode($norsor3kors)?>,spoks:<?=json_encode($sorporkor)?>,chapter5s:<?=json_encode($chapter5s)?>,another:'<?=$fam_land_other?>'};
-  window.SSfamerdetaillists={deeds:<?=json_encode($deeds)?>,norsor3kors:<?=json_encode($norsor3kors)?>,spoks:<?=json_encode($sorporkor)?>,chapter5s:<?=json_encode($chapter5s)?>,another:'<?=$fam_land_other?>'};
-
-  window.Sfamilylist=<?=json_encode($temlistpeople)?>; 
-  window.Sfamilylists=<?=json_encode($listpeople)?>;
-  window.SSfamilylists=<?=json_encode($listpeople)?>;
-
-  window.Mfamilylist={prefix:null,txtFName: '',txtLName:'',txtCitizenId:'' ,xFstatusRd:'O',sexRd:'M',txtNational:'',religion:null,birthday:''
-  ,educationlevel:null,homerelations:null,careergroup:null,careeranother:'',careermain:null,careersecond:null,netIncome:''};  
-  //ข้อมูลพื้นที่การเกษตร
-  window.Sfamerland={province:null,district:'',nodeed:'',arearai:'',areawork:'',areatrw:''};
-  //เป้าหมายการผลิต 
-  window.listfamilyhomeproducttarget=[{code:null,name:'กรุณาเลือกข้อมูล'}
-  ,{code:1,name:'ผลิตเพื่อบริโภค'}
-  ,{code:2,name:'ผลิตเพื่อจำหน่าย'}
-  ,{code:3,name:'ผลิตเพื่อบริโภคและจำหน่าย'}];
-//แหล่งเงินทุน (ครัวเรือน) 
-  window.listfamilyhomesourceoffunds=[{code:null,name:'กรุณาเลือกข้อมูล'}
-  ,{code:1,name:'เงินทุนส่วนตัว'}
-  ,{code:2,name:'กู้มาลงทุน'}
-  ,{code:3,name:'กู้บ้างสวน'}];
-  //สิ่งแวดล้อม
-   window.xEnvironmental='<?=$f_problem_env?>';
-   window.xEnvironmentaldisc='<?=$problem_env_desc?>';
-   window.xEnvironmental2='<?=$f_manage_env?>';
-   window.xEnvironmental2disc='<?=$manage_env_desc?>';
-   window.greenxEnvironmentaldisc='<?=$conserve_env?>'; 
-   window.helpme='<?=$f_help?>';
-   window.helpmedisc='<?=$help_desc?>';
-   //ข่าวสารทางด้านการเกษตร
-   window.tbl_mas_info1=<?=json_encode($tbl_mas_info1); ?>; 
-   window.tbl_mas_info2=<?=json_encode($tbl_mas_info2); ?>;
-   window.tbl_mas_info3=<?=json_encode($tbl_mas_info3); ?>;
-   window.Smas_info={selected:<?='["' . implode('", "',$list_fm_fam_info_dt6_selected) . '"]'?>,another:''};
-   //ภัยธรรมชาติ
-   window.listmas_disaster1=<?=json_encode($listmas_disaster1); ?>; 
-   window.listmas_disaster2=<?=json_encode($listmas_disaster2); ?>;
-   window.Sdisaster={selected:<?='["' . implode('", "',$list_fm_fam_disaster_dt5_selected) . '"]'?>,another:''}; 
-      
-  window.d_survey={autoclose: true,format: 'DD/MM/YYYY HH:mm A',defaultDate:'<?=$d_survey?>'};
-
- </script>
+<?php
+require_once 'handler/family/familyloadDataUser.php'; 
+?> 
 <style> 
   .dirty {
     border-color: #5A5!important;
@@ -451,8 +37,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
 	to {
 		-webkit-transform: rotate(360deg);
 	}
-}
-
+} 
 @keyframes spin {
 	from {
 		transform: scale(1) rotate(0deg);
@@ -461,6 +46,14 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
 		transform: scale(1) rotate(360deg);
 	}
 }
+.invalid-feedback{
+    display: block; 
+    width: 100%;
+    position: absolute;
+    margin:0;
+    font-size: 80%;
+    color: #dc3545;
+}
 
 </style> 
  <!-- Content Header (Page header) -->
@@ -468,14 +61,14 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">เพิ่มข้อมูลครัวเรือน</h1>
+            <h1 class="m-0 text-dark"><?=$webtitle?></h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item">
                 	<em class="fa fa-home"></em>
                 <a href="#">Home</a></li>
-              <li class="breadcrumb-item active">เพิ่มข้อมูลครัวเรือน</li>
+              <li class="breadcrumb-item active"><?=$webtitle?></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -509,13 +102,15 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 <div class="form-group">
                   <label>บ้านเลขที่ :</label>
                   <input type="text" :class="status($v.Mhouseinfor.txtHouseId)" required v-model.trim="$v.Mhouseinfor.txtHouseId.$model" name="txtHouseId" id="txtHouseId" class="form-control" placeholder="บ้านเลขที่  ...">
+                  <div class="invalid-feedback order-last" v-if="!$v.Mhouseinfor.txtHouseId.Fn_txtHouseId">ต้องเป็นตัวเลขและ/เท่านั้น</div>
+                  <div class="invalid-feedback order-last" v-if="!$v.Mhouseinfor.txtHouseId.isUnique&&!$v.Mhouseinfor.txtHouseId.$pending">มีข้อมูลอยู่แล้ว!.</div>
                 </div>
                 <!-- /.form-group -->
               </div>
 
               <div class="col-md-4">
                 <div class="form-group">
-                  <label>หมู่ที่ - ชื่อหมู่บ้าน :</label>
+                  <label>หมู่ที่ - ชื่อหมู่บ้าน :</label> 
 				       	<select class="form-control"  :class="status($v.Mhouseinfor.mooHouse)" required v-model.trim="$v.Mhouseinfor.mooHouse.$model" > 
                         <template v-for="(v, indexx) in listmas_vilage">
                           <option v-if="(indexx*1)==0" v-bind:value="v.vil_id" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.vil_name}}</option> 
@@ -575,9 +170,12 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
         <!-- /.card -->
 
         <!-- SELECT2 EXAMPLE ข้อมูลสมาชิกในครัวเรือน -->
-        <div class="card card-warning">
+        <div class="card card-light">
           <div class="card-header">
             <h3 class="card-title">ข้อมูลสมาชิกในครัวเรือน</h3> &nbsp;  &nbsp; 
+            <a class="btn btn-info btn-sm text-white" href="javascript:void(0)" v-on:click="addPeople">
+            <i class="fa fa-user-plus" aria-hidden="true"></i> เพิ่มสมาชิกในครัวเรือน
+            </a> 
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
               <!--<button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>-->
@@ -586,11 +184,8 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
           <!-- /.card-header -->
           <div class="card-body">
          <template v-for="(item, index) in $v.Mfamilylists.$each.$iter"> 
-            <h5>ลำดับที่ : {{(index*1)+1}} 
-				<a class="btn btn-info btn-sm" href="javascript:void(0)" v-if="index==0" v-on:click="addPeople">
-				  <i class="fas fa-plus-square"></i> เพิ่มสมาชิกในครัวเรือน
-                </a>
-                <a href="javascript:void(0)" class="btn-sm btn-danger" v-if="index>0" v-on:click="removePeople(index)"><i class="fas fa-trash"></i></a>
+            <h5>ลำดับที่ : {{(index*1)+1}}  
+                <a href="javascript:void(0)" class="btn-sm btn-danger"  v-on:click="removePeople(index)"><i class="fas fa-trash"></i></a>
 		    	</h5>
             <div class="row">
               <div class="col-md-3">
@@ -603,12 +198,17 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 </div>
                 <!-- /.form-group -->
               </div>
-              <div class="col-md-3">
+              <div class="col-md-3" v-if="index==0">
                 <div class="form-group">
                   <label>ชื่อเจ้าบ้าน :</label>
                   <input type="text" :id="'txtFName'+index" :class="status(item.txtFName)" required v-model.trim="item.txtFName.$model" @blur="item.txtFName.$touch()" class="form-control" placeholder="ชื่อเจ้าบ้าน...">
-                </div>
-                <!-- /.form-group -->
+                </div> 
+              </div>
+               <div class="col-md-3" v-if="index>0">
+                <div class="form-group">
+                  <label>ชื่อผู้อยู่อาศัย :</label>
+                  <input type="text" :id="'txtFName'+index" :class="status(item.txtFName)" required v-model.trim="item.txtFName.$model" @blur="item.txtFName.$touch()" class="form-control" placeholder="ชื่อผู้อยู่อาศัย...">
+                </div> 
               </div>
 
               <div class="col-md-3">
@@ -623,6 +223,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 <div class="form-group">
                   <label>เลขที่ประจำตัวประชาชน  :</label>
                     <input type="text" :id="'txtCitizenId'+index" :class="status(item.txtCitizenId)" required v-model.trim="item.txtCitizenId.$model" @blur="item.txtCitizenId.$touch()" class="form-control" placeholder="เลขที่ประจำตัวประชาชน  ...">
+                    <div class="invalid-feedback order-last" v-if="!item.txtCitizenId.isUnique&&!item.txtCitizenId.$pending">มีข้อมูลอยู่แล้ว!.</div>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -635,13 +236,13 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 <div class="form-group">
                   <label>สถานภาพ :</label>
                   <div class="form-group clearfix">
-                    <div class="icheck-primary d-inline">
-                      <input type="radio" :id="'radioPrimary1'+index" :disabled="index>0" value="O" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()"> 
+                    <div class="icheck-primary d-inline"><!--   :disabled="index>0" -->
+                      <input type="radio" :id="'radioPrimary1'+index" v-on:change="setOwnerfamily('O',index)"  value="O" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()"> 
                       <label :for="'radioPrimary1'+index">เจ้าบ้าน 
                       </label>
                     </div>
                     <div class="icheck-primary d-inline"> 
-                      <input type="radio" :id="'radioPrimary2' + index" value="M" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()">
+                      <input type="radio" :id="'radioPrimary2' + index" v-on:change="setOwnerfamily('M',index)" value="M" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()">
                       <label :for="'radioPrimary2'+index">ผู้อยู่อาศัย 
                       </label>
                     </div>
@@ -701,7 +302,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
               <div class="col-md-3">
                 <div class="form-group">
                   <label>วันเดือนปีเกิด :</label>  
-                   <date-picker2  v-model.trim="item.birthday.$model" @blur="item.birthday.$touch()"  required  :class="status(item.birthday)" :mdata="item.birthday.$model"></date-picker2>  
+                   <date-picker  v-model.trim="item.birthday.$model" @blur="item.birthday.$touch()"  required  :class="status(item.birthday)" :mdata="item.birthday.$model"></date-picker>  
                    <!-- v-model.trim="item.birthday.$model" @blur="item.birthday.$touch()"  :class="status(item.birthday)"   -->
                   <!-- <div class="input-group date" id="birthday" data-target-input="nearest"> 
                       <input type="text" v-model.trim="item.birthday" class="form-control  "  />
@@ -729,28 +330,11 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                     <div class="form-group">
                        <label>ความสัมพันธ์ในครัวเรือน  :</label>
                        <select class="form-control" :id="'homerelations'+index" :class="status(item.homerelations)" required v-model.trim="item.homerelations.$model" @blur="item.homerelations.$touch()">
-                          <option v-for="(v, indexx) in listmas_relations" :value="v.re_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.re_name}}</option>
+                          <option v-for="(v, indexx) in listmas_relations" :value="v.re_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.re_name}}</option> 
                        </select>
                      </div> 
                    </div>
-               <!-- /.col -->
-
-               <div class="col-md-3" v-if="index==0">
-                    <div class="form-group">
-                            <label>กลุ่มอาชีพ :</label>
-                             <select class="form-control" :id="'careergroup'+index" :class="status(item.careergroup)" required v-model.trim="item.careergroup.$model" @blur="item.careergroup.$touch()">
-                             <option v-for="(v, indexx) in listmas_group_occup" :value="v.goccup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.goccup_name}}</option> 
-                            </select>
-                     </div> 
-                </div>
-              <div class="col-md-3" v-if="index==0">
-                <div class="form-group">
-                  <label>กลุ่มอาชีพอื่นๆ  :</label>
-                  <textarea class="form-control" :id="'careeranother'+index"  rows="1" placeholder="กลุ่มอาชีพอื่นๆ ระบุ  ..." :class="status(item.careeranother)" v-model.trim="item.careeranother.$model" @blur="item.careeranother.$touch()">
-                      {{item.careeranother}}
-                  </textarea>
-                </div>
-              </div>
+               <!-- /.col --> 
 				<div class="col-md-3">
 					<div class="form-group">
 							<label>อาชีพหลัก :</label>
@@ -771,9 +355,25 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
 					<div class="form-group">
 					  <label>รายได้/ต่อปี  :</label>								
 						<input type="number" :id="'netIncome'+index" :class="status(item.netIncome)" v-model.trim="item.netIncome.$model" @blur="item.netIncome.$touch()" class="form-control btn-xs" placeholder="รายได้/ต่อปี...">
-					</div>
-					<!-- /.form-group -->
-				 </div>
+					</div> 
+         </div>
+         
+         <div class="col-md-3">
+					 <div class="form-group">
+                  <label>สถานะ  :</label>
+                  <div class="form-group clearfix">
+                    <div class="icheck-primary d-inline">
+                      <input type="radio" :id="'radioF_status1'+index" required v-model="item.memF_status.$model" value="A" :class="status(item.memF_status)" @blur="item.memF_status.$touch()">
+                      <label :for="'radioF_status1'+index">ยังมีชีวิตอยู่</label>
+                    </div>
+                    <div class="icheck-primary d-inline">
+                      <input type="radio" :id="'radioF_status2'+index" required v-model="item.memF_status.$model"  value="D" :class="status(item.memF_status)" @blur="item.memF_status.$touch()">
+                      <label :for="'radioF_status2'+index">ถึงแก่กรรม
+                      </label>
+                    </div> 
+                  </div>
+                </div>
+				  </div>
 
               </div> 
               <hr v-if="showhr(Mfamilylists,index)">
@@ -837,8 +437,8 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                           </div>								
                         </td>
                         <td > 
-                        <div class="form-group btn-xs"> 
-                          <!-- :class="status(item.district)" v-model.trim="item.districtselect.$model" @blur="item.district.$touch()" -->    
+                        <div class="form-group btn-xs">   
+                          <!-- :class="status(item.district)" v-model.trim="item.districtselect.$model" @blur="item.district.$touch()" -->   
                         <select class="form-control btn-xs"  v-model.trim="item.district.$model"  @change="item.district.$touch()"  required > 
                             <template v-for="(vv, indexx) in distric_deeds[index]">  
                                <option :value="vv.code" v-bind:selected="indexx== 0 ? 'selected' : false" >{{vv.name_th}}</option>
@@ -853,17 +453,18 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="arearai[]"  :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
+                                    <input type="number" name="arearai[]"  :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="จำนวนเต็มเท่านั้น...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
+                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)0-4เท่านั้น...">
+                                    <div class="invalid-feedback order-last" v-if="!item.areawork.Fn_areawork">พื้นที่(งาน)0-4เท่านั้น</div>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areatrw[]" :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
+                                    <input type="number" step="any" name="areatrw[]" :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="ใส่จุดทศนิยมได้...">
                                   </div>
                                 </td>
                                 <td>
@@ -926,17 +527,18 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="arearai[]" :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
+                                    <input type="number" name="arearai[]" :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="จำนวนเต็มเท่านั้น...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
+                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)0-4เท่านั้น...">
+                                    <div class="invalid-feedback order-last" v-if="!item.areawork.Fn_areawork">พื้นที่(งาน)0-4เท่านั้น</div>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areatrw[]"  :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
+                                    <input type="number" step="any" name="areatrw[]"  :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="ใส่จุดทศนิยมได้...">
                                   </div>
                                 </td>
                                 <td>
@@ -999,17 +601,18 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="arearai[]" :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
+                                    <input type="number" name="arearai[]" :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="จำนวนเต็มเท่านั้น...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
+                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)0-4เท่านั้น...">
+                                    <div class="invalid-feedback order-last" v-if="!item.areawork.Fn_areawork">พื้นที่(งาน)0-4เท่านั้น</div> 
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areatrw[]"  :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
+                                    <input type="number" step="any" name="areatrw[]"  :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="ใส่จุดทศนิยมได้...">
                                   </div>
                                 </td>
                                 <td>
@@ -1071,17 +674,18 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="arearai[]"  :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ไร่)  ...">
+                                    <input type="number" name="arearai[]"  :class="status(item.arearai)" v-model.trim="item.arearai.$model" @blur="item.arearai.$touch()" class="form-control btn-xs" placeholder="จำนวนเต็มเท่านั้น...">
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)  ...">
+                                    <input type="number" name="areawork[]" :class="status(item.areawork)" v-model.trim="item.areawork.$model" @blur="item.areawork.$touch()" class="form-control btn-xs" placeholder="พื้นที่(งาน)0-4เท่านั้น...">
+                                    <div class="invalid-feedback order-last" v-if="!item.areawork.Fn_areawork">พื้นที่(งาน)0-4เท่านั้น</div>
                                   </div>
                                 </td>
                                 <td>
                                   <div class="form-group">
-                                    <input type="number" name="areatrw[]" :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="พื้นที่(ตรว.)  ...">
+                                    <input type="number" step="any" name="areatrw[]" :class="status(item.areatrw)" v-model.trim="item.areatrw.$model" @blur="item.areatrw.$touch()" class="form-control btn-xs" placeholder="ใส่จุดทศนิยมได้...">
                                   </div>
                                 </td>
                                 <td>
@@ -1126,7 +730,8 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
           <!-- /.card-header -->
           <div class="card-body">
             <h5> เศรษฐกิจครัวเรือน</h5>
-            <div class="row">             
+            <div class="row">   
+
               <div class="col-md-3">
                <div class="form-group">
                   <label>อาชีพในครัวเรือน:</label>
@@ -1134,6 +739,23 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
 					         <option v-for="(vv, indexx) in listmas_house_occup" :value="vv.hccup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{vv.hccup_name}}</option> 
 				         </select> 
                 </div> 
+              </div>
+              
+            <div class="col-md-3">
+                    <div class="form-group">
+                            <label>กลุ่มอาชีพ :</label>
+                             <select class="form-control" :class="status($v.Mhouseinforgeneral.g_occupational_code)" required v-model.trim="$v.Mhouseinforgeneral.g_occupational_code.$model" @blur="$v.Mhouseinforgeneral.g_occupational_code.$touch()">
+                             <option v-for="(v, indexx) in listmas_group_occup" :value="v.goccup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.goccup_name}}</option> 
+                            </select>
+                     </div> 
+                </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>กลุ่มอาชีพอื่นๆ  :</label>
+                  <textarea class="form-control" rows="1" placeholder="กลุ่มอาชีพอื่นๆ ระบุ  ..." :class="status($v.Mhouseinforgeneral.g_occupational_other)" v-model.trim="$v.Mhouseinforgeneral.g_occupational_other.$model" @blur="$v.Mhouseinforgeneral.g_occupational_other.$touch()">
+                      {{$v.Mhouseinforgeneral.g_occupational_other}}
+                  </textarea>
+                </div>
               </div>
 
               <div class="col-md-3">
@@ -1146,6 +768,10 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 <!-- /.form-group -->
               </div>
 
+            </div>
+            <!-- /row -->
+            <div class="row"> 
+
               <div class="col-md-3">
                 <div class="form-group">
                   <label>แหล่งเงินทุน (ครัวเรือน) :</label>
@@ -1155,32 +781,30 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                 </div>
                 <!-- /.form-group -->
               </div>
-
-            </div>
-            <!-- /row -->
-            <div class="row">
-
-              <div class="col-md-4">
-                            <!-- Date range -->
-                            <div class="form-group">
-                              <label>ช่วงเวลาการผลิต:</label> 
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text">
-                                    <i class="far fa-calendar-alt"></i>
-                                  </span>
-                                </div>
-                                <!--  :class="status($v.Mhouseinforgeneral.familyhomeproductperiod)" v-model.trim="$v.Mhouseinforgeneral.familyhomeproductperiod.$model"@blur="$v.Mhouseinforgeneral.familyhomeproductperiod.$touch()" --> 
-                                <!-- <input type="text" class="form-control float-right" class="form-control"  name="daterange" value="01/01/2018 - 01/12/2018" />      -->
-                                 <datepickerrang :mdatarang="'<?=$familyhomeproductperiod?>'" @familyhomeproductperiod='up_familyhomeproductperiod' v-model="$v.Mhouseinforgeneral.familyhomeproductperiod.$model"></datepickerrang>  
-                                <!-- <input type="text" class="form-control float-right" class="form-control" name="familyhomeproductperiod" id="familyhomeproductperiod" value="01/01/2018 - 01/12/2018"  > -->
-                              </div>
-                              <!-- /.input group -->
-                            </div>
-                            <!-- /.form group -->
+             <div class="col-md-3">
+                <div class="form-group">
+                  <label>ช่วงเวลาการผลิต(เริ่ม) :</label> 
+                  <div class="input-group date" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" autocomplete="off" required id="eco_product_from" :class="status($v.Mhouseinforgeneral.eco_product_from)" v-model.trim="$v.Mhouseinforgeneral.eco_product_from.$model" @blur="$v.Mhouseinforgeneral.eco_product_from.$touch()"> 
+                      <div class="input-group-append eco_product_from" style="cursor: pointer;">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
+                  </div>
+                </div> 
               </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>ช่วงเวลาการผลิต(หมด) :</label> 
+                  <div class="input-group date" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" autocomplete="off" required id="eco_product_to" :class="status($v.Mhouseinforgeneral.eco_product_to)" v-model.trim="$v.Mhouseinforgeneral.eco_product_to.$model" @blur="$v.Mhouseinforgeneral.eco_product_to.$touch()"> 
+                      <div class="input-group-append eco_product_to" style="cursor: pointer;">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
+                  </div>
+                </div> 
+              </div> 
 
-              <div class="col-md-6">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>ต้นทุนการผลิต :</label>
                   <textarea class="form-control"  class="form-control" name="familyhomeproductioncost" id="familyhomeproductioncost" :class="status($v.Mhouseinforgeneral.familyhomeproductioncost)" v-model.trim="$v.Mhouseinforgeneral.familyhomeproductioncost.$model" @blur="$v.Mhouseinforgeneral.familyhomeproductioncost.$touch()" rows="1" placeholder="ต้นทุนการผลิต  ..."></textarea>
@@ -1192,20 +816,19 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
             <!-- /row -->
 
             <label>เครื่องมืออำนวยความสะดวกทางการเกษตร</label>
-            <div class="row">
-              <template v-for="(item, index) in Mlistmas_facilities">   
+            <div class="row"> 
+              <template v-for="(item, index) in $v.Mlistmas_facilities.$each.$iter">   
               <div class="col-md-3">
                 <div class="form-check">
-				      <label class="form-check-label"> 
-                  <input class="form-check-input" type="checkbox" v-model="item.selected"> {{item.fac_name}} </label>
+				      <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" v-model="item.selected.$model"> {{item.fac_name.$model}} </label>
                 </div>
                 <div class="form-group">
-                    <input type="number" class="form-control" :disabled="!item.selected" v-model="item.fac_quantity" :placeholder="'จำนวน...' + item.fac_name"  value="">
+                    <input type="number" class="form-control" :class="status2(item.fac_quantity)" :disabled="!item.selected.$model"  v-model="item.fac_quantity.$model" @blur="item.fac_quantity.$touch()" :placeholder="'จำนวน...' + item.fac_name.$model"  value="">
                 </div>
-                </div>
-                <!-- /.form-group -->   
+                </div>  
               </template>
-            </div>
+            </div> 
 			     <label> สัตว์เลี้ยง</label>
 
             <div class="row">
@@ -1221,29 +844,29 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                                 <th style="width: 50px">รายละเอียด</th>
                               </tr>
                             </thead>
-                            <tbody>
-                               <template v-for="(item, index) in listmas_pet">   
+                            <tbody> 
+                                <template v-for="(item, index) in $v.listmas_pet.$each.$iter">   
                                 <tr>
-                                  <td>{{index+1}}.</td>
+                                  <td>{{(index*1)+1}}.</td>
                                    <td>
                                 <div class="form-check">
-                                  <label class="form-check-label">
-                                  <input class="form-check-input"  type="checkbox" v-model="item.selected" :value="item.pet_code" :id="'apetcheck_'+item.pet_code"> {{item.pet_name}}</label>
+                                  <label class="form-check-label"> 
+                                  <input class="form-check-input"  type="checkbox"  v-model="item.selected.$model" :value="item.pet_code.$model" :id="'apetcheck_'+item.pet_code.$model"> {{item.pet_name.$model}}</label>
                                 </div>
                                   </td>
                                   <td>
                                     <div class="form-group">
-                                    <input type="number" :id="'pet_quantity'+item.pet_code" required v-model="item.pet_quantity" :disabled="!item.selected"  class="form-control btn-xs"  :placeholder="'จำนวน'+item.pet_name+'...ตัว'" >					
+                                    <input type="number" :id="'pet_quantity'+item.pet_code.$model" required :class="status2(item.pet_quantity)"  @blur="item.pet_quantity.$touch()" v-model="item.pet_quantity.$model" :disabled="!item.selected.$model"  class="form-control btn-xs"  :placeholder="'จำนวน'+item.pet_name.$model+'...ตัว'" >					
                                     </div>
                                   </td>
                                 <td>
                                     <div class="form-group">
-                                    <input type="number" :id="'pet_vacine_qt'+item.pet_code" required  v-model="item.pet_vacine_qt" :disabled="!item.selected" class="form-control btn-xs" :placeholder="'จำนวน'+item.pet_name+'(รับวัคซีนแล้ว)...ตัว'">					
+                                    <input type="number" :id="'pet_vacine_qt'+item.pet_code.$model" required :class="status2(item.pet_vacine_qt)"  @blur="item.pet_vacine_qt.$touch()" v-model="item.pet_vacine_qt.$model" :disabled="!item.selected.$model" class="form-control btn-xs" :placeholder="'จำนวน'+item.pet_name.$model+'(รับวัคซีนแล้ว)...ตัว'">					
                                     </div>
                                   </td>
                                   <td>
                                     <div class="form-group">
-                                      <textarea class="form-control btn-xs" :id="'pet_desc'+item.pet_code" :disabled="!item.selected" v-model="item.pet_desc" rows="2" :placeholder="'รายละเอียด'+item.pet_name+'...'"></textarea>
+                                      <textarea class="form-control btn-xs" :id="'pet_desc'+item.pet_code.$model" :class="status2(item.pet_desc)"  @blur="item.pet_desc.$touch()" :disabled="!item.selected.$model" v-model="item.pet_desc.$model" rows="2" :placeholder="'รายละเอียด'+item.pet_name.$model+'...'"></textarea>
                                     </div>
                                   </td>                              
                                 </tr> 
@@ -1261,15 +884,15 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                   <label class="form-check-label">ปัญหาสิ่งแวดล้อมในครัวเรือน :</label>
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary8" v-model="xEnvironmental" name="xEnvironmental" value="N">
+                      <input type="radio" id="radioPrimary8" v-model="$v.xEnvironmental.$model" name="xEnvironmental" value="N">
                       <label for="radioPrimary8">ไม่มี
                       </label>
                     </div>
                     <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary9" v-model="xEnvironmental" name="xEnvironmental"  value="Y" checked>
+                      <input type="radio" id="radioPrimary9" v-model="$v.xEnvironmental.$model" name="xEnvironmental"  value="Y" checked>
                       <label for="radioPrimary9">มี (ระบุ)					  
-                      </label>
-                        <textarea class="form-control" v-model="xEnvironmentaldisc" id="xEnvironmentaldisc" rows="1" placeholder="มี (ระบุ)..." :disabled="xEnvironmental=='N'"></textarea>
+                      </label> 
+                        <textarea class="form-control" v-model="$v.xEnvironmentaldisc.$model" :class="status2($v.xEnvironmentaldisc)"  @blur="$v.xEnvironmentaldisc.$touch()" id="xEnvironmentaldisc" rows="1" placeholder="มี (ระบุ)..." :disabled="$v.xEnvironmental.$model=='N'"></textarea>
                     </div>
                   </div>
                 </div>
@@ -1280,15 +903,15 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                     <label class="form-check-label">การจัดการสิ่งแวดล้อม :</label>
                     <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary101x" v-model="xEnvironmental2" name="radioPrimary101x" value="N">
+                        <input type="radio" id="radioPrimary101x" v-model="$v.xEnvironmental2.$model" name="radioPrimary101x" value="N">
                         <label for="radioPrimary101x">ไม่มี
                         </label>
                       </div>
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary102x" v-model="xEnvironmental2" name="radioPrimary101x" value="Y">
+                        <input type="radio" id="radioPrimary102x" v-model="$v.xEnvironmental2.$model" name="radioPrimary101x" value="Y">
                         <label for="radioPrimary102x">มี(ระบุ)
                         </label>
-				          		 <textarea class="form-control" v-model="xEnvironmental2disc" id="xEnvironmental2disc" rows="1" :disabled="xEnvironmental2=='N'" placeholder="มี (ระบุ)..."></textarea>
+				          		 <textarea class="form-control" v-model="$v.xEnvironmental2disc.$model" :class="status2($v.xEnvironmental2disc)"  @blur="$v.xEnvironmental2disc.$touch()" id="xEnvironmental2disc" rows="1" :disabled="$v.xEnvironmental2.$model=='N'" placeholder="มี (ระบุ)..."></textarea>
                       </div>
                     </div>
                   </div>
@@ -1315,7 +938,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                       {{item.dis_name}}</label>
                     </div>
                     <div class="form-group" v-if="item.dis_code==99">
-                        <textarea class="form-control" v-model="Mdisaster.another"  rows="1" placeholder="อื่นๆ  ..."></textarea>
+                        <textarea class="form-control dt_dis_desc" rows="1" v-model="item.dt_dis_desc"  :placeholder="''+item.dis_name+'...'"></textarea>
                     </div>
                 </template>			
                </div>
@@ -1330,7 +953,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                       {{item.dis_name}}</label>
                     </div>
                     <div class="form-group" v-if="item.dis_code==99">
-                        <textarea class="form-control" v-model="Mdisaster.another"  rows="1" placeholder="อื่นๆ  ..."></textarea>
+                        <textarea class="form-control dt_dis_desc" rows="1" v-model="item.dt_dis_desc"  :placeholder="''+item.dis_name+'...'"></textarea>
                     </div>
                 </template>	 	 
                 </div>
@@ -1342,15 +965,15 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                     <label >เคยได้รับความช่วยเหลือ :</label> 
                     <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary12" name="helpme" v-model="helpme" value="N" >
+                        <input type="radio" id="radioPrimary12" name="helpme" v-model="$v.helpme.$model" value="N" >
                         <label for="radioPrimary12">ไม่เคย
                         </label>
                       </div>
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary13" name="helpme"  v-model="helpme"  value="Y" checked>
+                        <input type="radio" id="radioPrimary13" name="helpme"  v-model="$v.helpme.$model"  value="Y" checked>
                         <label for="radioPrimary13">เคย(ระบุความช่วยเหลือจากหน่วยงานไหน)
                         </label>
-				        		    <textarea class="form-control" name="helpmedisc" id="helpmedisc" v-model="helpmedisc" rows="2" :disabled="helpme=='N'"  placeholder="เคย (ความช่วยเหลือจากหน่วยงานไหน)..."></textarea>
+				        		    <textarea class="form-control" name="helpmedisc" id="helpmedisc"  :class="status2($v.helpmedisc)"  @blur="$v.helpmedisc.$touch()" v-model="$v.helpmedisc.$model" rows="2" :disabled="$v.helpme.$model=='N'"  placeholder="เคย (ความช่วยเหลือจากหน่วยงานไหน)..."></textarea>
                       </div>
                     </div>
                   </div>
@@ -1366,9 +989,9 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                         <input class="form-check-input" type="checkbox" name="info_code[]" v-model="Mmas_info.selected"  :value="item.info_code">
                         <label class="form-check-label">{{item.info_name}}</label>
                       </div>
-                      <div class="form-group" v-if="item.info_code==99" :key="item.info_code">
-                       <label class="form-check-label">อื่นๆ</label>
-                        <textarea class="form-control" name="info_code[]" v-model="Mmas_info.another" rows="1" placeholder="อื่นๆ  ..."></textarea>
+                      <div class="form-group" v-if="item.info_code==99" >
+                       <label class="form-check-label">{{item.info_name}}</label>  
+                        <textarea class="form-control info_desc" rows="1" v-model="item.info_desc"  :placeholder="''+item.info_name+'...'"></textarea>
                      </div>	
                  </template> 
                 </div>
@@ -1381,66 +1004,36 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
                         <label class="form-check-label">{{item.info_name}}</label>
                       </div>
                       <div class="form-group" v-if="item.info_code==99" :key="item.info_code">
-                       <label class="form-check-label">อื่นๆ</label>
-                        <textarea class="form-control" name="info_code[]" v-model="Mmas_info.another" rows="1" placeholder="อื่นๆ  ..."></textarea>
+                       <label class="form-check-label">{{item.info_name}}</label>  
+                        <textarea class="form-control info_desc" name="info_desc[]" rows="1" v-model="item.info_desc"  :placeholder="''+item.info_name+'...'"></textarea>
                      </div>	
                  </template>
                 </div>
                 <!-- /.form-group -->
                 <div class="col-md-3">
                        <template  v-for="(item, index) in tbl_mas_info3">
-                        <div class="form-check" v-if="item.info_code!=99" :key="item.info_code">
+                        <div class="form-check" v-if="item.info_code!=99" >
                         <input class="form-check-input" type="checkbox" name="info_code[]" v-model="Mmas_info.selected"  :value="item.info_code">
                         <label class="form-check-label">{{item.info_name}}</label>
                       </div>
-                      <div class="form-group" v-if="item.info_code==99" :key="item.info_code">
-                       <label class="form-check-label">อื่นๆ</label>
-                        <textarea class="form-control" name="info_code[]" v-model="Mmas_info.another" rows="1" placeholder="อื่นๆ  ..."></textarea>
+                      <div class="form-group" v-if="item.info_code==99">
+                       <label class="form-check-label">{{item.info_name}}</label> 
+                        <textarea class="form-control info_desc" name="info_desc[]" rows="1" v-model="item.info_desc"  :placeholder="''+item.info_name+'...'"></textarea>
                      </div>	
                  </template>
                  </div>
                  <!-- /.form-group -->
             </div>
  
-		  	 <div class="row">
-
-               <!-- <div class="col-md-3">
-
-               <div class="form-group">
-                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input"  data-target="#datetimepicker1"/>
-                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                </div>
-            </div> -->
-                <!-- <div class="form-group">
-                  <label>วันเดือนปีสำรวจ :</label>
-                  <div class="input-group date" id="reservationdate2" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate2"/>
-                      <div class="input-group-append" data-target="#reservationdate2" data-toggle="datetimepicker">
-                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                      </div>
-                  </div>
-                </div>  
-              </div>-->
-
-               <div class="col-md-3">
-                 <!-- <div class="form-group">
-                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
-                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                </div>
-            </div> -->
+		  	 <div class="row">  
+               <div class="col-md-3"> 
                 <div class="form-group">
                   <label>วันเดือนปีสำรวจ :</label>
-                  <div class="input-group date datepickers" id="survseydate" data-target-input="nearest"> 
-	               <input id="assessment_date" name="assessment_date" type="text" data-target="#survseydate" data-toggle="datetimepicker" 
-                 class="form-control  col-md-8 datetimepicker-input assessment-date-keypress" data-target="#survseydate" autocomplete="off" required>
-                  <div class="input-group-append" data-target="#survseydate" data-toggle="datetimepicker">
-                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                  <div class="input-group date datepickers" > 
+	               <input id="survseydate" name="survseydate" v-model="survseydate" required type="text" data-toggle="datetimepicker" 
+                 class="form-control  col-md-8 datetimepicker-input"   autocomplete="off" required>
+                  <div class="input-group-append survseydate" style="cursor: pointer;">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                  </div>
                 </div> 
                 </div>
@@ -1467,8 +1060,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
       </form>
     </section>
     <!-- /.content -->  
-<!-- <script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
-<script type="text/javascript" src="assets/js/jquery-ui-1.8.10.offset.datepicker.min.js"></script> -->   
+ 
 <script src="assets/js/family.js"></script>
 <div style="display: none;" id="xhtml"></div>
 <?php

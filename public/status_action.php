@@ -1,5 +1,6 @@
 <?php
  require 'bootstart.php';   
+ require ROOT . '/core/security.php';
  require_once 'components/header.php';   
  
 $pMessage='';$card_status='danger';$card_text='Error';

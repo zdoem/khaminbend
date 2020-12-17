@@ -1,5 +1,6 @@
 <?php
- require 'bootstart.php';   
+ require 'bootstart.php'; 
+ require ROOT . '/core/security.php';  
  require_once 'components/header.php'; 
 
 $ID=filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT); 
@@ -68,7 +69,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
               <div class="col-md-4">
                 <div class="form-group">
                   <label>หมู่ที่ :</label>
-                  <input type="text" name="txtMoo" id="txtMoo" class="form-control" value="<?=$rows_edit->vil_moo?>" placeholder="หมู่ที่ ...">
+                  <input type="number" name="txtMoo" id="txtMoo" class="form-control" readonly required pattern="\d*" title="ตัวเลขเท่านั้น" value="<?=$rows_edit->vil_moo?>" placeholder="หมู่ที่ ...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -76,7 +77,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
               <div class="col-md-4">
                 <div class="form-group">
                   <label>ชื่อหมู่บ้าน :</label>
-                  <input type="text" name="txtVillageName" id="txtVillageName" class="form-control" value="<?=$rows_edit->vil_name?>" placeholder="ชื่อหมู่บ้าน...">
+                  <input type="text" name="txtVillageName" id="txtVillageName" required class="form-control" value="<?=$rows_edit->vil_name?>" placeholder="ชื่อหมู่บ้าน...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -84,7 +85,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
               <div class="col-md-4">
                 <div class="form-group">
                   <label>รายละเอียดพอสังเขป :</label>
-                  <textarea class="form-control" name="txthomeDesc" id="txthomeDesc" rows="2"  placeholder="รายละเอียดพอสังเขป  ..."><?=$rows_edit->vil_desc?></textarea>
+                  <textarea class="form-control" name="txthomeDesc" id="txthomeDesc" rows="2"   placeholder="รายละเอียดพอสังเขป  ..."><?=$rows_edit->vil_desc?></textarea>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -117,7 +118,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
               <div class="col-md-6 ">
                 <div class="form-group">
                   <label>แหล่งน้ำ :</label>
-                  <input value="<?=$rows_edit->water?>" type="number" pattern="[0-9]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nWater" id="nWater" class="form-control bg-light" placeholder="แหล่งน้ำจำนวน...แห่ง">
+                  <input value="<?=$rows_edit->water?>" type="number" pattern="\d*" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nWater" id="nWater" class="form-control bg-light" placeholder="แหล่งน้ำจำนวน...แห่ง">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -136,7 +137,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
               <div class="col-md-6 ">
                 <div class="form-group">
                   <label>ประปาผิวดิน :</label>
-                  <input value="<?=$rows_edit->water_tap?>" type="number" pattern="[0-9]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="water_tap" id="water_tap" class="form-control" placeholder="แหล่งน้ำจำนวน...แห่ง">
+                  <input value="<?=$rows_edit->water_tap?>" type="number" pattern="\d*" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="water_tap" id="water_tap" class="form-control" placeholder="แหล่งน้ำจำนวน...แห่ง">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -155,7 +156,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
               <div class="col-md-6 ">
                 <div class="form-group">
                   <label>ประปาบาดาล :</label>
-                  <input value="<?=$rows_edit->bowels?>" type="number" pattern="[0-9]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="bowels" id="bowels" class="form-control bg-light" placeholder="แหล่งน้ำจำนวน...แห่ง">
+                  <input value="<?=$rows_edit->bowels?>" type="number" pattern="\d*" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="bowels" id="bowels" class="form-control bg-light" placeholder="แหล่งน้ำจำนวน...แห่ง">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -174,7 +175,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
               <div class="col-md-6 ">
                 <div class="form-group">
                   <label>ไฟสาธารณะ :</label>
-                  <input value="<?=$rows_edit->public_fire?>" type="number" pattern="[0-9]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nElectriclight" id="nElectriclight" class="form-control" placeholder="ไฟสาธารณะจำนวน...จุด">
+                  <input value="<?=$rows_edit->public_fire?>" type="number" pattern="\d*" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nElectriclight" id="nElectriclight" class="form-control" placeholder="ไฟสาธารณะจำนวน...จุด">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -193,7 +194,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
               <div class="col-md-6">
                 <div class="form-group">
                   <label>ถนน :</label>
-                  <input value="<?=$rows_edit->road?>" type="number" pattern="[0-9]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nRoad" id="nRoad" class="form-control bg-light" placeholder="ถนนจำนวน...เส้น">
+                  <input value="<?=$rows_edit->road?>" type="number" pattern="\d*" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nRoad" id="nRoad" class="form-control bg-light" placeholder="ถนนจำนวน...เส้น">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -212,7 +213,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
               <div class="col-md-6">
                 <div class="form-group">
                   <label>ป่าชุมชน  :</label>
-                  <input value="<?=$rows_edit->community_forest?>" type="number" pattern="[0-9]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nCommunityForest" id="nCommunityForest" class="form-control" placeholder="ป่าชุมชนจำนวน...แห่ง">
+                  <input value="<?=$rows_edit->community_forest?>" type="number" pattern="\d*" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nCommunityForest" id="nCommunityForest" class="form-control" placeholder="ป่าชุมชนจำนวน...แห่ง">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -231,7 +232,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
               <div class="col-md-6">
                 <div class="form-group">
                   <label>แหล่งการเรียนรู้ทางการเกษตร :</label>
-                  <input value="<?=$rows_edit->learning?>" type="number" pattern="[0-9]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nLearning" id="nLearning" class="form-control bg-light" placeholder="แหล่งการเรียนรู้ทางการเกษตรจำนวน...จุด">
+                  <input value="<?=$rows_edit->learning?>" type="number" pattern="\d*" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nLearning" id="nLearning" class="form-control bg-light" placeholder="แหล่งการเรียนรู้ทางการเกษตรจำนวน...จุด">
                 </div>
                 <!-- /.form-group -->
               </div>

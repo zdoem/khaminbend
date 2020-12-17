@@ -1,5 +1,6 @@
 <?php
  require 'bootstart.php';   
+ require ROOT . '/core/security.php';
  require_once 'components/headerPortal.php';  
  
  //require 'bootstart.php';
@@ -19,7 +20,94 @@
  ->get()->toArray();
  
 ?> 
- 
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+//$(document).ready(function() { 
+//$("#btn").click(function() { 
+	$(document).ready(function() { 
+         $("#btnCancel").click(function(e){  
+        	 window.location = "portal.php";
+         });
+    });       
+	
+     $(document).ready(function() { 
+         $("#btnVerify").click(function(e){    
+             e.preventDefault();
+             disableButton();  
+    	     //alert("xxx :"+$("#userId").val());
+    		 if($("#userId").val()== ''){
+    			 alert("กรุณาระบุ UserId ที่ต้องการตรวจสอบด้วย !");
+    			 $("#userId").focus();			 
+    		 }else{	          
+    	          $.ajax({
+    	            type: 'post',
+    	            dataType: 'JSON',
+    	            url: 'handler/userRegVerify.php',
+    	            data: $('form').serialize(),
+    	            success: function (jsonRes) {
+    	               //alert('form was submitted');
+    	            	var len = jsonRes.length;
+    	            	var xStatus = jsonRes[0].xStatus;
+    	            	var xMsg = jsonRes[0].xDesc;
+    	            	enableButton();
+    	            	//alert(len);
+    	            	
+    	            	if(xStatus=='Y'){ //available
+    	            		$("#msgVerfiy" ).html("<span class='bg-success text-white'>"+xMsg+"</span>");
+    	            		enableSubmit();
+    	            	}else if(xStatus=='N'){ //No use id
+    	            		$("#msgVerfiy" ).html("<span class='bg-danger text-white'>"+xMsg+"</span>");
+    	            		$("#userId").focus();	
+    	            		$('#btnSubmit').prop('disabled', true);
+    	            	}
+    	            	/*
+    	            	msgVerfiy
+                      <span class="bg-success text-white">Looks good!</span>
+    	            	for(var i=0; i<len; i++){
+    	                     var xid = jsonRes[i].xId;
+    	                     var xuserId = jsonRes[i].xUserId;
+    	                     var xStatus = jsonRes[i].xStatus;
+    	                     //var email = response[i].email;
+    	            	 }*/
+    	           	    //alert(jsonRes[0].xUserId+","+jsonRes[0].xDesc+","+jsonRes[0].xStatus);
+    	            }
+    	          });			 
+    		 }
+        });
+      });
+
+      $(document).ready(function(){
+    	  $('#userId').keyup(function () {
+    		    if ($(this).val() == '') {
+    		        //Check to see if there is any text entered
+    		        // If there is no text within the input ten disable the button
+    		        $('#btnVerify').prop('disabled', true);
+    		    } else {
+    		        //If there is text in the input, then enable the button
+    		        $('#btnVerify').prop('disabled', false);
+    		    }
+    		});         
+      });
+
+      function disableButton(){
+	        // If there is no text within the input ten disable the button
+	        $('#btnVerify').prop('disabled', true);
+      }
+      function enableButton(){
+	        //If there is text in the input, then enable the button
+	        $('#btnVerify').prop('disabled', false);
+      }
+      function enableSubmit(){
+	       //If there is text in the input, then enable the button
+	       $('#btnSubmit').prop('disabled', false);
+      }
+      $(document).ready(function(){
+    	  $('#btnVerify').prop('disabled', true);
+    	  $('#btnSubmit').prop('disabled', true);
+      });
+    </script>
+    
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -41,11 +129,11 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
+   
 
     <!-- Main content -->
     <div class="content">
-      <form action="handler/userRegFarm.php" method="post">  
+      <form action="handler/userRegFarm.php" method="post" role="form" data-toggle="validator">  
        <input type="hidden" id="cmd" name="cmd" value="I">
        <div class="container">
 
@@ -60,30 +148,32 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form class="form-horizontal">
+              <form class="form-horizontal" >
                 <div class="card-body">
 				   <div class="form-group row">
                     <label for="userId" class="col-sm-2 col-form-label">ชื่อ Login ในระบบ</label>
                     <div class="col-sm-4">
-                      <input type="text" class="form-control" id="userId" name="userId" placeholder="user Id">
+                      <input type="text" class="form-control" id="userId" name="userId" required="required" placeholder="user Id"
+                      pattern="^[_A-z0-9]{1,}$" maxlength="15">
+                      <span id="msgVerfiy"></span>
                     </div>
 					 <div class="col-sm-2">
-                      <button type="submit" class="btn btn-info">ตรวจสอบชื่อ Login</button>
+                      <button type="button" id="btnVerify" class="btn btn-info">ตรวจสอบชื่อ Login</button>
                     </div>
                   </div>
 				  <div class="form-group row">
                     <label for="txtPwd" class="col-sm-2 col-form-label">รหัสผ่าน</label>
                     <div class="col-sm-6">
-                        <input type="password" class="form-control" id="txtPwd" name="txtPwd"  placeholder="Password">
+                        <input type="password" class="form-control" id="txtPwd" name="txtPwd"  placeholder="Password" required="required">
                     </div>
                   </div>
 				   <div class="form-group row">
                     <label for="txtfName" class="col-sm-2 col-form-label">ชื่อ-นามสกุล</label>
                     <div class="col-sm-3">
-                      <input type="text" class="form-control" id="txtfName" name="txtfName" placeholder="ชื่อ">
+                      <input type="text" class="form-control" id="txtfName" name="txtfName" placeholder="ชื่อ" required="required">
                     </div>
                     <div class="col-sm-3">
-                      <input type="text" class="form-control" id="inputName" name="txtlName" placeholder="นามสกุล">
+                      <input type="text" class="form-control" id="inputName" name="txtlName" placeholder="นามสกุล" required="required">
                     </div>
                   </div>				  
 
@@ -108,7 +198,7 @@
 				  <div class="form-group row">
                     <label for="deptId" class="col-sm-2 col-form-label">แผนก/กอง</label>
                     <div class="col-sm-6">
-                    <select class="form-control" id="deptId" name="deptId" readonly>
+                    <select class="form-control" id="deptId" name="deptId" readonly required="required">
                     <?php 
                     $selectedx = "";
                     foreach ($listmas_dept as $k => $v) { 
@@ -137,7 +227,7 @@
 				  <div class="form-group row">
                     <label for="roleId" class="col-sm-2 col-form-label">บทบาท</label>
                     <div class="col-sm-6">
-                    <select class="form-control" id="roleId" name="roleId">
+                    <select class="form-control" id="roleId" name="roleId" required="required">
                     <option value="">---กรุณาเลือกบทบาท---</option>
                     <?php 
                     foreach ($listmas_role as $k => $v) {
@@ -194,5 +284,5 @@
   <!-- /.control-sidebar -->
 
 <?php
- require_once 'components/footer.php';  
+ require_once 'components/footerX.php';  
 ?>

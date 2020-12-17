@@ -1,5 +1,6 @@
 <?php
  require 'bootstart.php';   
+ require ROOT . '/core/security.php';
  require_once 'components/header.php';    
 ?> 
  <!-- Content Header (Page header) -->
@@ -42,7 +43,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>หมู่ที่ :</label>
-                  <input type="text" name="txtMoo" id="txtMoo" class="form-control" placeholder="หมู่ที่ ...">
+                  <input type="number" name="txtMoo" id="txtMoo" class="form-control" required pattern="\d*" title="กรุณากรอกหมู่ที่และเป็นตัวเลขเท่านั้น" placeholder="หมู่ที่ ...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -50,7 +51,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>ชื่อหมู่บ้าน :</label>
-                  <input type="text" name="txtVillageName" id="txtVillageName" class="form-control" placeholder="ชื่อหมู่บ้าน...">
+                  <input type="text" name="txtVillageName" id="txtVillageName" required class="form-control" title="กรุณากรอกชื่อหมู่บ้าน" placeholder="ชื่อหมู่บ้าน...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -91,7 +92,7 @@
               <div class="col-md-6 ">
                 <div class="form-group">
                   <label>แหล่งน้ำ :</label>
-                  <input type="number" pattern="[0-9]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nWater" id="nWater" class="form-control bg-light" placeholder="แหล่งน้ำจำนวน...แห่ง">
+                  <input type="number"  value="0" pattern="\d*" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nWater" id="nWater" class="form-control bg-light" placeholder="แหล่งน้ำจำนวน...แห่ง">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -110,7 +111,7 @@
               <div class="col-md-6 ">
                 <div class="form-group">
                   <label>ประปาผิวดิน :</label>
-                  <input type="number" pattern="[0-9]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="water_tap" id="water_tap" class="form-control" placeholder="แหล่งน้ำจำนวน...แห่ง">
+                  <input type="number"  value="0" pattern="\d*" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="water_tap" id="water_tap" class="form-control" placeholder="แหล่งน้ำจำนวน...แห่ง">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -129,7 +130,7 @@
               <div class="col-md-6 ">
                 <div class="form-group">
                   <label>ประปาบาดาล :</label>
-                  <input type="number" pattern="[0-9]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="bowels" id="bowels" class="form-control bg-light" placeholder="แหล่งน้ำจำนวน...แห่ง">
+                  <input type="number" value="0" pattern="\d*" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="bowels" id="bowels" class="form-control bg-light" placeholder="แหล่งน้ำจำนวน...แห่ง">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -148,7 +149,7 @@
               <div class="col-md-6 ">
                 <div class="form-group">
                   <label>ไฟสาธารณะ :</label>
-                  <input type="number" pattern="[0-9]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nElectriclight" id="nElectriclight" class="form-control" placeholder="ไฟสาธารณะจำนวน...จุด">
+                  <input type="number"  value="0" pattern="\d*" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nElectriclight" id="nElectriclight" class="form-control" placeholder="ไฟสาธารณะจำนวน...จุด">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -167,7 +168,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>ถนน :</label>
-                  <input type="number" pattern="[0-9]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nRoad" id="nRoad" class="form-control bg-light" placeholder="ถนนจำนวน...เส้น">
+                  <input type="number"  value="0" pattern="\d*" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nRoad" id="nRoad" class="form-control bg-light" placeholder="ถนนจำนวน...เส้น">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -186,7 +187,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>ป่าชุมชน  :</label>
-                  <input type="number" pattern="[0-9]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nCommunityForest" id="nCommunityForest" class="form-control" placeholder="ป่าชุมชนจำนวน...แห่ง">
+                  <input type="number"  value="0" pattern="\d*" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nCommunityForest" id="nCommunityForest" class="form-control" placeholder="ป่าชุมชนจำนวน...แห่ง">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -205,7 +206,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>แหล่งการเรียนรู้ทางการเกษตร :</label>
-                  <input type="number" pattern="[0-9]" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nLearning" id="nLearning" class="form-control bg-light" placeholder="แหล่งการเรียนรู้ทางการเกษตรจำนวน...จุด">
+                  <input type="number" value="0" pattern="\d*" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" name="nLearning" id="nLearning" class="form-control bg-light" placeholder="แหล่งการเรียนรู้ทางการเกษตรจำนวน...จุด">
                 </div>
                 <!-- /.form-group -->
               </div>

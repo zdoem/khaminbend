@@ -1,6 +1,6 @@
 <?php
 require_once '../../bootstart.php';    
- 
+require ROOT . '/core/security.php';
 $id=@$_GET['id']; 
 $row= $db::table("tbl_mas_vilage")  
     ->where('vil_id', '=', $id)
@@ -88,9 +88,7 @@ $row= $db::table("tbl_mas_vilage")
               <div class="col-md-6">
                 <div class="form-group">
                   <label>รายละเอียดแหล่งน้ำ:</label>
-                  <textarea class="form-control bg-light" readonly name="waterDesc" id="waterDesc" rows="1" placeholder="รายละเอียดแหล่งน้ำ  ...">
-                  <?=$row->water_desc?>
-                  </textarea>
+                  <textarea class="form-control bg-light" readonly name="waterDesc" id="waterDesc" rows="1" placeholder="รายละเอียดแหล่งน้ำ  ..."><?=$row->water_desc?></textarea>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -109,9 +107,7 @@ $row= $db::table("tbl_mas_vilage")
               <div class="col-md-6">
                 <div class="form-group">
                   <label>รายละเอียดประปาผิวดิน :</label>
-                  <textarea class="form-control" readonly name="plumbingDesc" id="plumbingDesc" rows="1" placeholder="รายละเอียดประปาผิวดิน ...">
-                  <?=$row->water_tap_desc?>
-                  </textarea>
+                  <textarea class="form-control" readonly name="plumbingDesc" id="plumbingDesc" rows="1" placeholder="รายละเอียดประปาผิวดิน ..."><?=$row->water_tap_desc?></textarea>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -130,9 +126,7 @@ $row= $db::table("tbl_mas_vilage")
               <div class="col-md-6">
                 <div class="form-group">
                   <label>รายละเอียดประปาบาดาล :</label>
-                  <textarea class="form-control bg-light" readonly name="UndergroundWaterDesc" id="UndergroundWaterDesc" rows="1" placeholder="รายละเอียดประปาบาดาล ...">
-                  <?=$row->bowels_desc?>
-                  </textarea>
+                  <textarea class="form-control bg-light" readonly name="UndergroundWaterDesc" id="UndergroundWaterDesc" rows="1" placeholder="รายละเอียดประปาบาดาล ..."><?=$row->bowels_desc?></textarea>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -151,9 +145,7 @@ $row= $db::table("tbl_mas_vilage")
               <div class="col-md-6">
                 <div class="form-group">
                   <label>รายละเอียดไฟสาธารณะ :</label>
-                  <textarea class="form-control" readonly name="ElectriclightDesc" id="ElectriclightDesc" rows="1" placeholder="รายละเอียดไฟสาธารณะ ...">
-                  <?=$row->public_fire_desc?>
-                  </textarea>
+                  <textarea class="form-control" readonly name="ElectriclightDesc" id="ElectriclightDesc" rows="1" placeholder="รายละเอียดไฟสาธารณะ ..."><?=$row->public_fire_desc?></textarea>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -172,9 +164,7 @@ $row= $db::table("tbl_mas_vilage")
               <div class="col-md-6">
                 <div class="form-group">
                   <label>รายละเอียดถนน :</label>
-                  <textarea class="form-control bg-light" readonly name="RoadDesc" id="RoadDesc" rows="1" placeholder="รายละเอียดถนน ...">
-                  <?=$row->road_desc?>
-                  </textarea>
+                  <textarea class="form-control bg-light" readonly name="RoadDesc" id="RoadDesc" rows="1" placeholder="รายละเอียดถนน ..."><?=$row->road_desc?></textarea>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -193,9 +183,7 @@ $row= $db::table("tbl_mas_vilage")
               <div class="col-md-6">
                 <div class="form-group">
                   <label>รายละเอียดป่าชุมชน :</label>
-                  <textarea class="form-control" readonly name="CommunityForestDesc" id="CommunityForestDesc" rows="1" placeholder="รายละเอียดป่าชุมชน ...">
-                  <?=$row->community_forest_desc?>
-                  </textarea>
+                  <textarea class="form-control" readonly name="CommunityForestDesc" id="CommunityForestDesc" rows="1" placeholder="รายละเอียดป่าชุมชน ..."><?=$row->community_forest_desc?></textarea>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -214,9 +202,7 @@ $row= $db::table("tbl_mas_vilage")
               <div class="col-md-6">
                 <div class="form-group">
                   <label>รายละเอียดแหล่งการเรียนรู้ทางการเกษตร :</label>
-                  <textarea class="form-control bg-light" readonly name="LearningDesc" id="LearningDesc" rows="1" placeholder="รายละเอียดแหล่งการเรียนรู้ทางการเกษตร ...">
-                  <?=$row->learning_desc?>
-                  </textarea>
+                  <textarea class="form-control bg-light" readonly name="LearningDesc" id="LearningDesc" rows="1" placeholder="รายละเอียดแหล่งการเรียนรู้ทางการเกษตร ..."><?=$row->learning_desc?></textarea>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -230,7 +216,6 @@ $row= $db::table("tbl_mas_vilage")
               <div class="col-md-6">
                 <div class="form-group">
                   <label>อื่นๆ :</label>
-
                     <textarea class="form-control" readonly name="txtOther" id="txtOther" rows="1" placeholder="อื่นๆ ..."><?=$row->other?></textarea>
                 </div>
                 <!-- /.form-group -->

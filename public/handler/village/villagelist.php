@@ -1,5 +1,6 @@
 <?php
-require_once '../../bootstart.php';    
+require_once '../../bootstart.php';  
+require ROOT . '/core/security.php';  
 ## Read value
 $draw = $_POST['draw'];
 $row = $_POST['start'];
@@ -9,7 +10,7 @@ $columnName = $_POST['columns'][$columnIndex]['data']; // Column name
 $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
 $searchValue = addslashes($_POST['vil_moo']); // Search value
 $searchValue2 = addslashes($_POST['vil_name']); // Search value
-// var_dump($_POST);exit();
+// var_dump($columnName);exit();
 ## Search
 $searchQuery = " ";
 $filtering=$db::table("tbl_mas_vilage")->select($db::raw('count(*) as allcount'))->whereRaw('1');
@@ -39,7 +40,7 @@ $data =[];
 foreach ($records as $k => $v) { 
      $tmp_moo=$v->vil_moo."<br><small>Created ".thaidate('j/m/Y',strtotime($v->d_create))."</small>";
     $data[] =[
-        "rownumber"=>'#',
+        "rownumber"=>($k+1)+$row,
         "id"=>$v->vil_id,
         "vil_moo" =>$tmp_moo,
         "vil_name"=>$v->vil_name,

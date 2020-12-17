@@ -1,5 +1,6 @@
 <?php 
 defined('ROOT') OR exit('No access allowed');
+$current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,30 +24,21 @@ defined('ROOT') OR exit('No access allowed');
   <!-- Font Awesome -->
   <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- daterange picker -->
-  <link rel="stylesheet" href="assets/plugins/daterangepicker/daterangepicker.css">
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> 
   <!-- iCheck for checkboxes and radio inputs -->
-  <link rel="stylesheet" href="assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- Bootstrap Color Picker -->
-  <link rel="stylesheet" href="assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
-  <!-- Tempusdominus Bbootstrap 4 -->
-  <link rel="stylesheet" href="assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <link rel="stylesheet" href="assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">  
   <!-- Select2 -->
   <link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
-  <link rel="stylesheet" href="assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-  <!-- Bootstrap4 Duallistbox -->
-  <link rel="stylesheet" href="assets/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+  <link rel="stylesheet" href="assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"> 
   <!-- Theme style -->
   <link rel="stylesheet" href="assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="assets/css/sweetalert2.min.css">  
-  <link rel="stylesheet" href="assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <link rel="stylesheet" href="assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <link rel="stylesheet" href="assets/plugins/daterangepicker/daterangepicker.css">
+  <link rel="stylesheet" href="assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css"> 
 
-  <!-- <link rel="stylesheet" href="assets/css/ui-lightness/jquery-ui-1.8.10.custom.css">  -->
-  <link rel="stylesheet" href="assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css"> 
+  <!-- <link rel="stylesheet" href="assets/css/ui-lightness/jquery-ui-1.8.10.custom.css">    -->
+  <link rel="stylesheet" href="assets/plugins/jquery-ui/jquery-ui.min.css">
+  <link rel="stylesheet" href="assets/plugins/jquery-ui/jquery-ui.theme.min.css">   
   <link rel="stylesheet" href="assets/css/adminlte.min.css"> 
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@200;300&display=swap" rel="stylesheet">
 
@@ -54,6 +46,10 @@ defined('ROOT') OR exit('No access allowed');
   <style >
   body {
     font-family: 'Prompt', sans-serif; !important; 
+  } 
+   .dp-highlight .ui-state-default {
+    background: #33aeff;
+    color: #FFF;
   }
   [v-cloak] {display: none}
   </style>
@@ -83,16 +79,17 @@ defined('ROOT') OR exit('No access allowed');
 
 		<li class="nav-item dropdown user-menu">
 			<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-			  <img src="assets/img/user2-160x160.jpg" class="user-image img-circle elevation-2" alt="User Image">
-			  <span class="d-none d-md-inline">เสน่ห์ เพกประโคน</span>
+			  <!-- <img src="assets/img/user2-160x160.jpg" class="user-image img-circle elevation-2" alt="User Image"> -->
+         <i class="fa fa-user" aria-hidden="true"></i>
+			  <span class="d-none d-md-inline"><?=@$_SESSION['fname'].' '.@$_SESSION['lname']?></span>
 			</a>
 			<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 			  <!-- User image -->
 			  <li class="user-header bg-primary">
-				<img src="assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-
-				<p>
-				  เสน่ห์ เพกประโคน - Supervisor
+				<!-- <img src="assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> -->
+          <i class="fa fa-user" aria-hidden="true"></i>
+				<p>  
+          <?=@$_SESSION['fname'].' '.@$_SESSION['lname'].' - '.@$_SESSION['position_name']?>
 				  <small>กองส่งเสริมการเกษตร</small>
 				</p>
 			  </li> 
@@ -129,7 +126,7 @@ defined('ROOT') OR exit('No access allowed');
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false"> 
 
             <li class="nav-item">
-              <a href="familyList.php" class="nav-link">
+              <a href="familyList.php"  class="nav-link <?=(in_array($current_file_name,['familyList.php','familyForm.php']))?'active':'' ?>">
                 <em class="fa fa-address-card">&nbsp;</em>
                 <p>
                 หน้าจัดการข้อมูลครัวเรือน
@@ -138,7 +135,7 @@ defined('ROOT') OR exit('No access allowed');
             </li>
 
             <li class="nav-item">
-              <a href="villageList.php" class="nav-link ">
+              <a href="villageList.php" class="nav-link <?=(in_array($current_file_name,['villageList.php','villageForm.php','villageFormEdit.php']))?'active':'' ?>">
                 <em class="fa fa-university">&nbsp;</em>
                 <p>
                 หน้าจัดการข้อมูลหมู่บ้าน
@@ -146,7 +143,7 @@ defined('ROOT') OR exit('No access allowed');
                 </p>
               </a>
             </li>			
-			<li class="nav-item has-treeview">
+			<li class="nav-item has-treeview <?=(in_array($current_file_name,['careergroupinfoForm.php','careergroupinfolist.php']))?'menu-open':'' ?>">
               <a href="#" class="nav-link">
                 <em class="fa fa-bars">&nbsp;</em>
                 <p>
@@ -155,8 +152,8 @@ defined('ROOT') OR exit('No access allowed');
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
+                <li class="nav-item"> 
+                  <a href="careergroupinfolist.php" class="nav-link <?=(in_array($current_file_name,['careergroupinfoForm.php','careergroupinfolist.php']))?'active':'' ?>">
                       <i class="fas fa-angle-right left"></i>
                     <p>ข้อมูลกลุ่มอาชีพ</p>
                   </a>
@@ -205,21 +202,21 @@ defined('ROOT') OR exit('No access allowed');
     </aside>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-<script>
- $(function () {
-    var url = window.location;
+<script> 
+ $(function () { 
+    // var url = window.location;  
     // for single sidebar menu
-    $('ul.nav-sidebar a').filter(function () {
-        return this.href == url;
-    }).addClass('active');
+    // $('ul.nav-sidebar a').filter(function () { 
+    //     return this.href == url;
+    // }).addClass('active');
 
     // for sidebar menu and treeview
-    $('ul.nav-treeview a').filter(function () {
-        return this.href == url;
-    }).parentsUntil(".nav-sidebar > .nav-treeview")
-        .css({'display': 'block'})
-        .addClass('menu-open').prev('a')
-        .addClass('active');
+    // $('ul.nav-treeview a.active').filter(function () {
+    //     return this.href == url;
+    // }).parentsUntil(".nav-sidebar > .nav-treeview")
+    //     .css({'display': 'block'})
+    //     .addClass('menu-open').prev('a')
+    //     .addClass('active');
 });
 </script>
  

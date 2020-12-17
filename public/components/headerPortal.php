@@ -55,21 +55,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="collapse navbar-collapse order-3" id="navbarCollapse">
         <!-- Left navbar links -->
         <ul class="navbar-nav">
+          <!--  remark for new version 
           <li class="nav-item">
             <a href="index3.html" class="nav-link">แก้ไขข้อมูลส่วนตัว</a>
           </li>
+          -->
           <li class="nav-item">
-            <a href="#" class="nav-link">ลืมรหัสผ่าน</a>
+            <a href="#" class="nav-link text-white">ลืมรหัสผ่าน</a>
           </li>
+          
           <li class="nav-item dropdown">
             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">จัดการข้อมูลผู้ใช้งาน (Admin)</a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-              <li><a href="#" class="dropdown-item">รายการข้อมูลผู้ใช้งาน</a></li>
-              <li><a href="#" class="dropdown-item">เพิ่มข้อมูลผู้ใช้งาน</a></li>
+              <li><a href="userRegFarmList.php" class="dropdown-item">รายการข้อมูลผู้ใช้งาน</a></li>
+              <li><a href="userRegFarmForm.php" class="dropdown-item">เพิ่มข้อมูลผู้ใช้งาน</a></li>
 
               <li class="dropdown-divider"></li>
 
-              <!-- Level two dropdown-->
+              <!-- Level two dropdown 
               <li class="dropdown-submenu dropdown-hover">
                 <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Hover for action</a>
                 <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
@@ -77,7 +80,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <a tabindex="-1" href="#" class="dropdown-item">level 2</a>
                   </li>
 
-                  <!-- Level three dropdown-->
+                  <!-- Level three dropdown -- >
                   <li class="dropdown-submenu">
                     <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">level 2</a>
                     <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
@@ -85,7 +88,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <li><a href="#" class="dropdown-item">3rd level</a></li>
                     </ul>
                   </li>
-                  <!-- End Level three -->
+                  <!-- End Level three -- >
 
                   <li><a href="#" class="dropdown-item">level 2</a></li>
                   <li><a href="#" class="dropdown-item">level 2</a></li>

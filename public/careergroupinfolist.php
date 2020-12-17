@@ -7,19 +7,25 @@
   #tblistdata_info,#tblistdata_paginate{padding:0 1.25rem;}
   .card-header{border-bottom:0}
   table.dataTable{margin-top:0 !important}
+  tr.cancelHighlight > .sorting_1 {  background-color: #faa!important;
+ } 
+ tr.cancelHighlight {
+    background-color: #faa!important;
+  }
+
 </style>
-<?= \Volnix\CSRF\CSRF::getHiddenInputString('token_village_frm') ?>
+<?= \Volnix\CSRF\CSRF::getHiddenInputString('token_careergroupinfo_frm') ?>
  <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>ข้อมูลหมู่บ้าน</h1>
+            <h1>ข้อมูลกลุ่มอาชีพ</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">หน้าจัดการข้อมูลหมู่บ้าน</li>
+              <li class="breadcrumb-item active">หน้าจัดการข้อมูลกลุ่มอาชีพ</li>
             </ol>
           </div>
         </div>
@@ -46,20 +52,11 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>หมู่ที่ :</label>
-                  <input type="text" name="txtMoo"  id="txtMoo" value="<?=(isset($_GET['house_moo'])?$_GET['house_moo']:'')?>" class="form-control" placeholder="หมู่ที่ ...">
-                </div>
-                <!-- /.form-group -->
+                  <label>ชื่อกลุ่มอาชีพ :</label>
+                  <input type="text" name="goccup_name"  id="goccup_name" value="<?=(isset($_GET['house_moo'])?$_GET['house_moo']:'')?>" class="form-control" placeholder="ชื่อกลุ่มอาชีพ ...">
+                </div> 
               </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>ชื่อหมู่บ้าน :</label>
-                  <input type="text" name="txtVillageName"  id="txtVillageName" class="form-control" placeholder="ชื่อหมู่บ้าน...">
-                </div>
-                <!-- /.form-group -->
-              </div>
-
+  
               <!-- /.col -->
             </div>
             <!-- /.row -->
@@ -68,7 +65,7 @@
 
           <!-- /.card-body -->
           <div class="card-footer">
-            <a class="btn btn-primary btn-sm" href="#" id="villageListData">
+            <a class="btn btn-primary btn-sm" href="#" id="ListData">
                 <i class="fas fa-search">
                 </i> ค้นหา
             </a>
@@ -80,9 +77,9 @@
         <div class="card card-primary card-outline">
           <div class="card-header">
             <h3 class="card-title">รายละเอียดการค้นหา</h3>&nbsp;  &nbsp;
-            <a class="btn btn-info btn-sm" href="villageForm.php">
+            <a class="btn btn-info btn-sm" href="careergroupinfoForm.php">
               <i class="fas fa-plus-square">
-                </i> เพิ่มข้อมูลหมู่บ้าน
+                </i> เพิ่มข้อมูลกลุ่มอาชีพ
             </a>
 
             <div class="card-tools">
@@ -98,19 +95,12 @@
                     <tr>
                         <th style="width: 1%">
                             #
-                        </th>
-                        <th style="width: 15%">
-                            หมู่ที่
-                        </th>
+                        </th> 
                         <th style="width: 20%">
-                            ชื่อหมู่บ้าน
+                            ชื่อกลุ่มอาชีพ
                         </th>
-						<th style="width: 25%">
-		 ข้อทั่วไปของหมู่บ้าน
-                        </th>
-                        <th style="width: 15%">
-                       แก้ไขล่าสุดเมื่อ             
-                        </th>
+						              <th style="width: 25%">รายละเอียดทั่วไป
+                        </th> 
                         <th style="width: 20%">
                         </th>
 
@@ -155,23 +145,25 @@
       'serverSide': true,
       'serverMethod': 'post',
       'ajax': {
-          'url':'handler/village/villagelist.php',
+          'url':'handler/careergroupinfo/careergroupinfoDatalist.php',
           "data": function ( d ) {
             return $.extend( {}, d, {
-              "vil_moo": $('#txtMoo').val(),
-              "vil_name":$('#txtVillageName').val()
+              "goccup_name": $('#goccup_name').val() 
             });
           } 
       }, 
+      createdRow: function (row, data, dataIndex, cells) {   
+         if (data['f_status']=='C') {
+            $(row).addClass('cancelHighlight');
+          }
+      },
       'columns': [ 
-         { data: 'rownumber' },
-         { data: 'vil_moo' },
-         { data: 'vil_name' },
-         { data: 'vil_desc' },
-         { data: 'd_update' },
+         { data: 'rownumber' }, 
+         { data: 'goccup_name' },
+         { data: 'goccup_desc' }, 
          {data: "id" , render : function ( data, type, row, meta ) {  
-              return `<a class="btn btn-primary btn-xs" href="handler/village/villageView.php?id=${data}" data-toggle="modal" data-target="#MyModal">  <i class="fas fa-folder">  </i> View </a>
-                      <a class="btn btn-info btn-xs" href="villageFormEdit.php?id=${data}"><i class="fas fa-pencil-alt"> </i> Edit</a> 
+              return `<a class="btn btn-primary btn-xs" href="handler/careergroupinfo/careergroupinfoView.php?id=${data}" data-toggle="modal" data-target="#MyModal">  <i class="fas fa-folder">  </i> View </a>
+                      <a class="btn btn-info btn-xs" href="careergroupinfoFormEdit.php?id=${data}"><i class="fas fa-pencil-alt"> </i> Edit</a> 
                       <a class="btn btn-danger btn-xs" onClick="DeleteData(${data}); return false;" href="javascript:void(0)"><i class="fas fa-trash"></i> Delete </a>`;
         }}
       ],
@@ -185,18 +177,13 @@
     {
         "className": "text-center",
         "targets":-2
-    }, 
-    // {   "orderable": false, 
-    //     targets: -1, //-1 es la ultima columna y 0 la primera
-    //     data: null,
-    //     defaultContent: '<div class="btn-group"> <button type="button" class="btn btn-info btn-xs dt-view" style="margin-right:16px;"><span class="glyphicon glyphicon-eye-open glyphicon-info-sign" aria-hidden="true"></span></button>  <button type="button" class="btn btn-primary btn-xs dt-edit" style="margin-right:16px;"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button><button type="button" class="btn btn-danger btn-xs dt-delete"><span class="glyphicon glyphicon-remove glyphicon-trash" aria-hidden="true"></span></button></div>'
-    // },
+    },  
     { orderable: false, searchable: false, targets: -1,"className": "text-center" } //Ultima columna no ordenable para botones
    ],
    "order": [[1, 'asc']] 
     }); 
  
-    $('#villageListData').on('click', function () { 
+    $('#ListData').on('click', function () { 
        table.ajax.reload();
       //  table.search(this.value).draw();  
     });
@@ -215,9 +202,9 @@
     }).then(function(result){
       if (!result.isConfirmed) return;
         $.ajax({
-            url: "handler/village/village.php",
+            url: "handler/careergroupinfo/careergroupinfoSave.php",
             type: "POST",
-            data: {'action':3,'id': id,'token_village_frm':$("input[name*='token_village_frm']").val()},
+            data: {'action':3,'id': id,'token_careergroupinfo_frm':$("input[name*='token_careergroupinfo_frm']").val()},
             dataType: "json",
             success: function (data, status, xhr) { 
                  if(data.status=='deleted'){
@@ -227,7 +214,7 @@
                  }else {
                   Swal.fire("Error deleting!", "Please try again", "error");
                  }
-                $("input[name*='token_village_frm']").val(data.token); 
+                $("input[name*='token_careergroupinfo_frm']").val(data.token); 
                 table.ajax.reload();
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -267,3 +254,4 @@
 <?php
  require_once 'components/footer.php';  
 ?>
+

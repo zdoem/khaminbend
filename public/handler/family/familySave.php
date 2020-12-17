@@ -1,6 +1,6 @@
 <?php
 require_once '../../bootstart.php'; 
-  
+require ROOT . '/core/security.php';
 $action=@$_POST['action']; 
 $id=@$_POST['id']; 
  
@@ -12,10 +12,11 @@ $refer_urlmain='familyList.php';
 
 // check validating csrf token name
 
-//if (\Volnix\CSRF\CSRF::validate($_POST, 'token_familye_frm')){ 
+//if (\Volnix\CSRF\CSRF::validate($_POST, 'token_family_frm')){ 
   // var_dump($_POST['Mmas_info_select']);exit();
  
 $yearfam_id=substr(date("Y")+543, -2);
+$tran_yearfam_id=$yearfam_id;
 $tran_id=$yearfam_id.date("m");
 
 $txtHouseId=trim((isset($_POST['Mhouseinfor']['txtHouseId']) ? $_POST['Mhouseinfor']['txtHouseId'] : ''));
@@ -26,25 +27,28 @@ $province=trim((isset($_POST['Mhouseinfor']['txtProvince']) ? $_POST['Mhouseinfo
 $post_code = trim((isset($_POST['Mhouseinfor']['txtPostalCode']) ? $_POST['Mhouseinfor']['txtPostalCode'] : ''));
  
 $familylists=(isset($_POST['Mfamilylists']) ? $_POST['Mfamilylists']:[]);
-$familylist=@$familylists[0];
-$pre_owner=trim((isset($familylist['prefix']) ? $familylist['prefix']: ''));
-$owner_fname = trim((isset($familylist['txtFName']) ? $familylist['txtFName'] : ''));
-$owner_lname = trim((isset($familylist['txtLName']) ? $familylist['txtLName'] : '')); 
-$citizen_id = trim((isset($familylist['txtCitizenId']) ? $familylist['txtCitizenId'] : ''));
-$x_status=    trim((isset($familylist['xFstatusRd']) ? $familylist['xFstatusRd'] : ''));
-$x_sex = trim((isset($familylist['sexRd']) ? $familylist['sexRd'] : ''));
-$national = trim((isset($familylist['txtNational']) ? $familylist['txtNational'] : ''));
-$reg_code = trim((isset($familylist['religion']) ? $familylist['religion'] : ''));
-$date_of_birth = trim((isset($familylist['birthday']) ? $familylist['birthday'] : ''));
-$date_of_birth =preg_replace("/(\d+)\/(\d+)\/(\d+)/","$3-$2-$1",$date_of_birth);
-$education_code = trim((isset($familylist['educationlevel']) ? $familylist['educationlevel'] : ''));
-$relations_code = trim((isset($familylist['homerelations']) ? $familylist['homerelations'] : ''));
-$g_occupational_code = trim((isset($familylist['careergroup']) ? $familylist['careergroup'] : ''));
-$g_occupational_other = trim((isset($familylist['careeranother']) ? $familylist['careeranother'] : ''));
+$familylist=@$familylists[@$_POST['OwnerHomelistfamily']<=0 ? 0 : @$_POST['OwnerHomelistfamily']];
+
+// $pre_owner=trim((isset($familylist['prefix']) ? $familylist['prefix']: ''));
+// $owner_fname = trim((isset($familylist['txtFName']) ? $familylist['txtFName'] : ''));
+// $owner_lname = trim((isset($familylist['txtLName']) ? $familylist['txtLName'] : '')); 
+// $citizen_id = trim((isset($familylist['txtCitizenId']) ? $familylist['txtCitizenId'] : ''));
+// $x_status=    trim((isset($familylist['xFstatusRd']) ? $familylist['xFstatusRd'] : ''));
+// $x_sex = trim((isset($familylist['sexRd']) ? $familylist['sexRd'] : ''));
+// $national = trim((isset($familylist['txtNational']) ? $familylist['txtNational'] : ''));
+// $reg_code = trim((isset($familylist['religion']) ? $familylist['religion'] : ''));
+// $date_of_birth = trim((isset($familylist['birthday']) ? $familylist['birthday'] : ''));
+// $date_of_birth =preg_replace("/(\d+)\/(\d+)\/(\d+)/","$3-$2-$1",$date_of_birth);
+// $education_code = trim((isset($familylist['educationlevel']) ? $familylist['educationlevel'] : ''));
+// $relations_code = trim((isset($familylist['homerelations']) ? $familylist['homerelations'] : ''));
+
+// $g_occupational_code = trim((isset($familylist['careergroup']) ? $familylist['careergroup'] : ''));
+// $g_occupational_other = trim((isset($familylist['careeranother']) ? $familylist['careeranother'] : ''));
+
 $main_occupation_code= trim((isset($familylist['careermain']) ? $familylist['careermain'] : ''));
-$add_occupation_code = trim((isset($familylist['careersecond']) ? $familylist['careersecond'] : ''));
+$add_occupation_code = trim(((isset($familylist['careersecond'])&&@$familylist['careersecond']!='') ? $familylist['careersecond'] : '01'));
 $income_per_year= trim((isset($familylist['netIncome']) ? $familylist['netIncome'] : ''));
-// var_dump($_POST['Mfamilylists']);exit();
+//  var_dump($_POST['Mfamilylists']);exit();
 
 // insert  ข้อมูลพื้นที่การเกษตร
 $famerdetaillists_deed=(isset($_POST['Mfamerdetaillists']['deeds']) ? $_POST['Mfamerdetaillists']['deeds'] : []);
@@ -53,34 +57,40 @@ $famerdetaillists_spoks= (isset($_POST['Mfamerdetaillists']['spoks']) ? $_POST['
 $famerdetaillists_chapter5s= (isset($_POST['Mfamerdetaillists']['chapter5s']) ? $_POST['Mfamerdetaillists']['chapter5s'] : []);
 $fam_land_other = trim((isset($_POST['Mfamerdetaillists']['another']) ? $_POST['Mfamerdetaillists']['another'] : ''));
 
-$eco_occupation_code=  trim((isset($_POST['Mhouseinforgeneral']['familyhomecareer']) ? $_POST['Mhouseinforgeneral']['familyhomecareer'] : ''));
-$eco_product_target_code = trim((isset($_POST['Mhouseinforgeneral']['familyhomeproducttarget']) ? $_POST['Mhouseinforgeneral']['familyhomeproducttarget'] : ''));
+$g_occupational_code = (!IsNullOrEmptyString(trim($_POST['Mhouseinforgeneral']['g_occupational_code']))) ? $_POST['Mhouseinforgeneral']['g_occupational_code']: NULL;
+$g_occupational_other =(!IsNullOrEmptyString(trim(@$_POST['Mhouseinforgeneral']['g_occupational_other']))) ? $_POST['Mhouseinforgeneral']['g_occupational_other'] : NULL;
+$eco_occupation_code=  (!IsNullOrEmptyString(trim(@$_POST['Mhouseinforgeneral']['familyhomecareer']))) ? $_POST['Mhouseinforgeneral']['familyhomecareer'] : NULL;
+$eco_product_target_code =(!IsNullOrEmptyString(trim(@$_POST['Mhouseinforgeneral']['familyhomeproducttarget']))) ? $_POST['Mhouseinforgeneral']['familyhomeproducttarget'] : null;
 $eco_capital_code = trim((isset($_POST['Mhouseinforgeneral']['familyhomesourceoffunds']) ? $_POST['Mhouseinforgeneral']['familyhomesourceoffunds'] : ''));
 $familyhomeproductioncost=trim((isset($_POST['Mhouseinforgeneral']['familyhomeproductioncost']) ? $_POST['Mhouseinforgeneral']['familyhomeproductioncost'] : ''));
-$familyhomeproductperiod = trim((isset($_POST['Mhouseinforgeneral']['familyhomeproductperiod']) ? preg_replace('/\s+/', '', $_POST['Mhouseinforgeneral']['familyhomeproductperiod'])  : ''));
-$b_period=explode('-',$familyhomeproductperiod); 
-$eco_product_from=trim((isset($b_period[0]) ? preg_replace("/(\d+)\/(\d+)\/(\d+)/","$3-$2-$1",$b_period[0]): ''));
-$eco_product_to=trim((isset($b_period[1]) ? preg_replace("/(\d+)\/(\d+)\/(\d+)/","$3-$2-$1",$b_period[1]): '')); 
-// var_dump($eco_product_from,$eco_product_to);exit();
+$eco_product_from = trim((isset($_POST['Mhouseinforgeneral']['eco_product_from']) ? DateConvert('toad','d/m/Y',$_POST['Mhouseinforgeneral']['eco_product_from'],'-'): ''));
+$eco_product_to = trim((isset($_POST['Mhouseinforgeneral']['eco_product_to']) ? DateConvert('toad','d/m/Y',$_POST['Mhouseinforgeneral']['eco_product_to'],'-') : ''));
+// $eco_product_from=trim((isset($eco_product_from) ? preg_replace("/(\d+)\/(\d+)\/(\d+)/","$3-$2-$1",$eco_product_from): ''));
+// $eco_product_to=trim((isset($eco_product_to) ? preg_replace("/(\d+)\/(\d+)\/(\d+)/","$3-$2-$1",$eco_product_to): '')); 
+ 
 //สิ่งแวดล้อม
 $f_problem_env=trim((isset($_POST['xEnvironmental']) ? $_POST['xEnvironmental'] : ''));
-$problem_env_desc=(isset($_POST['xEnvironmentaldisc']) ? $_POST['xEnvironmentaldisc'] : '');
+$problem_env_desc=(!IsNullOrEmptyString(@$_POST['xEnvironmentaldisc']) ? $_POST['xEnvironmentaldisc'] : '');
 $f_manage_env=trim((isset($_POST['xEnvironmental2']) ? $_POST['xEnvironmental2'] : ''));
-$manage_env_desc =(isset($_POST['xEnvironmental2disc']) ? $_POST['xEnvironmental2disc'] : '');
-$conserve_env=(isset($_POST['greenxEnvironmentaldisc']) ? $_POST['greenxEnvironmentaldisc'] : ''); 
+$manage_env_desc =(!IsNullOrEmptyString(@$_POST['xEnvironmental2disc']) ? $_POST['xEnvironmental2disc'] : '');
+$conserve_env=(!IsNullOrEmptyString(@$_POST['greenxEnvironmentaldisc']) ? $_POST['greenxEnvironmentaldisc'] : ''); 
 $f_help=trim((isset($_POST['helpme']) ? $_POST['helpme'] : 'N'));
-$help_desc=(isset($_POST['helpmedisc']) ? $_POST['helpmedisc'] : ''); 
+$help_desc=(!IsNullOrEmptyString(@$_POST['helpmedisc']) ? $_POST['helpmedisc'] : ''); 
 if($action!=3){
-$survseydate=DateTime::createFromFormat('d/m/Y H:i A',$_POST['survseydate']); 
-$survseydate=$survseydate->format('Y-m-d H:i:s');
-$d_survey=(isset($survseydate) ? $survseydate: ''); 
+$survseydate=DateTime::createFromFormat('d/m/Y',$_POST['survseydate']);  
+$d_survey=DateConvert('toad','d/m/Y',$_POST['survseydate'],'-');
+$yearfam_id=substr($survseydate->format('Y'), -2);
+$tran_id=$yearfam_id.$survseydate->format('m'); 
 }
+ 
 $select_facilities=(isset($_POST['Mlistmas_facilities']) ? $_POST['Mlistmas_facilities'] : []);
 $listmas_pet=(isset($_POST['listmas_pet']) ? $_POST['listmas_pet'] : []);
 
 $disaster=(isset($_POST['Mdisaster']['selected']) ? $_POST['Mdisaster']['selected'] : []);
+$disaster_another=(!IsNullOrEmptyString(@$_POST['dt_dis_desc']) ? $_POST['dt_dis_desc'] :'');
 
 $mas_info_select=(isset($_POST['Mmas_info_select']['selected']) ? $_POST['Mmas_info_select']['selected'] : []);
+$mas_info_select_another=(!IsNullOrEmptyString(@$_POST['info_desc']) ? $_POST['info_desc'] : '');
 
 //  data เทียบ 
 $data_mas_pet = $db::table("tbl_mas_pet")
@@ -105,18 +115,125 @@ $listmas_facilities = $db::table("tbl_mas_facilities")
     ->where('f_status', '=', 'A')
     ->orderBy('fac_code', 'asc')
     ->get()->toArray();
-     
+
+// validate  data in server site.----------------------------------------------------------------------
+
+if(isset($_POST['id'])&&strlen(trim($id))>0&&($yearfam_id<$tran_yearfam_id||$yearfam_id>$tran_yearfam_id)){ 
+    ?>
+    <script type="text/javascript">
+     Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      html: 'แก้ไขข้อมูลวันสำรวจต้องเป็นปีปัจจุบันเท่านั้น!',
+      });  
+    </script>
+    <?php
+    exit(); 
+}
+//----------------------------------------------------------------------------------------------------
+$temp_mem_citizen_id=[]; 
+foreach ($familylists as $k => $v) { 
+  $temp_mem_citizen_id[] = trim((isset($v['txtCitizenId']) ? $v['txtCitizenId'] : ''));  
+  }  
+
+if(isset($_POST['id'])&&strlen(trim($id))>0){ 
+    $rows_old=$db::table('fm_fam_hd AS a')
+    ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
+    ->select($db::raw('house_no,mem_citizen_id'))
+    ->whereIn('mem_citizen_id',$temp_mem_citizen_id)
+    ->where('mem_fam_id','!=',$id)
+    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query)use ($id) {
+        $query->selectRaw('YEAR(d_survey)')
+            ->from('fm_fam_hd')
+            ->where('fam_id','=',[$id]);
+    })
+    ->get()->toArray();  
+}else{ 
+    $survseydate=DateTime::createFromFormat('d/m/Y',DateConvert('toadre','d/m/Y',$_POST['survseydate'],'/')); 
+    $d_survseydate=$survseydate->format('Y');   
+    $rows_old=$db::table('fm_fam_hd AS a')
+    ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
+    ->select($db::raw('house_no,mem_citizen_id'))
+    ->whereIn('mem_citizen_id',$temp_mem_citizen_id)
+    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query)use ($d_survseydate) {
+        $query->selectRaw('YEAR(d_survey)')
+            ->from('fm_fam_hd')
+            ->whereRaw('YEAR(d_survey)=?',[$d_survseydate]);
+    })
+    ->get()->toArray();  
+}  
+$dupi_mem_citizen_id=[];
+foreach (@$rows_old as $k => $v) { 
+   $dupi_mem_citizen_id[]=$v->mem_citizen_id;
+}
+ if(sizeof($dupi_mem_citizen_id)>0){
+?>
+  <script type="text/javascript">
+    Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    html: 'มีข้อมูลเลขที่บัตรประชาชน <?=implode(",",$dupi_mem_citizen_id);?> ในระบบแล้ว ในบ้านเลขที่ <?=@$rows_old[0]->house_no?>!',
+    }); 
+  </script>
+  <?php
+  exit();
+ } 
+//----------------------------------------------------------------------------------------------------- 
+if(isset($_POST['id'])&&strlen(trim($id))>0){
+    $rows_old =$db::select("SELECT fam_id,d_survey,house_no,house_moo FROM  fm_fam_hd AS a 
+    WHERE  house_no=? AND fam_id!=? AND YEAR(d_survey) IN (
+        SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE fam_id=? 
+    )", [$txtHouseId, $id,$id] );
+}else{
+    $survseydate=DateTime::createFromFormat('d/m/Y',DateConvert('toadre','d/m/Y',@$_POST['survseydate'],'/')); 
+    $d_survseydate=$survseydate->format('Y');
+    $rows_old =$db::select("SELECT fam_id,d_survey,house_no,house_moo FROM  fm_fam_hd AS a 
+    WHERE  house_no=? AND YEAR(d_survey) IN (
+        SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE YEAR(d_survey)=? 
+    )",[$txtHouseId,$d_survseydate]);
+} 
+
+ if(isset($rows_old[0]->house_no)){
+   ?>
+  <script type="text/javascript">
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      html: 'มีข้อมูลบ้านเลขที่ <?=$rows_old[0]->house_no?> ในระบบแล้ว!',
+      });  
+  </script>
+  <?php
+  exit();
+ } 
+
 // validate   substr($id,0,2)
 $rows_old=null;
 if($id>0){
    $rows_old = $db::table("fm_fam_hd")
-    ->where('fam_id', '=', $id)
-    ->select($db::raw("fam_id,SUBSTRING(fam_id,1,2) AS yearfam_id,house_no,house_moo"))
+    ->where('fam_id', '=', $id)  
+    ->select($db::raw("fam_id,RIGHT(YEAR(d_survey)+543,2) AS yearfam_id,d_survey,house_no,house_moo"))
     ->first();
-      if($action!=3){
-         if(!isset($rows_old->yearfam_id)||($rows_old->yearfam_id<$yearfam_id)){// ไม่มีข้อมูลเก่าหรือ idที่ใช้ปี<ปีปัจจุบัน insert ใหม่  
-         $action=1;   
-         }else if($rows_old->yearfam_id==$yearfam_id){// มีข้อมูลอยู่แล้วให้และปีเดี่ยวกัน update 
+      if($action!=3){ 
+         if(!isset($rows_old->yearfam_id)||(@$rows_old->yearfam_id<substr(date("Y")+543, -2))){// ไม่มีข้อมูลเก่าหรือ idที่ใช้ปี<ปีปัจจุบัน insert ใหม่  
+           $action=1;   
+           $rows_old_dupi = $db::table("fm_fam_hd")
+          ->where('house_no', '=', $rows_old->house_no)  
+          ->whereYear('d_survey', date("Y", strtotime($d_survey)))
+          ->select($db::raw("fam_id,house_no,house_moo"))
+          ->first();
+          if(isset($rows_old_dupi->house_no)){
+            ?>
+          <script type="text/javascript">
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              html: 'มีข้อมูลบ้านเลขที่ <?=$rows_old_dupi->house_no?> ภายในปีสำรวจ <?=date("Y", strtotime(DateConvert('tops','Y/m/d',$d_survey,'-')))?> ในระบบแล้ว!',
+              });  
+          </script>
+            <?php
+            exit();
+          } 
+         }else if(@$rows_old->yearfam_id==$yearfam_id){// มีข้อมูลอยู่แล้วให้และปีเดี่ยวกัน update 
          $action=2; 
         }
     } 
@@ -127,17 +244,18 @@ if($id>0){
 // $action = 1;
 // var_dump($action);exit();
  if ($action == 1) {/*Insert Data*/ 
-    try {  
-          $tran_id=$db::select("SELECT CONCAT($tran_id,NEXTVAL(sfm_fam_hd)) AS tran_id")[0]->tran_id; 
+    try {    
+          $tran_id=$db::select("SELECT CONCAT($tran_id,nextval('sqfm_fam_hd')) AS tran_id")[0]->tran_id; 
           if(!insertall('insert',$tran_id)){throw new Exception("Error Processing insertall", 1);} 
           $db::beginTransaction(); 
-          $row =$db::insert("INSERT INTO fm_fam_hd (fam_id,house_no,house_moo,sub_district,district,province,post_code,pre_owner,owner_fname,owner_lname,citizen_id
-          ,x_status,x_sex,national,reg_code,date_of_birth,education_code,relations_code,g_occupational_code,g_occupational_other,main_occupation_code,add_occupation_code
+          //pre_owner,owner_fname,owner_lname,citizen_id,x_status,x_sex,national,reg_code,date_of_birth,education_code,relations_code
+          //$pre_owner,$owner_fname,$owner_lname,$citizen_id,$x_status,$x_sex,$national,$reg_code,$date_of_birth,$education_code,$relations_code
+          $row =$db::insert("INSERT INTO fm_fam_hd (fam_id,house_no,house_moo,sub_district,district,province,post_code
+          ,g_occupational_code,g_occupational_other,main_occupation_code,add_occupation_code
           ,income_per_year,d_create,fam_land_other,eco_occupation_code,eco_product_target_code,eco_capital_code,eco_product_cost,d_update,f_problem_env,problem_env_desc
           ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,create_by,update_by,d_survey,f_status,eco_product_from,eco_product_to) 
-             VALUES($tran_id,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,'A',?,?)",
-             [$txtHouseId,$house_moo,$sub_district,$district,$province,$post_code,$pre_owner,$owner_fname,$owner_lname,$citizen_id,$x_status,$x_sex,$national,$reg_code
-             ,$date_of_birth,$education_code,$relations_code,$g_occupational_code,$g_occupational_other,$main_occupation_code,$add_occupation_code,$income_per_year
+             VALUES($tran_id,?,?,?,?,?,?,?,?,?,?,?,NOW(),?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,'A',?,?)",
+             [$txtHouseId,$house_moo,$sub_district,$district,$province,$post_code,$g_occupational_code,$g_occupational_other,$main_occupation_code,$add_occupation_code,$income_per_year
              ,$fam_land_other,$eco_occupation_code,$eco_product_target_code,$eco_capital_code,$familyhomeproductioncost,$f_problem_env,$problem_env_desc,$f_manage_env
              ,$manage_env_desc,$conserve_env,$f_help,$help_desc,@$_SESSION['user_id'],@$_SESSION['user_id'],$d_survey,$eco_product_from,$eco_product_to
              ]); 
@@ -155,16 +273,14 @@ if($id>0){
             $tran_id=$id;
             if(!insertall('update',$tran_id)){throw new Exception("Error Processing insertall", 1);} 
              $db::beginTransaction(); 
+             //$pre_owner,$owner_fname,$owner_lname,$citizen_id,$x_status,$x_sex,$national,$reg_code,$date_of_birth,$education_code,$relations_code,
              $row =$db::update('update fm_fam_hd set house_no=?,house_moo=?,sub_district=?,district=?,province=?
-            ,post_code=?,pre_owner=?,owner_fname=?,owner_lname=?,citizen_id=?
-            ,x_status=?,x_sex=?,national=?,reg_code=?,date_of_birth=?
-            ,education_code=?,relations_code=?,g_occupational_code=?,g_occupational_other=?,main_occupation_code=?
+            ,post_code=?,g_occupational_code=?,g_occupational_other=?,main_occupation_code=?
             ,add_occupation_code=?,income_per_year=?,fam_land_other=?,eco_occupation_code=?
             ,eco_product_target_code=?,eco_capital_code=?,eco_product_cost=?,d_update=NOW(),f_problem_env=?
             ,problem_env_desc=?,f_manage_env=?,manage_env_desc=?,conserve_env=?,f_help=?,help_desc=?,update_by=?,d_survey=?,eco_product_from=?,eco_product_to=?
             where fam_id = ?',
-            [$txtHouseId,$house_moo,$sub_district,$district,$province,$post_code,$pre_owner,$owner_fname,$owner_lname,$citizen_id,$x_status,$x_sex,$national,$reg_code
-             ,$date_of_birth,$education_code,$relations_code,$g_occupational_code,$g_occupational_other,$main_occupation_code,$add_occupation_code,$income_per_year
+            [$txtHouseId,$house_moo,$sub_district,$district,$province,$post_code,$g_occupational_code,$g_occupational_other,$main_occupation_code,$add_occupation_code,$income_per_year
              ,$fam_land_other,$eco_occupation_code,$eco_product_target_code,$eco_capital_code,$familyhomeproductioncost,$f_problem_env,$problem_env_desc,$f_manage_env
              ,$manage_env_desc,$conserve_env,$f_help,$help_desc,@$_SESSION['user_id'],$d_survey,$eco_product_from,$eco_product_to
              ,$id
@@ -264,7 +380,7 @@ try {
 function insertall($type,$tran_id){
      global $db,$familylists,$famerdetaillists_deed,$famerdetaillists_norsor3kors
     ,$famerdetaillists_spoks,$famerdetaillists_chapter5s,$select_facilities
-    ,$listmas_pet,$disaster,$mas_info_select,$listmas_disaster,$listmas_info,$data_mas_pet,$listmas_facilities;
+    ,$listmas_pet,$disaster,$disaster_another,$mas_info_select,$mas_info_select_another,$listmas_disaster,$listmas_info,$data_mas_pet,$listmas_facilities;
     try { 
               $db::beginTransaction(); 
               // Clear old data
@@ -279,24 +395,24 @@ function insertall($type,$tran_id){
              // 1.ข้อมูลสมาชิกครัวเรือน
              $batc_insert_sql_people=[];
              foreach ($familylists as $k => $v) {
-                  if($k==0){continue;}// skip first
+                  //if($k==0){continue;}// skip first
                   $mem_pre = trim((isset($v['prefix']) ? $v['prefix'] : ''));
                   $mem_fname = trim((isset($v['txtFName']) ? $v['txtFName'] : ''));
                   $mem_lname = trim((isset($v['txtLName']) ? $v['txtLName'] : ''));
                   $mem_citizen_id = trim((isset($v['txtCitizenId']) ? $v['txtCitizenId'] : ''));
-                  $mem_status =2;
+                  $mem_status =trim((isset($v['xFstatusRd']) ? $v['xFstatusRd'] : ''));
                   $mem_sex = trim((isset($v['sexRd']) ? $v['sexRd'] : ''));
+                  $f_status = trim((isset($v['memF_status']) ? $v['memF_status'] : ''));
                   $mem_national = trim((isset($v['txtNational']) ? $v['txtNational'] : ''));
-                  $mem_religion_code = trim((isset($v['religion']) ? $v['religion'] : ''));
-                  $mem_df_birth = trim((isset($v['birthday']) ? $v['birthday'] : ''));
-                  $mem_df_birth = preg_replace("/(\d+)\/(\d+)\/(\d+)/", "$3-$2-$1", $mem_df_birth);
+                  $mem_religion_code = trim((isset($v['religion']) ? $v['religion'] : '')); 
+                  $mem_df_birth = DateConvert('toad','d/m/Y',$v['birthday'],'-');
                   $mem_education_code = trim((isset($v['educationlevel']) ? $v['educationlevel'] : ''));
                   $mem_relations_code = trim((isset($v['homerelations']) ? $v['homerelations'] : ''));  
                   $xmain_occupation_code = trim((isset($v['careermain']) ? $v['careermain'] : '')); 
-                  $xadditional_occupation_code = trim((isset($v['careersecond']) ? $v['careersecond'] : ''));
+                  $xadditional_occupation_code = trim(((isset($v['careersecond'])&&!IsNullOrEmptyString(@$v['careersecond']!='')) ? $v['careersecond'] : '01'));
                   $xincome_per_year = trim((isset($v['netIncome']) ? $v['netIncome'] : ''));
                
-                  $batc_insert_sql_people[] =['mem_fam_id' =>$tran_id, 'd_create' =>$db::raw('NOW()') , 'f_status' =>'A', 'create_by' =>@$_SESSION['user_id'], 'mem_pre' =>$mem_pre
+                  $batc_insert_sql_people[] =['mem_fam_id' =>$tran_id, 'd_create' =>$db::raw('NOW()') , 'f_status' =>$f_status, 'create_by' =>@$_SESSION['user_id'], 'mem_pre' =>$mem_pre
                                       ,'mem_fname' =>$mem_fname,'mem_lname' =>$mem_lname,'mem_citizen_id' =>$mem_citizen_id,'mem_status' =>$mem_status
                                       ,'mem_sex' =>$mem_sex,'mem_national' =>$mem_national,'mem_religion_code' =>$mem_religion_code
                                       ,'mem_df_birth' =>$mem_df_birth,'mem_education_code' =>$mem_education_code,'mem_relations_code' =>$mem_relations_code,'xmain_occupation_code' =>$xmain_occupation_code
@@ -401,7 +517,7 @@ function insertall($type,$tran_id){
                      foreach ($data_mas_pet as $k2 => $v2) { // เทียบกับ data จริง
                          if($v2->pet_code==$v['pet_code']){ 
                           $batc_insert_sql_mas_pet[]=['pet_fam_id'=>$tran_id,'pet_code'=>$v['pet_code'],'pet_name'=>$v['pet_name'],'pet_quantity'=>(int)$v['pet_quantity']
-                        ,'pet_vacine_qt'=>$v['pet_vacine_qt'],'pet_desc'=>$v['pet_desc']];
+                        ,'pet_vacine_qt'=>(int)$v['pet_vacine_qt'],'pet_desc'=>(!IsNullOrEmptyString(@$v['pet_desc'])) ? $v['pet_desc']:''];
                          break;
                      } 
                    }
@@ -414,10 +530,15 @@ function insertall($type,$tran_id){
             
             // 5.ภัยธรรมชาติ
              $batc_insert_sql_mas_pet=[];
+             if(!IsNullOrEmptyString($disaster_another)){
+                array_push($disaster,99);
+             }
              foreach ($disaster as $k => $v) { 
+                  $desc='';
                   foreach ($listmas_disaster as $k2 => $v2) { // เทียบกับ data จริง
                     if($v2->dis_code==$v){ 
-                      $batc_insert_sql_mas_pet[]=['dis_fam_id'=>$tran_id,'dis_code'=>$v2->dis_code,'dis_name'=>$v2->dis_name];
+                       if($v==99){$desc=$disaster_another;}
+                      $batc_insert_sql_mas_pet[]=['dis_fam_id'=>$tran_id,'dis_code'=>$v2->dis_code,'dis_name'=>$v2->dis_name,'dis_desc'=>$desc];
                        break;
                     }
                   } 
@@ -429,10 +550,15 @@ function insertall($type,$tran_id){
          
              //6. ข่าวสารทางด้านการเกษตร
              $batc_insert_sql_fam_info=[];
+             if(!IsNullOrEmptyString($mas_info_select_another)){
+                array_push($mas_info_select,99);
+             }
              foreach ($mas_info_select as $k => $v) {
+                   $info_desc='';
                   foreach ($listmas_info as $k2 => $v2) { // เทียบกับ data จริง 
                     if($v2->info_code==$v){ 
-                      $batc_insert_sql_fam_info[]=['info_fam_id'=>$tran_id,'info_code'=>$v2->info_code,'info_name'=>$v2->info_name];
+                      if($v==99){$info_desc=$mas_info_select_another;}
+                      $batc_insert_sql_fam_info[]=['info_fam_id'=>$tran_id,'info_code'=>$v2->info_code,'info_name'=>$v2->info_name,'info_desc'=>$info_desc];
                       break;
                     }
                   } 

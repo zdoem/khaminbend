@@ -4,7 +4,7 @@
  
  require ROOT . '/core/security.php';
  
- 
+
  $listmas_dept = $db::table("tbl_departments")
  ->select($db::raw("dept_code,dept_name,dept_desc"))
  ->where('f_status', '=', 'A')
@@ -17,14 +17,67 @@
  ->orderBy('role_name', 'asc')
  ->get()->toArray();
  
+ //TODO : request.getparameter from
+
+ $deptCode = '01'; //(isset($_POST['deptCode']) ? $_POST['deptCode'] : '');
+ $roleId = (isset($_POST['roleId']) ? $_POST['roleId'] : '');
+ $userId = (isset($_POST['userId']) ? $_POST['userId'] : '');
+ $fname = (isset($_POST['fname']) ? $_POST['fname'] : '');
+
  //TODO : for main query
+ $resultRow = $db::table('tbl_users as a')
+ ->leftJoin('tbl_departments as b', 'a.dept_code', '=', 'b.dept_code')
+ ->leftJoin('tbl_role as c', 'a.role_code', '=', 'c.role_code')
+ ->select($db::raw("a.*"),$db::raw("b.*"),$db::raw("c.*"))
+ ->where([
+     ['a.f_status', '=', 'A'],
+     ['a.dept_code', '=', $deptCode],
+     ['a.user_id', '=', $userId],
+ ]);
+ if($fname != '') {
+     $resultRow->orWhere('a.fname', 'like','%'.$fname.'%');
+ }
+ $dataList = $resultRow->orderBy('a.user_id', 'asc')
+ ->get()->toArray();
  
+
+ /*$listResultRow = $db::table('tbl_users as a');
+ if($fname != '') {
+     $listResultRow->orWhere('a.fname', 'like','%'.$fname.'%');
+ }
+ .... join where อะไรก็ว่าไป
+ $data = $listResultRow->get()->toArray();
  
+ /*
+ ->orWhere(function($query) {
+     $query->where('a.fname', $fname)
+     ->where('a.fname', 'like','%'.$fname.'%');
+ })*/
+ //->orWhere('a.fname', 'like','%'.$fname.'%')
+ /*->orWhere(function($query) {
+  $query->where('a.fname', $fname)
+  ->where('a.fname', 'like','%'+$fname);
+  })*/
+ /*->whereColumn([
+     ['first_name', '=', 'last_name'],
+     ['updated_at', '>', 'created_at'],
+ ])->get();
+ */
+
  
 ?> 
  <!-- Content Header (Page header) -->
-
-
+ 
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#bntSearch").click(function(){  
+        //alert('xxx');      
+        $("#frmUsr").submit(); // Submit the form
+    });
+});
+</script>
+ 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -32,13 +85,13 @@
       <div class="container">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">ลงทะเบียนผู้ใช้งาน<small></small></h1>
+            <h1 class="m-0 text-dark">รายการผู้ใช้งาน<small></small></h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
 			  
-              <li class="breadcrumb-item"><a href="#">ลงทะเบียนผู้ใช้งาน</a></li>
+              <li class="breadcrumb-item"><a href="#">รายการผู้ใช้งาน</a></li>
               <!--<li class="breadcrumb-item active">Top Navigation</li>-->
             </ol>
           </div><!-- /.col -->
@@ -48,6 +101,8 @@
     <!-- /.content-header -->
 
 
+<form action="userRegFarmList.php" id="frmUsr" method="post">  
+ <input type="hidden" id="cmd" name="cmd" value="I">
     <!-- Main content -->
     <div class="content">
       <div class="container">
@@ -73,13 +128,13 @@
  			  <div class="col-md-3">
                 <div class="form-group">
                   <label>แผนก/กอง :</label>
-  					<select class="form-control">
-                    <option>กองส่งเสริมการเกษตร</option>
-                    <option>สำนักงานปลัด อบต. </option>
-                    <option>กองช่าง</option>
-					<option>กองการศึกษาและศาสนา</option>
-					<option>กองสวัสดิการสังคม</option>
-					<option>ฝ่ายดูแลระบบ</option>
+  					<select class="form-control" name="deptCode" readonly>
+                    <option value='01' selected>กองส่งเสริมการเกษตร</option>
+                    <option value='02' >สำนักงานปลัด อบต. </option>
+                    <option value='03' >กองช่าง</option>
+                    <option value='04' >กองช่าง</option>
+					<option value='05' >กองการศึกษาและศาสนา</option>
+					<option value='06' >กองสวัสดิการสังคม</option>
 					</select>                   
                 </div>
                 <!-- /.form-group -->
@@ -87,10 +142,11 @@
 			  <div class="col-md-3">
                 <div class="form-group">
                   <label>บทบาท :</label>
- 					<select class="form-control">
-                    <option>User</option>
-                    <option>Supervisor</option>
-                    <option>Admin</option>
+ 					<select class="form-control" name="roleCode">
+                    <option value="01">Users</option>
+                    <option value="02">Supervisor</option>
+                    <option value="88">ปลัดหรือตำแหน่งพิเศษ</option>
+                    <option value="99">Admin</option>
 					</select>                   
                 </div>
                 <!-- /.form-group -->
@@ -98,7 +154,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label>UserId:</label>
-                  <input type="text" name="txtMoo" value=" " id="txtMoo" class="form-control" placeholder="UserId ...">
+                  <input type="text" name="userId" value="<?php echo $userId?>" id="userId" class="form-control" placeholder="UserId ...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -106,7 +162,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label>ชื่อ-สกุล :</label>
-                  <input type="text" name="txtVillageName"  id="txtVillageName" class="form-control" placeholder="ชื่อ-สกุล...">
+                  <input type="text" name="fname"  id="fname" value='<?php echo $fname?>' class="form-control" placeholder="ชื่อ...">
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -121,7 +177,7 @@
 
           <!-- /.card-body -->
           <div class="card-footer">
-            <a class="btn btn-primary btn-sm" href="villageListData.html">
+            <a class="btn btn-primary btn-sm" href="#" id='bntSearch'>
                 <i class="fas fa-search">
                 </i> ค้นหา
             </a>
@@ -133,7 +189,7 @@
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">รายละเอียดการค้นหา</h3>&nbsp;  &nbsp;
-            <a class="btn btn-info btn-sm" href="villageForm.html">
+            <a class="btn btn-info btn-sm" href="userRegFarmForm.php">
               <i class="fas fa-plus-square">
                 </i>ลงทะเบียนผู้ใช้งาน
             </a>
@@ -149,319 +205,73 @@
             <table class="table table-striped projects">
                 <thead>
                     <tr>
-                        <th style="width: 1%">
-                            #
-                        </th>
-                        <th style="width: 15%">
-                            ชื่อ-นามสกุล
-                        </th>
-                        <th style="width: 20%">
-                            อีเมลย์
-                        </th>
-						<th style="width: 25%">
-		   เบอร์มือถือ
-                        </th>
-                        <th style="width: 15%">
-                           ตำแหน่ง        
-                        </th>
-                        <th style="width: 20%">
-		แผนก/กอง				
-                        </th>
-		                 <th style="width: 20%">
-		บทบาท			
-                        </th>	
-		                 <th style="width: 20%">
-                        </th>							
-
+                        <th style="width: 1%"> # </th>
+                        <th style="width: 25%">ชื่อ-นามสกุล</th>
+                        <th style="width: 10%">Email </th>
+						<th style="width: 10%">เบอร์มือถือ</th>
+                        <th style="width: 15%">ตำแหน่ง </th>
+                        <th style="width: 20%">แผนก/กอง</th>
+		                <th style="width: 10%">บทบาท </th>	
+		                <th style="width: 20%"></th>							
                     </tr>
                 </thead>
                 <tbody>
+                    <?php 
+                    //$selectedx = "";
+                    foreach ($dataList as $k => $v) { 
+                    ?>
                     <tr>
-                        <td>
-                            #
+                        <td>#
                         </td>
-                        <td>
-                            <a>
-									หมู่1
-                            </a>
+                        <td><a><?=$v->fname?> <?=$v->lname?></a>
                             <br/>
-                            <small>
-                                Created 01.01.2019
+                            <small>Created <?=$v->d_create?>
                             </small>
                         </td>
                         <td>
-                          <a>
-                              บ้านตาแก
-                          </a>
+                          <a><?=$v->email?></a>
                         </td>
-                        <td class="project_progress">
-							ที่ตั้งของหมู่บ้านในเขตองค์การบริหารส่วนต าบลโคกขมิ้น
+                        <td class="project_progress"><?=$v->mobile?></td>
+						<td >
+						     <small><?=$v->position_name?></small>
                         </td>
 						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
+						     <small><?=$v->dept_name?></small>
                         </td>
 						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
-                        </td>
-						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
+						     <small><?=$v->role_name?></small>
                         </td>	
                         <td class="project-actions text-right">
                             <a class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#modal-lg">
-                                <i class="fas fa-folder">
-                                </i>
-                                View
-                            </a>
-                            <a class="btn btn-info btn-xs" href="villageFormEdit.html">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                                Edit
+                                <i class="fas fa-folder"></i> View</a>
+                            <a class="btn btn-info btn-xs" href="userRegFarmEdit.php?userId=<?=$v->user_id?>">
+                                <i class="fas fa-pencil-alt"></i> Edit
                             </a>
                             <a class="btn btn-danger btn-xs" href="#">
-                                <i class="fas fa-trash">
-                                </i>
-                                Delete
-                            </a>
+                                <i class="fas fa-trash"></i> Delete </a>
                         </td>  
-                    </tr>
-					                    <tr>
-                        <td>
-                            #
-                        </td>
-                        <td>
-                            <a>
-									หมู่2 
-                            </a>
-                            <br/>
-                            <small>
-                                Created 01.01.2019 
-                            </small>
-                        </td>
-                        <td>
-                          <a>
-                           บ้านโคกขมิ้น 
-                          </a>
-                        </td>
-                        <td class="project_progress">
-							ที่ตั้งของหมู่บ้านในเขตองค์การบริหารส่วนต าบลโคกขมิ้น
-                        </td>
-						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
-                        </td>
-						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
-                        </td>
-						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
-                        </td>						
-                        <td class="project-actions text-right">
-                            <a class="btn btn-primary btn-xs" href="#">
-                                <i class="fas fa-folder">
-                                </i>
-                                View
-                            </a>
-                            <a class="btn btn-info btn-xs" href="villageFormEdit.html">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                                Edit
-                            </a>
-                            <a class="btn btn-danger btn-xs" href="#">
-                                <i class="fas fa-trash">
-                                </i>
-                                Delete
-                            </a>
-                        </td>  
-                    </tr>
-					                    <tr>
-                        <td>
-                            #
-                        </td>
-                        <td>
-                            <a>
-									หมู่3
-                            </a>
-                            <br/>
-                            <small>
-                                Created 01.01.2019 
-                            </small>
-                        </td>
-                        <td>
-                          <a>
-                              บ้านเขว้า 
-                          </a>
-                        </td>
-                        <td class="project_progress">
-							ที่ตั้งของหมู่บ้านในเขตองค์การบริหารส่วนต าบลโคกขมิ้น
-                        </td>
-						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
-                        </td>
-						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
-                        </td>
-						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
-                        </td>	
-                        <td class="project-actions text-right">
-                            <a class="btn btn-primary btn-xs" href="#">
-                                <i class="fas fa-folder">
-                                </i>
-                                View
-                            </a>
-                            <a class="btn btn-info btn-xs" href="#">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                                Edit
-                            </a>
-                            <a class="btn btn-danger btn-xs" href="#">
-                                <i class="fas fa-trash">
-                                </i>
-                                Delete
-                            </a>
-                        </td>  
-                    </tr>
-					                    <tr>
-                        <td>
-                            #
-                        </td>
-                        <td>
-                            <a>
-									หมู่4
-                            </a>
-                            <br/>
-                            <small>
-                                Created 01.01.2019 
-                            </small>
-                        </td>
-                        <td>
-                          <a>
-                              บ้านตาพระ
-                          </a>
-                        </td>
-                        <td class="project_progress">
-							ที่ตั้งของหมู่บ้านในเขตองค์การบริหารส่วนต าบลโคกขมิ้น
-                        </td>
-						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
-                        </td>
-						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
-                        </td>
-						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
-                        </td>	
-                        <td class="project-actions text-right">
-                            <a class="btn btn-primary btn-xs" href="#">
-                                <i class="fas fa-folder">
-                                </i>
-                                View
-                            </a>
-                            <a class="btn btn-info btn-xs" href="#">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                                Edit
-                            </a>
-                            <a class="btn btn-danger btn-xs" href="#">
-                                <i class="fas fa-trash">
-                                </i>
-                                Delete
-                            </a>
-                        </td>  
-                    </tr>
-					                    <tr>
-                        <td>
-                            #
-                        </td>
-                        <td>
-                            <a>
-									หมู่5
-                            </a>
-                            <br/>
-                            <small>
-                                Created 01.01.2019 
-                            </small>
-                        </td>
-                        <td>
-                          <a>
-                              บ้านศรีสมบูรณ์
-                          </a>
-                        </td>
-                        <td class="project_progress">
-							ที่ตั้งของหมู่บ้านในเขตองค์การบริหารส่วนต าบลโคกขมิ้น
-                        </td>
-						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
-                        </td>
-						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
-                        </td>
-						<td >
-						     <small>
-							 01/01/2563 11:15
-							 </small>
-                        </td>	
-                        <td class="project-actions text-right">
-                            <a class="btn btn-primary btn-xs" href="#">
-                                <i class="fas fa-folder">
-                                </i>
-                                View
-                            </a>
-                            <a class="btn btn-info btn-xs" href="#">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                                Edit
-                            </a>
-                            <a class="btn btn-danger btn-xs" href="#">
-                                <i class="fas fa-trash">
-                                </i>
-                                Delete
-                            </a>
-                        </td>  
-                    </tr>
-
+                    </tr>                        
+                        
+                      <?php
+                    }
+                    ?>               
+               
                 </tbody>
             </table>
           </div>
           <!-- /.card-body -->
         </div>
         <!-- /.card -->
-          </div>
-          <!--/.col (left) -->
-
+        </div>
+        <!--/.col (left) -->
 
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+</form>
+
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -473,15 +283,9 @@
   </aside>
   <!-- /.control-sidebar -->
 
-  <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="float-right d-none d-sm-inline">
-      Anything you want
-    </div>
-    <!-- Default to the left -->
-    <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
+<?php
+ require_once 'components/footerX.php';  
+?>
 </div>
 <!-- ./wrapper -->
 
