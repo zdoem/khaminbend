@@ -11,6 +11,7 @@ require_once ROOTJS.'/bootstart.php';
                <!-- REQUIRED SCRIPTS -->
                <!-- jQuery -->
                <script src="assets/plugins/jquery/jquery.min.js"></script>
+               <script src="assets/js/jquery-migrate.min.js"></script> 
                <script src="assets/plugins/jquery-mousewheel/jquery.mousewheel.js"></script> 
                <!-- Bootstrap -->
                <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -25,9 +26,8 @@ require_once ROOTJS.'/bootstart.php';
                <script src="assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
                <script src="assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
                <script src="assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-               <script src="assets/plugins/moment/moment.min.js"></script> 
-               <script src="assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-               <script src="assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+               <script src="assets/plugins/moment/moment.min.js"></script>  
+               <script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
                   <!-- AdminLTE App -->
                <script src="assets/js/adminlte.js"></script>
                <script src="assets/js/vue.runtime.min.js"></script>   
@@ -41,6 +41,7 @@ require_once ROOTJS.'/bootstart.php';
                  <!-- REQUIRED SCRIPTS -->
                   <!-- jQuery -->
                   <script src="assets/plugins/jquery/jquery.min.js"></script>
+                  <script src="assets/js/jquery-migrate.min.js"></script> 
                   <script src="assets/plugins/jquery-mousewheel/jquery.mousewheel.js"></script> 
                   <!-- Bootstrap -->
                   <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -56,10 +57,7 @@ require_once ROOTJS.'/bootstart.php';
                   <script src="assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
                   <script src="assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
                   <script src="assets/plugins/moment/moment.min.js"></script>
-                  <script src="assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-                  <script src="assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script> 
-                  <script src="assets/plugins/daterangepicker/daterangepicker.js"></script>
-
+                  <script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
                      <!-- AdminLTE App -->
                   <script src="assets/js/adminlte.js"></script>
                   <script src="assets/js/vue.js"></script>

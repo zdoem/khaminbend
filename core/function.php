@@ -107,6 +107,24 @@ function thai_date_short_number($time){   // 19-12-56
     return $thai_date_return;   
 }  
 function IsNullOrEmptyString($str){
-    return (!isset($str) || trim($str) === '');
+    return (!isset($str) || trim($str) === ''); 
 }
+function DateConvert($type,$bformart,$strDate,$symbol){
+    // bformart=ค่าของ date ที่จะแปลง symbol ที่จะแปลงเข้า 
+    //strDate เป็น string date ที่จะแปลง, tops ค.ศ. เป็น พ.ศ. ,toad= พ.ศ. เป็น  ค.ศ.
+    try {
+        $t_date = DateTime::createFromFormat($bformart, $strDate);  
+        // var_dump(($t_date->format('Y')+ 543).$symbol.$t_date->format('m').$symbol.$t_date->format('d'));exit();
+        switch ($type) {
+            case 'db':   return $t_date->format('Y-m-d H:i:s'); break;
+            case 'tops': return ($t_date->format('Y')+ 543).$symbol.$t_date->format('m').$symbol.$t_date->format('d'); break;
+            case 'toad': return ($t_date->format('Y')-543).$symbol.$t_date->format('m').$symbol.$t_date->format('d'); break; 
+            case 'topsre': return $t_date->format('d').$symbol.$t_date->format('m').$symbol.($t_date->format('Y')+ 543);   break;
+            case 'toadre': return $t_date->format('d').$symbol.$t_date->format('m').$symbol.($t_date->format('Y')- 543); break; 
+        } 
+       } catch (\Exception $e) { 
+
+      }
+     return '';
+} 
 ?>

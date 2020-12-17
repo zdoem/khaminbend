@@ -27,7 +27,7 @@ $province=trim((isset($_POST['Mhouseinfor']['txtProvince']) ? $_POST['Mhouseinfo
 $post_code = trim((isset($_POST['Mhouseinfor']['txtPostalCode']) ? $_POST['Mhouseinfor']['txtPostalCode'] : ''));
  
 $familylists=(isset($_POST['Mfamilylists']) ? $_POST['Mfamilylists']:[]);
-$familylist=@$familylists[@$_POST['OwnerHomelistfamily']];
+$familylist=@$familylists[@$_POST['OwnerHomelistfamily']<=0 ? 0 : @$_POST['OwnerHomelistfamily']];
 
 // $pre_owner=trim((isset($familylist['prefix']) ? $familylist['prefix']: ''));
 // $owner_fname = trim((isset($familylist['txtFName']) ? $familylist['txtFName'] : ''));
@@ -57,38 +57,40 @@ $famerdetaillists_spoks= (isset($_POST['Mfamerdetaillists']['spoks']) ? $_POST['
 $famerdetaillists_chapter5s= (isset($_POST['Mfamerdetaillists']['chapter5s']) ? $_POST['Mfamerdetaillists']['chapter5s'] : []);
 $fam_land_other = trim((isset($_POST['Mfamerdetaillists']['another']) ? $_POST['Mfamerdetaillists']['another'] : ''));
 
-$g_occupational_code = trim((isset($_POST['Mhouseinforgeneral']['g_occupational_code']) ? $_POST['Mhouseinforgeneral']['g_occupational_code']: NULL));
-$g_occupational_other = trim((isset($_POST['Mhouseinforgeneral']['g_occupational_other']) ? $_POST['Mhouseinforgeneral']['g_occupational_other'] : NULL));
-$eco_occupation_code=  trim((isset($_POST['Mhouseinforgeneral']['familyhomecareer']) ? $_POST['Mhouseinforgeneral']['familyhomecareer'] : NULL));
-$eco_product_target_code = trim((isset($_POST['Mhouseinforgeneral']['familyhomeproducttarget']) ? $_POST['Mhouseinforgeneral']['familyhomeproducttarget'] : null));
+$g_occupational_code = (!IsNullOrEmptyString(trim($_POST['Mhouseinforgeneral']['g_occupational_code']))) ? $_POST['Mhouseinforgeneral']['g_occupational_code']: NULL;
+$g_occupational_other =(!IsNullOrEmptyString(trim(@$_POST['Mhouseinforgeneral']['g_occupational_other']))) ? $_POST['Mhouseinforgeneral']['g_occupational_other'] : NULL;
+$eco_occupation_code=  (!IsNullOrEmptyString(trim(@$_POST['Mhouseinforgeneral']['familyhomecareer']))) ? $_POST['Mhouseinforgeneral']['familyhomecareer'] : NULL;
+$eco_product_target_code =(!IsNullOrEmptyString(trim(@$_POST['Mhouseinforgeneral']['familyhomeproducttarget']))) ? $_POST['Mhouseinforgeneral']['familyhomeproducttarget'] : null;
 $eco_capital_code = trim((isset($_POST['Mhouseinforgeneral']['familyhomesourceoffunds']) ? $_POST['Mhouseinforgeneral']['familyhomesourceoffunds'] : ''));
 $familyhomeproductioncost=trim((isset($_POST['Mhouseinforgeneral']['familyhomeproductioncost']) ? $_POST['Mhouseinforgeneral']['familyhomeproductioncost'] : ''));
-$familyhomeproductperiod = trim((isset($_POST['Mhouseinforgeneral']['familyhomeproductperiod']) ? preg_replace('/\s+/', '', $_POST['Mhouseinforgeneral']['familyhomeproductperiod'])  : ''));
-$b_period=explode('-',$familyhomeproductperiod); 
-$eco_product_from=trim((isset($b_period[0]) ? preg_replace("/(\d+)\/(\d+)\/(\d+)/","$3-$2-$1",$b_period[0]): ''));
-$eco_product_to=trim((isset($b_period[1]) ? preg_replace("/(\d+)\/(\d+)\/(\d+)/","$3-$2-$1",$b_period[1]): '')); 
-// var_dump($eco_product_from,$eco_product_to);exit();
+$eco_product_from = trim((isset($_POST['Mhouseinforgeneral']['eco_product_from']) ? DateConvert('toad','d/m/Y',$_POST['Mhouseinforgeneral']['eco_product_from'],'-'): ''));
+$eco_product_to = trim((isset($_POST['Mhouseinforgeneral']['eco_product_to']) ? DateConvert('toad','d/m/Y',$_POST['Mhouseinforgeneral']['eco_product_to'],'-') : ''));
+// $eco_product_from=trim((isset($eco_product_from) ? preg_replace("/(\d+)\/(\d+)\/(\d+)/","$3-$2-$1",$eco_product_from): ''));
+// $eco_product_to=trim((isset($eco_product_to) ? preg_replace("/(\d+)\/(\d+)\/(\d+)/","$3-$2-$1",$eco_product_to): '')); 
+ 
 //สิ่งแวดล้อม
 $f_problem_env=trim((isset($_POST['xEnvironmental']) ? $_POST['xEnvironmental'] : ''));
-$problem_env_desc=(isset($_POST['xEnvironmentaldisc']) ? $_POST['xEnvironmentaldisc'] : '');
+$problem_env_desc=(!IsNullOrEmptyString(@$_POST['xEnvironmentaldisc']) ? $_POST['xEnvironmentaldisc'] : '');
 $f_manage_env=trim((isset($_POST['xEnvironmental2']) ? $_POST['xEnvironmental2'] : ''));
-$manage_env_desc =(isset($_POST['xEnvironmental2disc']) ? $_POST['xEnvironmental2disc'] : '');
-$conserve_env=(isset($_POST['greenxEnvironmentaldisc']) ? $_POST['greenxEnvironmentaldisc'] : ''); 
+$manage_env_desc =(!IsNullOrEmptyString(@$_POST['xEnvironmental2disc']) ? $_POST['xEnvironmental2disc'] : '');
+$conserve_env=(!IsNullOrEmptyString(@$_POST['greenxEnvironmentaldisc']) ? $_POST['greenxEnvironmentaldisc'] : ''); 
 $f_help=trim((isset($_POST['helpme']) ? $_POST['helpme'] : 'N'));
-$help_desc=(isset($_POST['helpmedisc']) ? $_POST['helpmedisc'] : ''); 
+$help_desc=(!IsNullOrEmptyString(@$_POST['helpmedisc']) ? $_POST['helpmedisc'] : ''); 
 if($action!=3){
-$survseydate=DateTime::createFromFormat('d/m/Y H:i A',$_POST['survseydate']); 
-$d_survseydate=$survseydate->format('Y-m-d H:i:s');
-$d_survey=(isset($d_survseydate) ? $d_survseydate: ''); 
-$yearfam_id=substr($survseydate->format('Y')+543, -2);
-$tran_id=$yearfam_id.$survseydate->format('m');
+$survseydate=DateTime::createFromFormat('d/m/Y',$_POST['survseydate']);  
+$d_survey=DateConvert('toad','d/m/Y',$_POST['survseydate'],'-');
+$yearfam_id=substr($survseydate->format('Y'), -2);
+$tran_id=$yearfam_id.$survseydate->format('m'); 
 }
+ 
 $select_facilities=(isset($_POST['Mlistmas_facilities']) ? $_POST['Mlistmas_facilities'] : []);
 $listmas_pet=(isset($_POST['listmas_pet']) ? $_POST['listmas_pet'] : []);
 
 $disaster=(isset($_POST['Mdisaster']['selected']) ? $_POST['Mdisaster']['selected'] : []);
+$disaster_another=(!IsNullOrEmptyString(@$_POST['dt_dis_desc']) ? $_POST['dt_dis_desc'] :'');
 
 $mas_info_select=(isset($_POST['Mmas_info_select']['selected']) ? $_POST['Mmas_info_select']['selected'] : []);
+$mas_info_select_another=(!IsNullOrEmptyString(@$_POST['info_desc']) ? $_POST['info_desc'] : '');
 
 //  data เทียบ 
 $data_mas_pet = $db::table("tbl_mas_pet")
@@ -134,20 +136,32 @@ foreach ($familylists as $k => $v) {
   $temp_mem_citizen_id[] = trim((isset($v['txtCitizenId']) ? $v['txtCitizenId'] : ''));  
   }  
 
-if(isset($_POST['id'])&&strlen(trim($id))>0){
-    $rows_old =$db::select("SELECT house_no,mem_citizen_id FROM  fm_fam_hd AS a INNER JOIN fm_fam_members_dt1 AS b ON a.fam_id=b.mem_fam_id
-    WHERE  mem_citizen_id IN(?) AND mem_fam_id!=? AND YEAR(d_survey)  IN (
-        SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE mem_fam_id=? 
-    )", [implode(',',$temp_mem_citizen_id), $id,$id] );
-}else{
-    $survseydate=DateTime::createFromFormat('d/m/Y H:i A',@$_POST['survseydate']); 
-    $d_survseydate=$survseydate->format('Y');
-    $rows_old =$db::select("SELECT house_no,mem_citizen_id FROM  fm_fam_hd AS a INNER JOIN fm_fam_members_dt1 AS b ON a.fam_id=b.mem_fam_id
-    WHERE  mem_citizen_id IN(?) AND YEAR(d_survey)  IN (
-        SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE YEAR(d_survey)=? 
-    )",[implode(',',$temp_mem_citizen_id),$d_survseydate]);
-} 
- 
+if(isset($_POST['id'])&&strlen(trim($id))>0){ 
+    $rows_old=$db::table('fm_fam_hd AS a')
+    ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
+    ->select($db::raw('house_no,mem_citizen_id'))
+    ->whereIn('mem_citizen_id',$temp_mem_citizen_id)
+    ->where('mem_fam_id','!=',$id)
+    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query)use ($id) {
+        $query->selectRaw('YEAR(d_survey)')
+            ->from('fm_fam_hd')
+            ->where('fam_id','=',[$id]);
+    })
+    ->get()->toArray();  
+}else{ 
+    $survseydate=DateTime::createFromFormat('d/m/Y',DateConvert('toadre','d/m/Y',$_POST['survseydate'],'/')); 
+    $d_survseydate=$survseydate->format('Y');   
+    $rows_old=$db::table('fm_fam_hd AS a')
+    ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
+    ->select($db::raw('house_no,mem_citizen_id'))
+    ->whereIn('mem_citizen_id',$temp_mem_citizen_id)
+    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query)use ($d_survseydate) {
+        $query->selectRaw('YEAR(d_survey)')
+            ->from('fm_fam_hd')
+            ->whereRaw('YEAR(d_survey)=?',[$d_survseydate]);
+    })
+    ->get()->toArray();  
+}  
 $dupi_mem_citizen_id=[];
 foreach (@$rows_old as $k => $v) { 
    $dupi_mem_citizen_id[]=$v->mem_citizen_id;
@@ -171,7 +185,7 @@ if(isset($_POST['id'])&&strlen(trim($id))>0){
         SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE fam_id=? 
     )", [$txtHouseId, $id,$id] );
 }else{
-    $survseydate=DateTime::createFromFormat('d/m/Y H:i A',@$_POST['survseydate']); 
+    $survseydate=DateTime::createFromFormat('d/m/Y',DateConvert('toadre','d/m/Y',@$_POST['survseydate'],'/')); 
     $d_survseydate=$survseydate->format('Y');
     $rows_old =$db::select("SELECT fam_id,d_survey,house_no,house_moo FROM  fm_fam_hd AS a 
     WHERE  house_no=? AND YEAR(d_survey) IN (
@@ -185,7 +199,7 @@ if(isset($_POST['id'])&&strlen(trim($id))>0){
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
-      html: 'มีข้อมูลบ้านเลขที่ <?=$rows_old->house_no?> ในระบบแล้ว!',
+      html: 'มีข้อมูลบ้านเลขที่ <?=$rows_old[0]->house_no?> ในระบบแล้ว!',
       });  
   </script>
   <?php
@@ -213,7 +227,7 @@ if($id>0){
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
-              html: 'มีข้อมูลบ้านเลขที่ <?=$rows_old_dupi->house_no?> ภายในปีสำรวจ <?=date("Y", strtotime($d_survey))?> ในระบบแล้ว!',
+              html: 'มีข้อมูลบ้านเลขที่ <?=$rows_old_dupi->house_no?> ภายในปีสำรวจ <?=date("Y", strtotime(DateConvert('tops','Y/m/d',$d_survey,'-')))?> ในระบบแล้ว!',
               });  
           </script>
             <?php
@@ -366,7 +380,7 @@ try {
 function insertall($type,$tran_id){
      global $db,$familylists,$famerdetaillists_deed,$famerdetaillists_norsor3kors
     ,$famerdetaillists_spoks,$famerdetaillists_chapter5s,$select_facilities
-    ,$listmas_pet,$disaster,$mas_info_select,$listmas_disaster,$listmas_info,$data_mas_pet,$listmas_facilities;
+    ,$listmas_pet,$disaster,$disaster_another,$mas_info_select,$mas_info_select_another,$listmas_disaster,$listmas_info,$data_mas_pet,$listmas_facilities;
     try { 
               $db::beginTransaction(); 
               // Clear old data
@@ -390,13 +404,12 @@ function insertall($type,$tran_id){
                   $mem_sex = trim((isset($v['sexRd']) ? $v['sexRd'] : ''));
                   $f_status = trim((isset($v['memF_status']) ? $v['memF_status'] : ''));
                   $mem_national = trim((isset($v['txtNational']) ? $v['txtNational'] : ''));
-                  $mem_religion_code = trim((isset($v['religion']) ? $v['religion'] : ''));
-                  $mem_df_birth = trim((isset($v['birthday']) ? $v['birthday'] : ''));
-                  $mem_df_birth = preg_replace("/(\d+)\/(\d+)\/(\d+)/", "$3-$2-$1", $mem_df_birth);
+                  $mem_religion_code = trim((isset($v['religion']) ? $v['religion'] : '')); 
+                  $mem_df_birth = DateConvert('toad','d/m/Y',$v['birthday'],'-');
                   $mem_education_code = trim((isset($v['educationlevel']) ? $v['educationlevel'] : ''));
                   $mem_relations_code = trim((isset($v['homerelations']) ? $v['homerelations'] : ''));  
                   $xmain_occupation_code = trim((isset($v['careermain']) ? $v['careermain'] : '')); 
-                  $xadditional_occupation_code = trim(((isset($v['careersecond'])&&@$v['careersecond']!='') ? $v['careersecond'] : '01'));
+                  $xadditional_occupation_code = trim(((isset($v['careersecond'])&&!IsNullOrEmptyString(@$v['careersecond']!='')) ? $v['careersecond'] : '01'));
                   $xincome_per_year = trim((isset($v['netIncome']) ? $v['netIncome'] : ''));
                
                   $batc_insert_sql_people[] =['mem_fam_id' =>$tran_id, 'd_create' =>$db::raw('NOW()') , 'f_status' =>$f_status, 'create_by' =>@$_SESSION['user_id'], 'mem_pre' =>$mem_pre
@@ -504,7 +517,7 @@ function insertall($type,$tran_id){
                      foreach ($data_mas_pet as $k2 => $v2) { // เทียบกับ data จริง
                          if($v2->pet_code==$v['pet_code']){ 
                           $batc_insert_sql_mas_pet[]=['pet_fam_id'=>$tran_id,'pet_code'=>$v['pet_code'],'pet_name'=>$v['pet_name'],'pet_quantity'=>(int)$v['pet_quantity']
-                        ,'pet_vacine_qt'=>$v['pet_vacine_qt'],'pet_desc'=>$v['pet_desc']];
+                        ,'pet_vacine_qt'=>(int)$v['pet_vacine_qt'],'pet_desc'=>(!IsNullOrEmptyString(@$v['pet_desc'])) ? $v['pet_desc']:''];
                          break;
                      } 
                    }
@@ -517,10 +530,15 @@ function insertall($type,$tran_id){
             
             // 5.ภัยธรรมชาติ
              $batc_insert_sql_mas_pet=[];
+             if(!IsNullOrEmptyString($disaster_another)){
+                array_push($disaster,99);
+             }
              foreach ($disaster as $k => $v) { 
+                  $desc='';
                   foreach ($listmas_disaster as $k2 => $v2) { // เทียบกับ data จริง
                     if($v2->dis_code==$v){ 
-                      $batc_insert_sql_mas_pet[]=['dis_fam_id'=>$tran_id,'dis_code'=>$v2->dis_code,'dis_name'=>$v2->dis_name];
+                       if($v==99){$desc=$disaster_another;}
+                      $batc_insert_sql_mas_pet[]=['dis_fam_id'=>$tran_id,'dis_code'=>$v2->dis_code,'dis_name'=>$v2->dis_name,'dis_desc'=>$desc];
                        break;
                     }
                   } 
@@ -532,10 +550,15 @@ function insertall($type,$tran_id){
          
              //6. ข่าวสารทางด้านการเกษตร
              $batc_insert_sql_fam_info=[];
+             if(!IsNullOrEmptyString($mas_info_select_another)){
+                array_push($mas_info_select,99);
+             }
              foreach ($mas_info_select as $k => $v) {
+                   $info_desc='';
                   foreach ($listmas_info as $k2 => $v2) { // เทียบกับ data จริง 
                     if($v2->info_code==$v){ 
-                      $batc_insert_sql_fam_info[]=['info_fam_id'=>$tran_id,'info_code'=>$v2->info_code,'info_name'=>$v2->info_name];
+                      if($v==99){$info_desc=$mas_info_select_another;}
+                      $batc_insert_sql_fam_info[]=['info_fam_id'=>$tran_id,'info_code'=>$v2->info_code,'info_name'=>$v2->info_name,'info_desc'=>$info_desc];
                       break;
                     }
                   } 
