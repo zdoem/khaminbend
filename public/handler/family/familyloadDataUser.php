@@ -1,7 +1,11 @@
 <?php
-require '../../bootstart.php';
-require ROOT . '/core/security.php'; 
-if (!isset($_GET['id'])) { throw new Exception("Error Processing Bad Request", 1);} 
+if (defined("ROOT")){ 
+  require_once ROOT. '/public/bootstart.php';  
+  }else{
+  require_once '../../bootstart.php';
+} 
+require_once ROOT . '/core/security.php';  
+if (!isset($_GET['id'])&&isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'&&@$_GET['type']=='copy') { throw new Exception("Error Processing Bad Request", 1);} 
 $listprovinces= $db::table("provinces")
     ->select($db::raw("id,code,name_th,name_en")) 
     ->orderBy('name_th', 'asc')
@@ -41,8 +45,8 @@ $listmas_pet = $db::table("tbl_mas_pet")
 ->select($db::raw("pet_code,pet_name,pet_type"))
 ->where('f_status', '=', 'A')
 ->orderBy('pet_code', 'asc')
-->get()->toArray(); 
-
+->get()->toArray();
+ 
 $listmas_house_occup= $db::table("tbl_mas_house_occup")
     ->select($db::raw("hccup_code,hccup_name"))
     ->where('f_status', '=', 'A')
@@ -59,8 +63,8 @@ $listmas_educate= $db::table("tbl_mas_educate")
     ->select($db::raw("ed_code,ed_name"))
     ->where('f_status', '=', 'A')
     ->orderBy('ed_desc', 'asc')
-    ->get()->toArray(); 
-
+    ->get()->toArray();
+ 
 $listmas_addition= $db::table("tbl_mas_addition")
     ->select($db::raw("add_code,add_name"))
     ->where('f_status', '=', 'A')
@@ -68,7 +72,7 @@ $listmas_addition= $db::table("tbl_mas_addition")
     ->get()->toArray();
 
 //-------------------------Data Update Query---------------------------------------------------------------------------------------------------
-$id = @$_GET['id'];
+ $id = @$_GET['id'];
  $data_fm_fam_hd=[];$list_fm_fam_facilities_dt3=[];$list_fm_fam_pet_dt4=[];
  $list_fm_fam_info_dt6_selected = [];$list_fm_fam_disaster_dt5_selected = [];
  $deeds=[];$distric_deeds=[];$listpeople=[];
@@ -77,18 +81,18 @@ $id = @$_GET['id'];
  $chapter5s=[];$distric_chapter5s=[];
  $temlistpeople=['prefix'=>null,'txtFName'=>'','txtLName'=>'','txtCitizenId'=>'','xFstatusRd'=>'O','sexRd'=>'M'
   ,'txtNational'=>'ไทย','religion'=>'01','birthday'=>'','educationlevel'=>null,'homerelations'=>'01','careermain'=>null,'careersecond'=>'01','netIncome'=>'','memF_status'=>'A']; 
-$listpeople[]=$temlistpeople;
+$listpeople[]=$temlistpeople; 
 
-$base_join = $db::table('fm_fam_info_dt6')
+ $base_join = $db::table('fm_fam_info_dt6')
     ->select($db::raw('info_fam_id,info_code,info_name,info_desc'))
-    ->where('info_fam_id', $id);
-$listmas_info = $db::table('tbl_mas_info AS a')
-    ->select($db::raw("a.info_code,a.info_name,b.info_desc"))
+    ->where('info_fam_id', $id); 
+ $listmas_info = $db::table('tbl_mas_info AS a')
+     ->select($db::raw("a.info_code,a.info_name,b.info_desc"))
     ->leftJoinSub($base_join, 'b', function ($join) {
         $join->on('a.info_code', '=', 'b.info_code');
     })
-    ->orderBy('info_code', 'asc')
-    ->get()->toArray();
+   ->orderBy('info_code', 'asc')
+    ->get()->toArray();  
 
 $base_join = $db::table('fm_fam_disaster_dt5')
     ->select($db::raw('dis_fam_id,dis_code,dis_name,dis_desc'))
@@ -99,7 +103,7 @@ $listmas_disaster = $db::table('tbl_mas_disaster AS a')
         $join->on('a.dis_code', '=', 'b.dis_code');
     })
     ->orderBy('a.dis_code', 'asc')
-    ->get()->toArray();
+    ->get()->toArray(); 
 
 //---------------------------------------------------------------------------------------------------------------
 $house_no = ''; //บ้านเลขที่
@@ -140,7 +144,7 @@ $eco_product_from =''; //ช่วงเวลาการผลิต จาก
 $eco_product_to =''; //ช่วงเวลาการผลิต จาก 
 $d_survey = DateConvert('topsre','d/m/Y',date('d/m/Y', time()),'/');//วันเดือนปีสำรวจ 
 $alert_survey=DateConvert('topsre','d/m/Y h:i',date('d/m/Y h:i', time()),'/'); 
-$actions='I';  
+$actions='I'; 
 if (isset($_GET['id'])) {// update 
   $actions='U';
 
@@ -151,17 +155,17 @@ if (isset($_GET['id'])) {// update
     ->groupBy('mem_fam_id'); 
   $data_fm_fam_hd = $db::table('fm_fam_hd AS a')
     ->select($db::raw("fam_id,house_no,house_moo,sub_district,district,province,post_code,cc.mem_pre,cc.mem_fname,cc.mem_lname,cc.mem_citizen_id
-      ,CONCAT(DATE_FORMAT(eco_product_from,'%m') ,'/', DATE_FORMAT(eco_product_from ,'%d'),'/',DATE_FORMAT(eco_product_from ,'%Y')+543) AS eco_product_from
-      ,CONCAT(DATE_FORMAT(eco_product_to,'%m') ,'/', DATE_FORMAT(eco_product_to ,'%d'),'/',DATE_FORMAT(eco_product_to ,'%Y')+543) AS eco_product_to 
+      ,CONCAT(DATE_FORMAT(eco_product_from,'%d') ,'/', DATE_FORMAT(eco_product_from ,'%m'),'/',DATE_FORMAT(eco_product_from ,'%Y')+543) AS eco_product_from
+      ,CONCAT(DATE_FORMAT(eco_product_to,'%d') ,'/', DATE_FORMAT(eco_product_to ,'%m'),'/',DATE_FORMAT(eco_product_to ,'%Y')+543) AS eco_product_to 
       ,mem_status AS x_status,mem_sex AS x_sex,mem_national AS national,mem_religion_code AS reg_code,mem_df_birth AS date_of_birth,mem_education_code AS education_code
       ,mem_relations_code AS relations_code,g_occupational_code,g_occupational_other,main_occupation_code,add_occupation_code
       ,income_per_year,fam_land_other,eco_occupation_code,eco_product_target_code,eco_capital_code,eco_product_cost,f_problem_env,problem_env_desc
-      ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,CONCAT(DATE_FORMAT(d_survey,'%m') ,'/', DATE_FORMAT(d_survey ,'%d'),'/',DATE_FORMAT(d_survey ,'%Y')+543) AS d_survey"))
+      ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,CONCAT(DATE_FORMAT(d_survey,'%d') ,'/', DATE_FORMAT(d_survey ,'%m'),'/',DATE_FORMAT(d_survey ,'%Y')+543) AS d_survey"))
     ->leftJoinSub($base_join, 'cc', function ($join) {
         $join->on('a.fam_id', '=', 'cc.mem_fam_id');
-    })->where('fam_id', '=', $_GET['id'])->first();  
+    })->where('fam_id', '=', $_GET['id'])->first();   
 
-    if (!IsNullOrEmptyString($data_fm_fam_hd->d_survey)) {$alert_survey = date('d/m/Y', strtotime($data_fm_fam_hd->d_survey));}
+    if (isset($data_fm_fam_hd->d_survey)&&!IsNullOrEmptyString($data_fm_fam_hd->d_survey)) {$alert_survey = date('d/m/Y', strtotime($data_fm_fam_hd->d_survey));}
     $house_no = (isset($data_fm_fam_hd->house_no) ? $data_fm_fam_hd->house_no : ''); //บ้านเลขที่
     $house_moo = ((isset($data_fm_fam_hd->house_moo)&&!IsNullOrEmptyString($data_fm_fam_hd->house_moo)) ? $data_fm_fam_hd->house_moo :null); //หมู่ที
     $sub_district = (isset($data_fm_fam_hd->sub_district) ? $data_fm_fam_hd->sub_district : ''); //ตำบล
@@ -204,10 +208,10 @@ if (isset($_GET['id'])) {// update
     // var_dump($d_survey);exit();
 
     // $listpeople
-    $listpeople = $db::table("fm_fam_members_dt1 AS a")
+  $listpeople = $db::table("fm_fam_members_dt1 AS a")
     ->select($db::raw("mem_pre AS prefix,b.f_status,mem_fname AS txtFName,mem_lname AS txtLName,mem_citizen_id AS txtCitizenId,mem_status AS xFstatusRd
       ,mem_sex AS sexRd,mem_national AS txtNational,mem_religion_code AS religion
-      ,CONCAT(DATE_FORMAT(mem_df_birth,'%m') ,'/', DATE_FORMAT(mem_df_birth ,'%d'),'/',DATE_FORMAT(mem_df_birth ,'%Y')+543) AS birthday,mem_education_code AS educationlevel
+      ,CONCAT(DATE_FORMAT(mem_df_birth,'%d') ,'/', DATE_FORMAT(mem_df_birth ,'%m'),'/',DATE_FORMAT(mem_df_birth ,'%Y')+543) AS birthday,mem_education_code AS educationlevel
       ,mem_relations_code AS homerelations,b.g_occupational_code AS careergroup,b.g_occupational_other AS careeranother
       ,xmain_occupation_code AS careermain,xadditional_occupation_code AS careersecond ,xincome_per_year AS netIncome,mem_seq,a.F_status AS memF_status"))
     ->Join('fm_fam_hd AS b', 'b.fam_id', 'a.mem_fam_id')
@@ -244,13 +248,13 @@ if (isset($_GET['id'])) {// update
       ->where('dis_fam_id', $_GET['id'])
       ->get()->toArray();
 
-foreach ($list_fm_fam_disaster_dt5 as $k => $v) {
+  foreach ($list_fm_fam_disaster_dt5 as $k => $v) {
       $list_fm_fam_disaster_dt5_selected[] = $v->dis_code;
   }
   // var_dump($list_fm_fam_disaster_dt5_array);exit();
   // echo json_encode($list_fm_fam_disaster_dt5);exit();
   // 6. ข่าวสารทางด้านการเกษตร fm_fam_info_dt6
-  $list_fm_fam_info_dt6 = $db::table('fm_fam_info_dt6')
+ $list_fm_fam_info_dt6 = $db::table('fm_fam_info_dt6')
       ->select($db::raw('info_code,info_name,info_desc'))
       ->where('info_fam_id', '=', $_GET['id'])
       ->get()->toArray();
@@ -274,12 +278,12 @@ $list_fm_fam_facilities_dt3 = $db::table('tbl_mas_facilities AS a')
       END AS selected"))
     ->leftJoinSub($base_join, 'b', function ($join) {
         $join->on('a.fac_code', '=', 'b.fac_code');
-    })->get()->toArray();
+    })->get()->toArray(); 
 
 //4. สัตว์เลี้ยง fm_fam_pet_dt4
 $base_join = $db::table('fm_fam_pet_dt4')
     ->select($db::raw('pet_code,pet_quantity,pet_vacine_qt,pet_desc'))
-    ->where('pet_fam_id', $id);
+    ->where('pet_fam_id', $id); 
 $list_fm_fam_pet_dt4 = $db::table('tbl_mas_pet AS a')
     ->select($db::raw("a.pet_code,a.pet_name,b.pet_quantity,IFNULL(b.pet_vacine_qt,0)AS pet_vacine_qt,b.pet_desc
         ,CASE
@@ -304,11 +308,11 @@ $disaster_datarows = splitMyArray($listmas_disaster, 2);
 $listmas_disaster1 = (isset($disaster_datarows[0]) ? $disaster_datarows[0] : []);
 $listmas_disaster2 = (isset($disaster_datarows[1]) ? $disaster_datarows[1] : []);
 
-$Shouseinforgeneral = ['familyhomecareer' => $eco_occupation_code, 'familyhomeproducttarget' => $eco_product_target_code
-    , 'familyhomesourceoffunds' => $eco_capital_code, 'eco_product_from' => $eco_product_from, 'eco_product_to' => $eco_product_to, 'familyhomeproductioncost' => $eco_product_cost
-    , 'g_occupational_code' => $g_occupational_code, 'g_occupational_other' => $g_occupational_other];
-$Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstrict' => $sub_district, 'txtDistrict' => $district, 'txtProvince' => $province
-    , 'txtPostalCode' => $post_code];
+$Shouseinforgeneral=['familyhomecareer'=>$eco_occupation_code,'familyhomeproducttarget'=>$eco_product_target_code
+,'familyhomesourceoffunds'=>$eco_capital_code,'eco_product_from'=>$eco_product_from,'eco_product_to'=>$eco_product_to,'familyhomeproductioncost'=>$eco_product_cost
+,'g_occupational_code'=>$g_occupational_code,'g_occupational_other'=>$g_occupational_other];
+$Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$sub_district,'txtDistrict'=>$district,'txtProvince'=>$province
+,'txtPostalCode'=>$post_code];
 
 ?>
 <script>
@@ -397,9 +401,12 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
   window.alert_survey='<?=$alert_survey?>';
   window.actions='<?=$actions?>';
   
-<?php if(IsNullOrEmptyString($house_no)){
+<?php  
+if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'&&@$_GET['type']=='copy') { 
+if(IsNullOrEmptyString($house_no)){
 ?>
  Swal.fire('ไม่พบข้อมูล!');
 <?php
-} ?>
- </script>
+ } 
+}?>
+</script>

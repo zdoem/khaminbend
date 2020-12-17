@@ -460,8 +460,8 @@ window.app = new Vue({
                 type: "GET",  
                 cache: false,
                 datatype : "application/json", 
-                url: "handler/family/familycopydata.php",
-                data: {id:_this.txtcopydata}, 
+                url: "handler/family/familyloadDataUser.php",
+                data: {type:'copy',id:_this.txtcopydata}, 
                 success: function(data){    
                     $('#xhtml').empty().html(data);
                     // _this.Mfamilylists=window.SSfamilylists;
