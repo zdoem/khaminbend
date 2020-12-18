@@ -34,8 +34,9 @@ Vue.component("date-picker", {
      this.$nextTick(function(){   
       var mydate = new Date();
       var toDay = mydate.getDate() + '/' + (mydate.getMonth() + 1) + '/' + (mydate.getFullYear() + 543); 
-      $(this.$refs.mdate).datepicker({ 
-        yearRange: '1907:'+(new Date().getFullYear()),
+      $(this.$refs.mdate).datepicker({  
+        yearRange: '-80:+0',
+        gotoCurrent:true,
         changeMonth: true, changeYear: true, defaultDate: toDay
         ,beforeShow: function (input, calendar) {
            $(calendar.dpDiv).removeClass('eco_product'); 
@@ -692,8 +693,7 @@ Vue.nextTick(function () {
       var toDay = mydate.getDate() + '/' + (mydate.getMonth() + 1) + '/' + (mydate.getFullYear() + 543);
       $("#survseydate").datepicker({ 
        showButtonPanel: true,
-       currentText: "วันนี้",
-       closeText: "ปิด",
+       yearRange: '-4:+0',
        beforeShow: function (input, calendar) {
            $(calendar.dpDiv).removeClass('eco_product'); 
         },
@@ -717,11 +717,14 @@ Vue.nextTick(function () {
        });
       $("#eco_product_from").datepicker({
         // minDate: '-1Y',
+        yearRange: '-4:+39',
+        setDate: new Date(), 
         dateFormat: "dd/mm/yy",
         showButtonPanel: true, 
         changeMonth: true,
         numberOfMonths: 1,
-        changeYear: true, isBuddhist: true, defaultDate: toDay 
+        gotoCurrent:true,
+        changeYear: true
         ,beforeShow: function (input, calendar) {
            $(calendar.dpDiv).addClass('eco_product');
           dpmode = 'depart';
@@ -743,7 +746,9 @@ Vue.nextTick(function () {
       $("#eco_product_to").datepicker({
         dateFormat: "dd/mm/yy",
         // minDate: 2,
+        yearRange: '-4:+39',
         setDate: new Date(), 
+        gotoCurrent:true,
         showButtonPanel: true, 
         numberOfMonths: 1,
         changeMonth: true, changeYear: true,isBuddhist: true, defaultDate: toDay
@@ -788,17 +793,7 @@ Vue.nextTick(function () {
             $(this).removeClass('dp-highlight')
           };
         });
-      });
-
-
-
-      // $('#survseydate').datetimepicker(window.d_survey);
-      // $('#survseydate').datetimepicker({defaultDate:'11/03/2020 13:52',format: 'DD/MM/YYYY HH:mm A'});
-      // $('input[name="familyhomeproductperiod"]').daterangepicker(window.ConfDaterang); 
-   //$('#birthday,#reservationdate2').on("change.datetimepicker", function (e) {
-       //console.log('log',$('#datetimepicker1').datetimepicker('viewDate')); 
-       // window.app.familylists.birthday=122;//$('#datetimepicker1').datetimepicker('viewDate');  
-   //});
+      }); 
 });  
 // var dd= Swal.fire({
 //           title: 'Timer Test',
