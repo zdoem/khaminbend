@@ -48,7 +48,7 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
     font-family: 'Prompt', sans-serif; !important; 
   } 
    .dp-highlight .ui-state-default {
-    background: #33aeff;
+    background: #ffc449;
     color: #FFF;
   }
   [v-cloak] {display: none}
