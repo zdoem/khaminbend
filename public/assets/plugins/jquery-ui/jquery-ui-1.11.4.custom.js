@@ -1,4 +1,4 @@
-/*! jQuery UI - v1.11.4 - 2020-12-18
+/*! jQuery UI - v1.11.4 - 2016-04-07
 * http://jqueryui.com
 * Includes: core.js, widget.js, mouse.js, position.js, draggable.js, droppable.js, resizable.js, selectable.js, sortable.js, accordion.js, autocomplete.js, button.js, datepicker.js, dialog.js, menu.js, progressbar.js, selectmenu.js, slider.js, spinner.js, tabs.js, tooltip.js, effect.js, effect-blind.js, effect-bounce.js, effect-clip.js, effect-drop.js, effect-explode.js, effect-fade.js, effect-fold.js, effect-highlight.js, effect-puff.js, effect-pulsate.js, effect-scale.js, effect-shake.js, effect-size.js, effect-slide.js, effect-transfer.js
 * Copyright jQuery Foundation and other contributors; Licensed MIT */
@@ -9188,7 +9188,9 @@ $.extend(Datepicker.prototype, {
 						month = getName("M", monthNamesShort, monthNames);
 						break;
 					case "y":
-						year = getNumber("y");
+					  /*Customs By www.javascriptthai.com*/
+					  //year = getNumber("y");
+					  year = getNumber("y")-this._defaults.yearOffSet; 
 						break;
 					case "@":
 						date = new Date(getNumber("@"));
@@ -9356,8 +9358,11 @@ $.extend(Datepicker.prototype, {
 							output += formatName("M", date.getMonth(), monthNamesShort, monthNames);
 							break;
 						case "y":
-							output += (lookAhead("y") ? date.getFullYear() :
-								(date.getYear() % 100 < 10 ? "0" : "") + date.getYear() % 100);
+						// output += (lookAhead("y") ? date.getFullYear() :
+					    // 	(date.getYear() % 100 < 10 ? "0" : "") + date.getYear() % 100);
+ 						/*Customs By www.javascriptthai.com*/
+ 						output += (lookAhead("y") ? date.getFullYear()+this._defaults.yearOffSet :(date.getYear() % 100 < 10 ? "0" : "") + date.getYear() % 100);
+
 							break;
 						case "@":
 							output += date.getTime();
@@ -9447,9 +9452,23 @@ $.extend(Datepicker.prototype, {
 		} catch (event) {
 			dates = (noDefault ? "" : dates);
 		}
+		// inst.selectedDay = date.getDate();
+		// inst.drawMonth = inst.selectedMonth = date.getMonth();
+		// inst.drawYear = inst.selectedYear = date.getFullYear();
+		// inst.currentDay = (dates ? date.getDate() : 0);
+		// inst.currentMonth = (dates ? date.getMonth() : 0);
+		// inst.currentYear = (dates ? date.getFullYear() : 0);
+		// this._adjustInstDate(inst);
+		
 		inst.selectedDay = date.getDate();
 		inst.drawMonth = inst.selectedMonth = date.getMonth();
-		inst.drawYear = inst.selectedYear = date.getFullYear();
+		
+		 /*Customs By www.javascriptthai.com*/
+         //inst.drawYear = inst.selectedYear = date.getFullYear();
+         if (inst.input.val() != "")
+         inst.drawYear = inst.selectedYear = (date.getFullYear()) ;
+		
+
 		inst.currentDay = (dates ? date.getDate() : 0);
 		inst.currentMonth = (dates ? date.getMonth() : 0);
 		inst.currentYear = (dates ? date.getFullYear() : 0);
@@ -9836,7 +9855,8 @@ $.extend(Datepicker.prototype, {
 				for (; year <= endYear; year++) {
 					inst.yearshtml += "<option value='" + year + "'" +
 						(year === drawYear ? " selected='selected'" : "") +
-						">" + year + "</option>";
+						// ">" + year + "</option>";
+					  '>' + (year + this._get(inst, 'yearOffSet')) + '</option>'; /* Custom By www.javascriptthai.com */
 				}
 				inst.yearshtml += "</select>";
 
@@ -9965,6 +9985,8 @@ $.extend(Datepicker.prototype, {
 		var date = (day ? (typeof day === "object" ? day :
 			this._daylightSavingAdjust(new Date(year, month, day))) :
 			this._daylightSavingAdjust(new Date(inst.currentYear, inst.currentMonth, inst.currentDay)));
+			   /* Custom By www.javascriptthai.com */
+           date.setFullYear(date.getFullYear());
 		return this.formatDate(this._get(inst, "dateFormat"), date, this._getFormatConfig(inst));
 	}
 });
@@ -16611,7 +16633,6 @@ var effectTransfer = $.effects.effect.transfer = function( o, done ) {
 				done();
 			});
 };
-
 
 
 
