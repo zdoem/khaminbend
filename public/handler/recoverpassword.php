@@ -67,7 +67,7 @@ if (isset($_POST['action'])&&@$_POST['action']=='reset-password') {
              ?>
              <script type="text/javascript">
              Swal.fire({
-              title: 'ระบบได้ไม่สามารถส่งคำขอเปลี่ยนรหัสผ่านใหม่ได้ กรุณาติด admin !',
+              title: 'ระบบไม่สามารถส่งคำขอเปลี่ยนรหัสผ่านใหม่ได้ กรุณาติดต่อ admin!',
               allowOutsideClick: false,
               showDenyButton: false,
               showCancelButton: false 
@@ -80,7 +80,7 @@ if (isset($_POST['action'])&&@$_POST['action']=='reset-password') {
        ?>
        <script type="text/javascript">
        Swal.fire({
-        title: 'ระบบได้ไม่สามารถส่งคำขอเปลี่ยนรหัสผ่านใหม่ได้ กรุณาติด admin !',
+        title: 'ระบบไม่สามารถส่งคำขอเปลี่ยนรหัสผ่านใหม่ได้ กรุณาติดต่อ admin!',
         allowOutsideClick: false,
         showDenyButton: false,
         showCancelButton: false 
