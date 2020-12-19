@@ -43,7 +43,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>ชื่อมูลกลุ่มอาชีพ :</label>
+                  <label>ชื่อมูลกลุ่มอาชีพ <span class="requiredfeilds">*</span></label>
                   <input type="text" name="goccup_name" id="goccup_name" class="form-control" required  title="กรุณากรอกกลุ่มอาชีพและเป็นตัวเลขเท่านั้น" placeholder="กลุ่มอาชีพ ...">
                 </div> 
               </div> 

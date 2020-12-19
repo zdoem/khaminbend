@@ -42,7 +42,7 @@
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
-                  <label>หมู่ที่ :</label>
+                  <label>หมู่ที่ <span class="requiredfeilds">*</span></label>
                   <input type="number" name="txtMoo" id="txtMoo" class="form-control" required pattern="\d*" title="กรุณากรอกหมู่ที่และเป็นตัวเลขเท่านั้น" placeholder="หมู่ที่ ...">
                 </div>
                 <!-- /.form-group -->
@@ -50,7 +50,7 @@
 
               <div class="col-md-4">
                 <div class="form-group">
-                  <label>ชื่อหมู่บ้าน :</label>
+                  <label>ชื่อหมู่บ้าน <span class="requiredfeilds">*</span></label>
                   <input type="text" name="txtVillageName" id="txtVillageName" required class="form-control" title="กรุณากรอกชื่อหมู่บ้าน" placeholder="ชื่อหมู่บ้าน...">
                 </div>
                 <!-- /.form-group -->

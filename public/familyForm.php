@@ -100,8 +100,8 @@ require_once 'handler/family/familyloadDataUser.php';
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
-                  <label>บ้านเลขที่ :</label>
-                  <input type="text" :class="status($v.Mhouseinfor.txtHouseId)" required v-model.trim="$v.Mhouseinfor.txtHouseId.$model" name="txtHouseId" id="txtHouseId" class="form-control" placeholder="บ้านเลขที่  ...">
+                  <label>บ้านเลขที่ <span class="requiredfeilds">*</span></label>
+                  <input type="text" :class="status($v.Mhouseinfor.txtHouseId)" required v-model.trim="$v.Mhouseinfor.txtHouseId.$model" @blur="$v.Mhouseinfor.txtHouseId.$touch()" name="txtHouseId" id="txtHouseId" class="form-control" placeholder="บ้านเลขที่  ...">
                   <div class="invalid-feedback order-last" v-if="!$v.Mhouseinfor.txtHouseId.Fn_txtHouseId">ต้องเป็นตัวเลขและ/เท่านั้น</div>
                   <div class="invalid-feedback order-last" v-if="!$v.Mhouseinfor.txtHouseId.isUnique&&!$v.Mhouseinfor.txtHouseId.$pending">มีข้อมูลอยู่แล้ว!.</div>
                 </div>
@@ -110,8 +110,8 @@ require_once 'handler/family/familyloadDataUser.php';
 
               <div class="col-md-4">
                 <div class="form-group">
-                  <label>หมู่ที่ - ชื่อหมู่บ้าน :</label> 
-				       	<select class="form-control"  :class="status($v.Mhouseinfor.mooHouse)" required v-model.trim="$v.Mhouseinfor.mooHouse.$model" > 
+                  <label>หมู่ที่ - ชื่อหมู่บ้าน <span class="requiredfeilds">*</span></label> 
+				       	<select class="form-control"  :class="status($v.Mhouseinfor.mooHouse)" required @blur="$v.Mhouseinfor.mooHouse.$touch()" v-model.trim="$v.Mhouseinfor.mooHouse.$model" > 
                         <template v-for="(v, indexx) in listmas_vilage">
                           <option v-if="(indexx*1)==0" v-bind:value="v.vil_id" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.vil_name}}</option> 
                           <option v-if="(indexx*1)>0" v-bind:value="v.vil_id" v-bind:selected="indexx== 0 ? 'selected' : false">หมู่ที่ {{v.vil_moo}} - {{v.vil_name}}</option>
@@ -123,8 +123,8 @@ require_once 'handler/family/familyloadDataUser.php';
 
               <div class="col-md-4">
                 <div class="form-group">
-                   <label>ตำบล :</label>
-                     <input type="text" :class="status($v.Mhouseinfor.txtSubDstrict)" required v-model.trim="$v.Mhouseinfor.txtSubDstrict.$model"  name="txtSubDstrict" value="โคกขมิ้น" id="txtSubDstrict" class="form-control" placeholder="ตำบล  ...">
+                   <label>ตำบล <span class="requiredfeilds">*</span></label>
+                     <input type="text" :class="status($v.Mhouseinfor.txtSubDstrict)" required @blur="$v.Mhouseinfor.txtSubDstrict.$touch()" v-model.trim="$v.Mhouseinfor.txtSubDstrict.$model"  name="txtSubDstrict" value="โคกขมิ้น" id="txtSubDstrict" class="form-control" placeholder="ตำบล  ...">
                  </div>
                  <!-- /.form-group -->
               </div>
@@ -136,23 +136,23 @@ require_once 'handler/family/familyloadDataUser.php';
 
                <div class="col-md-4">
                  <div class="form-group">
-                   <label>อำเภอ:</label>
-                   <input type="text" :class="status($v.Mhouseinfor.txtDistrict)" required v-model.trim="$v.Mhouseinfor.txtDistrict.$model"  name="txtDistrict" value="พลับพลาชัย  " id="txtDistrict" class="form-control" placeholder="อำเภอ  ...">
+                   <label>อำเภอ <span class="requiredfeilds">*</span></label>
+                   <input type="text" :class="status($v.Mhouseinfor.txtDistrict)" required @blur="$v.Mhouseinfor.txtDistrict.$touch()"  v-model.trim="$v.Mhouseinfor.txtDistrict.$model"  name="txtDistrict" value="พลับพลาชัย  " id="txtDistrict" class="form-control" placeholder="อำเภอ  ...">
                  </div>
                  <!-- /.form-group -->
                </div>
                <!-- /.col -->
                <div class="col-md-4">
                  <div class="form-group">
-                   <label>จังหวัด:</label>
-                   <input type="text" :class="status($v.Mhouseinfor.txtProvince)" required v-model.trim="$v.Mhouseinfor.txtProvince.$model"  name="txtProvince" value="บุรีรัมย์ " id="txtProvince" class="form-control" placeholder="จังหวัด  ...">
+                   <label>จังหวัด <span class="requiredfeilds">*</span></label>
+                   <input type="text" :class="status($v.Mhouseinfor.txtProvince)" required @blur="$v.Mhouseinfor.txtProvince.$touch()" v-model.trim="$v.Mhouseinfor.txtProvince.$model"  name="txtProvince" value="บุรีรัมย์ " id="txtProvince" class="form-control" placeholder="จังหวัด  ...">
                  </div>
                  <!-- /.form-group -->
                </div>
                 <div class="col-md-4">
                       <div class="form-group">
-                          <label>รหัสไปรษณีย์:</label>
-                          <input type="text" :class="status($v.Mhouseinfor.txtPostalCode)" required v-model.trim="$v.Mhouseinfor.txtPostalCode.$model"  name="txtPostalCode" value="31250" id="txtPostalCode" class="form-control" placeholder="รหัสไปรษณีย์  ...">
+                          <label>รหัสไปรษณีย์ <span class="requiredfeilds">*</span></label>
+                          <input type="text" :class="status($v.Mhouseinfor.txtPostalCode)" required @blur="$v.Mhouseinfor.txtPostalCode.$touch()" v-model.trim="$v.Mhouseinfor.txtPostalCode.$model"  name="txtPostalCode" value="31250" id="txtPostalCode" class="form-control" placeholder="รหัสไปรษณีย์  ...">
                       </div>
                         <!-- /.form-group -->
                   </div>
@@ -190,7 +190,7 @@ require_once 'handler/family/familyloadDataUser.php';
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>คำนำหน้า:</label>
+                  <label>คำนำหน้า <span class="requiredfeilds">*</span></label>
                   <!-- v-model="item.prefix" v-bind:class="{ 'error dirty':item.prefix.$error, '': !item.prefix.$error}" v-model.trim="item.prefix.$model"-->
                   <select class="form-control" :class="status(item.prefix)" required v-model.trim="item.prefix.$model" @blur="item.prefix.$touch()">
                      <option v-for="(v, indexx) in listmas_prefix" v-bind:value="v.pre_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.pre_name}}</option> 
@@ -198,22 +198,22 @@ require_once 'handler/family/familyloadDataUser.php';
                 </div>
                 <!-- /.form-group -->
               </div>
-              <div class="col-md-3" v-if="index==0">
+              <div class="col-md-3" v-if="item.xFstatusRd.$model=='O'">
                 <div class="form-group">
-                  <label>ชื่อเจ้าบ้าน :</label>
+                  <label>ชื่อเจ้าบ้าน <span class="requiredfeilds">*</span></label>
                   <input type="text" :id="'txtFName'+index" :class="status(item.txtFName)" required v-model.trim="item.txtFName.$model" @blur="item.txtFName.$touch()" class="form-control" placeholder="ชื่อเจ้าบ้าน...">
                 </div> 
               </div>
-               <div class="col-md-3" v-if="index>0">
+               <div class="col-md-3" v-if="item.xFstatusRd.$model=='M'">
                 <div class="form-group">
-                  <label>ชื่อผู้อยู่อาศัย :</label>
+                  <label>ชื่อผู้อยู่อาศัย <span class="requiredfeilds">*</span></label>
                   <input type="text" :id="'txtFName'+index" :class="status(item.txtFName)" required v-model.trim="item.txtFName.$model" @blur="item.txtFName.$touch()" class="form-control" placeholder="ชื่อผู้อยู่อาศัย...">
                 </div> 
               </div>
 
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>นามสกุล:</label>
+                  <label>นามสกุล <span class="requiredfeilds">*</span></label>
                   <input type="text" :id="'txtLName'+index" :class="status(item.txtLName)" required v-model.trim="item.txtLName.$model" @blur="item.txtLName.$touch()" class="form-control" placeholder="นามสกุล...">
                 </div>
                 <!-- /.form-group -->
@@ -221,7 +221,7 @@ require_once 'handler/family/familyloadDataUser.php';
 
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>เลขที่ประจำตัวประชาชน  :</label>
+                  <label>เลขที่ประจำตัวประชาชน <span class="requiredfeilds">*</span></label>
                     <input type="text" :id="'txtCitizenId'+index" :class="status(item.txtCitizenId)" required v-model.trim="item.txtCitizenId.$model" @blur="item.txtCitizenId.$touch()" class="form-control" minlength="13" maxlength="13" placeholder="เลขที่ประจำตัวประชาชน  ...">
                     <div class="invalid-feedback order-last" v-if="!item.txtCitizenId.isUnique&&!item.txtCitizenId.$pending">มีข้อมูลอยู่แล้ว!.</div>
                 </div>
@@ -234,7 +234,7 @@ require_once 'handler/family/familyloadDataUser.php';
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>สถานภาพ :</label>
+                  <label>สถานภาพ <span class="requiredfeilds">*</span></label>
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline"><!--   :disabled="index>0" -->
                       <input type="radio" :id="'radioPrimary1'+index" v-on:change="setOwnerfamily('O',index)"  value="O" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()"> 
@@ -252,7 +252,7 @@ require_once 'handler/family/familyloadDataUser.php';
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>เพศ  :</label>
+                  <label>เพศ <span class="requiredfeilds">*</span></label>
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline">
                       <input type="radio" :id="'radioPrimary3'+index" value="M" :class="status(item.sexRd)" v-model.trim="item.sexRd.$model" @blur="item.sexRd.$touch()">
@@ -277,7 +277,7 @@ require_once 'handler/family/familyloadDataUser.php';
 
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>สัญชาติ  :</label>
+                  <label>สัญชาติ <span class="requiredfeilds">*</span></label>
                   <input type="text" :id="'txtNational'+index" :class="status(item.txtNational)" required v-model.trim="item.txtNational.$model" @blur="item.txtNational.$touch()" class="form-control" placeholder="สัญชาติ  ...">
                 </div>
                 <!-- /.form-group -->
@@ -285,7 +285,7 @@ require_once 'handler/family/familyloadDataUser.php';
 
               <div class="col-md-3">
                  <div class="form-group">
-                    <label>ศาสนา :</label>
+                    <label>ศาสนา <span class="requiredfeilds">*</span></label>
                     <select class="form-control" :id="'religion'+index"  :class="status(item.religion)" required v-model.trim="item.religion.$model" @blur="item.religion.$touch()">
                       <option v-for="(v, indexx) in listmas_religion" :value="v.reg_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.reg_name}}</option> 
                     </select>
@@ -301,15 +301,8 @@ require_once 'handler/family/familyloadDataUser.php';
 
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>วันเดือนปีเกิด :</label>  
+                  <label>วันเดือนปีเกิด <span class="requiredfeilds">*</span></label>  
                    <date-picker  v-model.trim="item.birthday.$model" @blur="item.birthday.$touch()"  required  :class="status(item.birthday)" :mdata="item.birthday.$model"></date-picker>  
-                   <!-- v-model.trim="item.birthday.$model" @blur="item.birthday.$touch()"  :class="status(item.birthday)"   -->
-                  <!-- <div class="input-group date" id="birthday" data-target-input="nearest"> 
-                      <input type="text" v-model.trim="item.birthday" class="form-control  "  />
-                      <div class="input-group-append" data-target="#birthday" data-toggle="datetimepicker">
-                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                      </div>
-                  </div> -->
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -318,7 +311,7 @@ require_once 'handler/family/familyloadDataUser.php';
                 <!-- /.col -->
                 <div class="col-md-3">
                    <div class="form-group">
-                      <label>ระดับการศึกษา :</label>
+                      <label>ระดับการศึกษา <span class="requiredfeilds">*</span></label>
                       <select class="form-control"  :id="'educationlevel'+index" :class="status(item.educationlevel)" required v-model.trim="item.educationlevel.$model" @blur="item.educationlevel.$touch()">
                         <option v-for="(v, indexx) in listmas_educate" :value="v.ed_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.ed_name}}</option> 
                       </select>
@@ -328,7 +321,7 @@ require_once 'handler/family/familyloadDataUser.php';
                  <!-- /.col -->
                  <div class="col-md-3">
                     <div class="form-group">
-                       <label>ความสัมพันธ์ในครัวเรือน  :</label>
+                       <label>ความสัมพันธ์ในครัวเรือน <span class="requiredfeilds">*</span></label>
                        <select class="form-control" :id="'homerelations'+index" :class="status(item.homerelations)" required v-model.trim="item.homerelations.$model" @blur="item.homerelations.$touch()">
                           <option v-for="(v, indexx) in listmas_relations" :value="v.re_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.re_name}}</option> 
                        </select>
@@ -337,7 +330,7 @@ require_once 'handler/family/familyloadDataUser.php';
                <!-- /.col --> 
 				<div class="col-md-3">
 					<div class="form-group">
-							<label>อาชีพหลัก :</label>
+							<label>อาชีพหลัก <span class="requiredfeilds">*</span></label>
 							 <select class="form-control" :id="'careermain'+index"  :class="status(item.careermain)" required v-model.trim="item.careermain.$model" @blur="item.careermain.$touch()">  
                 <option v-for="(vv, indexx) in listmas_occupation" :value="vv.occup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{vv.occup_name}}</option> 
 							</select>
@@ -353,14 +346,14 @@ require_once 'handler/family/familyloadDataUser.php';
 				</div>
 				<div class="col-md-3">
 					<div class="form-group">
-					  <label>รายได้/ต่อปี  :</label>								
-						<input type="number" :id="'netIncome'+index" :class="status(item.netIncome)" v-model.trim="item.netIncome.$model" @blur="item.netIncome.$touch()" class="form-control btn-xs" placeholder="รายได้/ต่อปี...">
+					  <label>รายได้/ต่อปี <span class="requiredfeilds">*</span></label>								
+						<input type="number" :id="'netIncome'+index" :class="status(item.netIncome)" required v-model.trim="item.netIncome.$model" @blur="item.netIncome.$touch()" class="form-control btn-xs" placeholder="รายได้/ต่อปี...">
 					</div> 
          </div>
          
          <div class="col-md-3">
 					 <div class="form-group">
-                  <label>สถานะ  :</label>
+                  <label>สถานะ <span class="requiredfeilds">*</span></label>
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline">
                       <input type="radio" :id="'radioF_status1'+index" required v-model="item.memF_status.$model" value="A" :class="status(item.memF_status)" @blur="item.memF_status.$touch()">
@@ -377,20 +370,9 @@ require_once 'handler/family/familyloadDataUser.php';
 
               </div> 
               <hr v-if="showhr(Mfamilylists,index)">
-            </template> 
-            <!-- /row -->
-            <!-- row -->  
-          </div>
-          <!-- /.card-header -->
-
-          <!-- /.card-body
-          <div class="card-footer">
-          <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
-            <button type="reset" class="btn btn-warning">รีเซ็ท</button>
-          </div>  -->
-
-        </div>
-        <!-- /.card -->
+            </template>  
+          </div> 
+        </div> 
 
        <!-- SELECT2 EXAMPLE ข้อมูลพื้นที่การเกษตร -->
         <div class="card card-success">
@@ -398,8 +380,7 @@ require_once 'handler/family/familyloadDataUser.php';
             <h3 class="card-title">ข้อมูลพื้นที่การเกษตร </h3>
 
             <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-              <!--<button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>-->
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button> 
             </div>
           </div>
           <!-- /.card-header -->
@@ -414,12 +395,12 @@ require_once 'handler/family/familyloadDataUser.php';
                             <thead>
                               <tr>
                                 <th style="width: 5%">#</th>
-                                <th style="width: 15%">จังหวัด</th>
-                                <th style="width: 25%">อำเภอ</th>
-                                <th style="width: 15%">เลขที่โฉนด</th>
-                                <th style="width: 10%">พื้นที่(ไร่)</th>
-                                <th style="width: 10%">พื้นที่(งาน)</th>
-                                <th style="width: 10%">พื้นที่(ตรว.)</th>
+                                <th style="width: 15%">จังหวัด <span class="requiredfeilds">*</span></th>
+                                <th style="width: 25%">อำเภอ <span class="requiredfeilds">*</span></th>
+                                <th style="width: 15%">เลขที่โฉนด <span class="requiredfeilds">*</span></th>
+                                <th style="width: 10%">พื้นที่(ไร่) <span class="requiredfeilds">*</span></th>
+                                <th style="width: 10%">พื้นที่(งาน) <span class="requiredfeilds">*</span></th>
+                                <th style="width: 10%">พื้นที่(ตรว.) <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">#</th>
                               </tr>
                             </thead>
@@ -490,12 +471,12 @@ require_once 'handler/family/familyloadDataUser.php';
                             <thead>
                               <tr>
                                 <th style="width: 5%">#</th>
-                                <th style="width: 15%">จังหวัด</th>
-                                <th style="width: 25%">อำเภอ</th>
-                                <th style="width: 15%">เลขที่นส.3ก</th>
-                                <th style="width: 10%">พื้นที่(ไร่)</th>
-                                <th style="width: 10%">พื้นที่(งาน)</th>
-                                <th style="width: 10%">พื้นที่(ตรว.)</th>
+                                <th style="width: 15%">จังหวัด <span class="requiredfeilds">*</span></th>
+                                <th style="width: 25%">อำเภอ <span class="requiredfeilds">*</span></th>
+                                <th style="width: 15%">เลขที่นส.3ก <span class="requiredfeilds">*</span></th>
+                                <th style="width: 10%">พื้นที่(ไร่) <span class="requiredfeilds">*</span></th>
+                                <th style="width: 10%">พื้นที่(งาน) <span class="requiredfeilds">*</span></th>
+                                <th style="width: 10%">พื้นที่(ตรว.) <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">#</th>
                               </tr>
                             </thead>
@@ -563,12 +544,12 @@ require_once 'handler/family/familyloadDataUser.php';
                             <thead>
                               <tr>
                                 <th style="width: 5%">#</th>
-                                <th style="width: 15%">จังหวัด</th>
-                                <th style="width: 25%">อำเภอ</th>
-                                <th style="width: 15%">เลขที่สปก.</th>
-                                <th style="width: 10%">พื้นที่(ไร่)</th>
-                                <th style="width: 10%">พื้นที่(งาน)</th>
-                                <th style="width: 10%">พื้นที่(ตรว.)</th>
+                                <th style="width: 15%">จังหวัด <span class="requiredfeilds">*</span></th>
+                                <th style="width: 25%">อำเภอ <span class="requiredfeilds">*</span></th>
+                                <th style="width: 15%">เลขที่สปก. <span class="requiredfeilds">*</span></th>
+                                <th style="width: 10%">พื้นที่(ไร่) <span class="requiredfeilds">*</span></th>
+                                <th style="width: 10%">พื้นที่(งาน) <span class="requiredfeilds">*</span></th>
+                                <th style="width: 10%">พื้นที่(ตรว.) <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">#</th>
                               </tr>
                             </thead>
@@ -637,12 +618,12 @@ require_once 'handler/family/familyloadDataUser.php';
                             <thead>
                               <tr>
                                 <th style="width: 5%">#</th>
-                                <th style="width: 15%">จังหวัด</th>
-                                <th style="width: 25%">อำเภอ</th>
-                                <th style="width: 15%">เลขที่ภบท 5</th>
-                                <th style="width: 10%">พื้นที่(ไร่)</th>
-                                <th style="width: 10%">พื้นที่(งาน)</th>
-                                <th style="width: 10%">พื้นที่(ตรว.)</th>
+                                <th style="width: 15%">จังหวัด <span class="requiredfeilds">*</span></th>
+                                <th style="width: 25%">อำเภอ <span class="requiredfeilds">*</span></th>
+                                <th style="width: 15%">เลขที่ภบท 5 <span class="requiredfeilds">*</span></th>
+                                <th style="width: 10%">พื้นที่(ไร่) <span class="requiredfeilds">*</span></th>
+                                <th style="width: 10%">พื้นที่(งาน) <span class="requiredfeilds">*</span></th>
+                                <th style="width: 10%">พื้นที่(ตรว.) <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">#</th>
                               </tr>
                             </thead>
@@ -734,7 +715,7 @@ require_once 'handler/family/familyloadDataUser.php';
 
               <div class="col-md-3">
                <div class="form-group">
-                  <label>อาชีพในครัวเรือน:</label>
+                  <label>อาชีพในครัวเรือน <span class="requiredfeilds">*</span></label>
                   <select class="form-control" name="familyhomecareer" id="familyhomecareer" :class="status($v.Mhouseinforgeneral.familyhomecareer)" v-model.trim="$v.Mhouseinforgeneral.familyhomecareer.$model" @blur="$v.Mhouseinforgeneral.familyhomecareer.$touch()">
 					         <option v-for="(vv, indexx) in listmas_house_occup" :value="vv.hccup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{vv.hccup_name}}</option> 
 				         </select> 
@@ -743,7 +724,7 @@ require_once 'handler/family/familyloadDataUser.php';
               
             <div class="col-md-3">
                     <div class="form-group">
-                            <label>กลุ่มอาชีพ :</label>
+                            <label>กลุ่มอาชีพ <span class="requiredfeilds">*</span></label>
                              <select class="form-control" :class="status($v.Mhouseinforgeneral.g_occupational_code)" required v-model.trim="$v.Mhouseinforgeneral.g_occupational_code.$model" @blur="$v.Mhouseinforgeneral.g_occupational_code.$touch()">
                              <option v-for="(v, indexx) in listmas_group_occup" :value="v.goccup_code" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.goccup_name}}</option> 
                             </select>
@@ -774,7 +755,7 @@ require_once 'handler/family/familyloadDataUser.php';
 
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>แหล่งเงินทุน (ครัวเรือน) :</label>
+                  <label>แหล่งเงินทุน (ครัวเรือน) <span class="requiredfeilds">*</span></label>
                   <select class="form-control"  class="form-control" name="familyhomesourceoffunds" id="familyhomesourceoffunds" :class="status($v.Mhouseinforgeneral.familyhomesourceoffunds)" v-model.trim="$v.Mhouseinforgeneral.familyhomesourceoffunds.$model" @blur="$v.Mhouseinforgeneral.familyhomesourceoffunds.$touch()">
                    <option v-for="(vv, indexx) in listfamilyhomesourceoffunds" :value="vv.code" v-bind:selected="indexx== 0 ? 'selected' : false">{{vv.name}}</option> 
                   </select>
@@ -783,7 +764,7 @@ require_once 'handler/family/familyloadDataUser.php';
               </div>
              <div class="col-md-3">
                 <div class="form-group">
-                  <label>ช่วงเวลาการผลิต(เริ่ม) :</label> 
+                  <label>ช่วงเวลาการผลิต(เริ่ม) <span class="requiredfeilds">*</span></label> 
                   <div class="input-group date" data-target-input="nearest">
                       <input type="text" class="form-control datetimepicker-input" autocomplete="off" required id="eco_product_from" :class="status($v.Mhouseinforgeneral.eco_product_from)" v-model.trim="$v.Mhouseinforgeneral.eco_product_from.$model" @blur="$v.Mhouseinforgeneral.eco_product_from.$touch()"> 
                       <div class="input-group-append eco_product_from" style="cursor: pointer;">
@@ -794,7 +775,7 @@ require_once 'handler/family/familyloadDataUser.php';
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>ช่วงเวลาการผลิต(หมด) :</label> 
+                  <label>ช่วงเวลาการผลิต(หมด) <span class="requiredfeilds">*</span></label> 
                   <div class="input-group date" data-target-input="nearest">
                       <input type="text" class="form-control datetimepicker-input" autocomplete="off" required id="eco_product_to" :class="status($v.Mhouseinforgeneral.eco_product_to)" v-model.trim="$v.Mhouseinforgeneral.eco_product_to.$model" @blur="$v.Mhouseinforgeneral.eco_product_to.$touch()"> 
                       <div class="input-group-append eco_product_to" style="cursor: pointer;">
@@ -839,7 +820,7 @@ require_once 'handler/family/familyloadDataUser.php';
                               <tr>
                                 <th style="width: 5px">#</th>
                                 <th style="width: 30px">ประเภทสัตว์เลี้ยง</th>
-                                <th style="width: 15px">จำนวน</th>
+                                <th style="width: 15px">จำนวน <span class="requiredfeilds">*</span></th>
                                 <th style="width: 15px">จำนวน(ที่ได้รับวัคซีน) </th>
                                 <th style="width: 50px">รายละเอียด</th>
                               </tr>

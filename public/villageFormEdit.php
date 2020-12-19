@@ -76,7 +76,7 @@ $rows_edit=$db::table("tbl_mas_vilage")
 
               <div class="col-md-4">
                 <div class="form-group">
-                  <label>ชื่อหมู่บ้าน :</label>
+                  <label>ชื่อหมู่บ้าน <span class="requiredfeilds">*</span></label>
                   <input type="text" name="txtVillageName" id="txtVillageName" required class="form-control" value="<?=$rows_edit->vil_name?>" placeholder="ชื่อหมู่บ้าน...">
                 </div>
                 <!-- /.form-group -->

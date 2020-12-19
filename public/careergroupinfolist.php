@@ -99,7 +99,7 @@
                         <th style="width: 20%">
                             ชื่อกลุ่มอาชีพ
                         </th>
-						              <th style="width: 25%">รายละเอียดทั่วไป
+						              <th style="width: 25%">รายละเอียดพอสังเขป
                         </th> 
                         <th style="width: 20%">
                         </th>
