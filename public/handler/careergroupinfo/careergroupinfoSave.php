@@ -58,7 +58,7 @@ if($id>0){
             $status='OK';  
 
     } catch (\Exception $e) { 
-		 $status='Error';   var_dump($e->getMessage());exit();
+		 $status='Error';    
     } 
  
 } else if($action == 3) {// Deleted 
@@ -83,16 +83,29 @@ if($id>0){
  
 <script type="text/javascript"> 
    <?php 
+   $mag='';$icon_type='error';
    switch ($status) {
-     case 'OK': ?> alert('บันทึกข้อมูลแล้ว!'); <?php break;
-     case 'dupicate': ?> alert('ข้อมูลซ้ำ!'); <?php  break;
-     case 'Error': ?> alert('ไม่สามารถดำเนินการได้!'); <?php break;
-     case 'delete_used': ?> alert('มีการใช้อยู่ไม่สามารถลบข้อมูลได้!'); <?php  break;
-     case 'deletefail': ?> alert('ลบข้อมูลไม่ได้!'); <?php break; 
+     case 'OK': $mag='บันทึกข้อมูลแล้ว!';$icon_type='success'; break;
+     case 'dupicate': $mag='ข้อมูลซ้ำ!';$icon_type='error'; break;
+     case 'Error': $mag='ไม่สามารถดำเนินการได้!';$icon_type='error';break;
+     case 'delete_used': $mag='มีการใช้อยู่ไม่สามารถลบข้อมูลได้!';$icon_type='error';break;
+     case 'deletefail': $mag='ลบข้อมูลไม่ได้!';$icon_type='error';break; 
    }
    ?>
- window.location = "../../<?=$refer_urlmain?>?house_moo=<?=$goccup_name?>";
-// window.location = "../../status_action.php?status=<?=$status?>&refer_urlmain=<?=$refer_urlmain?>";
+  Swal.fire({
+  icon: '<?=$icon_type?>', 
+  html: '<?=$mag?>',
+  });
+  $("input[name*='token_careergroupinfo_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_careergroupinfo_frm')?>'); 
+ setTimeout(function(){
+   <?php
+    if($status!='dupicate'){
+      ?>
+       window.location = "../../<?=$refer_urlmain?>?house_moo=<?=$goccup_name?>";
+      <?php
+    }
+    ?> 
+ }, 2*1000); 
 </script>
 <?php
 ?>

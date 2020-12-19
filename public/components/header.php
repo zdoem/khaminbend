@@ -47,6 +47,49 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
   body {
     font-family: 'Prompt', sans-serif; !important; 
   } 
+ .dirty {
+    border-color: #5A5!important;
+    background: #EFE!important;
+    }
+    .dirty:focus {
+    outline-color: #8E8!important;
+    }
+    .error {
+    border-color: red!important;
+    background: #FDD!important;
+    }
+    .error:focus {
+    outline-color: #F99!important;
+    } 
+    .glyphicon-refresh-animate {
+	-animation: spin 0.7s infinite linear;
+	-webkit-animation: spin2 0.7s infinite linear;
+  }
+
+  @-webkit-keyframes spin2 {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  } 
+  @keyframes spin {
+    from {
+      transform: scale(1) rotate(0deg);
+    }
+    to {
+      transform: scale(1) rotate(360deg);
+    }
+  }
+  .invalid-feedback{
+      display: block; 
+      width: 100%;
+      position: absolute;
+      margin:0;
+      font-size: 80%;
+      color: #dc3545;
+  }
   .requiredfeilds{color:#f95c5ced;}
   .dp-highlight .ui-state-default {
     background: #ffc449;

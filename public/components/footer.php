@@ -18,7 +18,7 @@ defined('ROOT') or exit('No access allowed');
        </div>     
     </div>
   </footer>
-  
+  <div style="display: none;" id="xhtml"></div>
   <style>
 <!--
 #hover-content {
