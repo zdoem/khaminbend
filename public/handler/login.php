@@ -19,7 +19,7 @@ if (empty($_POST['username'])) {
     $rowsdata = $db::select("CALL user_auth('{$username}','{$password}')")[0];
  
     if ($rowsdata->callstatus=='FAIL') {
-        echo "<script>swal.fire('เข้าสู่ระบบ','ข้อมูลไม้ถูกต้อง!','error');</script>";
+        echo "<script>swal.fire('เข้าสู่ระบบ','ข้อมูลไม่ถูกต้อง!','error');</script>";
         exit();
     }   
 
