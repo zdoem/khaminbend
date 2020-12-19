@@ -88,8 +88,8 @@ require_once 'handler/family/familyloadDataUser.php';
 
             <div class="card-tools">
               <div class="d-flex flex-row flex-nowrap align-items-center">
-                <div class="p-0"><input class="form-control form-control-sm input-sm" type="text" id="txtcopydata" autocomplete="on" name="txtcopydata" v-model="txtcopydata" placeholder="รหัสที่ต้องการ copy" title="กรอกรหัสที่ต้องการ copy"></div>
-                <div class="p-0"> <button type="button" class="btn btn-tool" @click="copydata" title="กด Copy ข้อมูล" ><i class="fas fa-copy"></i></button> </div>
+                <!-- <div class="p-0"><input class="form-control form-control-sm input-sm" type="text" id="txtcopydata" autocomplete="on" name="txtcopydata" v-model="txtcopydata" placeholder="รหัสที่ต้องการ copy" title="กรอกรหัสที่ต้องการ copy"></div>
+                <div class="p-0"> <button type="button" class="btn btn-tool" @click="copydata" title="กด Copy ข้อมูล" ><i class="fas fa-copy"></i></button> </div> -->
                 <div class="p-0"><button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button> </div>
               </div>                                      
             </div>
