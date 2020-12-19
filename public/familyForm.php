@@ -986,8 +986,8 @@ require_once 'handler/family/familyloadDataUser.php';
               <div class="col-md-3"> 
                   <template  v-for="(item, index) in tbl_mas_info1">
                         <div class="form-check" v-if="item.info_code!=99" :key="item.info_code">
-                        <input class="form-check-input" type="checkbox" name="info_code[]" v-model="Mmas_info.selected"  :value="item.info_code">
-                        <label class="form-check-label">{{item.info_name}}</label>
+                        <input class="form-check-input" type="checkbox" :id="item.info_code" name="info_code[]" v-model="Mmas_info.selected"  :value="item.info_code">
+                        <label class="form-check-label" :for="item.info_code">{{item.info_name}}</label>
                       </div>
                       <div class="form-group" v-if="item.info_code==99" >
                        <label class="form-check-label">{{item.info_name}}</label>  
@@ -1000,8 +1000,8 @@ require_once 'handler/family/familyloadDataUser.php';
                 <div class="col-md-3">
                   <template  v-for="(item, index) in tbl_mas_info2">
                         <div class="form-check" v-if="item.info_code!=99" :key="item.info_code">
-                        <input class="form-check-input" type="checkbox" name="info_code[]" v-model="Mmas_info.selected"  :value="item.info_code">
-                        <label class="form-check-label">{{item.info_name}}</label>
+                        <input class="form-check-input" type="checkbox" :id="item.info_code" name="info_code[]" v-model="Mmas_info.selected"  :value="item.info_code">
+                        <label class="form-check-label" :for="item.info_code">{{item.info_name}}</label>
                       </div>
                       <div class="form-group" v-if="item.info_code==99" :key="item.info_code">
                        <label class="form-check-label">{{item.info_name}}</label>  
@@ -1013,8 +1013,8 @@ require_once 'handler/family/familyloadDataUser.php';
                 <div class="col-md-3">
                        <template  v-for="(item, index) in tbl_mas_info3">
                         <div class="form-check" v-if="item.info_code!=99" >
-                        <input class="form-check-input" type="checkbox" name="info_code[]" v-model="Mmas_info.selected"  :value="item.info_code">
-                        <label class="form-check-label">{{item.info_name}}</label>
+                        <input class="form-check-input" type="checkbox" :id="item.info_code" name="info_code[]" v-model="Mmas_info.selected"  :value="item.info_code">
+                        <label class="form-check-label" :for="item.info_code">{{item.info_name}}</label>
                       </div>
                       <div class="form-group" v-if="item.info_code==99">
                        <label class="form-check-label">{{item.info_name}}</label> 

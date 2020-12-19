@@ -171,7 +171,7 @@ $data_fm_fam_hd = $db::table('fm_fam_hd AS a')
       ,mem_status AS x_status,mem_sex AS x_sex,mem_national AS national,mem_religion_code AS reg_code,mem_df_birth AS date_of_birth,mem_education_code AS education_code
       ,mem_relations_code AS relations_code,g_occupational_code,g_occupational_other,main_occupation_code,add_occupation_code
       ,income_per_year,fam_land_other,eco_occupation_code,eco_product_target_code,eco_capital_code,eco_product_cost,f_problem_env,problem_env_desc
-      ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,CONCAT(DATE_FORMAT(d_survey,'%m') ,'/', DATE_FORMAT(d_survey ,'%d'),'/',DATE_FORMAT(d_survey ,'%Y')+543) AS d_survey"))
+      ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,CONCAT(DATE_FORMAT(d_survey,'%d') ,'/', DATE_FORMAT(d_survey ,'%m'),'/',DATE_FORMAT(d_survey ,'%Y')+543) AS d_survey"))
     ->leftJoinSub($base_join, 'cc', function ($join) {
         $join->on('a.fam_id', '=', 'cc.mem_fam_id');
     })->where('fam_id', '=', $_GET['id'])->first();
