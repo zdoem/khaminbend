@@ -222,7 +222,7 @@ require_once 'handler/family/familyloadDataUser.php';
               <div class="col-md-3">
                 <div class="form-group">
                   <label>เลขที่ประจำตัวประชาชน  :</label>
-                    <input type="text" :id="'txtCitizenId'+index" :class="status(item.txtCitizenId)" required v-model.trim="item.txtCitizenId.$model" @blur="item.txtCitizenId.$touch()" class="form-control" placeholder="เลขที่ประจำตัวประชาชน  ...">
+                    <input type="text" :id="'txtCitizenId'+index" :class="status(item.txtCitizenId)" required v-model.trim="item.txtCitizenId.$model" @blur="item.txtCitizenId.$touch()" class="form-control" minlength="13" maxlength="13" placeholder="เลขที่ประจำตัวประชาชน  ...">
                     <div class="invalid-feedback order-last" v-if="!item.txtCitizenId.isUnique&&!item.txtCitizenId.$pending">มีข้อมูลอยู่แล้ว!.</div>
                 </div>
                 <!-- /.form-group -->
