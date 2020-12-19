@@ -19,7 +19,7 @@ $searchQuery = " ";
 
 $base_join = $db::table('fm_fam_members_dt1')
     ->select($db::raw('mem_fam_id,mem_status,mem_fname,mem_lname,f_status,mem_citizen_id'))
-    ->where('mem_status', 'O')
+    // ->where('mem_status', 'O')
     ->groupBy('mem_fam_id');
 
 $filtering = $db::table("fm_fam_hd AS a")->select($db::raw('count(*) as allcount'))
@@ -42,7 +42,7 @@ $fetchrecords = $db::table('fm_fam_hd AS a')
 if ($d_survey != '') {
     $filtering->whereYear('d_survey',$d_survey);
     $fetchrecords->whereYear('d_survey',$d_survey);
-}else{
+}else if($d_survey == ''&&$house_no == ''&&$mem_fname == ''&&$citizen_id == ''){
     $filtering->whereYear('d_survey',date('Y-m-d'));
     $fetchrecords->whereYear('d_survey',date('Y-m-d'));  
 }
@@ -58,7 +58,9 @@ if ($citizen_id != '') {
     $filtering->where('mem_citizen_id', '=', $citizen_id);
     $fetchrecords->where('mem_citizen_id', '=', $citizen_id);
 } 
-
+if($d_survey != ''||$house_no != ''||$mem_fname != ''||$citizen_id != ''){
+   $rowperpage=1; 
+} 
 ## Total number of records without filtering
 $totalRecords = $db::table("fm_fam_hd AS a")
     ->select($db::raw('count(*) as allcount')) 
