@@ -1047,8 +1047,8 @@ require_once 'handler/family/familyloadDataUser.php';
 
           <!-- /.card-body -->
           <div class="card-footer"> 
-            <button type="submit" class="btn btn-primary" v-if="!btn_save" :disabled="btn_save">บันทึกข้อมูล</button>
-            <button class="btn btn-danger" v-show="btn_save" ref="issave"  :disabled="btn_save"><span class="fas fa-spinner glyphicon-refresh-animate"></span> กำลังบันทึกข้อมูล...</button>
+            <button type="submit" class="btn btn-primary" v-if="!btn_save" :disabled="btn_save||btn_validate==2">บันทึกข้อมูล</button>
+            <button class="btn btn-danger" v-show="btn_save" ref="issave"  :disabled="btn_save||btn_validate==2"><span class="fas fa-spinner glyphicon-refresh-animate"></span> กำลังบันทึกข้อมูล...</button>
             <!-- <button type="submit" class="btn btn-primary vld-parent" v-show="btn_save" ref="issave"  :disabled="btn_save">กำลังบันทึกข้อมูล</button> -->
             <button type="reset" class="btn btn-warning">รีเซ็ท</button> 
             <!-- &nbsp;&nbsp;<a class="vld-parent" id="issave" ref="issave" >saveing...</a> -->

@@ -96,6 +96,7 @@ window.app = new Vue({
     successMessage: "",
     errorMessage: "",  
     btn_save:false,
+    btn_validate:1,
     txtcopydata:'',
     actions:window.actions,
      // for view  
@@ -214,7 +215,8 @@ window.app = new Vue({
                   datatype : "application/json", 
                   data:{id:_this.getParameterByName('id'),survseydate:_this.survseydate,mem_citizen_id:encodeURIComponent(value)},
                   success: function (data) { 
-                    resolve((data.status=='nodupicate'))
+                    if((data.status=='nodupicate')){_this.btn_validate=1;}else{_this.btn_validate=2;}
+                    resolve((data.status=='nodupicate'));
                   },
                   error: function (error) {
                     reject(true)
@@ -254,7 +256,8 @@ window.app = new Vue({
                   datatype : "application/json", 
                   data:{id:_this.getParameterByName('id'),survseydate:_this.survseydate,house_no:encodeURIComponent(value)},
                   success: function (data) { 
-                    resolve((data.status=='nodupicate'))
+                    if((data.status=='nodupicate')){_this.btn_validate=1;}else{_this.btn_validate=2;}  
+                    resolve((data.status=='nodupicate'));
                   },
                   error: function (error) {
                     reject(true)

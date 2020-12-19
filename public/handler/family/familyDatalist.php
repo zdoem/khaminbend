@@ -39,25 +39,24 @@ $fetchrecords = $db::table('fm_fam_hd AS a')
         $join->on('a.fam_id', '=', 'cc.mem_fam_id');
     })->whereRaw('1');
 
-
-
-
-
 if ($d_survey != '') {
     $filtering->whereYear('d_survey',$d_survey);
     $fetchrecords->whereYear('d_survey',$d_survey);
+}else{
+    $filtering->whereYear('d_survey',date('Y-m-d'));
+    $fetchrecords->whereYear('d_survey',date('Y-m-d'));  
 }
 if ($house_no != '') {
-    $filtering->where('house_no', 'like', "%{$house_no}%");
-    $fetchrecords->where('house_no', 'like', "%{$house_no}%");
+    $filtering->where('house_no', '=', $house_no);
+    $fetchrecords->where('house_no', '=', $house_no);
 }
 if ($mem_fname != '') {
     $filtering->where('mem_fname', 'like', "%{$mem_fname}%");
     $fetchrecords->where('mem_fname', 'like', "%{$mem_fname}%");
 }
 if ($citizen_id != '') {
-    $filtering->where('mem_citizen_id', 'like', "%{$citizen_id}%");
-    $fetchrecords->where('mem_citizen_id', 'like', "%{$citizen_id}%");
+    $filtering->where('mem_citizen_id', '=', $citizen_id);
+    $fetchrecords->where('mem_citizen_id', '=', $citizen_id);
 } 
 
 ## Total number of records without filtering
