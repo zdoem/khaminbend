@@ -209,6 +209,9 @@ if (mb_strlen($new_pass, 'UTF8') < 8) {
           showDenyButton: false,
           showCancelButton: false 
           });
+          setTimeout(function() {
+            redirect_to_login();
+          }, 2*1000);
         </script>  
         <?php
         exit();
