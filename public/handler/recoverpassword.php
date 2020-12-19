@@ -165,33 +165,19 @@ if (mb_strlen($new_pass, 'UTF8') < 8) {
     </script> 
      <?php
      exit();
-} elseif (!preg_match($re, $new_pass)) {
-    if (misc_parsestring($new_pass) == false) {
+} elseif (!preg_match($re, $new_pass)) { 
         ?>
         <script type="text/javascript">
        Swal.fire({
-        title: 'รหัสผ่านต้องมีอักษรภาษาอังกฤษกับตัวเลขผสมเท่านั้น!',
+        title: 'รหัสผ่านต้องมีอักษรภาษาอังกฤษกับตัวเลขผสมไม่ต่ำกว่า 8 ตัว!',
         allowOutsideClick: false,
         showDenyButton: false,
         showCancelButton: false 
         });
       </script>  
-        <?php
-        exit();
-    } else {
-      ?>
-      <script type="text/javascript">
-       Swal.fire({
-        title: 'รหัสผ่านต้องมีตัวเลขอยู่ด้วยอย่างน้อย 1 ตัว!',
-        allowOutsideClick: false,
-        showDenyButton: false,
-        showCancelButton: false 
-        });
-    </script>  
       <?php
-      exit();
-    }
-}
+      exit(); 
+  }
    //expires >=time()
     $row= $db::table("tbl_password_reset")  
     ->where('token', '=', $token)
