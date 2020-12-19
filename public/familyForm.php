@@ -32,6 +32,7 @@ require_once 'handler/family/familyloadDataUser.php';
     <!-- Main content -->
       <section class="content" id="app" v-cloak> 
       <form @submit.prevent="submit" id="frm_family" ref="frm_family">   
+       <?= \Volnix\CSRF\CSRF::getHiddenInputString('token_family_frm') ?>  
         <!-- <pre>{{$data}}</pre> -->
         <!-- <pre>{{ $v }}</pre> -->  
        <div class="container-fluid"> 

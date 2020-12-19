@@ -46,6 +46,7 @@ Vue.component("date-picker", {
        }
       }); 
       $(this.$refs.mdate).datepicker("setDate", new Date());
+      _this.$emit("input", $(this.$refs.mdate).val()); 
      });
   },
   methods: {
@@ -400,7 +401,7 @@ window.app = new Vue({
              if (!this.$v.$invalid) {  
               //  $('input[name="disaster[]"]:checked').map(function() {tmp_disaster.push(this.value);}); 
                var datasend={
-                //  frm_family:$('#frm_family').serializeArray(),
+                'token_family_frm':$("input[name*='token_family_frm']").val(),
                  info_desc:$(".info_desc").val(),
                  dt_dis_desc:$(".dt_dis_desc").val(),
                  OwnerHomelistfamily:this.OwnerHomelistfamily, 
