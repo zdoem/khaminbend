@@ -19,7 +19,7 @@ $txtVillageName=(isset($_POST['txtVillageName']) ? $_POST['txtVillageName'] : ''
 $txthomeDesc=(isset($_POST['txthomeDesc']) ? $_POST['txthomeDesc'] : '');
 
 $nWater=((isset($_POST['nWater'])&&@$_POST['nWater']>0) ? $_POST['nWater'] : 0);
-$waterDesc=(isset($_POST['waterDesc']) ? $_POST['waterDesc'] : '');
+$water_desc=(isset($_POST['water_desc']) ? $_POST['water_desc'] : '');
 
 $water_tap=((isset($_POST['water_tap'])&&@$_POST['water_tap']>0) ? $_POST['water_tap'] :0);
 $water_tap_desc=(isset($_POST['water_tap_desc']) ? $_POST['water_tap_desc'] : '');
@@ -27,19 +27,19 @@ $water_tap_desc=(isset($_POST['water_tap_desc']) ? $_POST['water_tap_desc'] : ''
 $bowels=((isset($_POST['bowels'])&&@$_POST['bowels']>0) ? $_POST['bowels'] : 0);
 $bowels_desc=(isset($_POST['bowels_desc']) ? $_POST['bowels_desc'] : '');
 
-$nElectriclight=((isset($_POST['nElectriclight'])&&@$_POST['nElectriclight']>0) ? $_POST['nElectriclight'] : 0);
-$ElectriclightDesc=(isset($_POST['ElectriclightDesc']) ? $_POST['ElectriclightDesc'] : '');
+$public_fire=((isset($_POST['public_fire'])&&@$_POST['public_fire']>0) ? $_POST['public_fire'] : 0);
+$public_fire_desc=(isset($_POST['public_fire_desc']) ? $_POST['public_fire_desc'] : '');
 
-$nRoad=((isset($_POST['nRoad'])&&@$_POST['nRoad']>0) ? $_POST['nRoad'] :0);
-$RoadDesc=(isset($_POST['RoadDesc']) ? $_POST['RoadDesc'] : '');
+$road=((isset($_POST['road'])&&@$_POST['road']>0) ? $_POST['road'] :0);
+$road_desc=(isset($_POST['road_desc']) ? $_POST['road_desc'] : '');
 
-$nCommunityForest=((isset($_POST['nCommunityForest'])&&@$_POST['nCommunityForest']>0) ? $_POST['nCommunityForest'] : 0);
-$CommunityForestDesc=((isset($_POST['CommunityForestDesc'])&&@$_POST['CommunityForestDesc']>0) ? $_POST['CommunityForestDesc'] : 0);
+$community_forest=((isset($_POST['community_forest'])&&@$_POST['community_forest']>0) ? $_POST['community_forest'] : 0);
+$community_forest_desc=((isset($_POST['community_forest_desc'])&&@$_POST['community_forest_desc']>0) ? $_POST['community_forest_desc'] : '');
 
-$nLearning=((isset($_POST['nLearning'])&&@$_POST['nLearning']>0) ? $_POST['nLearning'] : 0);
-$LearningDesc=(isset($_POST['LearningDesc']) ? $_POST['LearningDesc'] : '');
+$learning=((isset($_POST['learning'])&&@$_POST['learning']>0) ? $_POST['learning'] : 0);
+$learning_desc=(isset($_POST['learning_desc']) ? $_POST['learning_desc'] : '');
 
-$txtOther=(isset($_POST['txtOther']) ? $_POST['txtOther'] : ''); 
+$other=(isset($_POST['other']) ? $_POST['other'] : ''); 
   
 // validate 
 
@@ -72,8 +72,8 @@ if($id>0){
     try { 
           $row =$db::insert("INSERT INTO tbl_mas_vilage (vil_moo,vil_name,vil_desc,water,water_desc,water_tap,water_tap_desc,bowels,bowels_desc
              ,public_fire,public_fire_desc,road,road_desc,community_forest,community_forest_desc,learning,learning_desc,other,d_create,d_update,create_by,f_status) 
-             VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW(),?,'A')",[$txtMoo, $txtVillageName, $txthomeDesc,$nWater,$waterDesc,$water_tap,$water_tap_desc
-             ,$bowels,$bowels_desc,$nElectriclight,$ElectriclightDesc,$nRoad,$RoadDesc,$nCommunityForest,$CommunityForestDesc,$nLearning,$LearningDesc,$txtOther,@$_SESSION['user_id']]);
+             VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW(),?,'A')",[$txtMoo, $txtVillageName, $txthomeDesc,$nWater,$water_desc,$water_tap,$water_tap_desc
+             ,$bowels,$bowels_desc,$public_fire,$public_fire_desc,$road,$road_desc,$community_forest,$community_forest_desc,$learning,$learning_desc,$other,@$_SESSION['user_id']]);
             $status='OK'; 
     } catch (\Exception $e) { 
 		 $status='Error';  //var_dump($e->getMessage());exit(); 
@@ -85,9 +85,9 @@ if($id>0){
             ,water_tap=?,water_tap_desc=?,bowels=?,bowels_desc=?,public_fire=?,public_fire_desc=?,road=?,road_desc=?
             ,community_forest=?,community_forest_desc=?,learning=?,learning_desc=?,other=?,d_update=NOW()
             where vil_id = ?',
-            [$txtVillageName, $txthomeDesc,$nWater,$waterDesc,$water_tap,$water_tap_desc
-            ,$bowels,$bowels_desc,$nElectriclight,$ElectriclightDesc
-            ,$nRoad,$RoadDesc,$nCommunityForest,$CommunityForestDesc,$nLearning,$LearningDesc,$txtOther,$id]);
+            [$txtVillageName, $txthomeDesc,$nWater,$water_desc,$water_tap,$water_tap_desc
+            ,$bowels,$bowels_desc,$public_fire,$public_fire_desc
+            ,$road,$road_desc,$community_forest,$community_forest_desc,$learning,$learning_desc,$other,$id]);
 
             $status='OK';  
 
@@ -116,16 +116,31 @@ if($id>0){
  ?>
  
 <script type="text/javascript"> 
-   <?php 
+   <?php  
+   $mag='';$icon_type='error';
    switch ($status) {
-     case 'OK': ?> alert('บันทึกข้อมูลแล้ว!'); <?php break;
-     case 'dupicate': ?> alert('ข้อมูลซ้ำ!'); <?php  break;
-     case 'Error': ?> alert('ไม่สามารถดำเนินการได้!'); <?php break;
-     case 'delete_used': ?> alert('มีการใช้อยู่ไม่สามารถลบข้อมูลได้!'); <?php  break;
-     case 'deletefail': ?> alert('ลบข้อมูลไม่ได้!'); <?php break; 
+     case 'OK': $mag='บันทึกข้อมูลแล้ว!';$icon_type='success'; break;
+     case 'dupicate': $mag='ข้อมูลซ้ำ!';$icon_type='error'; break;
+     case 'Error': $mag='ไม่สามารถดำเนินการได้!';$icon_type='error';break;
+     case 'delete_used': $mag='มีการใช้อยู่ไม่สามารถลบข้อมูลได้!';$icon_type='error';break;
+     case 'deletefail': $mag='ลบข้อมูลไม่ได้!';$icon_type='error';break; 
    }
    ?>
- window.location = "../../<?=$refer_urlmain?>?house_moo=<?=$txtMoo?>";
+  Swal.fire({
+  icon: '<?=$icon_type?>', 
+  html: '<?=$mag?>',
+  });
+  $("input[name*='token_village_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_village_frm')?>'); 
+ setTimeout(function(){
+   <?php
+    if($status!='dupicate'){
+      ?>
+        window.location = "../../<?=$refer_urlmain?>?house_moo=<?=$txtMoo?>";
+      <?php
+    }
+    ?> 
+ }, 2*1000);
+
 // window.location = "../../status_action.php?status=<?=$status?>&refer_urlmain=<?=$refer_urlmain?>";
 </script>
 <?php

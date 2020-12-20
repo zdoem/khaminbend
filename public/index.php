@@ -8,14 +8,14 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Dashboard v2</h1>
+            <h1 class="m-0 text-dark">Dashboard Beta V0.1</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item">
                 	<em class="fa fa-home"></em>
                 <a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v2</li>
+              <li class="breadcrumb-item active">Dashboard Beta V0.1</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -25,15 +25,35 @@
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
-
-          content data
-        <!-- /.row xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
-
-        <!-- Main row -->
-
-        <!-- /.row -->
-      </div><!--/. container-fluid -->
+       <div class="container-fluid"> 
+        <!-- Timelime example  -->
+        <div class="row">
+          <div class="col-md-12">
+            <!-- The time line -->
+            <div class="timeline">
+              <!-- timeline time label -->
+              <div class="time-label">
+                <span class="bg-red">10 Feb. <?=date('yy')?> </span>
+              </div> 
+              <div>
+                <i class="fas fa-envelope bg-blue"></i>
+                <div class="timeline-item">
+                  <!-- <span class="time"><i class="fas fa-clock"></i> 12:05</span> -->
+                  <h3 class="timeline-header"><a href="#">admin Team</a> sent you an email</h3> 
+                  <div class="timeline-body">
+                        ทดสอบระบบ
+                  </div> 
+                </div>
+              </div> 
+              <!-- END timeline item -->
+              <div>
+                <i class="fas fa-clock bg-gray"></i>
+              </div>
+            </div>
+          </div>
+          <!-- /.col -->
+        </div>
+      </div>
     </section>
     <!-- /.content -->
 

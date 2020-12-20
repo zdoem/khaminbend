@@ -1,3 +1,26 @@
+$.datepicker.regional['th'] ={
+        changeMonth: true,
+        changeYear: true,
+        //defaultDate: GetFxupdateDate(FxRateDateAndUpdate.d[0].Day),
+        yearOffSet: 543, 
+        buttonImageOnly: false,
+        dateFormat: 'dd/mm/yy',
+        dayNames: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'],
+        dayNamesMin: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+        monthNames: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
+        monthNamesShort: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+        constrainInput: true,
+       
+        prevText: 'ก่อนหน้า',
+        nextText: 'ถัดไป',
+        yearRange: '-20:+0',
+        buttonText: 'เลือก',
+        closeText:'ปิด',
+        currentText:'วันนี้'
+      
+ };
+$.datepicker.setDefaults($.datepicker.regional['th']);
+
 Vue.component("date-picker", {
   props: ["mdata"],
   template: `<div class="input-group date"  data-target-input="nearest">
@@ -11,20 +34,19 @@ Vue.component("date-picker", {
      this.$nextTick(function(){   
       var mydate = new Date();
       var toDay = mydate.getDate() + '/' + (mydate.getMonth() + 1) + '/' + (mydate.getFullYear() + 543); 
-      $(this.$refs.mdate).datepicker({ 
-       dateFormat: "dd/mm/yy", 
-       yearRange: '2450:'+(new Date().getFullYear()+543),
-       beforeShow: function (input, calendar) {
+      $(this.$refs.mdate).datepicker({  
+        yearRange: '-80:+0',
+        gotoCurrent:true,
+        changeMonth: true, changeYear: true, defaultDate: toDay
+        ,beforeShow: function (input, calendar) {
            $(calendar.dpDiv).removeClass('eco_product'); 
-        },
-       onSelect: function(date) { 
+         }
+        ,onSelect: function(date) { 
           _this.$emit("input", date);
-       },
-      changeMonth: true, changeYear: true, isBuddhist: true, defaultDate: toDay
-      ,dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
-      dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
-      monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
-      monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']}); 
+       }
+      }); 
+      $(this.$refs.mdate).datepicker("setDate", new Date());
+      _this.$emit("input", $(this.$refs.mdate).val()); 
      });
   },
   methods: {
@@ -36,29 +58,6 @@ Vue.component("date-picker", {
         }
   }
 }); 
-Vue.component("date-picker2", {
-  props: ['mdata'],
-  template: `<div class="input-group date" ref="mdate" data-target-input="nearest">
-                      <input type="text" :value="mdata" ref="mdate" required class="form-control" />
-                      <div class="input-group-append"  ref="mdate" style="cursor: pointer;">
-                          <div class="input-group-text"><i class="fa fa-calendar"></i></div> 
-                      </div>
-                  </div> `,
-  mounted() {
-    // var _this = this;
-    // $(this.$refs.mdate).datepicker({
-    //   autoclose: true,
-    //   format: "dd/mm/yyyy",
-    //   todayHighlight: true
-    // });
-    // $(this.$refs.mdate)
-    //   .datepicker()
-    //   .on("changeDate", function (e) { 
-    //     _this.$emit("input", e.format(0, "dd/mm/yyyy"));
-    //   });
-  }
-}); 
- 
 Vue.use(window.vuelidate.default); 
 var validationMixin = window.vuelidate.validationMixin;
 var required = validators.required;
@@ -98,6 +97,7 @@ window.app = new Vue({
     successMessage: "",
     errorMessage: "",  
     btn_save:false,
+    btn_validate:1,
     txtcopydata:'',
     actions:window.actions,
      // for view  
@@ -216,7 +216,8 @@ window.app = new Vue({
                   datatype : "application/json", 
                   data:{id:_this.getParameterByName('id'),survseydate:_this.survseydate,mem_citizen_id:encodeURIComponent(value)},
                   success: function (data) { 
-                    resolve((data.status=='nodupicate'))
+                    if((data.status=='nodupicate')){_this.btn_validate=1;}else{_this.btn_validate=2;}
+                    resolve((data.status=='nodupicate'));
                   },
                   error: function (error) {
                     reject(true)
@@ -256,7 +257,8 @@ window.app = new Vue({
                   datatype : "application/json", 
                   data:{id:_this.getParameterByName('id'),survseydate:_this.survseydate,house_no:encodeURIComponent(value)},
                   success: function (data) { 
-                    resolve((data.status=='nodupicate'))
+                    if((data.status=='nodupicate')){_this.btn_validate=1;}else{_this.btn_validate=2;}  
+                    resolve((data.status=='nodupicate'));
                   },
                   error: function (error) {
                     reject(true)
@@ -399,7 +401,7 @@ window.app = new Vue({
              if (!this.$v.$invalid) {  
               //  $('input[name="disaster[]"]:checked').map(function() {tmp_disaster.push(this.value);}); 
                var datasend={
-                //  frm_family:$('#frm_family').serializeArray(),
+                'token_family_frm':$("input[name*='token_family_frm']").val(),
                  info_desc:$(".info_desc").val(),
                  dt_dis_desc:$(".dt_dis_desc").val(),
                  OwnerHomelistfamily:this.OwnerHomelistfamily, 
@@ -460,8 +462,8 @@ window.app = new Vue({
                 type: "GET",  
                 cache: false,
                 datatype : "application/json", 
-                url: "handler/family/familycopydata.php",
-                data: {id:_this.txtcopydata}, 
+                url: "handler/family/familyloadDataUser.php",
+                data: {type:'copy',id:_this.txtcopydata}, 
                 success: function(data){    
                     $('#xhtml').empty().html(data);
                     // _this.Mfamilylists=window.SSfamilylists;
@@ -695,8 +697,7 @@ Vue.nextTick(function () {
       var toDay = mydate.getDate() + '/' + (mydate.getMonth() + 1) + '/' + (mydate.getFullYear() + 543);
       $("#survseydate").datepicker({ 
        showButtonPanel: true,
-       currentText: "วันนี้",
-       closeText: "ปิด",
+       yearRange: '-4:+0',
        beforeShow: function (input, calendar) {
            $(calendar.dpDiv).removeClass('eco_product'); 
         },
@@ -704,10 +705,7 @@ Vue.nextTick(function () {
            window.app.$data.survseydate= date; 
        },
       changeMonth: true, changeYear: true,dateFormat: 'dd/mm/yy', isBuddhist: true, defaultDate: toDay
-      ,dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
-      dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
-      monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
-      monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']});
+      });
       $(document).on("click", ".survseydate", function () {
         $('#survseydate').datepicker('show');   
        });
@@ -722,17 +720,16 @@ Vue.nextTick(function () {
         $('#eco_product_to').datepicker('show');   
        });
       $("#eco_product_from").datepicker({
-        minDate: 0,
+        // minDate: '-1Y',
+        yearRange: '-4:+39',
+        setDate: new Date(), 
         dateFormat: "dd/mm/yy",
         showButtonPanel: true, 
         changeMonth: true,
-        numberOfMonths: 2,
-        changeYear: true, isBuddhist: true, defaultDate: toDay
-        ,dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
-        dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
-        monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
-        monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],
-        beforeShow: function (input, calendar) {
+        numberOfMonths: 1,
+        gotoCurrent:true,
+        changeYear: true
+        ,beforeShow: function (input, calendar) {
            $(calendar.dpDiv).addClass('eco_product');
           dpmode = 'depart';
         },
@@ -752,16 +749,14 @@ Vue.nextTick(function () {
 
       $("#eco_product_to").datepicker({
         dateFormat: "dd/mm/yy",
-        minDate: 2,
+        // minDate: 2,
+        yearRange: '-4:+39',
         setDate: new Date(), 
+        gotoCurrent:true,
         showButtonPanel: true, 
-        numberOfMonths: 2,
+        numberOfMonths: 1,
         changeMonth: true, changeYear: true,isBuddhist: true, defaultDate: toDay
-        ,dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
-        dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
-        monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
-        monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],
-        beforeShow: function (input, calendar) {
+        ,beforeShow: function (input, calendar) {
           $(calendar.dpDiv).addClass('eco_product');
           dpmode = 'return';
         },
@@ -802,17 +797,7 @@ Vue.nextTick(function () {
             $(this).removeClass('dp-highlight')
           };
         });
-      });
-
-
-
-      // $('#survseydate').datetimepicker(window.d_survey);
-      // $('#survseydate').datetimepicker({defaultDate:'11/03/2020 13:52',format: 'DD/MM/YYYY HH:mm A'});
-      // $('input[name="familyhomeproductperiod"]').daterangepicker(window.ConfDaterang); 
-   //$('#birthday,#reservationdate2').on("change.datetimepicker", function (e) {
-       //console.log('log',$('#datetimepicker1').datetimepicker('viewDate')); 
-       // window.app.familylists.birthday=122;//$('#datetimepicker1').datetimepicker('viewDate');  
-   //});
+      }); 
 });  
 // var dd= Swal.fire({
 //           title: 'Timer Test',

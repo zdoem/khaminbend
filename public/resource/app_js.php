@@ -12,6 +12,7 @@ require_once ROOTJS.'/bootstart.php';
                <!-- jQuery -->
                <script src="assets/plugins/jquery/jquery.min.js"></script>
                <script src="assets/js/jquery-migrate.min.js"></script> 
+               <script src="assets/js/jquery-migrate-1.2.1.min.js"></script>
                <script src="assets/plugins/jquery-mousewheel/jquery.mousewheel.js"></script> 
                <!-- Bootstrap -->
                <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -27,7 +28,7 @@ require_once ROOTJS.'/bootstart.php';
                <script src="assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
                <script src="assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
                <script src="assets/plugins/moment/moment.min.js"></script>  
-               <script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+               <script src="assets/plugins/jquery-ui/jquery-ui-1.11.4.custom.js"></script>
                   <!-- AdminLTE App -->
                <script src="assets/js/adminlte.js"></script>
                <script src="assets/js/vue.runtime.min.js"></script>   
@@ -41,7 +42,9 @@ require_once ROOTJS.'/bootstart.php';
                  <!-- REQUIRED SCRIPTS -->
                   <!-- jQuery -->
                   <script src="assets/plugins/jquery/jquery.min.js"></script>
-                  <script src="assets/js/jquery-migrate.min.js"></script> 
+                  <script src="assets/js/jquery-migrate.min.js"></script>   
+                  <script src="assets/js/jquery-migrate-1.2.1.min.js"></script>
+
                   <script src="assets/plugins/jquery-mousewheel/jquery.mousewheel.js"></script> 
                   <!-- Bootstrap -->
                   <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -57,7 +60,7 @@ require_once ROOTJS.'/bootstart.php';
                   <script src="assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
                   <script src="assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
                   <script src="assets/plugins/moment/moment.min.js"></script>
-                  <script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+                  <script src="assets/plugins/jquery-ui/jquery-ui-1.11.4.custom.js"></script>
                      <!-- AdminLTE App -->
                   <script src="assets/js/adminlte.js"></script>
                   <script src="assets/js/vue.js"></script>

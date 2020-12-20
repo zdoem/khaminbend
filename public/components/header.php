@@ -47,8 +47,52 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
   body {
     font-family: 'Prompt', sans-serif; !important; 
   } 
-   .dp-highlight .ui-state-default {
-    background: #33aeff;
+ .dirty {
+    border-color: #5A5!important;
+    background: #EFE!important;
+    }
+    .dirty:focus {
+    outline-color: #8E8!important;
+    }
+    .error {
+    border-color: red!important;
+    background: #FDD!important;
+    }
+    .error:focus {
+    outline-color: #F99!important;
+    } 
+    .glyphicon-refresh-animate {
+	-animation: spin 0.7s infinite linear;
+	-webkit-animation: spin2 0.7s infinite linear;
+  }
+
+  @-webkit-keyframes spin2 {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  } 
+  @keyframes spin {
+    from {
+      transform: scale(1) rotate(0deg);
+    }
+    to {
+      transform: scale(1) rotate(360deg);
+    }
+  }
+  .invalid-feedback{
+      display: block; 
+      width: 100%;
+      position: absolute;
+      margin:0;
+      font-size: 80%;
+      color: #dc3545;
+  }
+  .requiredfeilds{color:#f95c5ced;}
+  .dp-highlight .ui-state-default {
+    background: #ffc449;
     color: #FFF;
   }
   [v-cloak] {display: none}
@@ -143,7 +187,7 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
                 </p>
               </a>
             </li>			
-			<li class="nav-item has-treeview <?=(in_array($current_file_name,['careergroupinfoForm.php','careergroupinfolist.php']))?'menu-open':'' ?>">
+			<li class="nav-item has-treeview <?=(in_array($current_file_name,['careergroupinfoForm.php','careergroupinfoFormEdit.php','careergroupinfolist.php']))?'menu-open':'' ?>">
               <a href="#" class="nav-link">
                 <em class="fa fa-bars">&nbsp;</em>
                 <p>
@@ -153,7 +197,7 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item"> 
-                  <a href="careergroupinfolist.php" class="nav-link <?=(in_array($current_file_name,['careergroupinfoForm.php','careergroupinfolist.php']))?'active':'' ?>">
+                  <a href="careergroupinfolist.php" class="nav-link <?=(in_array($current_file_name,['careergroupinfoForm.php','careergroupinfoFormEdit.php','careergroupinfolist.php']))?'active':'' ?>">
                       <i class="fas fa-angle-right left"></i>
                     <p>ข้อมูลกลุ่มอาชีพ</p>
                   </a>

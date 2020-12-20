@@ -105,9 +105,7 @@
                         <th style="width: 20%">
                             ชื่อหมู่บ้าน
                         </th>
-						<th style="width: 25%">
-		 ข้อทั่วไปของหมู่บ้าน
-                        </th>
+					            	<th style="width: 25%">  รายละเอียดพอสังเขป  </th>
                         <th style="width: 15%">
                        แก้ไขล่าสุดเมื่อ             
                         </th>
@@ -171,7 +169,7 @@
          { data: 'd_update' },
          {data: "id" , render : function ( data, type, row, meta ) {  
               return `<a class="btn btn-primary btn-xs" href="handler/village/villageView.php?id=${data}" data-toggle="modal" data-target="#MyModal">  <i class="fas fa-folder">  </i> View </a>
-                      <a class="btn btn-info btn-xs" href="villageFormEdit.php?id=${data}"><i class="fas fa-pencil-alt"> </i> Edit</a> 
+                      <a class="btn btn-info btn-xs" href="villageForm.php?id=${data}"><i class="fas fa-pencil-alt"> </i> Edit</a> 
                       <a class="btn btn-danger btn-xs" onClick="DeleteData(${data}); return false;" href="javascript:void(0)"><i class="fas fa-trash"></i> Delete </a>`;
         }}
       ],

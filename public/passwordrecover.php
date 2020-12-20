@@ -73,14 +73,20 @@
               <span class="fas fa-lock"></span>
             </div>
           </div>
+         <span id="exampleInputEmail1-error" class="error invalid-feedback" style="display: block;">
+         รหัสผ่านต้องมีอักษรภาษาอังกฤษกับตัวเลขผสมไม่ต่ำกว่า 8 ตัว
+         </span>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" name="new_pass_c" id="new_pass_c" placeholder="ยืนยันรหัสผ่านใหม่">
+          <input type="password" class="form-control" name="new_pass_c" id="new_pass_c" placeholder="กรอกรหัสผ่านใหม่อีกครั้ง">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
             </div>
           </div>
+           <span id="exampleInputEmail1-error" class="error invalid-feedback" style="display: block;">
+           กรอกรหัสผ่านใหม่อีกครั้งให้ตรงกัน
+           </span>
         </div>
         <div class="row">
           <div class="col-12">

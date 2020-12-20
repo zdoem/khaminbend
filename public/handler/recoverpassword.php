@@ -38,12 +38,12 @@ if (isset($_POST['action'])&&@$_POST['action']=='reset-password') {
     $output .= '<p>โปรดอย่าลืมคัดลอกลิงก์ทั้งหมดลงในเบราว์เซอร์ของคุณ ลิงก์จะหมดอายุหลังจาก 1 ชั่วโมงด้วยเหตุผลด้านความปลอดภัย.</p>';
     $output .= '<p>หากคุณไม่ได้ขออีเมลที่ลืมรหัสผ่านนี้ไม่จำเป็นต้องดำเนินการใด ๆ รหัสผ่านของคุณจะไม่ถูกรีเซ็ต อย่างไรก็ตามคุณอาจต้องการลงชื่อเข้าใช้บัญชีของคุณและเปลี่ยนรหัสผ่านความปลอดภัยของคุณเนื่องจากอาจมีคนเดาได้.</p>';
     $output .= '<p>ขออภัยในความไม่สะดวก</p>';
-    $output .= '<p>ระบบสำรวจมูลครัวเรือน.com</p>';
+    $output .= '<p>ระบบโคกขมิ้น สมาร์ท ซิตี้</p>';
     $body = $output;
 
-    $subject = "กู้คืนรหัสผ่าน - ระบบสำรวจมูลครัวเรือน.com";
+    $subject = "กู้คืนรหัสผ่าน - www.ksmartcity.com";
     $email_to = $email;
-    $fromserver = "noreply@yourwebsite.com";
+    $fromserver = "noreply@ksmartcity.com";
 
     try {
         $mail = new PHPMailer(true);
@@ -56,8 +56,8 @@ if (isset($_POST['action'])&&@$_POST['action']=='reset-password') {
         $mail->Port = MAIL_PORT;
         $mail->IsHTML(true);
         $mail->CharSet = "utf-8";
-        $mail->From = "noreply@yourwebsite.com";
-        $mail->FromName = "ระบบสำรวจมูลครัวเรือน";
+        $mail->From = $fromserver;
+        $mail->FromName = "ระบบโคกขมิ้น สมาร์ท ซิตี้";
         $mail->Sender = $fromserver; // indicates ReturnPath header
         $mail->Subject = $subject;
         $mail->Body = $body;
@@ -67,7 +67,7 @@ if (isset($_POST['action'])&&@$_POST['action']=='reset-password') {
              ?>
              <script type="text/javascript">
              Swal.fire({
-              title: 'ระบบได้ไม่สามารถส่งคำขอเปลี่ยนรหัสผ่านใหม่ได้ กรุณาติด admin !',
+              title: 'ระบบไม่สามารถส่งคำขอเปลี่ยนรหัสผ่านใหม่ได้ กรุณาติดต่อ admin!',
               allowOutsideClick: false,
               showDenyButton: false,
               showCancelButton: false 
@@ -80,7 +80,7 @@ if (isset($_POST['action'])&&@$_POST['action']=='reset-password') {
        ?>
        <script type="text/javascript">
        Swal.fire({
-        title: 'ระบบได้ไม่สามารถส่งคำขอเปลี่ยนรหัสผ่านใหม่ได้ กรุณาติด admin !',
+        title: 'ระบบไม่สามารถส่งคำขอเปลี่ยนรหัสผ่านใหม่ได้ กรุณาติดต่อ admin!',
         allowOutsideClick: false,
         showDenyButton: false,
         showCancelButton: false 
@@ -165,33 +165,19 @@ if (mb_strlen($new_pass, 'UTF8') < 8) {
     </script> 
      <?php
      exit();
-} elseif (!preg_match($re, $new_pass)) {
-    if (misc_parsestring($new_pass) == false) {
+} elseif (!preg_match($re, $new_pass)) { 
         ?>
         <script type="text/javascript">
        Swal.fire({
-        title: 'รหัสผ่านต้องมีอักษรภาษาอังกฤษกับตัวเลขผสมเท่านั้น!',
+        title: 'รหัสผ่านต้องมีอักษรภาษาอังกฤษกับตัวเลขผสมไม่ต่ำกว่า 8 ตัว!',
         allowOutsideClick: false,
         showDenyButton: false,
         showCancelButton: false 
         });
       </script>  
-        <?php
-        exit();
-    } else {
-      ?>
-      <script type="text/javascript">
-       Swal.fire({
-        title: 'รหัสผ่านต้องมีตัวเลขอยู่ด้วยอย่างน้อย 1 ตัว!',
-        allowOutsideClick: false,
-        showDenyButton: false,
-        showCancelButton: false 
-        });
-    </script>  
       <?php
-      exit();
-    }
-}
+      exit(); 
+  }
    //expires >=time()
     $row= $db::table("tbl_password_reset")  
     ->where('token', '=', $token)
@@ -209,6 +195,9 @@ if (mb_strlen($new_pass, 'UTF8') < 8) {
           showDenyButton: false,
           showCancelButton: false 
           });
+          setTimeout(function() {
+            redirect_to_login();
+          }, 2*1000);
         </script>  
         <?php
         exit();

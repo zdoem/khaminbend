@@ -29,6 +29,15 @@
  	 $(function(){
         var s_alert=s_alert||{};
          $("#submitBtn" ).click(function() {
+             if (!validateEmail($('#email').val())){
+                 Swal.fire({
+                  title: 'รูปแบบ Email ไม่ถูกต้อง!',
+                  allowOutsideClick: false,
+                  showDenyButton: false,
+                  showCancelButton: false 
+              });
+              return;
+             }
              $.ajax({
                 beforeSend: function() {  
                 s_alert= Swal.fire({
@@ -53,7 +62,7 @@
                   $('#xhtml').html(''); 
                 }       
               }); 
-         });
+         }); 
          //ระบบได้ส่งรหัสผ่านใหม่ไปที่อีเมล์ของคุณแล้ว กรุณาตรวจสอบอีเมล์
       });
  </script>
