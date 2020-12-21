@@ -21,7 +21,7 @@ if (!\Volnix\CSRF\CSRF::validate($_POST, 'token_family_frm')){
     showDenyButton: false,
     showCancelButton: false 
     });
-    $("input[name*='token_village_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>'); 
+    $("input[name*='token_family_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>'); 
   </script>
   <?php
   exit(); 
@@ -139,7 +139,7 @@ if(isset($_POST['id'])&&strlen(trim($id))>0&&($yearfam_id<$tran_yearfam_id||$yea
       title: 'Oops...',
       html: 'แก้ไขข้อมูลวันสำรวจต้องเป็นปีปัจจุบันเท่านั้น!',
       });  
-     $("input[name*='token_village_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>'); 
+     $("input[name*='token_family_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>'); 
     </script>
     <?php
     exit(); 
@@ -188,7 +188,7 @@ foreach (@$rows_old as $k => $v) {
     title: 'Oops...',
     html: 'มีข้อมูลเลขที่บัตรประชาชน <?=implode(",",$dupi_mem_citizen_id);?> ในระบบแล้ว ในบ้านเลขที่ <?=@$rows_old[0]->house_no?>!',
     }); 
-    $("input[name*='token_village_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>'); 
+    $("input[name*='token_family_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>'); 
   </script>
   <?php
   exit();
@@ -216,7 +216,7 @@ if(isset($_POST['id'])&&strlen(trim($id))>0){
       title: 'Oops...',
       html: 'มีข้อมูลบ้านเลขที่ <?=$rows_old[0]->house_no?> ในระบบแล้ว!',
       });  
-   $("input[name*='token_village_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>');    
+   $("input[name*='token_family_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>');    
   </script>
   <?php
   exit();
@@ -245,7 +245,7 @@ if($id>0){
               title: 'Oops...',
               html: 'มีข้อมูลบ้านเลขที่ <?=$rows_old_dupi->house_no?> ภายในปีสำรวจ <?=date("Y", strtotime(DateConvert('tops','Y/m/d',$d_survey,'-')))?> ในระบบแล้ว!',
               });  
-            $("input[name*='token_village_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>');   
+            $("input[name*='token_family_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>');   
           </script>
             <?php
             exit();
@@ -338,7 +338,7 @@ if($action==1&&$status=='OK'){// insert
          window.location = "../familyList.php";
       } 
     }); 
- $("input[name*='token_village_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>'); 
+ $("input[name*='token_family_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>'); 
 </script>
 <?php
 exit();
@@ -356,7 +356,7 @@ exit();
          window.location = "../familyList.php";
       }
     });
- $("input[name*='token_village_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>');    
+ $("input[name*='token_family_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>');    
 </script>
 <?php
 exit();
@@ -374,7 +374,7 @@ exit();
          window.location = "../familyList.php";
       }
     });
-$("input[name*='token_village_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>');    
+$("input[name*='token_family_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>');    
 </script>
 <?php
 exit();
