@@ -725,7 +725,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
                                 <th style="width: 5%">#</th>
                                 <th style="width: 15%">จังหวัด</th>
                                 <th style="width: 25%">อำเภอ</th>
-                                <th style="width: 15%">เลขที่โฉนด</th>
+                                <th style="width: 15%">เลขที่เอกสารสิทธิ์</th>
                                 <th style="width: 10%">พื้นที่(ไร่)</th>
                                 <th style="width: 10%">พื้นที่(งาน)</th>
                                 <th style="width: 10%">พื้นที่(ตรว.)</th>
@@ -800,7 +800,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
                                 <th style="width: 5%">#</th>
                                 <th style="width: 15%">จังหวัด</th>
                                 <th style="width: 25%">อำเภอ</th>
-                                <th style="width: 15%">เลขที่โฉนด</th>
+                                <th style="width: 15%">เลขที่เอกสารสิทธิ์</th>
                                 <th style="width: 10%">พื้นที่(ไร่)</th>
                                 <th style="width: 10%">พื้นที่(งาน)</th>
                                 <th style="width: 10%">พื้นที่(ตรว.)</th>
@@ -872,7 +872,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
                                 <th style="width: 5%">#</th>
                                 <th style="width: 15%">จังหวัด</th>
                                 <th style="width: 25%">อำเภอ</th>
-                                <th style="width: 15%">เลขที่โฉนด</th>
+                                <th style="width: 15%">เลขที่เอกสารสิทธิ์</th>
                                 <th style="width: 10%">พื้นที่(ไร่)</th>
                                 <th style="width: 10%">พื้นที่(งาน)</th>
                                 <th style="width: 10%">พื้นที่(ตรว.)</th>
@@ -944,7 +944,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
                                 <th style="width: 5%">#</th>
                                 <th style="width: 15%">จังหวัด</th>
                                 <th style="width: 25%">อำเภอ</th>
-                                <th style="width: 15%">เลขที่โฉนด</th>
+                                <th style="width: 15%">เลขที่เอกสารสิทธิ์</th>
                                 <th style="width: 10%">พื้นที่(ไร่)</th>
                                 <th style="width: 10%">พื้นที่(งาน)</th>
                                 <th style="width: 10%">พื้นที่(ตรว.)</th>

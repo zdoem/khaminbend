@@ -352,7 +352,7 @@ require_once 'handler/family/familyloadDataUser.php';
                                 <th style="width: 5%">#</th>
                                 <th style="width: 15%">จังหวัด <span class="requiredfeilds">*</span></th>
                                 <th style="width: 25%">อำเภอ <span class="requiredfeilds">*</span></th>
-                                <th style="width: 15%">เลขที่โฉนด <span class="requiredfeilds">*</span></th>
+                                <th style="width: 15%">เลขที่เอกสารสิทธิ์ <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">พื้นที่(ไร่) <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">พื้นที่(งาน) <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">พื้นที่(ตรว.) <span class="requiredfeilds">*</span></th>
@@ -428,7 +428,7 @@ require_once 'handler/family/familyloadDataUser.php';
                                 <th style="width: 5%">#</th>
                                 <th style="width: 15%">จังหวัด <span class="requiredfeilds">*</span></th>
                                 <th style="width: 25%">อำเภอ <span class="requiredfeilds">*</span></th>
-                                <th style="width: 15%">เลขที่นส.3ก <span class="requiredfeilds">*</span></th>
+                                <th style="width: 15%">เลขที่เอกสารสิทธิ์ <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">พื้นที่(ไร่) <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">พื้นที่(งาน) <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">พื้นที่(ตรว.) <span class="requiredfeilds">*</span></th>
@@ -501,7 +501,7 @@ require_once 'handler/family/familyloadDataUser.php';
                                 <th style="width: 5%">#</th>
                                 <th style="width: 15%">จังหวัด <span class="requiredfeilds">*</span></th>
                                 <th style="width: 25%">อำเภอ <span class="requiredfeilds">*</span></th>
-                                <th style="width: 15%">เลขที่สปก. <span class="requiredfeilds">*</span></th>
+                                <th style="width: 15%">เลขที่เอกสารสิทธิ์ <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">พื้นที่(ไร่) <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">พื้นที่(งาน) <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">พื้นที่(ตรว.) <span class="requiredfeilds">*</span></th>
@@ -575,7 +575,7 @@ require_once 'handler/family/familyloadDataUser.php';
                                 <th style="width: 5%">#</th>
                                 <th style="width: 15%">จังหวัด <span class="requiredfeilds">*</span></th>
                                 <th style="width: 25%">อำเภอ <span class="requiredfeilds">*</span></th>
-                                <th style="width: 15%">เลขที่ภบท 5 <span class="requiredfeilds">*</span></th>
+                                <th style="width: 15%">เลขที่เอกสารสิทธิ์ <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">พื้นที่(ไร่) <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">พื้นที่(งาน) <span class="requiredfeilds">*</span></th>
                                 <th style="width: 10%">พื้นที่(ตรว.) <span class="requiredfeilds">*</span></th>
