@@ -57,9 +57,10 @@ switch (@$_GET['status']) {
 				<div class="row no-print">
                 <div class="col-12">
  
-                  <a href="javascript:window.history.back();" type="button" class="btn btn-<?=$card_status?> float-center"><i class="far fa-<?=$card_status?>"></i> OK
+                  <a href="<?=@$_GET['refer_urlmain']?>" type="button" class="btn btn-<?=$card_status?> float-center"><i class="far fa-<?=$card_status?>"></i> OK
                   </a>
-				  <a href="<?=Get_domain()?>/<?=@$_GET['refer_urlmain']?>" type="button" class="btn btn-primary float-center"><i class="far fa-home"></i>HOME
+                  <!--  <a href="<?//=Get_domain()?>/<?//=@$_GET['refer_urlmain']?>" type="button" class="btn btn-primary float-center"><i class="far fa-home"></i>HOME -->
+				  <a href="index.php" type="button" class="btn btn-primary float-center"><i class="far fa-home"></i>HOME
                   </a>
                 </div>
               </div>

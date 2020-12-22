@@ -19,8 +19,11 @@
  
  //TODO : request.getparameter from
 
- $deptCode = '01'; //(isset($_POST['deptCode']) ? $_POST['deptCode'] : '');
- $roleId = (isset($_POST['roleId']) ? $_POST['roleId'] : '');
+ $deptCode = (isset($_POST['deptCode']) ? $_POST['deptCode'] : '');
+ if($deptCode==''){
+     $deptCode = "01";
+ }
+ $roleId = (isset($_POST['roleCode']) ? $_POST['roleCode'] : '');
  $userId = (isset($_POST['userId']) ? $_POST['userId'] : '');
  $fname = (isset($_POST['fname']) ? $_POST['fname'] : '');
 
@@ -31,16 +34,23 @@
  ->select($db::raw("a.*"),$db::raw("b.*"),$db::raw("c.*"))
  ->where([
      ['a.f_status', '=', 'A'],
-     ['a.dept_code', '=', $deptCode],
-     ['a.user_id', '=', $userId],
+     ['a.dept_code', '=', $deptCode]
  ]);
+ //['a.user_id', '=', $userId],
+
+ if($roleId != '') {
+     $resultRow->where('a.role_code', '=', $roleId);
+ }
+ if($userId != '') {
+     $resultRow->where('a.user_id', '=', $userId);
+ }
  if($fname != '') {
      $resultRow->orWhere('a.fname', 'like','%'.$fname.'%');
  }
  $dataList = $resultRow->orderBy('a.user_id', 'asc')
  ->get()->toArray();
- 
 
+ 
  /*$listResultRow = $db::table('tbl_users as a');
  if($fname != '') {
      $listResultRow->orWhere('a.fname', 'like','%'.$fname.'%');
@@ -64,10 +74,9 @@
  ])->get();
  */
 
- 
 ?> 
  <!-- Content Header (Page header) -->
- 
+
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
 $(document).ready(function(){
@@ -76,6 +85,11 @@ $(document).ready(function(){
         $("#frmUsr").submit(); // Submit the form
     });
 });
+
+function fnDelete(){
+	console.log('click click');
+}
+
 </script>
  
   <!-- Content Wrapper. Contains page content -->
@@ -127,7 +141,7 @@ $(document).ready(function(){
             <div class="row">
  			  <div class="col-md-3">
                 <div class="form-group">
-                  <label>แผนก/กอง :</label>
+                  <!-- 
   					<select class="form-control" name="deptCode" readonly>
                     <option value='01' selected>กองส่งเสริมการเกษตร</option>
                     <option value='02' >สำนักงานปลัด อบต. </option>
@@ -135,19 +149,49 @@ $(document).ready(function(){
                     <option value='04' >กองช่าง</option>
 					<option value='05' >กองการศึกษาและศาสนา</option>
 					<option value='06' >กองสวัสดิการสังคม</option>
-					</select>                   
+					</select> 
+					-->
+					<label>แผนก/กอง :</label>
+					<select class="form-control" id="deptCode" name="deptCode" readonly required="required">
+                    <?php 
+                    $selectedx = "";
+                    foreach ($listmas_dept as $k => $v) { 
+                        $selectedx = "";
+                        if($v->dept_code == $deptCode)
+                            $selectedx = "selected"
+       
+                    ?>
+                        <option value="<?=$v->dept_code?>" <?=$selectedx?>><?=$v->dept_code?> <?=$v->dept_name?></option>
+                      <?php
+                    }
+                    ?>
+                    </select>                   
                 </div>
                 <!-- /.form-group -->
               </div>
 			  <div class="col-md-3">
                 <div class="form-group">
                   <label>บทบาท :</label>
- 					<select class="form-control" name="roleCode">
+ 					<!--  <select class="form-control" name="roleCode">
                     <option value="01">Users</option>
                     <option value="02">Supervisor</option>
                     <option value="88">ปลัดหรือตำแหน่งพิเศษ</option>
                     <option value="99">Admin</option>
-					</select>                   
+					</select>    
+					-->
+					<select class="form-control" id="roleCode" name="roleCode" required="required">
+                    <option value="">---กรุณาเลือกบทบาท---</option>
+                    <?php 
+                    foreach ($listmas_role as $k => $v) {
+                        $selectedx = "";
+                        if($v->role_code == $roleId)
+                            $selectedx = "selected"
+                    ?>
+                        <option value="<?=$v->role_code?>" <?=$selectedx?> ><?=$v->role_name?></option>
+                     <?php
+                    }
+                    ?>
+                    </select>               
                 </div>
                 <!-- /.form-group -->
               </div>           
@@ -191,7 +235,7 @@ $(document).ready(function(){
             <h3 class="card-title">รายละเอียดการค้นหา</h3>&nbsp;  &nbsp;
             <a class="btn btn-info btn-sm" href="userRegFarmForm.php">
               <i class="fas fa-plus-square">
-                </i>ลงทะเบียนผู้ใช้งาน
+                </i> ลงทะเบียนผู้ใช้งาน
             </a>
 
             <div class="card-tools">
@@ -242,12 +286,13 @@ $(document).ready(function(){
 						     <small><?=$v->role_name?></small>
                         </td>	
                         <td class="project-actions text-right">
+                        <!--  
                             <a class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#modal-lg">
-                                <i class="fas fa-folder"></i> View</a>
+                                <i class="fas fa-folder"></i> View</a> -->
                             <a class="btn btn-info btn-xs" href="userRegFarmEdit.php?userId=<?=$v->user_id?>">
                                 <i class="fas fa-pencil-alt"></i> Edit
                             </a>
-                            <a class="btn btn-danger btn-xs" href="#">
+                            <a class="btn btn-danger btn-xs" href="#" onclick="javascript:fnDelete(<?=$v->user_id?>);d"  >
                                 <i class="fas fa-trash"></i> Delete </a>
                         </td>  
                     </tr>                        

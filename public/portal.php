@@ -148,10 +148,108 @@
         <div class="row">
         &nbsp;
         </div>
+        
+         <hr>
+         
+           <!-- Info boxes -->
         <div class="row">
-        &nbsp;
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box">
+             <a href="https://www.facebook.com/abt.kokkhamin">
+              <span class="info-box-icon bg-gray elevation-1"><i class="fab fa-facebook-square fa-2x"></i></span>
+              </a>
+              <div class="info-box-content">
+               <a href="https://www.facebook.com/abt.kokkhamin">
+                <span class="text-gray">facebook เทศบาล</span>
+                <span class="text-gray">ตำบลโคกขมิ้น</span>
+
+                </a>
+              </div>
+              <!-- /.info-box-content  <span class="info-box-number"><small>&nbsp;</small>
+                </span> -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+            <a href="http://www.kokkhamin.go.th/index.php">
+              <span class="info-box-icon bg-gray elevation-1"><i class="fab fa-internet-explorer fa-2x" ></i></span>
+              </a>
+              <div class="info-box-content">
+              <a href="http://www.kokkhamin.go.th/index.php">
+                <span class="text-gray">เว็บหลักของเทศบาล</span>
+                <span class="text-gray">ตำบลโคกขมิ้น</span>
+                </a>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+
+          <!-- fix for small devices only -->
+          <div class="clearfix hidden-md-up"></div>
+
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+            <a href="https://district.cdd.go.th/phlapphlachai/">
+              <span class="info-box-icon bg-gray elevation-1"><i class="fab fa-internet-explorer fa-2x"></i></span>
+			</a>
+              <div class="info-box-content">
+              <a href="https://district.cdd.go.th/phlapphlachai/">
+                <span class="text-gray">เว็บอำเภอพลับพลาชัย</span>
+                <span class="text-gray">บุรีรัมย์</span>
+                </a>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+             <a href="http://www.dla.go.th/">
+             <span class="text-gray">
+              <img class="text-gray" alt="กรมส่งเสริมการปกครองท้องถิ่น" src="images/dla_logo.png" width="250px" height="50px">
+              </span>
+              </a>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
         </div>
-        <!-- /.row -->
+        <!-- /.row -->      
+         
+         <!-- 
+           <div class="row">
+       
+              <div class="col-lg-6">
+                <a href="#" class="text-gray">
+                  <i class="fab fa-facebook-square fa-2x"></i>
+                </a>
+                <a href="#" class="text-gray">
+                  <i class="fab fa-twitter-square fa-2x"></i>
+                </a>
+                <a href="#" class="text-gray">
+                  <i class="fas fa-envelope-square fa-2x"></i>
+                </a>
+                <a href="#" class="text-gray">
+                  <i class="fas fa-rss-square fa-2x"></i>
+                </a>
+              </div>
+               <div class="col-lg-6 text-gray">
+                  <!--  <p class="lead">Payment Methods:</p> -- >
+                  <img src="../../dist/img/credit/visa.png" alt="Visa">
+                  <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
+                  <img src="../../dist/img/credit/american-express.png" alt="American Express">
+                  <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
+                </div>
+        </div>
+        <!-- /.row -->      
+         
       </div><!-- /.container-fluid -->
       
       

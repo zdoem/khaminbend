@@ -1,12 +1,22 @@
 <?php
  require 'bootstart.php';   
- require ROOT . '/core/security.php';
  require_once 'components/headerPortal.php';  
  
  //require 'bootstart.php';
- //require ROOT . '/core/security.php';
+ require ROOT . '/core/security.php';
  //require_once 'components/header.php';
  
+//$xUserId=trim((isset($_POST['userId']) ? $_POST['userId'] : ''));
+
+ $xUserId=@$_GET['userId']; 
+ 
+ 
+ $userRowObj = $db::table("tbl_users as a")
+ ->select($db::raw("a.* "))
+ ->where('user_id', '=', $xUserId)
+ ->first();
+ 
+
  $listmas_dept = $db::table("tbl_departments")
  ->select($db::raw("dept_code,dept_name,dept_desc"))
  ->where('f_status', '=', 'A')
@@ -103,7 +113,7 @@
       }
       $(document).ready(function(){
     	  $('#btnVerify').prop('disabled', true);
-    	  $('#btnSubmit').prop('disabled', true);
+    	  //$('#btnSubmit').prop('disabled', true);
       });
     </script>
     
@@ -115,13 +125,13 @@
       <div class="container">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">ลงทะเบียนผู้ใช้งาน<small></small></h1>
+            <h1 class="m-0 text-dark">แก้ไขข้อมูลทะเบียนผู้ใช้งาน<small></small></h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
 			  
-              <li class="breadcrumb-item"><a href="#">ลงทะเบียนผู้ใช้งาน</a></li>
+              <li class="breadcrumb-item"><a href="#">แก้ไขข้อมูลทะเบียนผู้ใช้งาน</a></li>
               <!--<li class="breadcrumb-item active">Top Navigation</li>-->
             </ol>
           </div><!-- /.col -->
@@ -134,7 +144,7 @@
     <!-- Main content -->
     <div class="content">
       <form action="handler/userRegFarm.php" method="post" role="form" data-toggle="validator">  
-       <input type="hidden" id="cmd" name="cmd" value="I">
+       <input type="hidden" id="cmd" name="cmd" value="U">
        <div class="container">
 
 		<div class="row">
@@ -153,46 +163,52 @@
 				   <div class="form-group row">
                     <label for="userId" class="col-sm-2 col-form-label">ชื่อ Login ในระบบ</label>
                     <div class="col-sm-4">
-                      <input type="text" class="form-control" id="userId" name="userId" required="required" placeholder="user Id"
+                      <input type="text" class="form-control" id="userId" value="<?=$userRowObj->user_id?>" readonly="readonly" name="userId" required="required" placeholder="user Id"
                       pattern="^[_A-z0-9]{1,}$" maxlength="15">
                       <span id="msgVerfiy"></span>
                     </div>
-					 <div class="col-sm-2">
-                      <button type="button" id="btnVerify" class="btn btn-info">ตรวจสอบชื่อ Login</button>
-                    </div>
+
                   </div>
+                  <!--  
 				  <div class="form-group row">
-                    <label for="txtPwd" class="col-sm-2 col-form-label">รหัสผ่าน</label>
+                    <label for="txtPwd" class="col-sm-2 col-form-label">รหัสผ่านเก่า</label>
                     <div class="col-sm-6">
                         <input type="password" class="form-control" id="txtPwd" name="txtPwd"  placeholder="Password" required="required">
                     </div>
                   </div>
+                  	<div class="form-group row">
+                    <label for="txtPwd" class="col-sm-2 col-form-label">กำหนดรหัสผ่านใหม่</label>
+                    <div class="col-sm-6">
+                        <input type="password" class="form-control" id="txtPwd2" name="txtPwd2"  placeholder="Password" required="required">
+                    </div>
+                  </div>
+                  -->
 				   <div class="form-group row">
                     <label for="txtfName" class="col-sm-2 col-form-label">ชื่อ-นามสกุล</label>
                     <div class="col-sm-3">
-                      <input type="text" class="form-control" id="txtfName" name="txtfName" placeholder="ชื่อ" required="required">
+                      <input type="text" class="form-control" id="txtfName" name="txtfName" value="<?=$userRowObj->fname?>" placeholder="ชื่อ" required="required">
                     </div>
                     <div class="col-sm-3">
-                      <input type="text" class="form-control" id="inputName" name="txtlName" placeholder="นามสกุล" required="required">
+                      <input type="text" class="form-control" id="inputName" name="txtlName" value="<?=$userRowObj->lname?>" placeholder="นามสกุล" required="required">
                     </div>
                   </div>				  
 
 				  <div class="form-group row">
                     <label for="txtEmail" class="col-sm-2 col-form-label">อีเมลย์</label>
                     <div class="col-sm-6">
-                        <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="aaaa@ddd.com">
+                        <input type="email" class="form-control" id="txtEmail" name="txtEmail" value="<?=$userRowObj->email?>" placeholder="aaaa@ddd.com">
                     </div>
                   </div>
 				  <div class="form-group row">
                     <label for="txtMobile" class="col-sm-2 col-form-label">เบอร์มือถือ</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" id="txtMobile" name="txtMobile" placeholder="08xxxxxxxx">
+                        <input type="text" class="form-control" id="txtMobile" name="txtMobile" value="<?=$userRowObj->mobile?>" placeholder="08xxxxxxxx">
                     </div>
                   </div>
 				  <div class="form-group row">
                     <label for="txtPosition" class="col-sm-2 col-form-label">ตำแหน่ง</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" id="txtPositon" name="txtPosition" placeholder="ตำแหน่ง">
+                        <input type="text" class="form-control" id="txtPositon" name="txtPosition" value="<?=$userRowObj->position_name?>" placeholder="ตำแหน่ง">
                     </div>
                   </div>	
 				  <div class="form-group row">
@@ -204,7 +220,7 @@
                     foreach ($listmas_dept as $k => $v) { 
                         $selectedx = "";
                         if($v->dept_code == '01')
-                            $selectedx = "selected"
+                            $selectedx = "selected";
        
                     ?>
                         <option value="<?=$v->dept_code?>" <?=$selectedx?>><?=$v->dept_code?> <?=$v->dept_name?></option>
@@ -231,8 +247,12 @@
                     <option value="">---กรุณาเลือกบทบาท---</option>
                     <?php 
                     foreach ($listmas_role as $k => $v) {
+                        $selectedx = "";
+                        if($v->role_code == $userRowObj->role_code)
+                            $selectedx = "selected";
+
                     ?>
-                        <option value="<?=$v->role_code?>"><?=$v->role_name?></option>
+                        <option value="<?=$v->role_code?>" <?=$selectedx?>><?=$v->role_name?></option>
                      <?php
                     }
                     ?>
@@ -247,49 +267,12 @@
                     </div>
                   </div>				  
 
-
-
-
-
-
-	<!--<link href="https://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet" media="screen">
-    <link href="https://getbootstrap.com/2.3.2/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
-    <link href="https://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css" rel="stylesheet"> -- >
-   
-     <link href="http://jojosati.github.io/bootstrap-datepicker-thai/css/datepicker.css" rel="stylesheet" media="screen">
-	 
-				   <div class="form-group row">
-                    <label for="txtfName" class="col-sm-2 col-form-label">วันที่ผลิด</label>
-                    <div class="col-sm-3">
-                      <input type="text" class="form-control" id="txtFromDate" name="txtFromDate" 
-                      placeholder="จาก 16/12/2563 "  data-provide="datepicker"    data-date-language="th-th"  
-                         required="required" >
-                    </div>
-                    <div class="col-sm-3">
-                      <input type="text" class="form-control" id="inputNamex" name="txtlNamex"  data-provide="datepicker"    data-date-language="th-th"   placeholder="ถึง 16/12/2563 "   required="required">
-                    </div>
-                  </div>	
-
-     <!-- Placed at the end of the document so the pages load faster -- >
-    <script src="https://getbootstrap.com/2.3.2/assets/js/jquery.js"></script>
-    <script src="https://getbootstrap.com/2.3.2/assets/js/google-code-prettify/prettify.js"></script>
-
-    <script src="http://jojosati.github.io/bootstrap-datepicker-thai/js/bootstrap-datepicker.js"></script>
-    <script src="http://jojosati.github.io/bootstrap-datepicker-thai/js/bootstrap-datepicker-thai.js"></script>
-    <script src="http://jojosati.github.io/bootstrap-datepicker-thai/js/locales/bootstrap-datepicker.th.js"></script>
-
-	<script id="example_script"  type="text/javascript">
-      function demo() {
-        $('.datepicker').datepicker();
-      }
-    </script>
-
-
+                  
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer row">
                   <div class="col-md-6">
-					<button type="submit" id="btnSubmit" class="btn btn-info float-right">ลงทะเบียน</button>
+					<button type="submit" id="btnSubmit" class="btn btn-info float-right">บันทึก</button>
 				  </div>
                   <div class="col-md-6">
 					<button type="submit" id="btnCancel" class="btn btn-default">Cancel</button></div>

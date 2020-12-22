@@ -13,7 +13,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 
-  <title>Portal เทศบาลโคกขมิ้น
+  <title>โคกขมิ้น สมาร์ทซิตี้ Portal 
      <?php
     if(isset($webtitle)){
       echo $webtitle;
@@ -41,11 +41,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
     <div class="container">
 
-	  <a href="index2.html" class="navbar-brand">
+	  <a href="portal.php" class="navbar-brand">
        <img src="images/apple-icon-57x57.png" alt="Portal เทศบาลโคกขมิ้น" class="brand-image img-circle elevation-3"
            style="opacity: .8">
            	<!-- <img src="images/apple-icon-57x57.png" class="img-responsive" alt=""  style="opacity: .8">-->
-      <span class="brand-text font-weight-light bn-xs">Portal เทศบาลโคกขมิ้น</span>
+      <span class="brand-text font-weight-light bn-xs">โคกขมิ้น สมาร์ทซิตี้ Portal</span>
     </a>
       
       <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">

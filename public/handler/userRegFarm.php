@@ -49,7 +49,29 @@ $rows_old = $db::table("tbl_mas_vilage")
     } catch (\Exception $e) { 
 		 $status='Error';  //var_dump($e->getMessage());exit(); 
     } 
-}
+ }else if($cmd == 'U'){// update data
+     
+     try {
+         $row =$db::update('update tbl_users set fname=?,lname=?,position_name=?,email=?
+            ,mobile=?,dept_code=?,role_code=?,update_by=?,d_update=NOW()
+             where user_id = ?',
+             [$xTxtfName, $xTxtlName,$xTxtPosition,$xTxtEmail,$xTxtMobile,$xDeptId,$xRoleId,@$_SESSION['user_id'],$xUserId]);
+         
+         $status='OK';
+         
+     } catch (\Exception $e) {
+         $status='Error';
+     }
+     
+ } else if($cmd == 'D') {// Deleted
+     try {            
+         $row =$db::table('tbl_users')->where('user_id', '=', $xUserId)->delete();
+         $status='deleted';
+     } catch (\Exception $e) {
+         $status='deletefail';
+     }
+     //echo json_encode(['status'=>$status,'token'=>\Volnix\CSRF\CSRF::getToken('token_village_frm')]); exit();
+ }
 //}
  ?>
  
