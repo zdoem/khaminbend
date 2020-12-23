@@ -9,7 +9,7 @@ $refer_urlmain='userRegFarmList.php';
 // exit();
 // check validating csrf token name
 //if (\Volnix\CSRF\CSRF::validate($_POST, 'token_village_frm')){ 
- 
+$xDelId=trim((isset($_POST['userDelId']) ? $_POST['userDelId'] : ''));
 $xUserId=trim((isset($_POST['userId']) ? $_POST['userId'] : ''));
 $xTxtPwd=(isset($_POST['txtPwd']) ? $_POST['txtPwd'] : '');
 $xTxtfName=(isset($_POST['txtfName']) ? $_POST['txtfName'] : '');
@@ -38,12 +38,15 @@ $rows_old = $db::table("tbl_mas_vilage")
   $action=1;     
 }  
 */
-
+//echo "x=====> ".$xDelId;
+//echo $cmd;
  if ($cmd == 'I') {/*Insert Data*/ 
     try { 
+        
+          $new_pass = md5(S_SALT.$xTxtPwd); 
           $row = $db::insert("INSERT INTO tbl_users (user_id,password,fname,lname,position_name,email,mobile,dept_code ,role_code,f_status,d_create,create_by) 
                     VALUES(?,?,?,?,?,?,?,?,?,'A',NOW(),? )"
-              ,[$xUserId, $xTxtPwd,$xTxtfName,$xTxtlName,$xTxtPosition,$xTxtEmail,$xTxtMobile,$xDeptId,$xRoleId,@$_SESSION['user_id']]);
+              ,[$xUserId, $new_pass,$xTxtfName,$xTxtlName,$xTxtPosition,$xTxtEmail,$xTxtMobile,$xDeptId,$xRoleId,@$_SESSION['user_id']]);
           
             $status='OK'; 
     } catch (\Exception $e) { 
@@ -64,11 +67,13 @@ $rows_old = $db::table("tbl_mas_vilage")
      }
      
  } else if($cmd == 'D') {// Deleted
-     try {            
-         $row =$db::table('tbl_users')->where('user_id', '=', $xUserId)->delete();
-         $status='deleted';
+     try {  
+         //echo "1111111111111";
+         $row =$db::table('tbl_users')->where('user_id', '=', $xDelId)->delete();
+         //echo "2222222222";
+         $status='OK';
      } catch (\Exception $e) {
-         $status='deletefail';
+         $status='Error';
      }
      //echo json_encode(['status'=>$status,'token'=>\Volnix\CSRF\CSRF::getToken('token_village_frm')]); exit();
  }
@@ -76,7 +81,7 @@ $rows_old = $db::table("tbl_mas_vilage")
  ?>
  
 <script type="text/javascript">
-window.location = "../../status_action.php?status=<?=$status?>&refer_urlmain=<?=$refer_urlmain?>";
+	window.location = "../../successPage.php?status=<?=$status?>&refer_urlmain=<?=$refer_urlmain?>";
 </script>
 <?php
 ?>

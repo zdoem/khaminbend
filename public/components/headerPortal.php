@@ -41,7 +41,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
     <div class="container">
 
-	  <a href="portal.php" class="navbar-brand">
+	  <a href="/" class="navbar-brand">
        <img src="images/apple-icon-57x57.png" alt="Portal เทศบาลโคกขมิ้น" class="brand-image img-circle elevation-3"
            style="opacity: .8">
            	<!-- <img src="images/apple-icon-57x57.png" class="img-responsive" alt=""  style="opacity: .8">-->
@@ -61,8 +61,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </li>
           -->
           <li class="nav-item">
-            <a href="#" class="nav-link text-white">ลืมรหัสผ่าน</a>
+            <!-- <a href="#" class="nav-link text-white">ลืมรหัสผ่าน</a> -->
+            &nbsp;
           </li>
+          <?php if(@$_SESSION['role_code']=='99'){?>
+          <!-- role_code 99 for admin -->
           
           <li class="nav-item dropdown">
             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">จัดการข้อมูลผู้ใช้งาน (Admin)</a>
@@ -97,6 +100,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <!-- End Level two -->
             </ul>
           </li>
+          <?php }?>
+          
         </ul>
 
         <!-- SEARCH FORM 
@@ -117,10 +122,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
         <!-- Messages Dropdown Menu -->
         <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="fas fa-sign-in-alt"> เข้าสู่ระบบ</i>
-            <i class="fas fa-sign-out-alt">ออกจากระบบ</i>
-          </a>
+          
+          <?php 
+          
+         // echo @$_SESSION['role_code'];
+          if(@$_SESSION['user_id']==null){
+          ?>
+            <a href="login.php"><i class="fas fa-sign-in-alt"> เข้าสู่ระบบ</i></a>
+            <?php }?>
+            <?php 
+            if(@$_SESSION['user_id']!=null){
+            ?>
+            <a href="logout.php" class="text-danger"><em class="fa fa-power-off">&nbsp;</em> ออกจากระบบ</a>
+            <?php }?>
+          
 
 		</li>
 

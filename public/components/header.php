@@ -157,7 +157,7 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
     <!-- Main Sidebar Container -->
      <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
-    <a href="portal.php" class="brand-link">
+    <a href="index.php" class="brand-link">
        <img src="images/apple-icon-57x57.png" alt="โคกขมิ้น สมาร์ท ซิตี้  Portal " class="brand-image img-circle elevation-3"
            style="opacity: .8"> 
       <span class="brand-text font-weight-light bn-xs">โคกขมิ้น สมาร์ท ซิตี้ </span>
@@ -169,7 +169,7 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false"> 
             <li class="nav-item">
-              <a href="/"  class="nav-link ">
+              <a href="dashboard.php"  class="nav-link ">
                 <em class="fa fa-home">&nbsp;</em>
                 <p>
                กองส่งเสริมการเกษตร

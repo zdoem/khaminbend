@@ -36,7 +36,7 @@
 //$("#btn").click(function() { 
 	$(document).ready(function() { 
          $("#btnCancel").click(function(e){  
-        	 window.location = "portal.php";
+        	 window.location = "index.php";
          });
     });       
 	

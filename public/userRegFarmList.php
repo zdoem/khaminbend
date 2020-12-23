@@ -13,7 +13,11 @@
  
  $listmas_role = $db::table("tbl_role")
  ->select($db::raw("role_code,role_name,role_desc"))
- ->where('f_status', '=', 'A')
+ /*->where('f_status', '=', 'A')*/
+ ->where([
+     ['f_status', '=', 'A'],
+     ['role_code', '<>','99']
+ ])
  ->orderBy('role_name', 'asc')
  ->get()->toArray();
  
@@ -34,7 +38,8 @@
  ->select($db::raw("a.*"),$db::raw("b.*"),$db::raw("c.*"))
  ->where([
      ['a.f_status', '=', 'A'],
-     ['a.dept_code', '=', $deptCode]
+     ['a.dept_code', '=', $deptCode],
+     ['c.role_code', '<>','99']
  ]);
  //['a.user_id', '=', $userId],
 
@@ -86,11 +91,18 @@ $(document).ready(function(){
     });
 });
 
-function fnDelete(){
-	console.log('click click');
+function fnDelete(delId){
+	 if(confirm("ยืนยันการลลบข้อมูลผู้ใช้งาน รหัส  '"+delId+"'  Y/n? ")){
+		 //$('form[name=frmUsr]').attr('action','handler/userRegFarm.php');
+		 //$('form[name=frmUsr]').submit(); 
+		$("#cmd").val("D");
+		$("#userDelId").val(delId);
+		$("#frmUsr").attr('action','handler/userRegFarm.php');
+		$("#frmUsr").submit(); 
+	 } 
 }
-
 </script>
+
  
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -117,6 +129,7 @@ function fnDelete(){
 
 <form action="userRegFarmList.php" id="frmUsr" method="post">  
  <input type="hidden" id="cmd" name="cmd" value="I">
+ <input type="hidden" id="userDelId" name="userDelId" >
     <!-- Main content -->
     <div class="content">
       <div class="container">
@@ -249,7 +262,7 @@ function fnDelete(){
             <table class="table table-striped projects">
                 <thead>
                     <tr>
-                        <th style="width: 1%"> # </th>
+                        <th style="width: 5%"> ID </th>
                         <th style="width: 25%">ชื่อ-นามสกุล</th>
                         <th style="width: 10%">Email </th>
 						<th style="width: 10%">เบอร์มือถือ</th>
@@ -265,7 +278,7 @@ function fnDelete(){
                     foreach ($dataList as $k => $v) { 
                     ?>
                     <tr>
-                        <td>#
+                        <td><?=$v->user_id?>
                         </td>
                         <td><a><?=$v->fname?> <?=$v->lname?></a>
                             <br/>
@@ -292,7 +305,7 @@ function fnDelete(){
                             <a class="btn btn-info btn-xs" href="userRegFarmEdit.php?userId=<?=$v->user_id?>">
                                 <i class="fas fa-pencil-alt"></i> Edit
                             </a>
-                            <a class="btn btn-danger btn-xs" href="#" onclick="javascript:fnDelete(<?=$v->user_id?>);d"  >
+                            <a  href="#" onclick="javascript:fnDelete('<?=$v->user_id?>');"  class="btn btn-danger btn-xs">
                                 <i class="fas fa-trash"></i> Delete </a>
                         </td>  
                     </tr>                        

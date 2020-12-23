@@ -70,7 +70,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="./index2.html"><b>รีเซ็ทรหัสผ่าน</b></a>
+    <a href="./index.php"><b>รีเซ็ทรหัสผ่าน</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
