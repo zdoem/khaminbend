@@ -1,5 +1,5 @@
 <?php 
-require 'bootstart.php';  
+require '../bootstart.php';  
 define('PATH_IMAGES',__DIR__ . '/');   
 define('_MPDF_TTFONTPATH',ROOT .'/public/assets/fonts');
 $stylesheet = file_get_contents(ROOT.'/public/assets/css/report.css');  
@@ -14,7 +14,7 @@ $fontData = $defaultFontConfig['fontdata'];
 $mpdf = new \Mpdf\Mpdf([
   'mode' => 'utf-8',
   'format' => 'A4',
-  'tempDir'=> '/tmp',
+  'tempDir'=> ROOT.'/public/tmp',
   'margin_top' =>30, 
   'fontDir' => array_merge($fontDirs, [
         ROOT.'/public/assets/fonts',
@@ -107,11 +107,11 @@ $listpeople = $db::table("fm_fam_members_dt1 AS a")
 // ข้อมูลพื้นที่การเกษตร
 $list_fm_fam_land_dt2 = $db::table("fm_fam_land_dt2 AS a")
     ->select($db::raw("land_type,land_desc,pro.name_th AS province,(SELECT name_th FROM amphures WHERE code=a.district) AS district,title_deed_id AS nodeed,area1_rai AS arearai,area2_work AS areawork,area3_sqw AS areatrw,f_status"))
-    ->leftJoin('provinces AS pro', 'a.province', 'pro.code')   
+    ->leftJoin('provinces AS pro', 'a.province', 'pro.id')   
     ->orderBy('land_type', 'asc')
     ->orderBy('land_seq', 'asc')
     ->where('land_fam_id', '=', $id) 
-    ->get()->toArray();
+    ->get()->toArray(); 
 //3.เครื่องมืออำนวยความสะดวกทางการเกษตร fm_fam_facilities_dt3
 $base_join = $db::table('fm_fam_facilities_dt3')
     ->select($db::raw('fac_code,fac_name,fac_quantity,fac_desc'))
