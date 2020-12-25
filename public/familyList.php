@@ -172,7 +172,7 @@ $data_date_survey= $db::table("fm_fam_hd")
   $(function(){ 
     $("#MyModal").on("show.bs.modal", function(e) {
         var link = $(e.relatedTarget); 
-        $(this).find(".modal-body").load(link.attr("href"));
+        $(this).find("#modal_content").load(link.attr("href"));
     }); 
 
       table=$('#tblistdata').DataTable({
@@ -298,31 +298,7 @@ $data_date_survey= $db::table("fm_fam_hd")
  </script>
  <!-- Modal html-->
        <div class="modal fade" id="MyModal">
-        <div class="modal-dialog modal-xl">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">แสดงข้อมูล</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <!-- Main content -->
-              
-              <!-- /.content -->
-            </div>
-            <div class="modal-footer justify-content-between"> 
-            <div class="col-12">
-				     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-					
-                  <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
-                    <i class="fas fa-download"></i> Generate PDF
-                  </button>
-                </div>
-            </div>
-
-          </div>
+        <div class="modal-dialog modal-xl" id="modal_content"></div>
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->

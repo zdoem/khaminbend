@@ -34,8 +34,8 @@ $mpdf->SetSubject($title_pdf);
 $mpdf->SetKeywords($title_pdf);
 
 //--------------------------------------------------------------
-$_GET['id'] = 631228;
-$id=$_GET['id'];
+// $_GET['id'] = 631228;
+$id=@$_GET['id'];
 $base_join = $db::table('fm_fam_members_dt1')
     ->select($db::raw('mem_fam_id,mem_status,mem_pre,mem_fname,mem_lname,mem_citizen_id,mem_sex,mem_national,mem_religion_code,mem_df_birth,mem_education_code,mem_relations_code,f_status'))
     ->where('mem_status', 'O')
@@ -386,10 +386,10 @@ $issuegreen_html='
       <td colspan="3">
           <table style="width:100%" align="center" border="0" cellpadding="0" cellspacing="0">
               <tr  align="center">
-                <td width="15%"><img src="images/unchecked.png" width="3.5mm" /> <span>ไม่มี</span> <img src="images/blank-check-box.png" width="3.5mm" /> <span>มี (ระบุ)</span></td>
+                <td width="15%"><img src="../images/unchecked.png" width="3.5mm" /> <span>ไม่มี</span> <img src="../images/blank-check-box.png" width="3.5mm" /> <span>มี (ระบุ)</span></td>
                 <td width="20%" class="dot">'.$problem_env_desc.'</td>
                 <td width="2%"></td>
-                <td width="15%"><img src="images/unchecked.png" width="3.5mm" /> <span>ไม่มี</span> <img src="images/blank-check-box.png" width="3.5mm" /> <span>มี (ระบุ)</span></td>
+                <td width="15%"><img src="../images/unchecked.png" width="3.5mm" /> <span>ไม่มี</span> <img src="../images/blank-check-box.png" width="3.5mm" /> <span>มี (ระบุ)</span></td>
                 <td width="20%" class="dot">'.$manage_env_desc.'</td>
                 <td width="5%"></td>
                 <td width="20%" class="dot">'.$conserve_env.'</td>
@@ -407,9 +407,9 @@ $disaster_header='<table style="width:100%" align="center" border="0" cellpaddin
         for($i=0;$i<5;$i++){  
                 if(isset($v[$i]->dis_code)){
                    if($v[$i]->dis_code!=99){
-                    $disaster_html .= '<td><img src="images/blank-check-box.png" width="3.5mm" /> <span>'.$v[$i]->dis_name.'</span></td>';
+                    $disaster_html .= '<td><img src="../images/blank-check-box.png" width="3.5mm" /> <span>'.$v[$i]->dis_name.'</span></td>';
                    }else if($v[$i]->dis_code==99){
-                   $disaster_html .= '<td width="50"><img src="images/blank-check-box.png" width="3.5mm" /> อื่นๆ</td><td width="100" class="dot">'.$v[$i]->dis_name.'</td>';
+                   $disaster_html .= '<td width="50"><img src="../images/blank-check-box.png" width="3.5mm" /> อื่นๆ</td><td width="100" class="dot">'.$v[$i]->dis_name.'</td>';
                   }
                 }else{
                   $disaster_html .='<td width="50"></td>';
@@ -426,8 +426,8 @@ $disaster_html .='<table style="width:100%" align="center" border="0" cellpaddin
                   <th align="left" colspan="4">เคยได้รับความช่วยเหลือ:</th>
                  </tr> 
                  <tr  align="left">
-                    <td width="10%" ><img src="images/blank-check-box.png" width="3.5mm" /> <span>ไม่เคย</span></td> 
-                    <td width="10%" align="right"><img src="images/blank-check-box.png" width="3.5mm" /> <span>เคย(ระบุความช่วยเหลือจากหน่วยงานไหน)</span></td>    
+                    <td width="10%" ><img src="../images/blank-check-box.png" width="3.5mm" /> <span>ไม่เคย</span></td> 
+                    <td width="10%" align="right"><img src="../images/blank-check-box.png" width="3.5mm" /> <span>เคย(ระบุความช่วยเหลือจากหน่วยงานไหน)</span></td>    
                     <td width="40%" class="dot">'.$help_desc.'</td>
                     <td width="10%"></td>
                 </tr>
@@ -444,9 +444,9 @@ $newsland_header='<table style="width:100%" align="center" border="0" cellpaddin
        for($i=0;$i<3;$i++){ 
               if(isset($v[$i]->info_code)){
                     if($v[$i]->info_code!=99){
-                    $newsland_html .= '<td width="35%"><img src="images/unchecked.png" width="3.5mm" /> <span>'.$v[$i]->info_name.'</span></td>';
+                    $newsland_html .= '<td width="35%"><img src="../images/unchecked.png" width="3.5mm" /> <span>'.$v[$i]->info_name.'</span></td>';
                     }else if($v[$i]->info_code==99){
-                      $newsland_html .= '<td><img src="images/unchecked.png" width="3.5mm" /> '.Getdotline(80,'อื่น',$v[$i]->info_desc).'</td>';
+                      $newsland_html .= '<td><img src="../images/unchecked.png" width="3.5mm" /> '.Getdotline(80,'อื่น',$v[$i]->info_desc).'</td>';
                    }
                 }else{
                   $newsland_html .='<td width="35%"></td>';       

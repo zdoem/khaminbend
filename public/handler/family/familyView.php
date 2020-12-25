@@ -420,11 +420,18 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
   window.d_survey='<?=$d_survey?>'; 
   window.alert_survey='<?=$alert_survey?>';
  </script>
-
- <section class="content" id="app" v-cloak> 
+<div class="modal-content" id="app" v-cloak> 
+  <div class="modal-header">
+                <h4 class="modal-title">แสดงข้อมูล</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+  </div>
+  <div class="modal-body">
+  <section class="content">  
       <form @submit.prevent="submit" id="frm_family" ref="frm_family">   
         <!-- <pre>{{$data}}</pre> -->
-        <!-- <pre>{{ $v }}</pre> -->  
+        <!-- <pre>{{ $v }}</pre> -->   
        <div class="container-fluid"> 
         <!-- SELECT2 EXAMPLE ข้อมูลครัวเรือน -->
         <div class="card card-default">
@@ -1349,7 +1356,19 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
 
        </div><!-- /.container-fluid -->
       </form>
-    </section>
+     </section>
+    </div>   
+    <div class="modal-footer justify-content-between"> 
+        <div class="col-12">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <!-- <a href="#" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a> -->
+       
+              <a href="pdf/pdf_family.php?id=<?=@$id?>" target="_blank" class="btn btn-primary float-right" role="button" aria-pressed="true" style="margin-right: 5px;">
+               <i class="fas fa-download"></i> Generate PDF
+              </a>
+            </div>
+     </div>
+</div>
     <script src="assets/js/family.js"></script>
     <div style="display: none;" id="xhtml"></div>
  <?php }else{  
