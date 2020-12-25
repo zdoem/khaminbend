@@ -127,4 +127,46 @@ function DateConvert($type,$bformart,$strDate,$symbol){
       }
      return '';
 } 
+function Getdotline($dotmax,$strin_another,$stringuse){
+    $dot=''; 
+    $a=strlen($stringuse)+strlen($strin_another);
+    $loop=($dotmax-$a)>0?$dotmax-$a:0;
+    if($loop>0){
+      for($i=0;$i<=$loop;$i++){
+          if(round($loop/2)==$i){
+            $dot.=$stringuse; 
+           }else{
+            $dot.='.';
+          }
+      }
+     return $strin_another.$dot;    
+    } 
+   return $stringuse;
+}
+function GetListproduct_target(){
+   $l=[['code'=>1,'name'=>'ผลิตเพื่อบริโภค'],['code'=>2,'name'=>'ผลิตเพื่อจำหน่าย'],['code'=>3,'name'=>'ผลิตเพื่อบริโภคและจำหน่าย']];
+   return $l;
+}
+function Getproduct_target($code){
+    $l=GetListproduct_target();
+    foreach($l AS $k=>$v){
+      if($v['code']==$code){
+        return $v;    
+      }
+    }
+   return null;
+}
+function GetListsourceoffund(){
+   $l=[['code'=>1,'name'=>'เงินทุนส่วนตัว'],['code'=>2,'name'=>'กู้มาลงทุน'],['code'=>3,'name'=>'กู้บ้างสวน']];
+   return $l;
+}
+function Getsourceoffund($code){
+    $l=GetListsourceoffund();
+    foreach($l AS $k=>$v){
+      if($v['code']==$code){
+        return $v;    
+      }
+    }
+   return null;
+}
 ?>

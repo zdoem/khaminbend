@@ -1,0 +1,76 @@
+@font-face {
+    font-family: 'TH Sarabun New';
+    src: url('../assets/fonts/THSarabunNew.eot');
+    src: url('../assets/fonts/THSarabunNew.eot?#iefix') format('embedded-opentype'),
+        url('../assets/fonts/THSarabunNew.woff') format('woff'),
+        url('../assets/fonts/THSarabunNew.ttf') format('truetype'),
+        url('../assets/fonts/THSarabunNew.svg#THSarabunNew') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+} 
+@font-face {
+    font-family: 'TH Sarabun New';
+    src: url('../assets/fonts/THSarabunNew-Italic.eot');
+    src: url('../assets/fonts/THSarabunNew-Italic.eot?#iefix') format('embedded-opentype'),
+        url('../assets/fonts/THSarabunNew-Italic.woff') format('woff'),
+        url('../assets/fonts/THSarabunNew-Italic.ttf') format('truetype'),
+        url('../assets/fonts/THSarabunNew-Italic.svg#THSarabunNew-Italic') format('svg');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'TH Sarabun New';
+    src: url('../assets/fonts/THSarabunNew-BoldItalic.eot');
+    src: url('../assets/fonts/THSarabunNew-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('../assets/fonts/THSarabunNew-BoldItalic.woff') format('woff'),
+        url('../assets/fonts/THSarabunNew-BoldItalic.ttf') format('truetype'),
+        url('../assets/fonts/THSarabunNew-BoldItalic.svg#THSarabunNew-BoldItalic') format('svg');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'TH Sarabun New';
+    src: url('../assets/fonts/THSarabunNew-Bold.eot');
+    src: url('../assets/fonts/THSarabunNew-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../assets/fonts/THSarabunNew-Bold.woff') format('woff'),
+        url('../assets/fonts/THSarabunNew-Bold.ttf') format('truetype'),
+        url('../assets/fonts/THSarabunNew-Bold.svg#THSarabunNew-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+html,body{margin:0;padding:0;font-family: 'TH Sarabun New';font-size:14pt;} 
+.tbfont_content{ 
+    font-weight: normal;
+ } 
+ .title_home{margin: .5rem 0;display: block;}
+ .spacegroup{margin:1rem 0;display: block;}
+ .c_table{font-weight: bold;color:#FFF;padding:0mm 2mm;text-align: left;}
+ .c_homeinfo,.c_generalinfo,.c_enginhelp,.c_disaster,.c_newsland,.c_animal{background-color:#007BFF;}
+ .c_infohome_list{color:#000;background-color:#FFC000;}
+ .c_infohome_farm{background-color:#00B050;}
+ .c_hr{height:2px;border-width:0;background-color:#A8BFDE;color:#A8BFDE;} 
+ .tdline{ 
+    border-bottom:1px solid #000;
+    display: block;
+    padding-bottom:0px; 
+  }
+  .dot{border-bottom:1px dotted #000;vertical-align : bottom;}
+  .trmiddle>td >*{vertical-align : middle;} 
+  #c_survey{color:#000000!important;}
+  .surveydate{font-weight: normal;} 
+  table.animal {  
+	border-collapse: collapse;  
+   }
+  .animal td, .animal th { 
+	padding: 2pt; 
+	border: 1px solid #ccc; 
+	text-align: left; 
+	font-size: 18px;
+	}
+ 
