@@ -507,23 +507,31 @@ window.app = new Vue({
           switch (foriten) {  
             case 'deeds':
                _this.$set(_this.distric_deeds, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse());
-              //  _this.Mfamerdetaillists.deeds[index].district=null; 
-              _this.Mfamerdetaillists.deeds[index].district=_this.deed.district;
+               _this.Mfamerdetaillists.deeds[index].district=_this.deed.district; 
+               if(_this.Mfamerdetaillists.deeds[index].province!=20){
+                 _this.Mfamerdetaillists.deeds[index].district=null;
+               }
              break;
             case 'norsor3kors':
-              _this.$set(_this.distric_norsor3kors, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse());
-              // _this.Mfamerdetaillists.norsor3kors[index].district=null;
-              _this.Mfamerdetaillists.norsor3kors[index].district=_this.deed.district;
+              _this.$set(_this.distric_norsor3kors, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse()); 
+                _this.Mfamerdetaillists.norsor3kors[index].district=_this.deed.district;
+                if(_this.Mfamerdetaillists.norsor3kors[index].province!=20){
+                _this.Mfamerdetaillists.norsor3kors[index].district=null;
+                }
               break;
             case 'spoks': 
-             _this.$set(_this.distric_sorporkor, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse());
-             // _this.Mfamerdetaillists.spoks[index].district=null;
+             _this.$set(_this.distric_sorporkor, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse()); 
              _this.Mfamerdetaillists.spoks[index].district=_this.deed.district;
+              if(_this.Mfamerdetaillists.spoks[index].province!=20){
+               _this.Mfamerdetaillists.spoks[index].district=null;
+              }
             break;
             case 'chapter5s':
-              _this.$set(_this.distric_chapter5s, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse());
-              // _this.Mfamerdetaillists.chapter5s[index].district=null;
+              _this.$set(_this.distric_chapter5s, index, data.reverse().concat({code: null, name_th: "กรุณาเลือกข้อมูล"}).reverse()); 
               _this.Mfamerdetaillists.chapter5s[index].district=_this.deed.district;
+               if(_this.Mfamerdetaillists.chapter5s[index].province!=20){
+                _this.Mfamerdetaillists.chapter5s[index].district=null;
+               }
                break; 
           } 
             
