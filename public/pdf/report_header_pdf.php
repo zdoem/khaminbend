@@ -20,7 +20,7 @@ $headerhtml='<style>
             <td width="50%" align="center" style="font-weight: bold;"> 
                 <table style="width:100%" align="center" border="0" cellpadding="0" cellspacing="0"> 
                     <tr align="center">
-                        <td> <img src="../images/apple-icon-57x57.png" style="width:15mm;" /></td> 
+                        <td> <img src="../images/apple-icon-57x57.png" style="width:16mm;" /></td> 
                     </tr> 
                     <tr align="center"> 
                         <td style="height:40px;"><b id="title_home">ข้อมูลครัวเรือน<b/></td> 

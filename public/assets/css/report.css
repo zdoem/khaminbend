@@ -50,9 +50,10 @@ html,body{margin:0;padding:0;font-family: 'TH Sarabun New';font-size:14pt;}
  } 
  .title_home{margin: .5rem 0;display: block;}
  .spacegroup{margin:1rem 0;display: block;}
- .c_table{font-weight: bold;color:#FFF;padding:0mm 2mm;text-align: left;}
+ .c_table{font-weight: bold;color:#FFF;padding:.5mm 2mm;text-align: left;}
  .c_homeinfo,.c_generalinfo,.c_enginhelp,.c_disaster,.c_newsland,.c_animal{background-color:#007BFF;}
- .c_infohome_list{color:#000;background-color:#FFC000;}
+ .c_infohome_list{color:#000000!important;background-color:#FFC000;}
+ #c_infohome_list{color:#000000!important;}
  .c_infohome_farm{background-color:#00B050;}
  .c_hr{height:2px;border-width:0;background-color:#A8BFDE;color:#A8BFDE;} 
  .tdline{ 

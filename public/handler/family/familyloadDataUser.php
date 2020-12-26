@@ -278,7 +278,7 @@ $list_fm_fam_facilities_dt3 = $db::table('tbl_mas_facilities AS a')
       END AS selected"))
     ->leftJoinSub($base_join, 'b', function ($join) {
         $join->on('a.fac_code', '=', 'b.fac_code');
-    })->get()->toArray(); 
+    })->orderBy('a.fac_code', 'asc')->get()->toArray(); 
 
 //4. สัตว์เลี้ยง fm_fam_pet_dt4
 $base_join = $db::table('fm_fam_pet_dt4')
@@ -293,7 +293,7 @@ $list_fm_fam_pet_dt4 = $db::table('tbl_mas_pet AS a')
       END AS selected"))
     ->leftJoinSub($base_join, 'b', function ($join) {
         $join->on('a.pet_code', '=', 'b.pet_code');
-    })->get()->toArray();
+    })->orderBy('a.pet_code', 'asc')->get()->toArray();
 
 // var_dump($list_fm_fam_pet_dt4);exit();
 
