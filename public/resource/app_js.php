@@ -31,7 +31,7 @@ require_once ROOTJS.'/bootstart.php';
                <script src="assets/plugins/jquery-ui/jquery-ui-1.11.4.custom.js"></script>
                   <!-- AdminLTE App -->
                <script src="assets/js/adminlte.js"></script>
-               <script src="assets/js/vue.runtime.min.js"></script>   
+               <script src="assets/js/vue.min.js"></script>   
                <script src="assets/js/vuelidate.min.js"></script>
                <script src="assets/js/validators.min.js"></script> 
                <script src="assets/js/app.js"></script> 
