@@ -35,7 +35,7 @@ $row = $db::table("tbl_mas_vilage")
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>เพิ่มข้อมูลหมู่บ้าน</h1>
+            <h1><?=$webtitle?></h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -71,7 +71,7 @@ $row = $db::table("tbl_mas_vilage")
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
-                  <label>หมู่ที่ <span class="requiredfeilds">*</span></label>{{action}}
+                  <label>หมู่ที่ <span class="requiredfeilds">*</span></label>
                   <input v-if="action==1" type="number" name="txtMoo" id="txtMoo" :class="status($v.txtMoo)" required v-model.trim="$v.txtMoo.$model" @blur="$v.txtMoo.$touch()" class="form-control" required pattern="\d*" title="กรุณากรอกหมู่ที่และเป็นตัวเลขเท่านั้น" placeholder="หมู่ที่ ...">
                   <input v-if="action==2" type="number" name="txtMoo" id="txtMoo" class="form-control" readonly required pattern="\d*" title="ตัวเลขเท่านั้น" :class="status($v.txtMoo)" v-model.trim="$v.txtMoo.$model"  placeholder="หมู่ที่ ...">
                 </div>
