@@ -414,11 +414,11 @@ $animal_html='';
 $animal_header='<table style="width:100%" class="animal" align="center" border="0" cellpadding="5" cellspacing="0">
 <thead><tr><th  colspan="5" class="c_table c_animal">สัตว์เลี้ยง</th></tr></thead>
 <tr  align="center">
-  <th width="10%">ลำดับ.</th>
-  <th width="20%">ประเภทสัตว์เลี้ยง</th>
-  <th width="15%">จำนวน</th>
-  <th width="15%">จำนวน(ที่ได้รับวัคซีน)</th>
-  <th width="40%">รายละเอียด</th>
+  <th align="center" width="10%">ลำดับ.</th>
+  <th align="center" width="20%">ประเภทสัตว์เลี้ยง</th>
+  <th align="center" width="15%">จำนวน</th>
+  <th align="center" width="15%">จำนวน(ที่ได้รับวัคซีน)</th>
+  <th align="center" width="40%">รายละเอียด</th>
 </tr>';  
 foreach($list_fm_fam_pet_dt4 AS $k=>$v){  
    $animal_html .= '<tr  align="center">
