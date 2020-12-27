@@ -192,13 +192,13 @@ require_once 'handler/family/familyloadDataUser.php';
                   <label>สถานภาพ <span class="requiredfeilds">*</span></label>
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline"><!--   :disabled="index>0" -->
-                      <input type="radio" :id="'radioPrimary1'+index" v-on:change="setOwnerfamily('O',index)"  value="O" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()"> 
-                      <label :for="'radioPrimary1'+index">เจ้าบ้าน 
+                      <input type="radio" :id="'radioxFstatusRdO'+index" v-on:change="setOwnerfamily('O',index)"  value="O" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()"> 
+                      <label :for="'radioxFstatusRdO'+index">เจ้าบ้าน 
                       </label>
                     </div>
                     <div class="icheck-primary d-inline"> 
-                      <input type="radio" :id="'radioPrimary2' + index" v-on:change="setOwnerfamily('M',index)" value="M" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()">
-                      <label :for="'radioPrimary2'+index">ผู้อยู่อาศัย 
+                      <input type="radio" :id="'radioxFstatusRdM' + index" v-on:change="setOwnerfamily('M',index)" value="M" :class="status(item.xFstatusRd)" v-model.trim="item.xFstatusRd.$model" @blur="item.xFstatusRd.$touch()">
+                      <label :for="'radioxFstatusRdM'+index">ผู้อยู่อาศัย 
                       </label>
                     </div>
                   </div>
@@ -210,18 +210,18 @@ require_once 'handler/family/familyloadDataUser.php';
                   <label>เพศ <span class="requiredfeilds">*</span></label>
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline">
-                      <input type="radio" :id="'radioPrimary3'+index" value="M" :class="status(item.sexRd)" v-model.trim="item.sexRd.$model" @blur="item.sexRd.$touch()">
-                      <label :for="'radioPrimary3'+index">ชาย
+                      <input type="radio" :id="'radioxsexRdM'+index" value="M" :class="status(item.sexRd)" v-model.trim="item.sexRd.$model" @blur="item.sexRd.$touch()">
+                      <label :for="'radioxsexRdM'+index">ชาย
                       </label>
                     </div>
                     <div class="icheck-primary d-inline">
-                      <input type="radio" :id="'radioPrimary4'+index" value="W" :class="status(item.sexRd)" v-model.trim="item.sexRd.$model" @blur="item.sexRd.$touch()">
-                      <label :for="'radioPrimary4'+index">หญิง
+                      <input type="radio" :id="'radioxsexRdW'+index" value="W" :class="status(item.sexRd)" v-model.trim="item.sexRd.$model" @blur="item.sexRd.$touch()">
+                      <label :for="'radioxsexRdW'+index">หญิง
                       </label>
                     </div>
                     <div class="icheck-primary d-inline">
-                      <input type="radio" :id="'radioPrimary5'+index"  value="O" :class="status(item.sexRd)" v-model.trim="item.sexRd.$model" @blur="item.sexRd.$touch()">
-                      <label :for="'radioPrimary5'+index">อื่นๆ
+                      <input type="radio" :id="'radioxsexRdO'+index"  value="O" :class="status(item.sexRd)" v-model.trim="item.sexRd.$model" @blur="item.sexRd.$touch()">
+                      <label :for="'radioxsexRdO'+index">อื่นๆ
                       </label>
                     </div>
                   </div>
@@ -820,13 +820,13 @@ require_once 'handler/family/familyloadDataUser.php';
                   <label class="form-check-label">ปัญหาสิ่งแวดล้อมในครัวเรือน :</label>
                   <div class="form-group clearfix">
                     <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary8" v-model="$v.xEnvironmental.$model" name="xEnvironmental" value="N">
-                      <label for="radioPrimary8">ไม่มี
+                      <input type="radio" id="xEnvironmental1" v-model="$v.xEnvironmental.$model" name="xEnvironmental" value="N">
+                      <label for="xEnvironmental1">ไม่มี
                       </label>
                     </div>
                     <div class="icheck-primary d-inline">
-                      <input type="radio" id="radioPrimary9" v-model="$v.xEnvironmental.$model" name="xEnvironmental"  value="Y" checked>
-                      <label for="radioPrimary9">มี (ระบุ)					  
+                      <input type="radio" id="xEnvironmental2" v-model="$v.xEnvironmental.$model" name="xEnvironmental"  value="Y" checked>
+                      <label for="xEnvironmental2">มี (ระบุ)					  
                       </label> 
                         <textarea class="form-control" v-model="$v.xEnvironmentaldisc.$model" :class="status2($v.xEnvironmentaldisc)"  @blur="$v.xEnvironmentaldisc.$touch()" id="xEnvironmentaldisc" rows="1" placeholder="มี (ระบุ)..." :disabled="$v.xEnvironmental.$model=='N'"></textarea>
                     </div>
@@ -838,14 +838,14 @@ require_once 'handler/family/familyloadDataUser.php';
                   <div class="form-group">
                     <label class="form-check-label">การจัดการสิ่งแวดล้อม :</label>
                     <div class="form-group clearfix">
-                      <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary101x" v-model="$v.xEnvironmental2.$model" name="radioPrimary101x" value="N">
-                        <label for="radioPrimary101x">ไม่มี
+                      <div class="icheck-primary d-inline"> 
+                        <input type="radio" id="radioxxEnvironmental11" v-model="$v.xEnvironmental2.$model" name="radioPrimary101x" value="N">
+                        <label for="radioxxEnvironmental11">ไม่มี
                         </label>
                       </div>
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary102x" v-model="$v.xEnvironmental2.$model" name="radioPrimary101x" value="Y">
-                        <label for="radioPrimary102x">มี(ระบุ)
+                        <input type="radio" id="radioxxEnvironmental22" v-model="$v.xEnvironmental2.$model" name="radioPrimary101x" value="Y">
+                        <label for="radioxxEnvironmental22">มี(ระบุ)
                         </label>
 				          		 <textarea class="form-control" v-model="$v.xEnvironmental2disc.$model" :class="status2($v.xEnvironmental2disc)"  @blur="$v.xEnvironmental2disc.$touch()" id="xEnvironmental2disc" rows="1" :disabled="$v.xEnvironmental2.$model=='N'" placeholder="มี (ระบุ)..."></textarea>
                       </div>
@@ -901,13 +901,13 @@ require_once 'handler/family/familyloadDataUser.php';
                     <label >เคยได้รับความช่วยเหลือ :</label> 
                     <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary12" name="helpme" v-model="$v.helpme.$model" value="N" >
-                        <label for="radioPrimary12">ไม่เคย
+                        <input type="radio" id="radiohelpme1" name="helpme" v-model="$v.helpme.$model" value="N" >
+                        <label for="radiohelpme1">ไม่เคย
                         </label>
                       </div>
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary13" name="helpme"  v-model="$v.helpme.$model"  value="Y" checked>
-                        <label for="radioPrimary13">เคย(ระบุความช่วยเหลือจากหน่วยงานไหน)
+                        <input type="radio" id="radiohelpme2" name="helpme"  v-model="$v.helpme.$model"  value="Y" checked>
+                        <label for="radiohelpme2">เคย(ระบุความช่วยเหลือจากหน่วยงานไหน)
                         </label>
 				        		    <textarea class="form-control" name="helpmedisc" id="helpmedisc"  :class="status2($v.helpmedisc)"  @blur="$v.helpmedisc.$touch()" v-model="$v.helpmedisc.$model" rows="2" :disabled="$v.helpme.$model=='N'"  placeholder="เคย (ความช่วยเหลือจากหน่วยงานไหน)..."></textarea>
                       </div>
