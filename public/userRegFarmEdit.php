@@ -29,18 +29,41 @@
  ->orderBy('role_name', 'asc')
  ->get()->toArray();
  
-?> 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+?>  
 <script>
 //$(document).ready(function() { 
 //$("#btn").click(function() { 
 	$(document).ready(function() { 
          $("#btnCancel").click(function(e){  
-        	 window.location = "index.php";
+        	 window.location = "userRegFarmList.php";
          });
     });       
 	
      $(document).ready(function() { 
+          $("#userRegFarm").on("submit",function(e){ 
+            e.preventDefault(); 
+            if(check_form($(this)[0])){
+               var data = $(this).serializeArray();
+               var uri=$(this).attr('action'); 
+               $.ajax({
+                beforeSend: function() {  
+                 showSaveData();
+                },
+                type: "POST",  
+                datatype : "application/json", 
+                url: uri,
+                data: data, 
+                success: function(data){   
+                  $('#xhtml').html(data);
+                  hideSaveData();
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {  
+                  $('#xhtml').html('');
+                  hideSaveData();
+                }       
+              });
+            } 
+        });
          $("#btnVerify").click(function(e){    
              e.preventDefault();
              disableButton();  
@@ -111,6 +134,22 @@
 	       //If there is text in the input, then enable the button
 	       $('#btnSubmit').prop('disabled', false);
       }
+      function disableSubmit(){ 
+	       $('#btnSubmit').prop('disabled', true);
+      }
+      function enableSubmit(){ 
+	       $('#btnSubmit').prop('disabled', false);
+      }
+      function showSaveData(){ 
+         disableSubmit();
+         $('#btnSubmit').hide();
+	       $('#issavebtn').show();
+      }
+      function hideSaveData(){ 
+         enableSubmit(); 
+         $('#btnSubmit').show();
+	       $('#issavebtn').hide();
+      }
       $(document).ready(function(){
     	  $('#btnVerify').prop('disabled', true);
     	  //$('#btnSubmit').prop('disabled', true);
@@ -143,7 +182,7 @@
 
     <!-- Main content -->
     <div class="content">
-      <form action="handler/userRegFarm.php" method="post" role="form" data-toggle="validator">  
+      <form action="handler/userRegFarm.php" method="post" id="userRegFarm" role="form" data-toggle="validator">  
        <input type="hidden" id="cmd" name="cmd" value="U">
        <div class="container">
 
@@ -161,9 +200,9 @@
               <form class="form-horizontal" >
                 <div class="card-body">
 				   <div class="form-group row">
-                    <label for="userId" class="col-sm-2 col-form-label">ชื่อ Login ในระบบ</label>
+                    <label for="userId" class="col-sm-2 col-form-label">ชื่อ Login ในระบบ <span class="requiredfeilds">*</span></label>
                     <div class="col-sm-4">
-                      <input type="text" class="form-control" id="userId" value="<?=$userRowObj->user_id?>" readonly="readonly" name="userId" required="required" placeholder="user Id"
+                      <input type="text" class="form-control" id="userId" value="<?=$userRowObj->user_id?>" readonly="readonly" name="userId" data-required="กรุณากรอกชื่อ Login ในระบบ" placeholder="user Id"
                       pattern="^[_A-z0-9]{1,}$" maxlength="15">
                       <span id="msgVerfiy"></span>
                     </div>
@@ -184,12 +223,12 @@
                   </div>
                   -->
 				   <div class="form-group row">
-                    <label for="txtfName" class="col-sm-2 col-form-label">ชื่อ-นามสกุล</label>
+                    <label for="txtfName" class="col-sm-2 col-form-label">ชื่อ-นามสกุล <span class="requiredfeilds">*</span></label>
                     <div class="col-sm-3">
-                      <input type="text" class="form-control" id="txtfName" name="txtfName" value="<?=$userRowObj->fname?>" placeholder="ชื่อ" required="required">
+                      <input type="text" class="form-control" id="txtfName" name="txtfName" value="<?=$userRowObj->fname?>" placeholder="ชื่อ" data-required="กรุณากรอกชื่อ">
                     </div>
                     <div class="col-sm-3">
-                      <input type="text" class="form-control" id="inputName" name="txtlName" value="<?=$userRowObj->lname?>" placeholder="นามสกุล" required="required">
+                      <input type="text" class="form-control" id="inputName" name="txtlName" value="<?=$userRowObj->lname?>" placeholder="นามสกุล" data-required="กรุณากรอกนามสกุล">
                     </div>
                   </div>				  
 
@@ -212,9 +251,9 @@
                     </div>
                   </div>	
 				  <div class="form-group row">
-                    <label for="deptId" class="col-sm-2 col-form-label">แผนก/กอง</label>
+                    <label for="deptId" class="col-sm-2 col-form-label">แผนก/กอง <span class="requiredfeilds">*</span></label>
                     <div class="col-sm-6">
-                    <select class="form-control" id="deptId" name="deptId" readonly required="required">
+                    <select class="form-control" id="deptId" name="deptId" readonly data-required="กรุณากรอกแผนก/กอง">
                     <?php 
                     $selectedx = "";
                     foreach ($listmas_dept as $k => $v) { 
@@ -241,9 +280,9 @@
                     </div>
                   </div>	
 				  <div class="form-group row">
-                    <label for="roleId" class="col-sm-2 col-form-label">บทบาท</label>
+                    <label for="roleId" class="col-sm-2 col-form-label">บทบาท <span class="requiredfeilds">*</span></label>
                     <div class="col-sm-6">
-                    <select class="form-control" id="roleId" name="roleId" required="required">
+                    <select class="form-control" id="roleId" name="roleId" data-required="กรุณากรอกบทบาท ในระบบ">
                     <option value="">---กรุณาเลือกบทบาท---</option>
                     <?php 
                     foreach ($listmas_role as $k => $v) {
@@ -272,8 +311,9 @@
                 <!-- /.card-body -->
                 <div class="card-footer row">
                   <div class="col-md-6">
-					<button type="submit" id="btnSubmit" class="btn btn-info float-right">บันทึก</button>
-				  </div>
+                  <button type="submit" id="btnSubmit" class="btn btn-info float-right">บันทึก</button>
+                  <button class="d_none btn btn-danger float-right"  id="issavebtn" disabled><span class="fas fa-spinner glyphicon-refresh-animate"></span> กำลังบันทึกข้อมูล...</button>
+                  </div>
                   <div class="col-md-6">
 					<button type="submit" id="btnCancel" class="btn btn-default">Cancel</button></div>
 				  </div>

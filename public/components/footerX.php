@@ -2,7 +2,7 @@
 defined('ROOT') or exit('No access allowed');
 ?>
    
-
+  <div style="display: none;" id="xhtml"></div>
   <!-- Main Footer -->
   <footer class="main-footer" style="font-size: .8em;">
     <!-- To the right 
@@ -26,24 +26,14 @@ defined('ROOT') or exit('No access allowed');
 </div>
 <!-- ./wrapper -->
 
-<style>
-<!--
+<style> 
 #hover-content {
     display:none;
 }
 #parent:hover #hover-content {
     display:block;
-}
--->
-</style>
-
-<!-- REQUIRED SCRIPTS -->
-
-<!-- jQuery -->
-<script src="assets/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
+} 
+</style> 
+<!-- REQUIRED SCRIPTS --> 
 </body>
 </html>

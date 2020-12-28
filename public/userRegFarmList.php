@@ -54,55 +54,127 @@
  }
  $dataList = $resultRow->orderBy('a.user_id', 'asc')
  ->get()->toArray();
-
  
- /*$listResultRow = $db::table('tbl_users as a');
- if($fname != '') {
-     $listResultRow->orWhere('a.fname', 'like','%'.$fname.'%');
- }
- .... join where อะไรก็ว่าไป
- $data = $listResultRow->get()->toArray();
- 
- /*
- ->orWhere(function($query) {
-     $query->where('a.fname', $fname)
-     ->where('a.fname', 'like','%'.$fname.'%');
- })*/
- //->orWhere('a.fname', 'like','%'.$fname.'%')
- /*->orWhere(function($query) {
-  $query->where('a.fname', $fname)
-  ->where('a.fname', 'like','%'+$fname);
-  })*/
- /*->whereColumn([
-     ['first_name', '=', 'last_name'],
-     ['updated_at', '>', 'created_at'],
- ])->get();
- */
 
 ?> 
- <!-- Content Header (Page header) -->
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<style>
+table.dataTable thead>tr>th{font-size:.9em;}
+#tblistdata_info,#tblistdata_paginate{padding:0 1.25rem;}
+.card-header{border-bottom:0}
+table.dataTable{margin-top:0 !important}
+</style> 
 <script>
-$(document).ready(function(){
-    $("#bntSearch").click(function(){  
-        //alert('xxx');      
-        $("#frmUsr").submit(); // Submit the form
+var table=table||{};
+$(document).ready(function(){  
+
+      table=$('#tblistdata').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true, 
+      'info'        : false,
+      'autoWidth'   : false, 
+      "dom": '<"top"i>rt<"bottom"flp><"clear">',
+      "oLanguage": {
+        "sEmptyTable":"*** ยังไม่มีข้อมูล ***"
+      },
+      'processing': true,
+      'serverSide': true,
+      'serverMethod': 'post',
+      'ajax': {
+          'url':'handler/userDatalist.php',
+          "data": function ( d ) {
+            return $.extend( {}, d, { 
+              "deptCode": $('#deptCode').val(),
+              "roleCode": $('#roleCode').val(),
+              "userId": $('#userId').val(),
+              "fname": $('#fname').val()  
+            });
+          } 
+      }, 
+      'columns': [  
+         { data: "user_id" , render : function ( data, type, row, meta ) {   
+              return `${row.user_id}`;
+         }}, 
+         { data: "fname" , render : function ( data, type, row, meta ) {   
+              return `${row.fullname}`;
+         }},   
+         { data: 'email' },
+         { data: 'mobile' },
+         { data: 'position_name' }, 
+         { data: 'dept_name' },  
+         { data: 'role_name' },     
+         {data: "user_id" , render : function ( data, type, row, meta ) {  
+              return `<a class="btn btn-info btn-xs" href="userRegFarmEdit.php?id=${data}"><i class="fas fa-pencil-alt"> </i> Edit</a> 
+                      <a class="btn btn-danger btn-xs" onClick="DeleteData('${data}'); return false;" href="javascript:void(0)"><i class="fas fa-trash"></i> Delete </a>`;
+         }}
+      ],
+      columnDefs: [ 
+        {"className":"text-center", "searchable": false,"orderable": true,"targets": 0},
+        {"className":"text-center" ,"orderable": false,"targets": 1},
+        {"className":"project_progress" ,"orderable": false,"targets": 2},
+        {"className":"text-center" ,"orderable": false,"targets": 3},
+        {"className":"text-center" ,"orderable": false,"targets": 4},
+        {"className":"text-center" ,"orderable": false,"targets": 5},
+        {"className":"text-center" ,"orderable": true,"targets": 6},
+        {"className":"project-actions text-right" ,"orderable": false,"targets": 7} ,
+        {"className": "text-center","targets":-2},  
+       { orderable: false, searchable: false, targets: -1,"className": "text-center" } //Ultima columna no ordenable para botones
+   ],
+   "order": [[0, 'ASC']] 
+    }); 
+ 
+    $('#btn_search').on('click', function () { 
+       table.ajax.reload(); 
     });
+
+
 });
+function DeleteData(id){
+    Swal.fire({
+      title: "ยืนยันการลลบข้อมูลผู้ใช้งาน\n รหัส  '"+id+"'  Y/n? ",
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'ลบ',
+      cancelButtonText:'ยกเลิก' 
+    }).then(function(result){
+      if (!result.isConfirmed) return;
+        $("#cmd").val("D");
+        $.ajax({
+            url: "handler/userRegFarm.php",
+            type: "POST",
+            data: {'cmd':$("#cmd").val(),'userDelId': id},
+            dataType: "json",
+             beforeSend: function() {  
+              salert=Swal.fire({
+              title: 'กำลังทำการลบข้อมูล',
+              text: 'กรุณารอสักครู่...',
+              showCancelButton: false,
+              showConfirmButton: false, 
+              allowOutsideClick: false
+              });  
+              },
+            success: function (data, status, xhr) {
+                 if(data.status=='deleted'){
+                  Swal.fire("Done!", "ลบข้อมูลเรียบร้อย !", "success");
+                 }else{
+                  Swal.fire("Error deleting!", "Please try again", "error");
+                 } 
+                salert.close();
+                table.ajax.reload();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+              salert.close();
+              Swal.fire("Error deleting!", "Please try again", "error");
+            }
+        });
+    }); 
+  } 
 
-function fnDelete(delId){
-	 if(confirm("ยืนยันการลลบข้อมูลผู้ใช้งาน รหัส  '"+delId+"'  Y/n? ")){
-		 //$('form[name=frmUsr]').attr('action','handler/userRegFarm.php');
-		 //$('form[name=frmUsr]').submit(); 
-		$("#cmd").val("D");
-		$("#userDelId").val(delId);
-		$("#frmUsr").attr('action','handler/userRegFarm.php');
-		$("#frmUsr").submit(); 
-	 } 
-}
 </script>
-
  
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -137,35 +209,22 @@ function fnDelete(delId){
 		<div class="row">
           <!-- left column -->
           <div class="col-sm-12">
-		  
-        <!-- SELECT2 EXAMPLE -->
+		   
         <div class="card card-default">
           <div class="card-header">
             <h3 class="card-title">เงื่อนไขการค้นหา</h3>
 
             <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-              <!--<button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>-->
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button> 
             </div>
-          </div>
-          <!-- /.card-header -->
+          </div> 
           <div class="card-body">
 
             <div class="row">
  			  <div class="col-md-3">
-                <div class="form-group">
-                  <!-- 
-  					<select class="form-control" name="deptCode" readonly>
-                    <option value='01' selected>กองส่งเสริมการเกษตร</option>
-                    <option value='02' >สำนักงานปลัด อบต. </option>
-                    <option value='03' >กองช่าง</option>
-                    <option value='04' >กองช่าง</option>
-					<option value='05' >กองการศึกษาและศาสนา</option>
-					<option value='06' >กองสวัสดิการสังคม</option>
-					</select> 
-					-->
-					<label>แผนก/กอง :</label>
-					<select class="form-control" id="deptCode" name="deptCode" readonly required="required">
+                <div class="form-group"> 
+                <label>แผนก/กอง :</label>
+                <select class="form-control" id="deptCode" name="deptCode" readonly required="required">
                     <?php 
                     $selectedx = "";
                     foreach ($listmas_dept as $k => $v) { 
@@ -184,14 +243,7 @@ function fnDelete(delId){
               </div>
 			  <div class="col-md-3">
                 <div class="form-group">
-                  <label>บทบาท :</label>
- 					<!--  <select class="form-control" name="roleCode">
-                    <option value="01">Users</option>
-                    <option value="02">Supervisor</option>
-                    <option value="88">ปลัดหรือตำแหน่งพิเศษ</option>
-                    <option value="99">Admin</option>
-					</select>    
-					-->
+                  <label>บทบาท :</label> 
 					<select class="form-control" id="roleCode" name="roleCode" required="required">
                     <option value="">---กรุณาเลือกบทบาท---</option>
                     <?php 
@@ -229,20 +281,15 @@ function fnDelete(delId){
               <!-- /.col -->
             </div>
             <!-- /.row -->
-          </div>
-          <!-- /.card-header -->
+          </div> 
 
-          <!-- /.card-body -->
           <div class="card-footer">
-            <a class="btn btn-primary btn-sm" href="#" id='bntSearch'>
+            <a class="btn btn-primary btn-sm" href="#" id='btn_search'>
                 <i class="fas fa-search">
                 </i> ค้นหา
             </a>
           </div>
-        </div>
-        <!-- /.card -->
-
-        <!-- Default box -->
+        </div> 
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">รายละเอียดการค้นหา</h3>&nbsp;  &nbsp;
@@ -259,61 +306,20 @@ function fnDelete(delId){
             </div>
           </div>
           <div class="card-body p-0">
-            <table class="table table-striped projects">
+            <table class="table table-responsive table-striped projects" id="tblistdata">
                 <thead>
                     <tr>
                         <th style="width: 5%"> ID </th>
                         <th style="width: 25%">ชื่อ-นามสกุล</th>
                         <th style="width: 10%">Email </th>
-						<th style="width: 10%">เบอร์มือถือ</th>
+					            	<th style="width: 10%">เบอร์มือถือ</th>
                         <th style="width: 15%">ตำแหน่ง </th>
                         <th style="width: 20%">แผนก/กอง</th>
-		                <th style="width: 10%">บทบาท </th>	
-		                <th style="width: 20%"></th>							
+                        <th style="width: 10%">บทบาท </th>	
+                        <th style="width: 20%"></th>							
                     </tr>
                 </thead>
-                <tbody>
-                    <?php 
-                    //$selectedx = "";
-                    foreach ($dataList as $k => $v) { 
-                    ?>
-                    <tr>
-                        <td><?=$v->user_id?>
-                        </td>
-                        <td><a><?=$v->fname?> <?=$v->lname?></a>
-                            <br/>
-                            <small>Created <?=$v->d_create?>
-                            </small>
-                        </td>
-                        <td>
-                          <a><?=$v->email?></a>
-                        </td>
-                        <td class="project_progress"><?=$v->mobile?></td>
-						<td >
-						     <small><?=$v->position_name?></small>
-                        </td>
-						<td >
-						     <small><?=$v->dept_name?></small>
-                        </td>
-						<td >
-						     <small><?=$v->role_name?></small>
-                        </td>	
-                        <td class="project-actions text-right">
-                        <!--  
-                            <a class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#modal-lg">
-                                <i class="fas fa-folder"></i> View</a> -->
-                            <a class="btn btn-info btn-xs" href="userRegFarmEdit.php?userId=<?=$v->user_id?>">
-                                <i class="fas fa-pencil-alt"></i> Edit
-                            </a>
-                            <a  href="#" onclick="javascript:fnDelete('<?=$v->user_id?>');"  class="btn btn-danger btn-xs">
-                                <i class="fas fa-trash"></i> Delete </a>
-                        </td>  
-                    </tr>                        
-                        
-                      <?php
-                    }
-                    ?>               
-               
+                <tbody>     
                 </tbody>
             </table>
           </div>

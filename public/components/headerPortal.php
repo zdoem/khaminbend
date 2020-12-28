@@ -22,6 +22,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <?=get_domain()?>  
   </title>
   <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="assets/css/sweetalert2.min.css">  
   <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="assets/css/adminlte.min.css">
@@ -32,7 +35,112 @@ scratch. This page gets rid of all links and provides the needed markup only.
     font-family: 'Prompt', sans-serif; !important;
    /* font-family: 'Kanit', sans-serif; !important; */
   }
+   .requiredfeilds {
+    color: #f95c5ced;
+  }
+  .d_none{display:none;}
+ .glyphicon-refresh-animate {
+	-animation: spin 0.7s infinite linear;
+	-webkit-animation: spin2 0.7s infinite linear;
+  }
+
+  @-webkit-keyframes spin2 {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  } 
+  @keyframes spin {
+    from {
+      transform: scale(1) rotate(0deg);
+    }
+    to {
+      transform: scale(1) rotate(360deg);
+    }
+  }
   </style>
+<script src="assets/plugins/jquery/jquery.min.js"></script> 
+<script src="assets/js/jquery-migrate.min.js"></script> 
+<script src="assets/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="assets/js/sweetalert2.min.js"></script> 
+<script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script> 
+<script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>  
+<script src="assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="assets/js/adminlte.js"></script>
+<script>
+function check_form(obj){
+    $(".is-invalid").removeClass("is-invalid");
+    var formObj = $(obj);
+    var required_count = formObj.find("[data-required]").length; // มีรายการที่จะเช็คกี่รายการ
+    var valid_check = true;
+    if(required_count && required_count>0){
+        var requiredObj = formObj.find("[data-required]"); // ได้รายการที่จะเช็คเป็น array ของ object
+        $.each(requiredObj,function(k,v){ // วนลูปรายการที่จะเช็ค
+            var typeObj_required = requiredObj.eq(k)[0].tagName.toLowerCase();
+            var nameObj = requiredObj.eq(k).attr("name");
+            var nodeObj_required = '';
+            var requiredText = "";
+            if(typeObj_required=='input' || typeObj_required=='select' || typeObj_required=='textarea'){
+                nodeObj_required = requiredObj.eq(k).attr("type");
+                requiredText = requiredObj.eq(k).data("required");
+                if(nodeObj_required=='radio'){
+                    if(formObj.find(":radio[name='"+nameObj+"']:checked").length==0){
+                        $('html, body').animate({ // สร้างการเคลื่อนไหว
+                            scrollTop: requiredObj.eq(k).offset().top-100 // ให้หน้าเพจเลื่อนไปทำตำแหน่งบนสุด
+                        }, 0); // ภายในเวลา 0.5 วินาที ---- 1000 เท่ากับ 1 วินาที    
+                        valid_check = false;
+                        var textAlert = "เลือกหรือกรอกข้อมูลที่จำเป็นให้ครบถ้วน<br/>- "+requiredText;
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        html: textAlert,
+                        });  
+                        return false;   
+                    }
+                }
+                if(nodeObj_required=='checkbox'){
+                    if(formObj.find(":checkbox[data-required='"+requiredText+"']:checked").length==0){
+                        $('html, body').animate({ // สร้างการเคลื่อนไหว
+                            scrollTop: requiredObj.eq(k).offset().top-100 // ให้หน้าเพจเลื่อนไปทำตำแหน่งบนสุด
+                        }, 0); // ภายในเวลา 0.5 วินาที ---- 1000 เท่ากับ 1 วินาที    
+                        valid_check = false;
+                        var textAlert = "เลือกหรือกรอกข้อมูลที่จำเป็นให้ครบถ้วน<br/>- "+requiredText;
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        html: textAlert,
+                        });  
+                        return false;   
+                    }
+                }               
+            }
+            if(requiredObj.eq(k).val()==""){        
+                $('html, body').animate({ // สร้างการเคลื่อนไหว
+                        scrollTop: requiredObj.eq(k).offset().top-100 // ให้หน้าเพจเลื่อนไปทำตำแหน่งบนสุด
+                    }, 0); // ภายในเวลา 0.5 วินาที ---- 1000 เท่ากับ 1 วินาที                   
+                requiredObj.eq(k).addClass("is-invalid").focus();
+                valid_check = false;
+                var textAlert = "เลือกหรือกรอกข้อมูลที่จำเป็นให้ครบถ้วน<br/>- "+requiredText;
+                Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        html: textAlert,
+                  });  
+                return false;   
+            }
+        }); 
+         if(valid_check==false){
+            return valid_check;   
+        }else if(valid_check==true){
+            return valid_check;   
+        }           
+    }
+}
+</script>
 </head>
 <body class="hold-transition layout-top-nav">
 <div class="wrapper">

@@ -1,8 +1,10 @@
 <?php
 require '../bootstart.php';  
+require ROOT.'/core/security.php';
 $cmd=@$_POST['cmd'];  //I,U,D
 //$id=@$_POST['id']; 
 $status='';  
+$msg='';$icon_type='error'; 
 $refer_urlmain='userRegFarmList.php';  
 // echo '<pre>';
 // print_r($_REQUEST);
@@ -17,7 +19,7 @@ $xTxtlName=(isset($_POST['txtlName']) ? $_POST['txtlName'] : '');
 $xTxtEmail=(isset($_POST['txtEmail']) ? $_POST['txtEmail'] : '');
 $xTxtMobile=(isset($_POST['txtMobile']) ? $_POST['txtMobile'] : '');
 $xTxtPosition=(isset($_POST['txtPosition']) ? $_POST['txtPosition'] : '');
-$xDeptId=(isset($_POST['deptId']) ? $_POST['deptId'] : '');
+$xDeptId=(isset($_POST['deptId']) ? $_POST['deptId'] : '01');
 $xRoleId=(isset($_POST['roleId']) ? $_POST['roleId'] : '');
 
 // validate 
@@ -40,6 +42,16 @@ $rows_old = $db::table("tbl_mas_vilage")
 */
 //echo "x=====> ".$xDelId;
 //echo $cmd;
+ if ($cmd == 'I') {/* Check Insert Data*/ 
+ $rows_old = $db::table("tbl_users")
+            ->where('user_id', '=', $xUserId)
+            ->select($db::raw("user_id"))
+            ->first();
+            if(isset($rows_old->user_id)){  //dupicate 
+                $status='dupicate'; 
+                $msg='!! ผู้ใช้งานนี้   '.$xUserId.'  ถูกใช้แล้วกรุณาระบุใหม่ ';
+             }
+  }
  if ($cmd == 'I') {/*Insert Data*/ 
     try { 
         
@@ -71,17 +83,30 @@ $rows_old = $db::table("tbl_mas_vilage")
          //echo "1111111111111";
          $row =$db::table('tbl_users')->where('user_id', '=', $xDelId)->delete();
          //echo "2222222222";
-         $status='OK';
+         $status='deleted';
      } catch (\Exception $e) {
-         $status='Error';
+         $status='deletefail';
      }
-     //echo json_encode(['status'=>$status,'token'=>\Volnix\CSRF\CSRF::getToken('token_village_frm')]); exit();
+     echo json_encode(['status'=>$status]); exit();
  }
 //}
- ?>
- 
-<script type="text/javascript">
-	window.location = "../../successPage.php?status=<?=$status?>&refer_urlmain=<?=$refer_urlmain?>";
-</script>
-<?php
-?>
+ ?> 
+
+<script type="text/javascript"> 
+   <?php  
+   switch ($status) {
+     case 'OK': $msg='บันทึกข้อมูลแล้ว!';$icon_type='success'; break;
+     case 'dupicate':$icon_type='error'; break;
+     case 'Error': $msg='ไม่สามารถดำเนินการได้!';$icon_type='error';break;
+     case 'delete_used': $msg='มีการใช้อยู่ไม่สามารถลบข้อมูลได้!';$icon_type='error';break;
+     case 'deletefail': $msg='ลบข้อมูลไม่ได้!';$icon_type='error';break; 
+   }
+   ?>
+  Swal.fire({
+  icon: '<?=$icon_type?>', 
+  html: '<?=$msg?>',
+  }); 
+ setTimeout(function(){
+     window.location = "../../<?=$refer_urlmain?>";
+ }, 2*1000); 
+</script>  

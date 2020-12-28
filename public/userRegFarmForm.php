@@ -19,18 +19,41 @@
  ->orderBy('role_name', 'asc')
  ->get()->toArray();
  
-?> 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+?>  
 <script>
 //$(document).ready(function() { 
 //$("#btn").click(function() { 
 	$(document).ready(function() { 
          $("#btnCancel").click(function(e){  
-        	 window.location = "portal.php";
+        	 window.location = "userRegFarmList.php";
          });
     });       
 	
-     $(document).ready(function() { 
+     $(document).ready(function() {  
+         $("#userRegFarm").on("submit",function(e){ 
+            e.preventDefault(); 
+            if(check_form($(this)[0])){
+               var data = $(this).serializeArray();
+               var uri=$(this).attr('action'); 
+               $.ajax({
+                beforeSend: function() {  
+                 showSaveData();
+                },
+                type: "POST",  
+                datatype : "application/json", 
+                url: uri,
+                data: data, 
+                success: function(data){   
+                  $('#xhtml').html(data);
+                  hideSaveData();
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {  
+                  $('#xhtml').html('');
+                  hideSaveData();
+                }       
+              });
+            } 
+        });
          $("#btnVerify").click(function(e){    
              e.preventDefault();
              disableButton();  
@@ -97,9 +120,21 @@
 	        //If there is text in the input, then enable the button
 	        $('#btnVerify').prop('disabled', false);
       }
-      function enableSubmit(){
-	       //If there is text in the input, then enable the button
+      function disableSubmit(){ 
+	       $('#btnSubmit').prop('disabled', true);
+      }
+      function enableSubmit(){ 
 	       $('#btnSubmit').prop('disabled', false);
+      }
+      function showSaveData(){ 
+         disableSubmit();
+         $('#btnSubmit').hide();
+	       $('#issavebtn').show();
+      }
+      function hideSaveData(){ 
+         enableSubmit(); 
+         $('#btnSubmit').show();
+	       $('#issavebtn').hide();
       }
       $(document).ready(function(){
     	  $('#btnVerify').prop('disabled', true);
@@ -133,7 +168,7 @@
 
     <!-- Main content -->
     <div class="content">
-      <form action="handler/userRegFarm.php" method="post" role="form" data-toggle="validator">  
+      <form action="handler/userRegFarm.php" method="post" id="userRegFarm" role="form" data-toggle="validator">  
        <input type="hidden" id="cmd" name="cmd" value="I">
        <div class="container">
 
@@ -151,9 +186,9 @@
               <form class="form-horizontal" >
                 <div class="card-body">
 				   <div class="form-group row">
-                    <label for="userId" class="col-sm-2 col-form-label">ชื่อ Login ในระบบ</label>
+                    <label for="userId" class="col-sm-2 col-form-label">ชื่อ Login ในระบบ <span class="requiredfeilds">*</span></label>
                     <div class="col-sm-4">
-                      <input type="text" class="form-control" id="userId" name="userId" required="required" placeholder="user Id"
+                      <input type="text" class="form-control" id="userId" name="userId" data-required="กรุณากรอกชื่อ Login ในระบบ" placeholder="user Id"
                       pattern="^[_A-z0-9]{1,}$" maxlength="15">
                       <span id="msgVerfiy"></span>
                     </div>
@@ -162,23 +197,23 @@
                     </div>
                   </div>
 				  <div class="form-group row">
-                    <label for="txtPwd" class="col-sm-2 col-form-label">รหัสผ่าน</label>
+                    <label for="txtPwd" class="col-sm-2 col-form-label">รหัสผ่าน <span class="requiredfeilds">*</span></label>
                     <div class="col-sm-6">
-                        <input type="password" class="form-control" id="txtPwd" name="txtPwd"  placeholder="Password" required="required">
+                        <input type="password" class="form-control" id="txtPwd" name="txtPwd"  placeholder="Password" data-required="กรุณากรอกรหัสผ่าน">
                     </div>
                   </div>
 				   <div class="form-group row">
-                    <label for="txtfName" class="col-sm-2 col-form-label">ชื่อ-นามสกุล</label>
+                    <label for="txtfName" class="col-sm-2 col-form-label">ชื่อ-นามสกุล <span class="requiredfeilds">*</span></label>
                     <div class="col-sm-3">
-                      <input type="text" class="form-control" id="txtfName" name="txtfName" placeholder="ชื่อ" required="required">
+                      <input type="text" class="form-control" id="txtfName" name="txtfName" placeholder="ชื่อ" data-required="กรุณากรอกชื่อ">
                     </div>
                     <div class="col-sm-3">
-                      <input type="text" class="form-control" id="inputName" name="txtlName" placeholder="นามสกุล" required="required">
+                      <input type="text" class="form-control" id="inputName" name="txtlName" placeholder="นามสกุล" data-required="กรุณากรอกนามสกุล">
                     </div>
                   </div>				  
 
 				  <div class="form-group row">
-                    <label for="txtEmail" class="col-sm-2 col-form-label">อีเมลย์</label>
+                    <label for="txtEmail" class="col-sm-2 col-form-label">อีเมลย์ </label>
                     <div class="col-sm-6">
                         <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="aaaa@ddd.com">
                     </div>
@@ -196,9 +231,9 @@
                     </div>
                   </div>	
 				  <div class="form-group row">
-                    <label for="deptId" class="col-sm-2 col-form-label">แผนก/กอง</label>
+                    <label for="deptId" class="col-sm-2 col-form-label">แผนก/กอง <span class="requiredfeilds">*</span></label>
                     <div class="col-sm-6">
-                    <select class="form-control" id="deptId" name="deptId" readonly required="required">
+                    <select class="form-control" id="deptId" name="deptId" readonly  data-required="กรุณากรอกแผนก/กอง">
                     <?php 
                     $selectedx = "";
                     foreach ($listmas_dept as $k => $v) { 
@@ -225,9 +260,9 @@
                     </div>
                   </div>	
 				  <div class="form-group row">
-                    <label for="roleId" class="col-sm-2 col-form-label">บทบาท</label>
+                    <label for="roleId" class="col-sm-2 col-form-label">บทบาท <span class="requiredfeilds">*</span></label>
                     <div class="col-sm-6">
-                    <select class="form-control" id="roleId" name="roleId" required="required">
+                    <select class="form-control" id="roleId" name="roleId" data-required="กรุณากรอกบทบาท ในระบบ">
                     <option value="">---กรุณาเลือกบทบาท---</option>
                     <?php 
                     foreach ($listmas_role as $k => $v) {
@@ -270,7 +305,7 @@
                     </div>
                   </div>	
 
-     <!-- Placed at the end of the document so the pages load faster -- >
+       Placed at the end of the document so the pages load faster  
     <script src="https://getbootstrap.com/2.3.2/assets/js/jquery.js"></script>
     <script src="https://getbootstrap.com/2.3.2/assets/js/google-code-prettify/prettify.js"></script>
 
@@ -282,15 +317,14 @@
       function demo() {
         $('.datepicker').datepicker();
       }
-    </script>
-
-
+    </script> 
                 </div>
-                <!-- /.card-body -->
+                 /.card-body -->
                 <div class="card-footer row">
                   <div class="col-md-6">
-					<button type="submit" id="btnSubmit" class="btn btn-info float-right">ลงทะเบียน</button>
-				  </div>
+                  <button type="submit" id="btnSubmit" class="btn btn-info float-right">ลงทะเบียน</button>
+                  <button class="d_none btn btn-danger float-right"  id="issavebtn" disabled><span class="fas fa-spinner glyphicon-refresh-animate"></span> กำลังบันทึกข้อมูล...</button>
+                  </div>
                   <div class="col-md-6">
 					<button type="submit" id="btnCancel" class="btn btn-default">Cancel</button></div>
 				  </div>
