@@ -105,7 +105,7 @@ $(document).ready(function(){
          { data: 'dept_name' },  
          { data: 'role_name' },     
          {data: "user_id" , render : function ( data, type, row, meta ) {  
-              return `<a class="btn btn-info btn-xs" href="userRegFarmEdit.php?id=${data}"><i class="fas fa-pencil-alt"> </i> Edit</a> 
+              return `<a class="btn btn-info btn-xs" href="userRegFarmEdit.php?userId=${data}"><i class="fas fa-pencil-alt"> </i> Edit</a> 
                       <a class="btn btn-danger btn-xs" onClick="DeleteData('${data}'); return false;" href="javascript:void(0)"><i class="fas fa-trash"></i> Delete </a>`;
          }}
       ],
