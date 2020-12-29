@@ -326,7 +326,7 @@
                   <button class="d_none btn btn-danger float-right"  id="issavebtn" disabled><span class="fas fa-spinner glyphicon-refresh-animate"></span> กำลังบันทึกข้อมูล...</button>
                   </div>
                   <div class="col-md-6">
-					<button type="submit" id="btnCancel" class="btn btn-default">Cancel</button></div>
+					<button type="button" id="btnCancel" class="btn btn-default">Cancel</button></div>
 				  </div>
                 <!-- /.card-footer -->
               </form>
