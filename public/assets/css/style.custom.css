@@ -1,0 +1,119 @@
+  body {
+    font-family: "Prompt", sans-serif; !important; 
+  } 
+ .dirty {
+    border-color: #5A5!important;
+    background: #EFE!important;
+ }
+    .dirty:focus {
+    outline-color: #8E8!important;
+    }
+	/*
+    .error {
+    border-color: red!important;
+    background: #FDD!important;
+    }
+    .error:focus {
+    outline-color: #F99!important;
+    } 
+	*/
+    .glyphicon-refresh-animate {
+	-animation: spin 0.7s infinite linear;
+	-webkit-animation: spin2 0.7s infinite linear;
+  }
+
+  @-webkit-keyframes spin2 {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  } 
+  @keyframes spin {
+    from {
+      transform: scale(1) rotate(0deg);
+    }
+    to {
+      transform: scale(1) rotate(360deg);
+    }
+  }
+  /*
+  .invalid-feedback{
+      display: block; 
+      width: 100%;
+      position: absolute;
+      margin:0;
+      font-size: 80%;
+      color: #dc3545;
+  }
+  */
+  .requiredfeilds{color:#f95c5ced;}
+  .dp-highlight .ui-state-default {
+    background: #ffc449;
+    color: #FFF;
+  }
+
+  [v-cloak] {display: none}
+  /*[v-cloak] {display: none}
+ [v-cloak] .v-cloak--hidden{
+	  display: none;
+  }*/
+  
+  .scrolling-wrapper {
+	  overflow-x: scroll;
+	  overflow-y: hidden;
+	  white-space: nowrap;
+
+	  .card {
+		display: inline-block;
+	  }
+	}
+
+
+	@media(max-width:1366px){
+	  .login-page.bg-img{
+		color: #fff;
+		background-image: url("../../../../images/businessman-bg.jpg");
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		position: relative;	
+	  }
+	}
+
+
+  @media(max-width: 360px) {
+	.login-page.bg-img {
+		color: #fff;
+		background-image: url("../../../../images/businessman-bg.jpg");
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		background-position: 80% 20%;
+	}
+  }
+
+  /*****css orveriding from adminlte.min.css*******/
+  [class*=sidebar-dark-]{
+	background-color:#00b388;
+  }
+  [class*=sidebar-dark-] .sidebar a {
+    color: #fff;
+  }
+  .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #007bff;
+    color: #fff;
+}
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #fff;
+    color: #4a6285;
+}
+[class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link{
+    color: #fff;
+}
+.bg-primary{
+	background-color: #006eb1!important;
+}
+.bg-primary, .bg-primary>a {
+    color: #fff!important;
+}
