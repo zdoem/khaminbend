@@ -34,7 +34,7 @@ Vue.component("date-picker", {
      this.$nextTick(function(){   
       var mydate = new Date();
       var toDay = mydate.getDate() + '/' + (mydate.getMonth() + 1) + '/' + (mydate.getFullYear() + 543); 
-      $(this.$refs.mdate).datepicker({  
+      $(_this.$refs.mdate).datepicker({  
         yearRange: '-80:+0',
         gotoCurrent:true,
         changeMonth: true, changeYear: true, defaultDate: toDay
@@ -45,7 +45,7 @@ Vue.component("date-picker", {
           _this.$emit("input", date);
        }
       }); 
-      $(this.$refs.mdate).datepicker("setDate", new Date());
+      // if(_this.$refs.mdate.value==''){$(this.$refs.mdate).datepicker("setDate", new Date());} 
       _this.$emit("input", $(this.$refs.mdate).val()); 
      });
   },
@@ -58,6 +58,8 @@ Vue.component("date-picker", {
         }
   }
 }); 
+
+
 Vue.use(window.vuelidate.default); 
 var validationMixin = window.vuelidate.validationMixin;
 var required = validators.required;
@@ -231,6 +233,7 @@ window.app = new Vue({
          txtNational:{ required },
          religion:{ required },
          birthday:{ required },
+         birthday_format:{ required },
          educationlevel:{ required },
          homerelations:{ required }, 
          careermain:{ required },
@@ -704,7 +707,7 @@ Vue.nextTick(function () {
       var mydate = new Date();
       var toDay = mydate.getDate() + '/' + (mydate.getMonth() + 1) + '/' + (mydate.getFullYear() + 543);
       $("#survseydate").datepicker({ 
-       showButtonPanel: true,
+       showButtonPanel: false,
        yearRange: '-4:+0',
        beforeShow: function (input, calendar) {
            $(calendar.dpDiv).removeClass('eco_product'); 
@@ -732,7 +735,7 @@ Vue.nextTick(function () {
         yearRange: '-4:+39',
         setDate: new Date(), 
         dateFormat: "dd/mm/yy",
-        showButtonPanel: true, 
+        showButtonPanel: false, 
         changeMonth: true,
         numberOfMonths: 1,
         gotoCurrent:true,
@@ -761,7 +764,7 @@ Vue.nextTick(function () {
         yearRange: '-4:+39',
         setDate: new Date(), 
         gotoCurrent:true,
-        showButtonPanel: true, 
+        showButtonPanel: false, 
         numberOfMonths: 1,
         changeMonth: true, changeYear: true,isBuddhist: true, defaultDate: toDay
         ,beforeShow: function (input, calendar) {

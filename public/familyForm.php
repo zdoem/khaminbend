@@ -250,17 +250,28 @@ require_once 'handler/family/familyloadDataUser.php';
                <!-- /.col -->
             </div>
             <!-- /row -->
-
-
+  
             <div class="row">
-
+              <div class="col-md-3">
+                      <div class="form-group">
+                       <label>ระบุวันเดือนปีเกิดในบัตร * :</label>
+                         <select class="form-control"  required @blur="item.birthday_format.$touch()" v-model.trim="item.birthday_format.$model">
+                         <option value='yy-mm-dd'>มีวัน/เดือน/ปีเกิด</option>
+                         <option value='yy-mm'>มีเฉพาะเดือนและปีเกิด</option>
+                         <option value='yyyy' selected>มีเฉพาะปีเกิด</option>
+                        </select>
+                       </div> 
+            </div> {{item.birthday_format.$model}}
+               <div v-if="item.birthday_format.$model='yy-mm-dd'">
+                  1
+              </div> 
               <div class="col-md-3">
                 <div class="form-group">
                   <label>วันเดือนปีเกิด <span class="requiredfeilds">*</span></label>  
                    <date-picker  v-model.trim="item.birthday.$model" @blur="item.birthday.$touch()"  required  :class="status(item.birthday)" :mdata="item.birthday.$model"></date-picker>  
-                </div>
-                <!-- /.form-group -->
+                </div> 
               </div>
+
               <!-- /.col -->
 
                 <!-- /.col -->

@@ -70,7 +70,7 @@ $famerdetaillists_spoks= (isset($_POST['Mfamerdetaillists']['spoks']) ? $_POST['
 $famerdetaillists_chapter5s= (isset($_POST['Mfamerdetaillists']['chapter5s']) ? $_POST['Mfamerdetaillists']['chapter5s'] : []);
 $fam_land_other = trim((isset($_POST['Mfamerdetaillists']['another']) ? $_POST['Mfamerdetaillists']['another'] : ''));
 
-$g_occupational_code = (!IsNullOrEmptyString(trim($_POST['Mhouseinforgeneral']['g_occupational_code']))) ? $_POST['Mhouseinforgeneral']['g_occupational_code']: NULL;
+$g_occupational_code = (!IsNullOrEmptyString(trim(@$_POST['Mhouseinforgeneral']['g_occupational_code']))) ? $_POST['Mhouseinforgeneral']['g_occupational_code']: NULL;
 $g_occupational_other =(!IsNullOrEmptyString(trim(@$_POST['Mhouseinforgeneral']['g_occupational_other']))) ? $_POST['Mhouseinforgeneral']['g_occupational_other'] : NULL;
 $eco_occupation_code=  (!IsNullOrEmptyString(trim(@$_POST['Mhouseinforgeneral']['familyhomecareer']))) ? $_POST['Mhouseinforgeneral']['familyhomecareer'] : NULL;
 $eco_product_target_code =(!IsNullOrEmptyString(trim(@$_POST['Mhouseinforgeneral']['familyhomeproducttarget']))) ? $_POST['Mhouseinforgeneral']['familyhomeproducttarget'] : null;
@@ -149,22 +149,22 @@ $temp_mem_citizen_id=[];
 foreach ($familylists as $k => $v) { 
   $temp_mem_citizen_id[] = trim((isset($v['txtCitizenId']) ? $v['txtCitizenId'] : ''));  
   }  
-
+$survseydate=DateTime::createFromFormat('d/m/Y',DateConvert('toadre','d/m/Y',$_POST['survseydate'],'/')); 
+$d_survseydate=$survseydate->format('Y');
 if(isset($_POST['id'])&&strlen(trim($id))>0){ 
     $rows_old=$db::table('fm_fam_hd AS a')
     ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
     ->select($db::raw('house_no,mem_citizen_id'))
     ->whereIn('mem_citizen_id',$temp_mem_citizen_id)
-    ->where('mem_fam_id','!=',$id)
-    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query)use ($id) {
+    ->where('house_no','!=',$txtHouseId)
+    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query)use ($id,$d_survseydate,$txtHouseId) {
         $query->selectRaw('YEAR(d_survey)')
             ->from('fm_fam_hd')
-            ->where('fam_id','=',[$id]);
+            ->whereRaw('YEAR(d_survey)=?',[$d_survseydate])
+            ->where('house_no','=',$txtHouseId);
     })
     ->get()->toArray();  
-}else{ 
-    $survseydate=DateTime::createFromFormat('d/m/Y',DateConvert('toadre','d/m/Y',$_POST['survseydate'],'/')); 
-    $d_survseydate=$survseydate->format('Y');   
+}else{  
     $rows_old=$db::table('fm_fam_hd AS a')
     ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
     ->select($db::raw('house_no,mem_citizen_id'))
@@ -261,8 +261,8 @@ if($id>0){
 // $action = 1;
 // var_dump($action);exit();
  if ($action == 1) {/*Insert Data*/ 
-    try {    
-          $tran_id=$db::select("SELECT CONCAT($tran_id,nextval('sqfm_fam_hd')) AS tran_id")[0]->tran_id; 
+    try {     
+          $tran_id=$db::select("SELECT CONCAT($tran_id,NEXTVAL(sfm_fam_hd)) AS tran_id")[0]->tran_id; 
           if(!insertall('insert',$tran_id)){throw new Exception("Error Processing insertall", 1);} 
           $db::beginTransaction(); 
           //pre_owner,owner_fname,owner_lname,citizen_id,x_status,x_sex,national,reg_code,date_of_birth,education_code,relations_code
@@ -330,7 +330,7 @@ if($action==1&&$status=='OK'){// insert
       title: 'บันทึกข้อมูลเรียบร้อยแล้ว', 
       allowOutsideClick: false,
       showDenyButton: false,
-      showCancelButton: true,
+      showCancelButton: false,
       confirmButtonText: 'ดูรายการทั้งหมด', 
       cancelButtonText:'ทำงานต่อ',
     }).then(function(result) { 
