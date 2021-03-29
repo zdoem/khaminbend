@@ -812,7 +812,7 @@ Vue.nextTick(function () {
       var mydate = new Date();
       var toDay = mydate.getDate() + '/' + (mydate.getMonth() + 1) + '/' + (mydate.getFullYear() + 543);
       $("#survseydate").datepicker({ 
-       showButtonPanel: true,
+       showButtonPanel: false,
        yearRange: '-4:+0',
        beforeShow: function (input, calendar) {
            $(calendar.dpDiv).removeClass('eco_product'); 
@@ -840,7 +840,7 @@ Vue.nextTick(function () {
         yearRange: '-4:+39',
         setDate: new Date(), 
         dateFormat: "dd/mm/yy",
-        showButtonPanel: true, 
+        showButtonPanel: false, 
         changeMonth: true,
         numberOfMonths: 1,
         gotoCurrent:true,
@@ -869,7 +869,7 @@ Vue.nextTick(function () {
         yearRange: '-4:+39',
         setDate: new Date(), 
         gotoCurrent:true,
-        showButtonPanel: true, 
+        showButtonPanel: false, 
         numberOfMonths: 1,
         changeMonth: true, changeYear: true,isBuddhist: true, defaultDate: toDay
         ,beforeShow: function (input, calendar) {

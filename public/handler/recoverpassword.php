@@ -38,21 +38,22 @@ if (isset($_POST['action'])&&@$_POST['action']=='reset-password') {
     $output .= '<p>โปรดอย่าลืมคัดลอกลิงก์ทั้งหมดลงในเบราว์เซอร์ของคุณ ลิงก์จะหมดอายุหลังจาก 1 ชั่วโมงด้วยเหตุผลด้านความปลอดภัย.</p>';
     $output .= '<p>หากคุณไม่ได้ขออีเมลที่ลืมรหัสผ่านนี้ไม่จำเป็นต้องดำเนินการใด ๆ รหัสผ่านของคุณจะไม่ถูกรีเซ็ต อย่างไรก็ตามคุณอาจต้องการลงชื่อเข้าใช้บัญชีของคุณและเปลี่ยนรหัสผ่านความปลอดภัยของคุณเนื่องจากอาจมีคนเดาได้.</p>';
     $output .= '<p>ขออภัยในความไม่สะดวก</p>';
+	$output .= '<p>***อีเมลฉบับนี้เป็นการแจ้งข้อมูลจากระบบอัตโนมัติ กรุณาอย่าตอบกลับ***</p>';
     $output .= '<p>ระบบโคกขมิ้น สมาร์ท ซิตี้</p>';
     $body = $output;
 
-    $subject = "กู้คืนรหัสผ่าน - www.ksmartcity.com";
+    $subject = "กู้คืนรหัสผ่าน - www.kmsmartcity.com";
     $email_to = $email;
-    $fromserver = "noreply@ksmartcity.com";
+    $fromserver = "noreply@kmsmartcity.com";
 
     try {
         $mail = new PHPMailer(true);
-        $mail->IsSMTP();
-        $mail->Host = MAIL_HOST; // Enter your host here
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = MAIL_ENCRYPTION;
-        $mail->Username = MAIL_USERNAME; // Enter your email here
-        $mail->Password = MAIL_PASSWORD; //Enter your password here
+        //$mail->IsSMTP();
+        //$mail->Host = MAIL_HOST; // Enter your host here
+        //$mail->SMTPAuth = true;
+        //$mail->SMTPSecure = MAIL_ENCRYPTION;
+        //$mail->Username = MAIL_USERNAME; // Enter your email here
+        //$mail->Password = MAIL_PASSWORD; //Enter your password here
         $mail->Port = MAIL_PORT;
         $mail->IsHTML(true);
         $mail->CharSet = "utf-8";

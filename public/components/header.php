@@ -21,6 +21,10 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
   <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!--Back to top page-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> 
+  <link rel="stylesheet" href="assets/css/style-back2top-page.css">
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
@@ -41,67 +45,38 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
   <link rel="stylesheet" href="assets/plugins/jquery-ui/jquery-ui.theme.min.css">   
   <link rel="stylesheet" href="assets/css/adminlte.min.css"> 
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@200;300&display=swap" rel="stylesheet">
-
-
-  <style >
-  body {
-    font-family: 'Prompt', sans-serif; !important; 
-  } 
- .dirty {
-    border-color: #5A5!important;
-    background: #EFE!important;
-    }
-    .dirty:focus {
-    outline-color: #8E8!important;
-    }
-    .error {
-    border-color: red!important;
-    background: #FDD!important;
-    }
-    .error:focus {
-    outline-color: #F99!important;
-    } 
-    .glyphicon-refresh-animate {
-	-animation: spin 0.7s infinite linear;
-	-webkit-animation: spin2 0.7s infinite linear;
-  }
-
-  @-webkit-keyframes spin2 {
-    from {
-      -webkit-transform: rotate(0deg);
-    }
-    to {
-      -webkit-transform: rotate(360deg);
-    }
-  } 
-  @keyframes spin {
-    from {
-      transform: scale(1) rotate(0deg);
-    }
-    to {
-      transform: scale(1) rotate(360deg);
-    }
-  }
-  .invalid-feedback{
-      display: block; 
-      width: 100%;
-      position: absolute;
-      margin:0;
-      font-size: 80%;
-      color: #dc3545;
-  }
-  .requiredfeilds{color:#f95c5ced;}
-  .dp-highlight .ui-state-default {
-    background: #ffc449;
-    color: #FFF;
-  }
-  [v-cloak] {display: none}
-  </style>
+  <!--Custom Style-->
+  <link rel="stylesheet" href="assets/css/style.custom.css"> 
+      
   <?php 
    require_once 'resource/app_js.php'; 
    ?> 
+
+   <script type="text/javascript">
+		$().ready(function(){
+			var btn = $('#button2top');
+
+			$(window).scroll(function() {
+			  if ($(window).scrollTop() > 500) {
+				btn.addClass('show');
+			  } else {
+				btn.removeClass('show');
+			  }
+			});
+
+			btn.click(function(e) {
+			  e.preventDefault();
+			  $('html, body').animate({scrollTop:0}, '500');
+			});
+		});
+	</script>
+
 </head>
 <body class="hold-transition sidebar-mini">
+
+<!-- Back to top page -->
+<a id="button2top"></a>
+
 <div class="wrapper">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -112,7 +87,7 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
       </li>
 	
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="./" class="nav-link">Home</a>
+        <a href="./dashboard.php" class="nav-link">Home</a>
       </li> 
     </ul> 
     <!-- Right navbar links -->
@@ -138,8 +113,8 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
 				</p>
 			  </li> 
 			  <li class="user-footer">
-				<a href="#" class="btn btn-default btn-flat">Profile</a>
-				<a href="#" class="btn btn-default btn-flat float-right">Sign out</a>
+				<!--<a href="#" class="btn btn-default btn-flat">Profile</a>-->
+				<a href="./logout.php" class="btn btn-default btn-flat float-right">Sign out</a>
 			  </li>
 			</ul>
 		 </li>
@@ -158,7 +133,7 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
      <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
     <a href="index.php" class="brand-link">
-       <img src="images/apple-icon-57x57.png" alt="โคกขมิ้น สมาร์ท ซิตี้  Portal " class="brand-image img-circle elevation-3"
+       <img src="images/logo-kmsc.png" alt="โคกขมิ้น สมาร์ท ซิตี้  Portal " class="brand-image img-circle elevation-3"
            style="opacity: .8"> 
       <span class="brand-text font-weight-light bn-xs">โคกขมิ้น สมาร์ท ซิตี้ </span>
     </a>
@@ -169,7 +144,8 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false"> 
             <li class="nav-item">
-              <a href="dashboard.php"  class="nav-link ">
+              <a href="dashboard.php"  class="nav-link <?=(in_array($current_file_name,['dashboard.php','dashboard.php']))?'active':'' ?>">
+
                 <em class="fa fa-home">&nbsp;</em>
                 <p>
                กองส่งเสริมการเกษตร

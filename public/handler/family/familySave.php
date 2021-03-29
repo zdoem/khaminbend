@@ -70,7 +70,7 @@ $famerdetaillists_spoks= (isset($_POST['Mfamerdetaillists']['spoks']) ? $_POST['
 $famerdetaillists_chapter5s= (isset($_POST['Mfamerdetaillists']['chapter5s']) ? $_POST['Mfamerdetaillists']['chapter5s'] : []);
 $fam_land_other = trim((isset($_POST['Mfamerdetaillists']['another']) ? $_POST['Mfamerdetaillists']['another'] : ''));
 
-$g_occupational_code = (!IsNullOrEmptyString(trim($_POST['Mhouseinforgeneral']['g_occupational_code']))) ? $_POST['Mhouseinforgeneral']['g_occupational_code']: NULL;
+$g_occupational_code = (!IsNullOrEmptyString(trim(@$_POST['Mhouseinforgeneral']['g_occupational_code']))) ? $_POST['Mhouseinforgeneral']['g_occupational_code']: NULL;
 $g_occupational_other =(!IsNullOrEmptyString(trim(@$_POST['Mhouseinforgeneral']['g_occupational_other']))) ? $_POST['Mhouseinforgeneral']['g_occupational_other'] : NULL;
 $eco_occupation_code=  (!IsNullOrEmptyString(trim(@$_POST['Mhouseinforgeneral']['familyhomecareer']))) ? $_POST['Mhouseinforgeneral']['familyhomecareer'] : NULL;
 $eco_product_target_code =(!IsNullOrEmptyString(trim(@$_POST['Mhouseinforgeneral']['familyhomeproducttarget']))) ? $_POST['Mhouseinforgeneral']['familyhomeproducttarget'] : null;
@@ -149,22 +149,24 @@ $temp_mem_citizen_id=[];
 foreach ($familylists as $k => $v) { 
   $temp_mem_citizen_id[] = trim((isset($v['txtCitizenId']) ? $v['txtCitizenId'] : ''));  
   }  
+if($action!=3){
+  $survseydate=DateTime::createFromFormat('d/m/Y',DateConvert('toadre','d/m/Y',$_POST['survseydate'],'/')); 
+  $d_survseydate=$survseydate->format('Y');
 
-if(isset($_POST['id'])&&strlen(trim($id))>0){ 
+ if(isset($_POST['id'])&&strlen(trim($id))>0){ 
     $rows_old=$db::table('fm_fam_hd AS a')
     ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
     ->select($db::raw('house_no,mem_citizen_id'))
     ->whereIn('mem_citizen_id',$temp_mem_citizen_id)
-    ->where('mem_fam_id','!=',$id)
-    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query)use ($id) {
+    ->where('house_no','!=',$txtHouseId)
+    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query)use ($id,$d_survseydate,$txtHouseId) {
         $query->selectRaw('YEAR(d_survey)')
             ->from('fm_fam_hd')
-            ->where('fam_id','=',[$id]);
+            ->whereRaw('YEAR(d_survey)=?',[$d_survseydate])
+            ->where('house_no','=',$txtHouseId);
     })
     ->get()->toArray();  
-}else{ 
-    $survseydate=DateTime::createFromFormat('d/m/Y',DateConvert('toadre','d/m/Y',$_POST['survseydate'],'/')); 
-    $d_survseydate=$survseydate->format('Y');   
+}else{  
     $rows_old=$db::table('fm_fam_hd AS a')
     ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
     ->select($db::raw('house_no,mem_citizen_id'))
@@ -193,6 +195,7 @@ foreach (@$rows_old as $k => $v) {
   <?php
   exit();
  } 
+}
 //----------------------------------------------------------------------------------------------------- 
 if(isset($_POST['id'])&&strlen(trim($id))>0){
     $rows_old =$db::select("SELECT fam_id,d_survey,house_no,house_moo FROM  fm_fam_hd AS a 
@@ -261,8 +264,8 @@ if($id>0){
 // $action = 1;
 // var_dump($action);exit();
  if ($action == 1) {/*Insert Data*/ 
-    try {    
-          $tran_id=$db::select("SELECT CONCAT($tran_id,nextval('sqfm_fam_hd')) AS tran_id")[0]->tran_id; 
+    try {     
+          $tran_id=$db::select("SELECT CONCAT($tran_id,NEXTVAL(sfm_fam_hd)) AS tran_id")[0]->tran_id; 
           if(!insertall('insert',$tran_id)){throw new Exception("Error Processing insertall", 1);} 
           $db::beginTransaction(); 
           //pre_owner,owner_fname,owner_lname,citizen_id,x_status,x_sex,national,reg_code,date_of_birth,education_code,relations_code
@@ -330,7 +333,7 @@ if($action==1&&$status=='OK'){// insert
       title: 'บันทึกข้อมูลเรียบร้อยแล้ว', 
       allowOutsideClick: false,
       showDenyButton: false,
-      showCancelButton: true,
+      showCancelButton: false,
       confirmButtonText: 'ดูรายการทั้งหมด', 
       cancelButtonText:'ทำงานต่อ',
     }).then(function(result) { 
@@ -428,7 +431,19 @@ function insertall($type,$tran_id){
                   $f_status = trim((isset($v['memF_status']) ? $v['memF_status'] : ''));
                   $mem_national = trim((isset($v['txtNational']) ? $v['txtNational'] : ''));
                   $mem_religion_code = trim((isset($v['religion']) ? $v['religion'] : '')); 
-                  $mem_df_birth = DateConvert('toad','d/m/Y',$v['birthday'],'-');
+                  $birthday_format=strtolower($v['birthday_format']); 
+                  switch ($birthday_format) {
+                    case 'yy-mm-dd': 
+                      $mem_df_birth = DateConvert('toad','d/m/Y',$v['birthday'],'-'); 
+                      break; 
+                   case 'yy-mm': 
+                      $mem_df_birth = DateConvert('toad','m/Y',$v['birthday'],'-'); 
+                      break;
+                  case 'yy': 
+                      $mem_df_birth = DateConvert('toad','Y',$v['birthday'],'-'); 
+                      break;
+                    default:$mem_df_birth=NULL;$birthday_format='yy-mm-dd'; break;
+                  }
                   $mem_education_code = trim((isset($v['educationlevel']) ? $v['educationlevel'] : ''));
                   $mem_relations_code = trim((isset($v['homerelations']) ? $v['homerelations'] : ''));  
                   $xmain_occupation_code = trim((isset($v['careermain']) ? $v['careermain'] : '')); 
@@ -438,7 +453,7 @@ function insertall($type,$tran_id){
                   $batc_insert_sql_people[] =['mem_fam_id' =>$tran_id, 'd_create' =>$db::raw('NOW()') , 'f_status' =>$f_status, 'create_by' =>@$_SESSION['user_id'], 'mem_pre' =>$mem_pre
                                       ,'mem_fname' =>$mem_fname,'mem_lname' =>$mem_lname,'mem_citizen_id' =>$mem_citizen_id,'mem_status' =>$mem_status
                                       ,'mem_sex' =>$mem_sex,'mem_national' =>$mem_national,'mem_religion_code' =>$mem_religion_code
-                                      ,'mem_df_birth' =>$mem_df_birth,'mem_education_code' =>$mem_education_code,'mem_relations_code' =>$mem_relations_code,'xmain_occupation_code' =>$xmain_occupation_code
+                                      ,'mem_df_birth' =>$mem_df_birth,'mem_format_birth' =>$birthday_format,'mem_education_code' =>$mem_education_code,'mem_relations_code' =>$mem_relations_code,'xmain_occupation_code' =>$xmain_occupation_code
                                       ,'xadditional_occupation_code' =>$xadditional_occupation_code,'xincome_per_year' =>$xincome_per_year,'mem_seq' =>$k+1];   
               } 
                

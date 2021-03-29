@@ -94,7 +94,13 @@ $data_fm_fam_hd = $db::table('fm_fam_hd AS a')
 $listpeople = $db::table("fm_fam_members_dt1 AS a")
     ->select($db::raw("mem_pre AS prefix,pre_name,b.f_status,mem_fname AS txtFName,mem_lname AS txtLName,mem_citizen_id AS txtCitizenId,mem_status AS xFstatusRd
       ,mem_sex AS sexRd,mem_national AS txtNational,reg_name AS religion
-      ,CONCAT(DATE_FORMAT(mem_df_birth,'%d') ,'/', DATE_FORMAT(mem_df_birth ,'%m'),'/',DATE_FORMAT(mem_df_birth ,'%Y')+543) AS birthday,ed_name AS educationlevel
+      ,CASE
+        WHEN LOWER(mem_format_birth)='yy-mm-dd' THEN CONCAT(DATE_FORMAT(mem_df_birth,'%d') ,'/', DATE_FORMAT(mem_df_birth ,'%m'),'/',DATE_FORMAT(mem_df_birth ,'%Y')+543) 
+        WHEN LOWER(mem_format_birth)='yy-mm'    THEN CONCAT(DATE_FORMAT(mem_df_birth ,'%m'),'/',DATE_FORMAT(mem_df_birth ,'%Y')+543) 
+        WHEN LOWER(mem_format_birth)='yy'    THEN DATE_FORMAT(mem_df_birth ,'%Y')+543 
+        ELSE NULL
+      END AS birthday
+      ,mem_format_birth AS birthday_format,ed_name AS educationlevel
       ,re_name AS homerelations,b.g_occupational_code AS careergroup,b.g_occupational_other AS careeranother
       ,oc.occup_name AS careermain,oc2.occup_name AS careersecond ,xincome_per_year AS netIncome,mem_seq,a.F_status AS memF_status"))
     ->leftJoin('tbl_mas_prefix AS pre', 'a.mem_pre', 'pre.pre_code')
@@ -199,12 +205,12 @@ $html1 = '';
 $html_homeinfo ='<table style="width:100%" align="center" border="0" cellpadding="5" cellspacing="0"> 
                     <caption class="c_table c_homeinfo">ข้อมูลครัวเรือน [ที่อยู่ตามทะเบียนบ้าน]</caption>
                     <tr>
-                        <td> บ้านเลขที่ : </td> 
-                        <td> '.$house_no.' </td> 
-                        <td align="right"> หมู่ที่- ชื่อหมู่บ้าน : </td>
-                        <td> '.$vil_moo.$vil_name.' </td>
-                        <td  align="right"> ตำบล : </td>
-                        <td> '.$sub_district.' </td>
+                        <td width="10%"> บ้านเลขที่ : </td> 
+                        <td width="10%" style="word-wrap: break-word;"> '.$house_no.' </td> 
+                        <td width="20%" align="right"> หมู่ที่- ชื่อหมู่บ้าน : </td>
+                        <td width="20%"> '.$vil_moo.$vil_name.' </td>
+                        <td width="20%" align="right"> ตำบล : </td>
+                        <td width="20%"> '.$sub_district.' </td>
                     </tr> 
                      <tr> 
                         <td> อำเภอ : </td> 
@@ -225,10 +231,21 @@ $listpeople_html_header='<table style="width:100%" align="center" border="0" cel
   <th colspan="7" class="c_table c_infohome_list" id="c_infohome_list">ข้อมูลสมาชิกในครัวเรือน</th> 
 </tr>
 </thead>
-'; 
-
+';
+ 
 $listpeople_html_footer='</table>';     
                   foreach($listpeople AS $k=>$v){  
+                    $birthday_format = 'ว/ด/ป เกิด'; 
+                    switch (strtolower($v->birthday_format)) {
+                        case 'yy-mm-dd':
+                            $birthday_format = 'ว/ด/ป เกิด';
+                            break;
+                        case 'yy-mm':
+                            $birthday_format = 'ด/ป เกิด';
+                            break;
+                        case 'yy':$birthday_format = 'ป เกิด';
+                            break; 
+                      } 
                      @$listpeople_html.='<tr>
                                         <th>ลำดับที่:
                                         <div class="tbfont_content">'.$v->mem_seq.'</div>
@@ -253,7 +270,7 @@ $listpeople_html_footer='</table>';
                                         </th> 
                                       </tr> 
                                         <tr>
-                                        <th>ว/ด/ป เกิด :
+                                        <th>'.$birthday_format.' :
                                         <div class="tbfont_content">'.$v->birthday.'</div>
                                         </th>
                                         <th  align="left">ระดับการศึกษา:  
