@@ -16,8 +16,12 @@ if (empty($_POST['username'])) {
     $username = trim($_POST['username']);
     $password = md5(S_SALT.trim($_POST['password'])); 
 
-    $rowsdata = $db::select("CALL user_auth('{$username}','{$password}')")[0];
- 
+	try{
+		$rowsdata = $db::select("CALL user_auth('{$username}','{$password}')")[0];
+	}catch(exception $e){
+		echo "<script>swal.fire('เข้าสู่ระบบ','ไม่สามารถติดต่อฐานข้อมูลได้, กรุณาติดต่อ Admin','error');</script>";		
+		exit();
+	}
     if ($rowsdata->callstatus=='FAIL') {
         echo "<script>swal.fire('เข้าสู่ระบบ','ข้อมูลไม่ถูกต้อง!','error');</script>";
         exit();

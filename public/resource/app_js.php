@@ -6,7 +6,7 @@ require_once ROOTJS.'/bootstart.php';
 ?> 
 <?php 
    switch (ENV) {
-         case 'prd':
+         case 'pro':
                ?> 
                <!-- REQUIRED SCRIPTS -->
                <!-- jQuery -->

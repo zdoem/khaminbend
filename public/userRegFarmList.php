@@ -132,7 +132,7 @@ $(document).ready(function(){
 });
 function DeleteData(id){
     Swal.fire({
-      title: "ยืนยันการลลบข้อมูลผู้ใช้งาน\n รหัส  '"+id+"'  Y/n? ",
+      title: "ยืนยันการลลบข้อมูลผู้ใช้งาน\n รหัส  '"+id+"'  ? ",
       text: "คุณจะไม่สามารถกู้คืนข้อมูลได้!",
       icon: 'warning',
       showCancelButton: true,

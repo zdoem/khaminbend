@@ -10,26 +10,29 @@
   <title>รีเซ็ทรหัสผ่าน</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- iCheck for checkboxes and radio inputs -->
-  <link rel="stylesheet" href="assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <link rel="stylesheet" href="assets/css/sweetalert2.min.css"> 
-  <link rel="stylesheet" href="assets/css/adminlte.min.css"> 
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"> 
+  
+  
   <?php 
+   /* main css for user page*/
+   require_once 'components/css_userpage.php';
+
    require_once 'resource/app_js.php'; 
    ?>  
    <script src="assets/js/app.js"></script>
+
   <script type="text/javascript">
  	 $(function(){
         var s_alert=s_alert||{};
          $("#submitBtn" ).click(function() {
-             if (!validateEmail($('#email').val())){
+			  if($('#email').val() == ""){	
+				Swal.fire({
+				title: 'กรุณากรอก email!',
+				allowOutsideClick: false,
+				showDenyButton: false,
+				showCancelButton: false 
+				});
+				return;				
+			  }else if (!validateEmail($('#email').val())){
                  Swal.fire({
                   title: 'รูปแบบ Email ไม่ถูกต้อง!',
                   allowOutsideClick: false,
@@ -67,10 +70,10 @@
       });
  </script>
 </head>
-<body class="hold-transition login-page">
+<body class="hold-transition login-page bg-img">
 <div class="login-box">
   <div class="login-logo">
-    <a href="./index.php"><b>รีเซ็ทรหัสผ่าน</b></a>
+    <b>รีเซ็ทรหัสผ่าน</b>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -95,7 +98,7 @@
       </form>
 
       <p class="mt-3 mb-1">
-        <a href="login.php">เข้าสู่ระบบ</a>
+        <a href="login.php">เข้าสู่ระบบ&nbsp;</a>|<a href="./index.php">&nbsp;หน้าแรก</a>
       </p> 
     </div> 
   </div>

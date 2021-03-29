@@ -21,7 +21,7 @@ require_once 'handler/family/familyloadDataUser.php';
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item">
                 	<em class="fa fa-home"></em>
-                <a href="#">Home</a></li>
+                <a href="./dashboard.php">Home</a></li>
               <li class="breadcrumb-item active"><?=$webtitle?></li>
             </ol>
           </div><!-- /.col -->
@@ -250,29 +250,35 @@ require_once 'handler/family/familyloadDataUser.php';
                <!-- /.col -->
             </div>
             <!-- /row -->
-  
+
+
             <div class="row">
-              <div class="col-md-3">
-                      <div class="form-group">
-                       <label>ระบุวันเดือนปีเกิดในบัตร * :</label>
-                         <select class="form-control"  required @blur="item.birthday_format.$touch()" v-model.trim="item.birthday_format.$model">
-                         <option value='yy-mm-dd'>มีวัน/เดือน/ปีเกิด</option>
-                         <option value='yy-mm'>มีเฉพาะเดือนและปีเกิด</option>
-                         <option value='yyyy' selected>มีเฉพาะปีเกิด</option>
-                        </select>
-                       </div> 
-            </div> {{item.birthday_format.$model}}
-               <div v-if="item.birthday_format.$model='yy-mm-dd'">
-                  1
+                 <div class="col-md-3">
+                    <div class="form-group">
+                      <label>ระบุวันเดือนปีเกิดในบัตร <span class="requiredfeilds">*</span> :</label>
+                        <select class="form-control" @change="changebirthday_format($event,index)" v-model.trim="item.birthday_format.$model" @blur="item.birthday_format.$touch()" >
+                        <option value="yy-mm-dd">มี วัน/เดือน/ปี</option>
+                        <option value="yy-mm">มี เฉพาะเดือนและปี</option>
+                        <option value="yy">มี เฉพาะปี</option>
+                      </select>
+                    </div> 
+                </div>  
+               <div class="col-md-3">
+                <div class="form-group">
+                  <label v-if="item.birthday_format.$model=='yy-mm-dd'">วันเดือนปี เกิด <span class="requiredfeilds">*</span><span style="font-size: small;  color: #a1a1a1;">(ex. ว/ด/ป)</span></label>  
+                  <label v-if="item.birthday_format.$model=='yy-mm'">เดือนปี เกิดเท่านั้น <span class="requiredfeilds">*</span><span style="font-size: small;  color: #a1a1a1;">(ex. ด/ป)</span></label> 
+                  <label v-if="item.birthday_format.$model=='yy'">ปี เกิดเท่านั้น <span class="requiredfeilds">*</span><span style="font-size: small;  color: #a1a1a1;">(ex. ป)</span></label> 
+                   <date-picker v-model.trim="item.birthday.$model" @blur="item.birthday.$touch()" v-if="item.birthday_format.$model=='yy-mm-dd'" required  :class="status(item.birthday)" :mdata="item.birthday.$model"></date-picker>
+                   <my-birthday_mmyy v-model.trim="item.birthday.$model" :mdata="item.birthday.$model" v-if="item.birthday_format.$model=='yy-mm'" required  :class="status(item.birthday)" ></my-birthday_mmyy> 
+                   <my-birthday_yyyy v-model.trim="item.birthday.$model" :mdata="item.birthday.$model" v-if="item.birthday_format.$model=='yy'" required  :class="status(item.birthday)" ></my-birthday_yyyy>    
+                </div> 
               </div> 
-              <div class="col-md-3">
+              <!-- <div class="col-md-3">
                 <div class="form-group">
                   <label>วันเดือนปีเกิด <span class="requiredfeilds">*</span></label>  
                    <date-picker  v-model.trim="item.birthday.$model" @blur="item.birthday.$touch()"  required  :class="status(item.birthday)" :mdata="item.birthday.$model"></date-picker>  
                 </div> 
-              </div>
-
-              <!-- /.col -->
+              </div>   -->
 
                 <!-- /.col -->
                 <div class="col-md-3">
@@ -355,7 +361,7 @@ require_once 'handler/family/familyloadDataUser.php';
               <h5 class="d-sm-inline-block">โฉนด</h5> 
               <a class="d-sm-inline-block btn btn-info btn-sm" href="javascript:void(0)" v-on:click="addDeed()"><i class="fas fa-plus-square"></i> เพิ่มโฉนด
               </a>  
-                <div class="row">
+                <div class="row scrolling-wrapper">
                     <div class="col-md-12">
                         <table class="table table-sm" >
                             <thead>
@@ -430,7 +436,7 @@ require_once 'handler/family/familyloadDataUser.php';
               <i class="fas fa-plus-square"></i> เพิ่ม นส.3ก
             </a>
 
-            <div class="row">
+            <div class="row scrolling-wrapper">
               <div class="col-md-12">
 
                     <table class="table table-sm" >
@@ -503,7 +509,7 @@ require_once 'handler/family/familyloadDataUser.php';
               <i class="fas fa-plus-square"></i> เพิ่ม สปก.
             </a>
 
-            <div class="row">
+            <div class="row scrolling-wrapper">
               <div class="col-md-12">
 
                <table class="table table-sm" >
@@ -577,7 +583,7 @@ require_once 'handler/family/familyloadDataUser.php';
               <i class="fas fa-plus-square"></i> เพิ่ม ภบท 5
             </a>
 
-            <div class="row">
+            <div class="row scrolling-wrapper">
               <div class="col-md-12">
 
                   <table class="table table-sm" >
@@ -778,7 +784,7 @@ require_once 'handler/family/familyloadDataUser.php';
             </div> 
 			     <label> สัตว์เลี้ยง</label>
 
-            <div class="row">
+            <div class="row scrolling-wrapper">
               <div class="col-md-12">
 
                   <table class="table table-sm" >

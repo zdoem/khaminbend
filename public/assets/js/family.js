@@ -21,6 +21,107 @@ $.datepicker.regional['th'] ={
  };
 $.datepicker.setDefaults($.datepicker.regional['th']);
 
+Vue.component("my-birthday_mmyy", {
+  props: ["mdata"],
+  template: `<div class="input-group date"  data-target-input="nearest">
+             <input type="text" class="form-control" required ref="birthday_mmyy"
+                 placeholder="(เดือนปี เกิดเท่านั้น ex.01/2555)" />
+                <div class="input-group-append" style="cursor: pointer;" v-on:click="showdatebtn">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div> 
+                </div>  
+            </div>`,
+  mounted() {
+    var _this = this;  
+     this.$nextTick(function(){    
+          $(_this.$refs.birthday_mmyy).datepicker({
+          yearRange: "c-100:c",
+          changeMonth: true,
+          changeYear: true,
+          showButtonPanel: true,
+          closeText:'เลือกข้อมูล',
+          currentText: 'This year', 
+          onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            var x_birthday=$.datepicker.formatDate("mm/yy", new Date(year, month, 1));
+            $(this).val(x_birthday);
+            _this.$emit("input", x_birthday);
+          }
+        }).focus(function () { 
+          $(".ui-datepicker-calendar").hide();
+          $(".ui-datepicker-current").hide(); 
+          $("#ui-datepicker-div").position({
+            my: "left top",
+            at: "left bottom",
+            of: $(this)
+          });
+        }).attr("readonly", false);
+        if(_this.$refs.birthday_mmyy.value==''){$(this.$refs.birthday_mmyy).val($.datepicker.formatDate("mm/yy", new Date()));} 
+         _this.$emit("input", $(this.$refs.birthday_mmyy).val()); 
+     });
+  },
+  methods: {
+          showdatebtn:function(){
+          let _this=this;
+          this.$nextTick(function(){   
+             $(_this.$refs.birthday_mmyy).datepicker('show'); 
+          });
+        } 
+  }
+});  
+Vue.component("my-birthday_yyyy", {
+  props: ["mdata"],
+  template: `<div class="input-group date"  data-target-input="nearest">
+                      <input type="text" :value="mdata" ref="birthday_yyyy" required class="form-control" />
+                      <div class="input-group-append" style="cursor: pointer;" v-on:click="showdatebtn">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div> 
+                      </div>
+                  </div>`,
+  mounted() {
+    var _this = this;  
+     this.$nextTick(function(){   
+            $(_this.$refs.birthday_yyyy).datepicker( {
+            yearRange: "c-100:c",
+            changeMonth: false,
+            changeYear: true,
+            showButtonPanel: true,
+            closeText:'เลือกข้อมูล',
+            currentText: 'This year',
+            onClose: function(dateText, inst) {
+              var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+              var x_birthday=$.datepicker.formatDate("yy", new Date(year, 0, 1));
+              $(this).val(x_birthday);
+              _this.$emit("input", x_birthday);
+            },
+            beforeShow: function(input, inst){
+               
+            }
+          }).focus(function () {
+            $(".ui-datepicker-month").hide();
+            $(".ui-datepicker-calendar").hide();
+            $(".ui-datepicker-current").hide(); 
+            $(".ui-datepicker-prev").hide();
+            $(".ui-datepicker-next").hide();
+            $("#ui-datepicker-div").position({
+              my: "left top",
+              at: "left bottom",
+              of: $(this)
+            });
+          }).attr("readonly", false);
+         if(_this.$refs.birthday_yyyy.value==''){$(this.$refs.birthday_yyyy).val($.datepicker.formatDate("yy", new Date()));} 
+         _this.$emit("input", $(this.$refs.birthday_yyyy).val()); 
+     });
+  },
+  methods: {
+       showdatebtn:function(){
+          let _this=this;
+          this.$nextTick(function(){   
+             $(_this.$refs.birthday_yyyy).datepicker('show'); 
+          });
+        } 
+  }
+});
+
 Vue.component("date-picker", {
   props: ["mdata"],
   template: `<div class="input-group date"  data-target-input="nearest">
@@ -34,7 +135,7 @@ Vue.component("date-picker", {
      this.$nextTick(function(){   
       var mydate = new Date();
       var toDay = mydate.getDate() + '/' + (mydate.getMonth() + 1) + '/' + (mydate.getFullYear() + 543); 
-      $(_this.$refs.mdate).datepicker({  
+      $(this.$refs.mdate).datepicker({  
         yearRange: '-80:+0',
         gotoCurrent:true,
         changeMonth: true, changeYear: true, defaultDate: toDay
@@ -45,7 +146,7 @@ Vue.component("date-picker", {
           _this.$emit("input", date);
        }
       }); 
-      // if(_this.$refs.mdate.value==''){$(this.$refs.mdate).datepicker("setDate", new Date());} 
+      if(_this.$refs.mdate.value==''){$(this.$refs.mdate).datepicker("setDate", new Date());}
       _this.$emit("input", $(this.$refs.mdate).val()); 
      });
   },
@@ -58,8 +159,6 @@ Vue.component("date-picker", {
         }
   }
 }); 
-
-
 Vue.use(window.vuelidate.default); 
 var validationMixin = window.vuelidate.validationMixin;
 var required = validators.required;
@@ -233,7 +332,7 @@ window.app = new Vue({
          txtNational:{ required },
          religion:{ required },
          birthday:{ required },
-         birthday_format:{ required },
+         birthday_format:{  },
          educationlevel:{ required },
          homerelations:{ required }, 
          careermain:{ required },
@@ -319,6 +418,12 @@ window.app = new Vue({
    }
   },
   methods: {    
+    changebirthday_format: function (event,pindex) {
+       var vv=this.Mfamilylists[pindex];
+       vv.birthday='';
+       vv.birthday_format=event.target.value; 
+       this.$set(this.Mfamilylists, pindex, vv);
+    },
     setOwnerfamily:function(type,pindex){ 
        let _this=this;
        _this.OwnerHomelistfamily=pindex;  
