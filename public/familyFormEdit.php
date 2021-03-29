@@ -217,7 +217,7 @@ $mooHouse=@$listmas_vilage[0]->vil_id;
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item">
                 	<em class="fa fa-home"></em>
-                <a href="#">Home</a></li>
+                <a href="./dashboard.php">Home</a></li>
               <li class="breadcrumb-item active">เพิ่มข้อมูลครัวเรือน</li>
             </ol>
           </div><!-- /.col -->

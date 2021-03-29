@@ -14,8 +14,8 @@
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item">
                 	<em class="fa fa-home"></em>
-                <a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard Beta V0.1</li>
+                <a href="./dashboard.php">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard กองส่งเสริมการเกษตร</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
