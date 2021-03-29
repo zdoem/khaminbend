@@ -21,107 +21,6 @@ $.datepicker.regional['th'] ={
  };
 $.datepicker.setDefaults($.datepicker.regional['th']);
 
-Vue.component("my-birthday_mmyy", {
-  props: ["mdata"],
-  template: `<div class="input-group date"  data-target-input="nearest">
-             <input type="text" class="form-control" required ref="birthday_mmyy"
-                 placeholder="(เดือนปี เกิดเท่านั้น ex.01/2555)" />
-                <div class="input-group-append" style="cursor: pointer;" v-on:click="showdatebtn">
-                          <div class="input-group-text"><i class="fa fa-calendar"></i></div> 
-                </div>  
-            </div>`,
-  mounted() {
-    var _this = this;  
-     this.$nextTick(function(){    
-          $(_this.$refs.birthday_mmyy).datepicker({
-          yearRange: "c-100:c",
-          changeMonth: true,
-          changeYear: true,
-          showButtonPanel: true,
-          closeText:'เลือกข้อมูล',
-          currentText: 'This year', 
-          onClose: function(dateText, inst) {
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-            var x_birthday=$.datepicker.formatDate("mm/yy", new Date(year, month, 1));
-            $(this).val(x_birthday);
-            _this.$emit("input", x_birthday);
-          }
-        }).focus(function () { 
-          $(".ui-datepicker-calendar").hide();
-          $(".ui-datepicker-current").hide(); 
-          $("#ui-datepicker-div").position({
-            my: "left top",
-            at: "left bottom",
-            of: $(this)
-          });
-        }).attr("readonly", false);
-        if(_this.$refs.birthday_mmyy.value==''){$(this.$refs.birthday_mmyy).val($.datepicker.formatDate("mm/yy", new Date()));} 
-         _this.$emit("input", $(this.$refs.birthday_mmyy).val()); 
-     });
-  },
-  methods: {
-          showdatebtn:function(){
-          let _this=this;
-          this.$nextTick(function(){   
-             $(_this.$refs.birthday_mmyy).datepicker('show'); 
-          });
-        } 
-  }
-});  
-Vue.component("my-birthday_yyyy", {
-  props: ["mdata"],
-  template: `<div class="input-group date"  data-target-input="nearest">
-                      <input type="text" :value="mdata" ref="birthday_yyyy" required class="form-control" />
-                      <div class="input-group-append" style="cursor: pointer;" v-on:click="showdatebtn">
-                          <div class="input-group-text"><i class="fa fa-calendar"></i></div> 
-                      </div>
-                  </div>`,
-  mounted() {
-    var _this = this;  
-     this.$nextTick(function(){   
-            $(_this.$refs.birthday_yyyy).datepicker( {
-            yearRange: "c-100:c",
-            changeMonth: false,
-            changeYear: true,
-            showButtonPanel: true,
-            closeText:'เลือกข้อมูล',
-            currentText: 'This year',
-            onClose: function(dateText, inst) {
-              var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-              var x_birthday=$.datepicker.formatDate("yy", new Date(year, 0, 1));
-              $(this).val(x_birthday);
-              _this.$emit("input", x_birthday);
-            },
-            beforeShow: function(input, inst){
-               
-            }
-          }).focus(function () {
-            $(".ui-datepicker-month").hide();
-            $(".ui-datepicker-calendar").hide();
-            $(".ui-datepicker-current").hide(); 
-            $(".ui-datepicker-prev").hide();
-            $(".ui-datepicker-next").hide();
-            $("#ui-datepicker-div").position({
-              my: "left top",
-              at: "left bottom",
-              of: $(this)
-            });
-          }).attr("readonly", false);
-         if(_this.$refs.birthday_yyyy.value==''){$(this.$refs.birthday_yyyy).val($.datepicker.formatDate("yy", new Date()));} 
-         _this.$emit("input", $(this.$refs.birthday_yyyy).val()); 
-     });
-  },
-  methods: {
-       showdatebtn:function(){
-          let _this=this;
-          this.$nextTick(function(){   
-             $(_this.$refs.birthday_yyyy).datepicker('show'); 
-          });
-        } 
-  }
-});
-
 Vue.component("date-picker", {
   props: ["mdata"],
   template: `<div class="input-group date"  data-target-input="nearest">
@@ -146,7 +45,7 @@ Vue.component("date-picker", {
           _this.$emit("input", date);
        }
       }); 
-      if(_this.$refs.mdate.value==''){$(this.$refs.mdate).datepicker("setDate", new Date());}
+      $(this.$refs.mdate).datepicker("setDate", new Date());
       _this.$emit("input", $(this.$refs.mdate).val()); 
      });
   },
@@ -332,7 +231,6 @@ window.app = new Vue({
          txtNational:{ required },
          religion:{ required },
          birthday:{ required },
-         birthday_format:{  },
          educationlevel:{ required },
          homerelations:{ required }, 
          careermain:{ required },
@@ -418,12 +316,6 @@ window.app = new Vue({
    }
   },
   methods: {    
-    changebirthday_format: function (event,pindex) {
-       var vv=this.Mfamilylists[pindex];
-       vv.birthday='';
-       vv.birthday_format=event.target.value; 
-       this.$set(this.Mfamilylists, pindex, vv);
-    },
     setOwnerfamily:function(type,pindex){ 
        let _this=this;
        _this.OwnerHomelistfamily=pindex;  
@@ -812,7 +704,7 @@ Vue.nextTick(function () {
       var mydate = new Date();
       var toDay = mydate.getDate() + '/' + (mydate.getMonth() + 1) + '/' + (mydate.getFullYear() + 543);
       $("#survseydate").datepicker({ 
-       showButtonPanel: false,
+       showButtonPanel: true,
        yearRange: '-4:+0',
        beforeShow: function (input, calendar) {
            $(calendar.dpDiv).removeClass('eco_product'); 
@@ -840,7 +732,7 @@ Vue.nextTick(function () {
         yearRange: '-4:+39',
         setDate: new Date(), 
         dateFormat: "dd/mm/yy",
-        showButtonPanel: false, 
+        showButtonPanel: true, 
         changeMonth: true,
         numberOfMonths: 1,
         gotoCurrent:true,
@@ -869,7 +761,7 @@ Vue.nextTick(function () {
         yearRange: '-4:+39',
         setDate: new Date(), 
         gotoCurrent:true,
-        showButtonPanel: false, 
+        showButtonPanel: true, 
         numberOfMonths: 1,
         changeMonth: true, changeYear: true,isBuddhist: true, defaultDate: toDay
         ,beforeShow: function (input, calendar) {

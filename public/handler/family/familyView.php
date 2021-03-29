@@ -91,7 +91,7 @@ $distric_sorporkor = [];
 $chapter5s = [];
 $distric_chapter5s = [];
 $temlistpeople = ['prefix' => null, 'txtFName' => '', 'txtLName' => '', 'txtCitizenId' => '', 'xFstatusRd' => 'O', 'sexRd' => 'M'
-    , 'txtNational' => '', 'religion' => null, 'birthday' => '', 'birthday_format'=>'yy-mm-dd','educationlevel' => null, 'homerelations' => null, 'careermain' => null, 'careersecond' => null, 'netIncome' => ''];
+    , 'txtNational' => '', 'religion' => null, 'birthday' => '', 'educationlevel' => null, 'homerelations' => null, 'careermain' => null, 'careersecond' => null, 'netIncome' => ''];
 $listpeople[] = $temlistpeople;
 
 $base_join = $db::table('fm_fam_info_dt6')
@@ -221,14 +221,8 @@ $data_fm_fam_hd = $db::table('fm_fam_hd AS a')
     // $listpeople
   $listpeople = $db::table("fm_fam_members_dt1 AS a")
     ->select($db::raw("mem_pre AS prefix,b.f_status,mem_fname AS txtFName,mem_lname AS txtLName,mem_citizen_id AS txtCitizenId,mem_status AS xFstatusRd
-      ,mem_sex AS sexRd,mem_national AS txtNational,mem_religion_code AS religion 
-      ,CASE
-        WHEN LOWER(mem_format_birth)='yy-mm-dd' THEN CONCAT(DATE_FORMAT(mem_df_birth,'%d') ,'/', DATE_FORMAT(mem_df_birth ,'%m'),'/',DATE_FORMAT(mem_df_birth ,'%Y')+543) 
-        WHEN LOWER(mem_format_birth)='yy-mm'    THEN CONCAT(DATE_FORMAT(mem_df_birth ,'%m'),'/',DATE_FORMAT(mem_df_birth ,'%Y')+543) 
-        WHEN LOWER(mem_format_birth)='yy'    THEN DATE_FORMAT(mem_df_birth ,'%Y')+543 
-        ELSE NULL
-      END AS birthday
-      ,mem_format_birth AS birthday_format,mem_education_code AS educationlevel
+      ,mem_sex AS sexRd,mem_national AS txtNational,mem_religion_code AS religion
+      ,CONCAT(DATE_FORMAT(mem_df_birth,'%d') ,'/', DATE_FORMAT(mem_df_birth ,'%m'),'/',DATE_FORMAT(mem_df_birth ,'%Y')+543) AS birthday,mem_education_code AS educationlevel
       ,mem_relations_code AS homerelations,b.g_occupational_code AS careergroup,b.g_occupational_other AS careeranother
       ,xmain_occupation_code AS careermain,NULLIF(xadditional_occupation_code,'') AS careersecond ,xincome_per_year AS netIncome,mem_seq,a.F_status AS memF_status"))
     ->Join('fm_fam_hd AS b', 'b.fam_id', 'a.mem_fam_id')
@@ -391,7 +385,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
   window.Sfamilylists=<?=json_encode($listpeople)?>;
   window.SSfamilylists=<?=json_encode($listpeople)?>;
 
-  window.Mfamilylist={prefix:null,txtFName: '',txtLName:'',txtCitizenId:'' ,xFstatusRd:'O',sexRd:'M',txtNational:'',religion:null,birthday:'',birthday_format:'yy-mm-dd'
+  window.Mfamilylist={prefix:null,txtFName: '',txtLName:'',txtCitizenId:'' ,xFstatusRd:'O',sexRd:'M',txtNational:'',religion:null,birthday:''
   ,educationlevel:null,homerelations:null,careermain:null,careersecond:null,netIncome:''};
   //ข้อมูลพื้นที่การเกษตร
   window.Sfamerland={province:null,district:'',nodeed:'',arearai:'',areawork:'',areatrw:''};
@@ -638,32 +632,14 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
  
             </div> 
             <div class="row">
-                 <div class="col-md-3">
-                    <div class="form-group">
-                      <label>ระบุวันเดือนปีเกิดในบัตร <span class="requiredfeilds">*</span> :</label>
-                        <select disabled  class="form-control" @change="changebirthday_format($event,index)" v-model.trim="item.birthday_format.$model" @blur="item.birthday_format.$touch()" >
-                        <option value="yy-mm-dd">มี วัน/เดือน/ปี</option>
-                        <option value="yy-mm">มี เฉพาะเดือนและปี</option>
-                        <option value="yy">มี เฉพาะปี</option>
-                      </select>
-                    </div> 
-                </div>  
-               <div class="col-md-3">
-                <div class="form-group">
-                  <label v-if="item.birthday_format.$model=='yy-mm-dd'">วันเดือนปี เกิด <span class="requiredfeilds">*</span></label>  
-                  <label v-if="item.birthday_format.$model=='yy-mm'">เดือนปี เกิดเท่านั้น <span class="requiredfeilds">*</span></label> 
-                  <label v-if="item.birthday_format.$model=='yy'">ปี เกิดเท่านั้น <span class="requiredfeilds">*</span></label> 
-                   <date-picker v-model.trim="item.birthday.$model" @blur="item.birthday.$touch()" v-if="item.birthday_format.$model=='yy-mm-dd'" required  :class="status(item.birthday)" :mdata="item.birthday.$model"></date-picker>
-                   <my-birthday_mmyy v-model.trim="item.birthday.$model" :mdata="item.birthday.$model" v-if="item.birthday_format.$model=='yy-mm'" required  :class="status(item.birthday)" ></my-birthday_mmyy> 
-                   <my-birthday_yyyy v-model.trim="item.birthday.$model" :mdata="item.birthday.$model" v-if="item.birthday_format.$model=='yy'" required  :class="status(item.birthday)" ></my-birthday_yyyy>    
-                </div> 
-              </div>
-              <!-- <div class="col-md-3">
+
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>วันเดือนปีเกิด :</label>  
                    <date-picker  v-model.trim="item.birthday.$model" @blur="item.birthday.$touch()"  required  :class="status(item.birthday)" :mdata="item.birthday.$model"></date-picker>  
-                </div> 
-              </div> -->
+                </div>
+
+              </div>
  
                 <div class="col-md-3">
                    <div class="form-group">
@@ -748,7 +724,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
               <h5 class="d-sm-inline-block">โฉนด</h5> 
               <!-- <a class="d-sm-inline-block btn btn-info btn-sm" href="javascript:void(0)" v-on:click="addDeed()"><i class="fas fa-plus-square"></i> เพิ่มโฉนด -->
               </a>  
-                <div class="row scrolling-wrapper">
+                <div class="row">
                     <div class="col-md-12">
                         <table class="table table-sm" >
                             <thead>
@@ -822,7 +798,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
               <i class="fas fa-plus-square"></i> เพิ่ม นส.3ก
             </a> -->
 
-            <div class="row scrolling-wrapper">
+            <div class="row">
               <div class="col-md-12">
 
                     <table class="table table-sm" >
@@ -894,7 +870,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
               <i class="fas fa-plus-square"></i> เพิ่ม สปก.
             </a> -->
 
-            <div class="row scrolling-wrapper">
+            <div class="row">
               <div class="col-md-12">
 
                <table class="table table-sm" >
@@ -966,7 +942,7 @@ $Shouseinfor = ['txtHouseId' => $house_no, 'mooHouse' => $house_moo, 'txtSubDstr
               <i class="fas fa-plus-square"></i> เพิ่ม ภบท 5
             </a> -->
 
-            <div class="row scrolling-wrapper">
+            <div class="row">
               <div class="col-md-12">
 
                   <table class="table table-sm" >

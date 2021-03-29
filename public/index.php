@@ -11,17 +11,16 @@
 	      <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-green-parakeet">
-			  <div class="inner">
-				  <a href="./dashboard.php" >					  
-						<img class="img-center" src="./images/kasetDept-logo.png" width="70%" />
-						<h4>กองส่งเสริมการเกษตร </h4>  
-				  </a>
-			  </div>
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3>กองส่งเสริม</h3>
+
+                <p> กองส่งเสริมการเกษตร </p>
+              </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-              <a href="./dashboard.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="dashboard.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -29,9 +28,9 @@
             <!-- small box bg-info -->
             <div class="small-box bg-light">
               <div class="inner">
-                <h3 class="text-white">สำนักงานปลัด<sup style="font-size: 20px"></sup></h3>
+                <h3 class="text-white">สำนักงาน<sup style="font-size: 20px"></sup></h3>
 
-                <p class="text-white">สำนักงานปลัดเทศบาล</p>
+                <p class="text-white">สำนักงานปลัด อบต.</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -108,9 +107,9 @@
             <!-- small box -->
             <div class="small-box bg-light bg-warning">
               <div class="inner">
-                <h3 class="text-white">ป้องกัน/บรรเทา</h3>
+                <h3 class="text-white">ระบบใบลา</h3>
 
-                <p class="text-white">ระบบป้องกันและบรรเทาสาธารณภัย</p>
+                <p class="text-white">ระบบใบลา</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
@@ -123,9 +122,9 @@
             <!-- small box bg-dange -->
             <div class="small-box bg-light ">
               <div class="inner">
-                <h3 class="text-white">ยืม/คืนอุปกรณ์</h3>
+                <h3 class="text-white">ระบบจองรถ</h3>
 
-                <p class="text-white">ระบบยืม/คืนอุปกรณ์</p>
+                <p class="text-white">ระบบจองรถ</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
@@ -155,7 +154,7 @@
               <span class="info-box-icon bg-gray elevation-1"><i class="fab fa-facebook-square fa-2x"></i></span>
               </a>
               <div class="info-box-content">
-               <a href="https://www.facebook.com/abt.kokkhamin" target="_blank">
+               <a href="https://www.facebook.com/abt.kokkhamin">
                 <span class="text-gray">facebook เทศบาล</span>
                 <span class="text-gray">ตำบลโคกขมิ้น</span>
 
@@ -174,7 +173,7 @@
               <span class="info-box-icon bg-gray elevation-1"><i class="fab fa-internet-explorer fa-2x" ></i></span>
               </a>
               <div class="info-box-content">
-              <a href="http://www.kokkhamin.go.th/index.php" target="_blank">
+              <a href="http://www.kokkhamin.go.th/index.php">
                 <span class="text-gray">เว็บหลักของเทศบาล</span>
                 <span class="text-gray">ตำบลโคกขมิ้น</span>
                 </a>
@@ -194,7 +193,7 @@
               <span class="info-box-icon bg-gray elevation-1"><i class="fab fa-internet-explorer fa-2x"></i></span>
 			</a>
               <div class="info-box-content">
-              <a href="https://district.cdd.go.th/phlapphlachai/" target="_blank">
+              <a href="https://district.cdd.go.th/phlapphlachai/">
                 <span class="text-gray">เว็บอำเภอพลับพลาชัย</span>
                 <span class="text-gray">บุรีรัมย์</span>
                 </a>
@@ -206,9 +205,9 @@
           <!-- /.col -->
           <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
-             <a href="http://www.dla.go.th/" target="_blank">
+             <a href="http://www.dla.go.th/">
              <span class="text-gray">
-              <img class="text-gray" alt="กรมส่งเสริมการปกครองท้องถิ่น" src="images/dla_logo.png" width="255px" >
+              <img class="text-gray" alt="กรมส่งเสริมการปกครองท้องถิ่น" src="images/dla_logo.png" width="250px" height="50px">
               </span>
               </a>
               <!-- /.info-box-content -->

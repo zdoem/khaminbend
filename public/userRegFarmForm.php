@@ -20,39 +20,18 @@
  ->get()->toArray();
  
 ?>  
-
-<script src="assets/js/app.js"></script>
-
 <script>
 //$(document).ready(function() { 
-//$("#btn").click(function() { 	
-	
-     $(document).ready(function() {  
-		  $("#btnCancel").click(function(e){  
+//$("#btn").click(function() { 
+	$(document).ready(function() { 
+         $("#btnCancel").click(function(e){  
         	 window.location = "userRegFarmList.php";
          });
-
-         $("#userRegFarm").on("submit",function(e){
+    });       
+	
+     $(document).ready(function() {  
+         $("#userRegFarm").on("submit",function(e){ 
             e.preventDefault(); 
-
-			  if($('#txtEmail').val() == ""){	
-				Swal.fire({
-				title: 'กรุณากรอก email!',
-				allowOutsideClick: false,
-				showDenyButton: false,
-				showCancelButton: false 
-				});
-				return;				
-			  }else if (!validateEmail($('#email').val())){
-                 Swal.fire({
-                  title: 'รูปแบบ Email ไม่ถูกต้อง!',
-                  allowOutsideClick: false,
-                  showDenyButton: false,
-                  showCancelButton: false 
-              });
-              return;
-             }
-
             if(check_form($(this)[0])){
                var data = $(this).serializeArray();
                var uri=$(this).attr('action'); 
@@ -234,7 +213,7 @@
                   </div>				  
 
 				  <div class="form-group row">
-                    <label for="txtEmail" class="col-sm-2 col-form-label">อีเมลย์ <span class="requiredfeilds">*</span></label>
+                    <label for="txtEmail" class="col-sm-2 col-form-label">อีเมลย์ </label>
                     <div class="col-sm-6">
                         <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="aaaa@ddd.com">
                     </div>

@@ -28,7 +28,7 @@ $data_date_survey= $db::table("fm_fam_hd")
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item">
                 	<em class="fa fa-home"></em>
-                <a href="./dashboard.php">Home</a></li>
+                <a href="#">Home</a></li>
               <li class="breadcrumb-item active">หน้าจัดการข้อมูลครัวเรือน</li>
             </ol>
           </div><!-- /.col -->
@@ -124,7 +124,7 @@ $data_date_survey= $db::table("fm_fam_hd")
                 <i class="fas fa-minus"></i></button> 
             </div>
           </div>
-          <div class="card-body table-responsive no-padding p-0 scrolling-wrapper">
+          <div class="card-body table-responsive no-padding p-0">
             <table class="table table-striped projects" id="tblistdata">
                 <thead align="center">
                     <tr>
@@ -302,7 +302,7 @@ $data_date_survey= $db::table("fm_fam_hd")
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-      
+      </div>
       <!-- /.modal -->
 <div style="display: none;" id="xhtml"></div>    
 <?php

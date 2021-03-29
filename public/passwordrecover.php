@@ -11,9 +11,17 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-   
-  <?php /* main css*/
-   require_once './components/css_userpage.php';
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/sweetalert2.min.css"> 
+  <link rel="stylesheet" href="assets/css/adminlte.min.css"> 
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"> 
+  <?php 
    require_once 'resource/app_js.php'; 
    ?>  
    <script src="assets/js/app.js"></script>
@@ -49,7 +57,7 @@
       });
  </script>
 </head>
-<body class="hold-transition login-page bg-img">
+<body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo"><b>เปลี่ยนรหัสผ่านใหม่</b>  </div>
   <!-- /.login-logo -->
@@ -89,7 +97,7 @@
       </form>
 
       <p class="mt-3 mb-1">
-        <a href="login.php">เข้าสู่ระบบ&nbsp;</a>|<a href="./index.php">&nbsp;หน้าแรก</a>
+        <a href="login.php">เข้าสู่ระบบ</a>
       </p>
     </div>
     <!-- /.login-card-body -->

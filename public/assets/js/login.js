@@ -21,7 +21,7 @@ var app = new Vue({
                         title: 'Loggin in....',
                         text: 'รอซักครู่ค่ะ',
                         footer: 'ระบบกำลังตรวจสอบข้อมูลผู้ใช้งาน',
-						timer: 1000,
+						timer: 2000,
 						showConfirmButton:false,
                         timerProgressBar: true,
                         onBeforeOpen: function() {

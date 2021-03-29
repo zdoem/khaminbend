@@ -31,10 +31,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Google Font: Source Sans Pro -->
  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@200;300&display=swap" rel="stylesheet">
   <style >
-	body {
-		font-family: 'Prompt', sans-serif; !important;
-		/* font-family: 'Kanit', sans-serif; !important; */
-	}
+  body {
+    font-family: 'Prompt', sans-serif; !important;
+   /* font-family: 'Kanit', sans-serif; !important; */
+  }
    .requiredfeilds {
     color: #f95c5ced;
   }
@@ -60,58 +60,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
       transform: scale(1) rotate(360deg);
     }
   }
-	.navbar-sapphire{
-		background-color: #00a0b1;
-	}
-	.main-header {
-		border-bottom: 10px solid #fdc700;
-		z-index: 1034;
-	}
-	.navbar-light .navbar-nav .nav-link {
-		color: #fff;
-	}
-	.navbar-light .navbar-brand {
-		color: #fff;
-	}
-	a {
-		color: #fff;
-		text-decoration: none;
-		background-color: transparent;
-	}
-	.bg-green-parakeet {
-		background-color: #00b388!important;
-	}
-	.bg-green-parakeet, .bg-green-parakeet>a {
-		color: #fff!important;
-		text-align:center;
-	}
-	.bg-green-parakeet:hover{
-		color: #fff;
-		background-color: #00e5fd!important;
-		text-align:center;
-	}
-	.main-footer {
-		background: #00a0b1;
-		border-top: 10px solid #fdc700;
-		color: #fff;
-		padding: 1rem;
-	}
-	.scrolling-wrapper {
-	  overflow-x: scroll;
-	  overflow-y: hidden;
-	  white-space: nowrap;
-
-	  .card {
-		display: inline-block;
-	  }
-	}
-	.breadcrumb-item>a{
-		color: #007bff;
-		text-decoration: none;
-		background-color: transparent;
-	}
   </style>
-  <script src="assets/plugins/jquery/jquery.min.js"></script> 
+<script src="assets/plugins/jquery/jquery.min.js"></script> 
 <script src="assets/js/jquery-migrate.min.js"></script> 
 <script src="assets/js/jquery-migrate-1.2.1.min.js"></script>
 <script src="assets/js/sweetalert2.min.js"></script> 
@@ -196,14 +146,14 @@ function check_form(obj){
 <div class="wrapper">
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand-md navbar-sapphire navbar-light navbar-white">
+  <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
     <div class="container">
 
-	  <a href="./" class="navbar-brand">
-       <img src="images/logo-kmsc.png" alt="เทศบาลตำบลโคกขมิ้น" class="brand-image img-circle elevation-3"
+	  <a href="/" class="navbar-brand">
+       <img src="images/apple-icon-57x57.png" alt="Portal เทศบาลโคกขมิ้น" class="brand-image img-circle elevation-3"
            style="opacity: .8">
            	<!-- <img src="images/apple-icon-57x57.png" class="img-responsive" alt=""  style="opacity: .8">-->
-      <span class="brand-text font-weight-light bn-xs">โคกขมิ้น สมาร์ท ซิตี้</span>
+      <span class="brand-text font-weight-light bn-xs">โคกขมิ้น สมาร์ทซิตี้ Portal</span>
     </a>
       
       <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -291,7 +241,7 @@ function check_form(obj){
             <?php 
             if(@$_SESSION['user_id']!=null){
             ?>
-            <a href="./logout.php" class="text-danger"><em class="fa fa-power-off">&nbsp;</em> ออกจากระบบ</a>
+            <a href="logout.php" class="text-danger"><em class="fa fa-power-off">&nbsp;</em> ออกจากระบบ</a>
             <?php }?>
           
 
