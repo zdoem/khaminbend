@@ -11,7 +11,7 @@
  Target Server Version : 100327
  File Encoding         : 65001
 
- Date: 29/03/2021 23:44:37
+ Date: 29/03/2021 23:50:17
 */
 
 SET NAMES utf8mb4;
@@ -9911,53 +9911,6 @@ CREATE TABLE `fm_fam_disaster_dt5`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'ภัยธรรมชาติ' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of fm_fam_disaster_dt5
--- ----------------------------
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('63122008', '03', 'วาตภัย', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631214', '01', 'ภัยแล้ง ', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631216', '01', 'ภัยแล้ง ', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631216', '02', 'น้ำท่วม', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631217', '01', 'ภัยแล้ง ', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631217', '02', 'น้ำท่วม', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631218', '01', 'ภัยแล้ง ', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631218', '02', 'น้ำท่วม', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631219', '01', 'ภัยแล้ง ', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631219', '02', 'น้ำท่วม', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631220', '01', 'ภัยแล้ง ', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631220', '02', 'น้ำท่วม', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631224', '01', 'ภัยแล้ง ', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631224', '02', 'น้ำท่วม', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631221', '01', 'ภัยแล้ง ', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631221', '02', 'น้ำท่วม', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631226', '02', 'น้ำท่วม', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631226', '03', 'วาตภัย', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631226', '01', 'ภัยแล้ง ', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631226', '04', 'อัคคีภัย ', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('630131', '02', 'น้ำท่วม', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('630131', '03', 'วาตภัย', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('630131', '01', 'ภัยแล้ง ', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('630131', '04', 'อัคคีภัย ', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('630132', '01', 'ภัยแล้ง ', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('630132', '02', 'น้ำท่วม', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('630132', '04', 'อัคคีภัย ', NULL);
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('630233', '01', 'ภัยแล้ง ', '');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('630233', '02', 'น้ำท่วม', '');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('630233', '04', 'อัคคีภัย ', '');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631256', '01', 'ภัยแล้ง ', '');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631256', '02', 'น้ำท่วม', '');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631256', '03', 'วาตภัย', '');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631256', '04', 'อัคคีภัย ', '');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('631256', '99', 'อื่นๆ', 'dddd');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('6401104', '01', 'ภัยแล้ง ', '');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('6401104', '02', 'น้ำท่วม', '');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('6401104', '03', 'วาตภัย', '');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('6401104', '04', 'อัคคีภัย ', '');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('6401104', '99', 'อื่นๆ', 'dddd');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('6401104', '99', 'อื่นๆ', 'dddd');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('6401105', '01', 'ภัยแล้ง ', '');
-INSERT INTO `fm_fam_disaster_dt5` VALUES ('6401105', '02', 'น้ำท่วม', '');
-
--- ----------------------------
 -- Table structure for fm_fam_facilities_dt3
 -- ----------------------------
 DROP TABLE IF EXISTS `fm_fam_facilities_dt3`;
@@ -9969,57 +9922,6 @@ CREATE TABLE `fm_fam_facilities_dt3`  (
   `fac_desc` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   INDEX `fac_fam_id`(`fac_fam_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'เครื่องมืออำนวยความสะดวกทางการเกษตร' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of fm_fam_facilities_dt3
--- ----------------------------
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('63122008', '01', 'รถไถ แทรกเตอร์ ', 10, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631214', '01', 'รถไถ แทรกเตอร์ ', 20, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631216', '01', 'รถไถ แทรกเตอร์ ', 2, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631216', '05', 'รถอัดฟาง', 3, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631217', '01', 'รถไถ แทรกเตอร์ ', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631217', '02', 'รถไถเดินตาม', 3, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631218', '01', 'รถไถ แทรกเตอร์ ', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631218', '02', 'รถไถเดินตาม', 3, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631219', '01', 'รถไถ แทรกเตอร์ ', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631219', '02', 'รถไถเดินตาม', 3, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631220', '01', 'รถไถ แทรกเตอร์ ', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631220', '02', 'รถไถเดินตาม', 3, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631224', '01', 'รถไถ แทรกเตอร์ ', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631224', '02', 'รถไถเดินตาม', 3, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631221', '01', 'รถไถ แทรกเตอร์ ', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631221', '02', 'รถไถเดินตาม', 3, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631226', '01', 'รถไถ แทรกเตอร์ ', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631226', '02', 'รถไถเดินตาม', 7, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631226', '03', 'รถตุ๊กตุ๊ก', 7, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631226', '04', 'รถเกี่ยว', 7, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631226', '05', 'รถอัดฟาง', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631226', '99', 'อื่นๆ', 5777, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('630131', '01', 'รถไถ แทรกเตอร์ ', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('630131', '02', 'รถไถเดินตาม', 7, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('630131', '03', 'รถตุ๊กตุ๊ก', 7, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('630131', '04', 'รถเกี่ยว', 7, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('630131', '05', 'รถอัดฟาง', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('630131', '99', 'อื่นๆ', 5777, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('630132', '01', 'รถไถ แทรกเตอร์ ', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('630132', '02', 'รถไถเดินตาม', 3, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('630233', '01', 'รถไถ แทรกเตอร์ ', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('630233', '02', 'รถไถเดินตาม', 3, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('630233', '05', 'รถอัดฟาง', 14, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631256', '01', 'รถไถ แทรกเตอร์ ', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631256', '02', 'รถไถเดินตาม', 2, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631256', '03', 'รถตุ๊กตุ๊ก', 2, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631256', '04', 'รถเกี่ยว', 2, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631256', '05', 'รถอัดฟาง', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('631256', '99', 'อื่นๆ', 2, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('6401104', '01', 'รถไถ แทรกเตอร์ ', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('6401104', '02', 'รถไถเดินตาม', 2, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('6401104', '03', 'รถตุ๊กตุ๊ก', 2, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('6401104', '04', 'รถเกี่ยว', 2, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('6401104', '05', 'รถอัดฟาง', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('6401104', '99', 'อื่นๆ', 2, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('6401105', '01', 'รถไถ แทรกเตอร์ ', 1, NULL);
-INSERT INTO `fm_fam_facilities_dt3` VALUES ('6401105', '02', 'รถไถเดินตาม', 3, NULL);
 
 -- ----------------------------
 -- Table structure for fm_fam_hd
@@ -10067,32 +9969,6 @@ CREATE TABLE `fm_fam_hd`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'table หลักสำหรับครัวเรือน' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of fm_fam_hd
--- ----------------------------
-INSERT INTO `fm_fam_hd` VALUES ('630131', '111/123', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 5, '', '04', '01', 1, 'ทดสอบจ้าาาาาาา', '01', '1', '1', '2019-12-14', '2021-03-14', '7dfgdgfdfg66', 'Y', 'sdfsfsfdsfsd  grtrt', 'Y', 'sdfsdfdsf4 445', '223445', 'Y', 'ddddddddd', '2020-01-01', 'A', 'user1', 'user1', '2020-12-14 22:41:02', '2020-12-14 22:41:02', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('630132', '22/24', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 1, '', '03', '01', 1, 'ทดสอบ', '02', '1', '1', '2020-12-13', '2021-03-13', 'ปปปปปปปป', 'Y', '', 'Y', '', 'กดหดหกด', 'N', '', '2020-01-04', 'A', 'user1', 'user1', '2020-12-14 22:48:23', '2020-12-14 23:00:56', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('630233', '22/23', '28', 'โคกขมิ้น d', 'พลับพลาชัย d', 'จังหวัดบุรีรัมย์ d', '31250', 1, NULL, '03', '01', 1, 'ทดสอบ', '02', '1', '1', '2020-12-13', '2021-03-13', 'ปปปปปปปป', 'Y', '', 'Y', '', 'กดหดหกด', 'Y', '', '2020-02-21', 'A', 'user1', 'user1', '2020-12-14 23:06:29', '2020-12-17 07:28:56', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631214', '74/225', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 3, '', '11', '', 1000, '', '02', '2', '1', '2020-12-13', '2021-03-13', '1000', 'Y', '', 'N', '', '', 'N', '', '2020-12-13', 'A', 'admin1', 'admin1', '2020-12-13 01:21:57', '2020-12-13 01:21:57', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631216', '11/11', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 1, '', '04', '01', 1, 'ทดสอบจ้าาาาาาา', '01', '1', '1', '2020-12-13', '2021-03-13', 'กกกกกก', 'N', '', 'N', '', 'กดหกดกหด', 'N', '', '2019-12-13', 'A', 'user1', 'user1', '2020-12-13 13:46:24', '2020-12-13 13:46:24', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631217', '22/22', '28', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 1, '', '03', '01', 1, 'ทดสอบ', '02', '1', '1', '2020-12-13', '2021-03-13', 'ปปปปปปปป', 'N', '', 'N', '', 'กดหดหกด', 'N', '', '2019-12-13', 'A', 'user1', 'user1', '2020-12-13 14:00:25', '2020-12-13 14:00:25', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631218', '22/23', '28', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 1, '', '03', '01', 1, 'ทดสอบ', '02', '1', '1', '2020-12-13', '2021-03-13', 'ปปปปปปปป', 'N', '', 'N', '', 'กดหดหกด', 'N', '', '2019-12-13', 'A', 'user1', 'user1', '2020-12-13 14:03:22', '2020-12-13 14:03:22', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631219', '22/24', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 1, '', '03', '01', 1, 'ทดสอบ', '02', '1', '1', '2020-12-13', '2021-03-13', 'ปปปปปปปป', 'N', '', 'N', '', 'กดหดหกด', 'N', '', '2019-12-13', 'A', 'user1', 'user1', '2020-12-13 14:04:36', '2020-12-13 14:04:36', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631220', '22/25', '28', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 1, '', '03', '01', 1, 'ทดสอบ', '02', '1', '1', '2020-12-13', '2021-03-13', 'ปปปปปปปป', 'N', '', 'N', '', 'กดหดหกด', 'N', '', '2020-12-13', 'A', 'user1', 'user1', '2020-12-13 14:11:10', '2020-12-13 14:11:10', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631221', '22/28', '29', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 1, '', '03', '01', 5, 'ทดสอบ', '02', '1', '1', '2019-12-13', '2021-03-13', 'ปปปปปปปป', 'N', '', 'N', '', 'กดหดหกด', 'N', '', '2020-12-13', 'A', 'user1', 'user1', '2020-12-13 14:41:50', '2020-12-13 19:52:24', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631222', '33/11', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 1, '', '01', '01', 7000, '', '02', '1', '1', '2020-12-13', '2021-03-13', 'ddd', 'N', '', 'N', '', '', 'N', '', '2020-12-13', 'A', 'user1', 'user1', '2020-12-13 14:45:46', '2020-12-13 19:12:22', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631224', '22/26', '28', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 1, '', '03', '01', 1, 'ทดสอบ', '02', '1', '1', '2020-12-13', '2021-03-13', 'ปปปปปปปป', 'N', '', 'N', '', 'กดหดหกด', 'N', '', '2020-12-13', 'A', 'user1', 'user1', '2020-12-13 15:21:57', '2020-12-13 19:12:36', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631225', '99/99', '32', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 1, '', '08', '01', 2, '', '01', '1', '2', '2020-12-13', '2021-03-13', 'ออ', 'N', '', 'N', '', '', 'N', '', '2020-12-13', 'A', 'user1', 'user1', '2020-12-13 19:45:55', '2020-12-13 19:45:55', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631226', '111/123', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 5, '', '04', '01', 1, 'ทดสอบจ้าาาาาาา', '01', '1', '1', '2019-12-14', '2021-03-14', '7dfgdgfdfg66', 'Y', 'sdfsfsfdsfsd  grtrt', 'Y', 'sdfsdfdsf4 445', '223445', 'Y', 'ddddddddd', '2019-11-26', 'A', 'user1', 'user1', '2020-12-14 21:58:05', '2020-12-14 22:14:36', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631253', '9999', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 7, NULL, '03', '01', 1, '', '01', '1', '1', '2020-12-01', '2021-01-28', '', 'N', '', 'N', '', '', 'N', '', '2020-12-17', 'A', 'user1', 'user1', '2020-12-17 07:30:06', '2020-12-17 07:30:23', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631254', '999/888', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 6, NULL, '04', '01', 8888, '', '02', '1', '1', '2020-12-01', '2021-01-27', '5555', 'N', '', 'N', '', '', 'N', '', '2017-12-17', 'A', 'user1', 'user1', '2017-12-19 10:22:50', '2017-12-19 10:22:50', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631255', '999/888', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 6, NULL, '04', '01', 8888, '', '02', '1', '1', '2020-12-01', '2021-01-27', '5555', 'N', '', 'N', '', '', 'N', '', '2018-12-21', 'A', 'user2', 'user2', '2018-12-21 12:50:31', '2018-12-21 12:50:31', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('631256', '999/888', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 6, NULL, '04', '01', 8888, '', '02', '1', '1', '2020-12-01', '2021-01-27', '5555', 'N', '', 'N', '', '', 'Y', 'sdfdsfdsfdsfdsf', '2020-12-29', 'A', 'user2', 'user2', '2020-12-21 12:53:14', '2020-12-21 12:53:14', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('6401104', '999/888', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 6, NULL, '04', '01', 8888, '', '02', '1', '1', '2020-12-01', '2021-01-27', '5555', 'N', '', 'N', '', '', 'Y', 'sdfdsfdsfdsfdsf', '2021-01-01', 'A', 'admin1', 'admin1', '2021-01-23 09:16:33', '2021-01-23 09:16:33', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('6401105', '22/22', '28', 'โคกขมิ้น', 'พลับพลาชัย', 'จังหวัดบุรีรัมย์', '31250', 1, NULL, '03', '01', 1, 'ทดสอบ', '02', '1', '1', '2020-12-13', '2021-03-13', 'ปปปปปปปป', 'N', '', 'N', '', 'กดหดหกด', 'N', '', '2021-01-23', 'A', 'admin1', 'admin1', '2021-01-23 09:21:25', '2021-01-23 09:21:25', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('6403107', '75/566', '27', 'โคกขมิ้น', 'พลับพลาชัย', 'thai', '10600', 4, NULL, '09', '01', 10000, '', '02', '1', '1', '2021-03-10', '2021-03-16', '1000', 'N', '', 'N', '', '', 'N', '', '2021-03-29', 'A', 'admin1', 'admin1', '2021-03-29 12:11:19', '2021-03-29 12:11:19', NULL, NULL, NULL, NULL);
-INSERT INTO `fm_fam_hd` VALUES ('6403108', '74/22', '28', 'โคกขมิ้น', 'พลับพลาชัย', 'Bangkok', '10600', 4, NULL, '09', '01', 2000, '', '02', NULL, '2', '1900-03-07', '2021-03-23', '', 'N', '', 'N', '', '', 'N', '', '2021-03-29', 'A', 'admin1', 'admin1', '2021-03-29 12:12:58', '2021-03-29 13:07:41', NULL, NULL, NULL, NULL);
-
--- ----------------------------
 -- Table structure for fm_fam_info_dt6
 -- ----------------------------
 DROP TABLE IF EXISTS `fm_fam_info_dt6`;
@@ -10103,61 +9979,6 @@ CREATE TABLE `fm_fam_info_dt6`  (
   `info_desc` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   INDEX `info_fam_id`(`info_fam_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'ข่าวสารทางด้านการเกษตร' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of fm_fam_info_dt6
--- ----------------------------
-INSERT INTO `fm_fam_info_dt6` VALUES ('63122008', '03', 'การใช้คอมพิวเตอร์และอินเทอร์เน็ต', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631214', '02', 'การใช้โทรศัพท์มือถือ', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631216', '01', 'ปากต่อปาก', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631217', '01', 'ปากต่อปาก', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631217', '02', 'การใช้โทรศัพท์มือถือ', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631218', '01', 'ปากต่อปาก', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631218', '02', 'การใช้โทรศัพท์มือถือ', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631219', '01', 'ปากต่อปาก', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631219', '02', 'การใช้โทรศัพท์มือถือ', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631220', '01', 'ปากต่อปาก', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631220', '02', 'การใช้โทรศัพท์มือถือ', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631224', '01', 'ปากต่อปาก', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631224', '02', 'การใช้โทรศัพท์มือถือ', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631224', '05', 'หอกระจายข่าว', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631221', '01', 'ปากต่อปาก', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631221', '02', 'การใช้โทรศัพท์มือถือ', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631226', '01', 'ปากต่อปาก', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631226', '02', 'การใช้โทรศัพท์มือถือ', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631226', '03', 'การใช้คอมพิวเตอร์และอินเทอร์เน็ต', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631226', '06', 'วิทยุชุมชน', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631226', '05', 'หอกระจายข่าว', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631226', '04', 'การส่งหนังสือแจ้ง/การส่งจดหมาย', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('631226', '07', 'เวทีประชุม/ประชาคม', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('630131', '01', 'ปากต่อปาก', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('630131', '02', 'การใช้โทรศัพท์มือถือ', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('630131', '03', 'การใช้คอมพิวเตอร์และอินเทอร์เน็ต', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('630131', '06', 'วิทยุชุมชน', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('630131', '05', 'หอกระจายข่าว', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('630131', '04', 'การส่งหนังสือแจ้ง/การส่งจดหมาย', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('630131', '07', 'เวทีประชุม/ประชาคม', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('630132', '01', 'ปากต่อปาก', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('630132', '02', 'การใช้โทรศัพท์มือถือ', NULL);
-INSERT INTO `fm_fam_info_dt6` VALUES ('630233', '01', 'ปากต่อปาก', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('630233', '02', 'การใช้โทรศัพท์มือถือ', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('630233', '07', 'เวทีประชุม/ประชาคม', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('630233', '03', 'การใช้คอมพิวเตอร์และอินเทอร์เน็ต', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('631256', '02', 'การใช้โทรศัพท์มือถือ', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('631256', '01', 'ปากต่อปาก', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('631256', '03', 'การใช้คอมพิวเตอร์และอินเทอร์เน็ต', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('631256', '04', 'การส่งหนังสือแจ้ง/การส่งจดหมาย', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('631256', '05', 'หอกระจายข่าว', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('631256', '99', 'อื่นๆ', 'dfdsfdsfds');
-INSERT INTO `fm_fam_info_dt6` VALUES ('6401104', '02', 'การใช้โทรศัพท์มือถือ', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('6401104', '01', 'ปากต่อปาก', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('6401104', '03', 'การใช้คอมพิวเตอร์และอินเทอร์เน็ต', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('6401104', '04', 'การส่งหนังสือแจ้ง/การส่งจดหมาย', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('6401104', '05', 'หอกระจายข่าว', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('6401104', '99', 'อื่นๆ', 'dfdsfdsfds');
-INSERT INTO `fm_fam_info_dt6` VALUES ('6401104', '99', 'อื่นๆ', 'dfdsfdsfds');
-INSERT INTO `fm_fam_info_dt6` VALUES ('6401105', '01', 'ปากต่อปาก', '');
-INSERT INTO `fm_fam_info_dt6` VALUES ('6401105', '02', 'การใช้โทรศัพท์มือถือ', '');
 
 -- ----------------------------
 -- Table structure for fm_fam_land_dt2
@@ -10182,71 +10003,6 @@ CREATE TABLE `fm_fam_land_dt2`  (
   INDEX `land_fam_id`(`land_fam_id`) USING BTREE,
   INDEX `land_seq`(`land_seq`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = ' ข้อมูลพื้นที่การเกษตร' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of fm_fam_land_dt2
--- ----------------------------
-INSERT INTO `fm_fam_land_dt2` VALUES ('63122008', 1, 'title_deed', NULL, '64', '8107', '10', 10, 10, 10, 'A', 'admin1', NULL, '2020-12-04 13:41:27', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('63122008', 1, 'NorSor3Kor', NULL, '13', '2209', '10', 10, 10, 10, 'A', 'admin1', NULL, '2020-12-04 13:41:27', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('63122008', 1, 'sorporkor', NULL, '11', '2002', '10', 110, 10, 10, 'A', 'admin1', NULL, '2020-12-04 13:41:27', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('63122008', 1, 'porbortor5', NULL, '50', '6305', '10', 10, 10, 10, 'A', 'admin1', NULL, '2020-12-04 13:41:27', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631216', 1, 'title_deed', NULL, '20', '3115', '12345', 1, 2, 33, 'A', 'user1', NULL, '2020-12-13 13:46:24', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631216', 1, 'sorporkor', NULL, '20', '3115', '33309', 1, 3, 99, 'A', 'user1', NULL, '2020-12-13 13:46:24', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631217', 1, 'title_deed', NULL, '20', '3115', '123456', 1, 1, 1, 'A', 'user1', NULL, '2020-12-13 14:00:25', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631217', 2, 'title_deed', NULL, '20', '3115', '654321', 1, 2, 8, 'A', 'user1', NULL, '2020-12-13 14:00:25', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631217', 1, 'sorporkor', NULL, '20', '3115', '55555', 5, 4, 5, 'A', 'user1', NULL, '2020-12-13 14:00:25', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631218', 1, 'title_deed', NULL, '20', '3115', '123456', 1, 1, 1, 'A', 'user1', NULL, '2020-12-13 14:03:22', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631218', 2, 'title_deed', NULL, '20', '3115', '654321', 1, 2, 8, 'A', 'user1', NULL, '2020-12-13 14:03:22', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631218', 1, 'sorporkor', NULL, '20', '3115', '55555', 5, 4, 5, 'A', 'user1', NULL, '2020-12-13 14:03:22', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631219', 1, 'title_deed', NULL, '20', '3115', '123456', 1, 1, 1, 'A', 'user1', NULL, '2020-12-13 14:04:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631219', 2, 'title_deed', NULL, '20', '3115', '654321', 1, 2, 8, 'A', 'user1', NULL, '2020-12-13 14:04:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631219', 1, 'sorporkor', NULL, '20', '3115', '55555', 5, 4, 5, 'A', 'user1', NULL, '2020-12-13 14:04:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631220', 1, 'title_deed', NULL, '20', '3115', '123456', 1, 1, 1, 'A', 'user1', NULL, '2020-12-13 14:11:10', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631220', 2, 'title_deed', NULL, '20', '3115', '654321', 1, 2, 8, 'A', 'user1', NULL, '2020-12-13 14:11:10', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631220', 1, 'sorporkor', NULL, '20', '3115', '55555', 5, 4, 5, 'A', 'user1', NULL, '2020-12-13 14:11:10', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631224', 1, 'title_deed', NULL, '20', '3115', '654321', 1, 2, 855, 'A', 'user1', NULL, '2020-12-13 19:12:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631224', 1, 'NorSor3Kor', NULL, '20', '3115', '6666', 0, 4, 3065, 'A', 'user1', NULL, '2020-12-13 19:12:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631224', 1, 'sorporkor', NULL, '20', '3115', '55555', 5, 4, 5, 'A', 'user1', NULL, '2020-12-13 19:12:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631224', 2, 'sorporkor', NULL, '20', '3109', '777', 1, 1, 2, 'A', 'user1', NULL, '2020-12-13 19:12:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631224', 1, 'porbortor5', NULL, '20', '3115', '6666', 0, 3, 3333, 'A', 'user1', NULL, '2020-12-13 19:12:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631221', 1, 'title_deed', NULL, '20', '3115', '123456', 1, 1, 1, 'A', 'user1', NULL, '2020-12-13 19:52:24', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631221', 2, 'title_deed', NULL, '20', '3115', '654321', 1, 2, 8, 'A', 'user1', NULL, '2020-12-13 19:52:24', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631221', 3, 'title_deed', NULL, '20', '3115', '55555', 888, 4, 999.99, 'A', 'user1', NULL, '2020-12-13 19:52:24', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631221', 1, 'NorSor3Kor', NULL, '20', '3115', '6666', 7000, 4, 8888.99, 'A', 'user1', NULL, '2020-12-13 19:52:24', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631221', 1, 'sorporkor', NULL, '20', '3115', '55555', 5, 4, 5, 'A', 'user1', NULL, '2020-12-13 19:52:24', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631226', 1, 'title_deed', NULL, '20', '3115', '12345', 1, 2, 33, 'A', 'user1', NULL, '2020-12-14 22:14:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631226', 2, 'title_deed', NULL, '28', '4016', '5555', 5, 2, 55, 'A', 'user1', NULL, '2020-12-14 22:14:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631226', 1, 'NorSor3Kor', NULL, '20', '3115', '68888', 8, 2, 54654, 'A', 'user1', NULL, '2020-12-14 22:14:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631226', 1, 'sorporkor', NULL, '20', '3115', '33309', 1, 3, 99, 'A', 'user1', NULL, '2020-12-14 22:14:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631226', 2, 'sorporkor', NULL, '1', '1036', '77777', 7, 3, 777.77, 'A', 'user1', NULL, '2020-12-14 22:14:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631226', 3, 'sorporkor', NULL, '20', '3115', '11111', 1, 1, 11, 'A', 'user1', NULL, '2020-12-14 22:14:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631226', 4, 'sorporkor', NULL, '20', '3115', '22222', 2, 2, 22, 'A', 'user1', NULL, '2020-12-14 22:14:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631226', 5, 'sorporkor', NULL, '20', '3115', '3333', 9999, 3, 33, 'A', 'user1', NULL, '2020-12-14 22:14:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631226', 1, 'porbortor5', NULL, '63', '8013', '444', 0, 1, 55.999, 'A', 'user1', NULL, '2020-12-14 22:14:36', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630131', 1, 'title_deed', NULL, '20', '3115', '12345', 1, 2, 33, 'A', 'user1', NULL, '2020-12-14 22:41:02', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630131', 2, 'title_deed', NULL, '28', '4016', '5555', 5, 2, 55, 'A', 'user1', NULL, '2020-12-14 22:41:02', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630131', 1, 'NorSor3Kor', NULL, '20', '3115', '68888', 8, 2, 54654, 'A', 'user1', NULL, '2020-12-14 22:41:02', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630131', 1, 'sorporkor', NULL, '20', '3115', '33309', 1, 3, 99, 'A', 'user1', NULL, '2020-12-14 22:41:02', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630131', 2, 'sorporkor', NULL, '1', '1036', '77777', 7, 3, 777.77, 'A', 'user1', NULL, '2020-12-14 22:41:02', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630131', 3, 'sorporkor', NULL, '20', '3115', '11111', 1, 1, 11, 'A', 'user1', NULL, '2020-12-14 22:41:02', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630131', 4, 'sorporkor', NULL, '20', '3115', '22222', 2, 2, 22, 'A', 'user1', NULL, '2020-12-14 22:41:02', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630131', 5, 'sorporkor', NULL, '20', '3115', '3333', 9999, 3, 33, 'A', 'user1', NULL, '2020-12-14 22:41:02', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630131', 1, 'porbortor5', NULL, '63', '8013', '444', 0, 1, 55.999, 'A', 'user1', NULL, '2020-12-14 22:41:02', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630132', 1, 'title_deed', NULL, '20', '3115', '123456', 1, 1, 1, 'A', 'user1', NULL, '2020-12-14 23:00:56', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630132', 2, 'title_deed', NULL, '20', '3115', '654321', 1, 2, 8, 'A', 'user1', NULL, '2020-12-14 23:00:56', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630132', 1, 'sorporkor', NULL, '20', '3115', '55555', 5, 4, 5, 'A', 'user1', NULL, '2020-12-14 23:00:56', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630233', 1, 'title_deed', NULL, '20', '3115', '123456', 1, 1, 1, 'A', 'user1', NULL, '2020-12-17 07:28:56', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630233', 2, 'title_deed', NULL, '20', '3115', '654321', 1, 2, 8, 'A', 'user1', NULL, '2020-12-17 07:28:56', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('630233', 1, 'sorporkor', NULL, '20', '3115', '55555', 5, 4, 5, 'A', 'user1', NULL, '2020-12-17 07:28:56', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631254', 1, 'title_deed', NULL, '20', '3115', '8888', 8, 3, 555, 'A', 'user1', NULL, '2020-12-19 10:22:50', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631255', 1, 'title_deed', NULL, '20', '3115', '8888', 8, 3, 555, 'A', 'user2', NULL, '2020-12-21 12:50:31', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631256', 1, 'title_deed', NULL, '20', '3115', '8888', 8, 3, 555, 'A', 'user2', NULL, '2020-12-21 12:53:14', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('631256', 1, 'NorSor3Kor', NULL, '20', '3115', '4444', 4, 4, 44, 'A', 'user2', NULL, '2020-12-21 12:53:14', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('6401104', 1, 'title_deed', NULL, '20', '3115', '8888', 8, 3, 555, 'A', 'admin1', NULL, '2021-01-23 09:16:33', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('6401104', 1, 'NorSor3Kor', NULL, '20', '3115', '4444', 4, 4, 44, 'A', 'admin1', NULL, '2021-01-23 09:16:33', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('6401105', 1, 'title_deed', NULL, '20', '3115', '123456', 1, 1, 1, 'A', 'admin1', NULL, '2021-01-23 09:21:24', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('6401105', 2, 'title_deed', NULL, '20', '3115', '654321', 1, 2, 8, 'A', 'admin1', NULL, '2021-01-23 09:21:24', NULL);
-INSERT INTO `fm_fam_land_dt2` VALUES ('6401105', 1, 'sorporkor', NULL, '20', '3115', '55555', 5, 4, 5, 'A', 'admin1', NULL, '2021-01-23 09:21:24', NULL);
 
 -- ----------------------------
 -- Table structure for fm_fam_members_dt1
@@ -10280,45 +10036,6 @@ CREATE TABLE `fm_fam_members_dt1`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'ข้อมูลสมาชิกครัวเรือน' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of fm_fam_members_dt1
--- ----------------------------
-INSERT INTO `fm_fam_members_dt1` VALUES ('63122008', 2, '03', 'testtt', 'testttt', '12345666666', '2', 'M', 'ไทย', '02', '2020-12-15', NULL, '02', '04', '11', '09', 1000, 'A', 'admin1', NULL, '2020-12-04 13:41:27', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631214', 1, '02', 'test', 'test', '1234565666668', 'O', 'M', 'ไทย', '01', '2020-12-11', NULL, '01', '01', '11', '', 1000, 'A', 'admin1', NULL, '2020-12-13 01:21:57', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631216', 1, '03', 'ทดสอบ 1', 'ทดสอบ 5555', '1234567890123', 'O', 'M', 'ไทย', '01', '2020-12-13', NULL, '01', '01', '04', '01', 1, 'A', 'user1', NULL, '2020-12-13 13:46:24', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631217', 1, '03', 'ทดสอบจ้า', 'ทดสอบอีกแล้ว xxx', '1490400002528', 'O', 'M', 'ไทย', '01', '2020-12-01', NULL, '01', '01', '03', '01', 1, 'A', 'user1', NULL, '2020-12-13 14:00:25', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631218', 1, '03', 'ทดสอบจ้า', 'ทดสอบอีกแล้ว xxx', '1490400002529', 'O', 'M', 'ไทย', '01', '2020-12-01', NULL, '01', '01', '03', '01', 1, 'A', 'user1', NULL, '2020-12-13 14:03:22', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631218', 2, '03', 'หกดหกดกหด', 'หกดหกดกหด', '1234567890144', 'M', 'M', 'ไทย', '01', '2020-12-13', NULL, '01', '07', '07', '11', 7888, 'A', 'user1', NULL, '2020-12-13 14:03:22', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631219', 1, '03', 'ทดสอบจ้า', 'ทดสอบอีกแล้ว xxx', '1490400002521', 'O', 'M', 'ไทย', '01', '2020-12-01', NULL, '01', '01', '03', '01', 1, 'A', 'user1', NULL, '2020-12-13 14:04:36', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631219', 2, '03', 'หกดหกดกหด', 'หกดหกดกหด', '1234567890141', 'M', 'M', 'ไทย', '01', '2020-12-13', NULL, '01', '07', '07', '11', 7888, 'A', 'user1', NULL, '2020-12-13 14:04:36', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631220', 1, '03', 'ทดสอบจ้า', 'ทดสอบอีกแล้ว xxx', '1490400002522', 'O', 'M', 'ไทย', '01', '2020-12-01', NULL, '01', '01', '03', '01', 1, 'A', 'user1', NULL, '2020-12-13 14:11:10', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631220', 2, '03', 'ประยุด', 'จันโอก้า', '4444444444444', 'M', 'M', 'ไทย', '01', '2020-12-13', NULL, '01', '03', '03', '01', 4, 'A', 'user1', NULL, '2020-12-13 14:11:10', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631222', 1, '03', 'dddd ทดสอบจ้า2', 'xxxx', '1111111111111', 'O', 'M', 'ไทย', '01', '2020-12-13', NULL, '01', '01', '01', '01', 7000, 'A', 'user1', NULL, '2020-12-13 19:12:22', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631222', 2, '03', 'ttttt', 'tttttt', '7777777777777', 'M', 'M', 'ไทย', '01', '2021-01-30', NULL, '01', '02', '16', '12', 88888, 'A', 'user1', NULL, '2020-12-13 19:12:22', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631224', 1, '03', 'ทดสอบจ้า66', 'ทดสอบอีกแล้ว xxx', '1490400002526', 'O', 'M', 'ไทย', '01', '2020-12-01', NULL, '01', '01', '03', '01', 1, 'A', 'user1', NULL, '2020-12-13 19:12:36', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631224', 2, '03', 'ttt', 'tttt', '8888888888888', 'M', 'M', 'ไทย', '01', '2020-12-24', NULL, '03', '05', '14', '99', 4, 'D', 'user1', NULL, '2020-12-13 19:12:36', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631225', 1, '03', '999', '99', '0987654321123', 'O', 'M', 'ไทย', '01', '2020-12-13', NULL, '01', '01', '08', '01', 2, 'A', 'user1', NULL, '2020-12-13 19:45:55', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631221', 1, '03', 'ทดสอบจ้า xxxx', 'ทดสอบอีกแล้ว xxx', '1490400002523', 'O', 'W', 'ไทย', '01', '1984-02-19', NULL, '01', '01', '03', '01', 5, 'A', 'user1', NULL, '2020-12-13 19:52:24', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631221', 2, '02', 'dfdsfds', 'dfdsfdsf', '1234567890999', 'M', 'W', 'ไทย', '01', '2020-12-13', NULL, '01', '02', '03', '01', 1, 'A', 'user1', NULL, '2020-12-13 19:52:24', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631226', 1, '03', 'ทดสอบ 1', 'ทดสอบ 5555', '1234567890124', 'O', 'M', 'ไทย', '01', '2020-12-13', NULL, '01', '01', '04', '01', 1, 'A', 'user1', NULL, '2020-12-14 22:14:36', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631226', 2, '01', 'tttt', 'ttttt', '1112223334444', 'M', 'M', 'ไทย', '01', '2020-12-14', NULL, '99', '03', '02', '01', 500000, 'A', 'user1', NULL, '2020-12-14 22:14:36', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('630131', 1, '03', 'ทดสอบ 1', 'ทดสอบ 5555', '1234567890124', 'O', 'M', 'ไทย', '01', '2020-12-13', NULL, '01', '01', '04', '01', 1, 'A', 'user1', NULL, '2020-12-14 22:41:02', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('630131', 2, '01', 'tttt', 'ttttt', '1112223334444', 'M', 'M', 'ไทย', '01', '2020-12-14', NULL, '99', '03', '02', '01', 500000, 'A', 'user1', NULL, '2020-12-14 22:41:02', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('630132', 1, '03', 'ทดสอบจ้า', 'ทดสอบอีกแล้ว xxx', '1490400002521', 'O', 'M', 'ไทย', '01', '2020-12-01', NULL, '01', '01', '03', '01', 1, 'A', 'user1', NULL, '2020-12-14 23:00:56', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('630132', 2, '03', 'หกดหกดกหด', 'หกดหกดกหด', '1234567890141', 'M', 'M', 'ไทย', '01', '2020-12-13', NULL, '01', '07', '07', '11', 7888, 'A', 'user1', NULL, '2020-12-14 23:00:56', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('630233', 1, '03', 'ทดสอบจ้า', 'ทดสอบอีกแล้ว xxx', '1490400002529', 'O', 'O', 'ไทย', '01', '2020-12-01', NULL, '01', '01', '03', '01', 1, 'D', 'user1', NULL, '2020-12-17 07:28:56', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('630233', 2, '03', 'หกดหกดกหด', 'หกดหกดกหด', '1234567890144', 'M', 'M', 'ไทย', '01', '2020-12-13', NULL, '01', '07', '07', '11', 7888, 'D', 'user1', NULL, '2020-12-17 07:28:56', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631253', 1, '01', 'gdg', 'dgdgdfg', '5544333222222', 'O', 'M', 'ไทย', '01', '2020-12-01', NULL, '01', '01', '03', '01', 1, 'A', 'user1', NULL, '2020-12-17 07:30:23', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631254', 1, '01', '5555', '5555', '5555555555555', 'O', 'M', 'ไทย', '01', '2020-12-01', NULL, '01', '01', '04', '01', 8888, 'A', 'user1', NULL, '2020-12-19 10:22:50', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631255', 1, '01', '5555', '5555', '5555555555555', 'O', 'M', 'ไทย', '01', '2020-12-21', NULL, '01', '01', '04', '01', 8888, 'A', 'user2', NULL, '2020-12-21 12:50:31', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631256', 1, '03', '5555', '5555', '5555555555555', 'O', 'M', 'ไทย', '01', '2020-12-21', NULL, '01', '01', '04', '01', 8888, 'A', 'user2', NULL, '2020-12-21 12:53:14', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('631256', 2, '03', 'sadasdasd', 'asdasdasdasd', '8888888888888', 'M', 'M', 'ไทย', '01', '2020-12-21', NULL, '01', '01', '07', '01', 9999, 'A', 'user2', NULL, '2020-12-21 12:53:14', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('6401104', 1, '03', '5555', '5555', '5555555555555', 'O', 'M', 'ไทย', '01', '2021-01-23', NULL, '01', '01', '04', '01', 8888, 'A', 'admin1', NULL, '2021-01-23 09:16:33', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('6401104', 2, '03', 'sadasdasd', 'asdasdasdasd', '8888888888888', 'M', 'M', 'ไทย', '01', '2021-01-23', NULL, '01', '01', '07', '01', 9999, 'A', 'admin1', NULL, '2021-01-23 09:16:33', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('6401105', 1, '03', 'ทดสอบจ้า', 'ทดสอบอีกแล้ว xxx', '1490400002528', 'O', 'M', 'ไทย', '01', '2020-01-01', 'yy-mm', '01', '01', '03', '01', 1, 'A', 'admin1', NULL, '2021-01-23 09:21:24', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('6403107', 1, '03', 'ชัยวัฒน์', 'นพคุณ', '1234565666666', 'O', 'M', 'ไทย', '01', '2021-03-29', 'yy-mm', '02', '02', '09', '01', 10000, 'A', 'admin1', NULL, '2021-03-29 12:11:19', NULL);
-INSERT INTO `fm_fam_members_dt1` VALUES ('6403108', 1, '03', 'niwath4', 'somuengsa4', '8888011155555', 'O', 'M', 'ไทย', '01', '2007-03-29', 'yy', '02', '01', '09', '01', 2000, 'A', 'admin1', NULL, '2021-03-29 13:07:41', NULL);
-
--- ----------------------------
 -- Table structure for fm_fam_pet_dt4
 -- ----------------------------
 DROP TABLE IF EXISTS `fm_fam_pet_dt4`;
@@ -10331,98 +10048,6 @@ CREATE TABLE `fm_fam_pet_dt4`  (
   `pet_desc` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   INDEX `pet_fam_id`(`pet_fam_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'สัตว์เลี้ยง' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of fm_fam_pet_dt4
--- ----------------------------
-INSERT INTO `fm_fam_pet_dt4` VALUES ('63122008', '01', 'โค ', 10, 10, '10');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631214', '02', 'กระบือ', 20, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631216', '01', 'โค ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631216', '02', 'กระบือ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631216', '04', 'สุนัข ', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631217', '01', 'โค ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631217', '02', 'กระบือ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631217', '03', 'สุกร', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631217', '04', 'สุนัข ', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631217', '05', 'แมว', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631217', '99', 'อื่นๆ', 1, 0, 'ปปปปปปป');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631218', '01', 'โค ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631218', '02', 'กระบือ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631218', '03', 'สุกร', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631218', '04', 'สุนัข ', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631218', '05', 'แมว', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631218', '99', 'อื่นๆ', 1, 0, 'ปปปปปปป');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631219', '01', 'โค ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631219', '02', 'กระบือ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631219', '03', 'สุกร', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631219', '04', 'สุนัข ', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631219', '05', 'แมว', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631219', '99', 'อื่นๆ', 1, 0, 'ปปปปปปป');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631220', '01', 'โค ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631220', '02', 'กระบือ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631220', '03', 'สุกร', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631220', '04', 'สุนัข ', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631220', '05', 'แมว', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631220', '99', 'อื่นๆ', 1, 0, 'ปปปปปปป');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631224', '01', 'โค ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631224', '02', 'กระบือ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631224', '03', 'สุกร', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631224', '04', 'สุนัข ', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631224', '99', 'อื่นๆ', 1, 0, 'ปปปปปปป');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631221', '01', 'โค ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631221', '02', 'กระบือ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631221', '03', 'สุกร', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631221', '04', 'สุนัข ', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631221', '05', 'แมว', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631221', '99', 'อื่นๆ', 1, 0, 'ปปปปปปป');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631226', '01', 'โค ', 888, 0, 'sdfdsfds');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631226', '02', 'กระบือ', 8, 0, 'sdfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631226', '03', 'สุกร', 5, 0, 'fsdfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631226', '04', 'สุนัข ', 4, 0, 'fdsfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631226', '05', 'แมว', 4, 0, 'dsfdsfds');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631226', '06', 'หนูนา', 3, 0, 'sdfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631226', '07', 'ไก่บ้าน', 6, 0, 'sdfsdfsdf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631226', '08', 'ไก่ชน', 3, 0, 'sdfsfsdfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631226', '09', 'กบ', 3, 0, 'sdsfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631226', '10', 'ปลา ', 3, 0, 'sdfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631226', '99', 'อื่นๆ', 3, 0, 'sdfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630131', '01', 'โค ', 888, 0, 'sdfdsfds');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630131', '02', 'กระบือ', 8, 0, 'sdfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630131', '03', 'สุกร', 5, 0, 'fsdfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630131', '04', 'สุนัข ', 4, 0, 'fdsfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630131', '05', 'แมว', 4, 0, 'dsfdsfds');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630131', '06', 'หนูนา', 3, 0, 'sdfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630131', '07', 'ไก่บ้าน', 6, 0, 'sdfsdfsdf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630131', '08', 'ไก่ชน', 3, 0, 'sdfsfsdfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630131', '09', 'กบ', 3, 0, 'sdsfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630131', '10', 'ปลา ', 3, 0, 'sdfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630131', '99', 'อื่นๆ', 3, 0, 'sdfdsf');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630132', '01', 'โค ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630132', '02', 'กระบือ', 66, 66, 'sfsfsd');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630132', '03', 'สุกร', 6, 66, 'czcxzxc');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630132', '04', 'สุนัข ', 6, 6, 'zxczxczx');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630132', '05', 'แมว', 6, 6, 'zxczczc');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630132', '99', 'อื่นๆ', 1, 0, 'ปปปปปปป');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630233', '01', 'โค ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630233', '02', 'กระบือ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630233', '03', 'สุกร', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630233', '04', 'สุนัข ', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630233', '05', 'แมว', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('630233', '99', 'อื่นๆ', 1, 0, 'ปปปปปปป');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631256', '01', 'โค ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631256', '02', 'กระบือ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631256', '03', 'สุกร', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('631256', '04', 'สุนัข ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('6401104', '01', 'โค ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('6401104', '02', 'กระบือ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('6401104', '03', 'สุกร', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('6401104', '04', 'สุนัข ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('6401105', '01', 'โค ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('6401105', '02', 'กระบือ', 2, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('6401105', '03', 'สุกร', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('6401105', '04', 'สุนัข ', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('6401105', '05', 'แมว', 1, 0, '');
-INSERT INTO `fm_fam_pet_dt4` VALUES ('6401105', '99', 'อื่นๆ', 1, 0, 'ปปปปปปป');
 
 -- ----------------------------
 -- Table structure for geographies
@@ -10598,26 +10223,6 @@ CREATE TABLE `sfm_fam_members_dt1`  (
 INSERT INTO `sfm_fam_members_dt1` VALUES (1, 1, 9223372036854775806, 1, 1, 1000, 0, 0);
 
 -- ----------------------------
--- Table structure for sssss
--- ----------------------------
-DROP TABLE IF EXISTS `sssss`;
-CREATE TABLE `sssss`  (
-  `next_not_cached_value` bigint(21) NOT NULL,
-  `minimum_value` bigint(21) NOT NULL,
-  `maximum_value` bigint(21) NOT NULL,
-  `start_value` bigint(21) NOT NULL COMMENT 'start value when sequences is created or value if RESTART is used',
-  `increment` bigint(21) NOT NULL COMMENT 'increment value',
-  `cache_size` bigint(21) UNSIGNED NOT NULL,
-  `cycle_option` tinyint(1) UNSIGNED NOT NULL COMMENT '0 if no cycles are allowed, 1 if the sequence should begin a new cycle when maximum_value is passed',
-  `cycle_count` bigint(21) NOT NULL COMMENT 'How many cycles have been done'
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
-
--- ----------------------------
--- Records of sssss
--- ----------------------------
-INSERT INTO `sssss` VALUES (1001, 1, 9223372036854775806, 1, 1, 1000, 0, 0);
-
--- ----------------------------
 -- Table structure for tbl_departments
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_departments`;
@@ -10748,12 +10353,6 @@ CREATE TABLE `tbl_mas_group_occup`  (
 -- Records of tbl_mas_group_occup
 -- ----------------------------
 INSERT INTO `tbl_mas_group_occup` VALUES (1, 'กลุ่าอาชีพ 1', 'ทดสอบจ้า', 'A');
-INSERT INTO `tbl_mas_group_occup` VALUES (2, 'กลุ่มอาชีพ 2', 'ทดสอบจ้า', 'A');
-INSERT INTO `tbl_mas_group_occup` VALUES (3, 'กลุ่มอาชีพ3', 'กลุ่มอาชีพ3xxxx', 'A');
-INSERT INTO `tbl_mas_group_occup` VALUES (4, 'กลุ่มอาชีพ3 ทดสอจ้า', 'กลุ่มอาชีพ3 ทดสอบจ้า', 'A');
-INSERT INTO `tbl_mas_group_occup` VALUES (5, 'กลุ่มอาชีพ3 ทดสอจ้า ป', 'กลุ่มอาชีพ3 ทดสอบจ้า', 'A');
-INSERT INTO `tbl_mas_group_occup` VALUES (6, '1111', '111', 'A');
-INSERT INTO `tbl_mas_group_occup` VALUES (7, '2222', '222', 'A');
 
 -- ----------------------------
 -- Table structure for tbl_mas_house_occup
@@ -10965,13 +10564,6 @@ CREATE TABLE `tbl_mas_vilage`  (
 -- Records of tbl_mas_vilage
 -- ----------------------------
 INSERT INTO `tbl_mas_vilage` VALUES (27, '1', 'ชื่อหมู่บ้าน', 'xxxxxxxxxx', 5, '', 6, '', 7, '', 8, '', 9, '', 10, '', 11, '', '', 'A', 'admin1', NULL, '2020-11-16 13:53:56', '2020-12-20 23:24:42');
-INSERT INTO `tbl_mas_vilage` VALUES (28, '2', 'ชื่อหมู่บ้าน2', 'fffffffff', 5, '', 6, '', 7, '', 8, '', 9, '', 10, '', 11, '', '', 'A', 'admin1', NULL, '2020-11-16 15:57:52', '2020-11-09 22:01:33');
-INSERT INTO `tbl_mas_vilage` VALUES (29, '3', '333', '333', 0, '', 0, '', 0, '', 0, '', 0, '', 0, '0', 0, '', '', 'A', 'user1', NULL, '2020-12-13 14:42:42', '2020-12-13 14:42:42');
-INSERT INTO `tbl_mas_vilage` VALUES (30, '4', '444', '444', 0, '', 0, '', 0, '', 0, '', 0, '', 0, '0', 0, '', '', 'A', 'user1', NULL, '2020-12-13 14:42:52', '2020-12-13 14:42:52');
-INSERT INTO `tbl_mas_vilage` VALUES (31, '5', 'sddfsdf', 'sdfsfsdf', 0, '', 0, '', 0, '', 0, '', 0, '', 0, '0', 0, '', '', 'A', 'user1', NULL, '2020-12-13 14:43:02', '2020-12-13 14:43:02');
-INSERT INTO `tbl_mas_vilage` VALUES (32, '99', '999', '99', 0, '', 0, '', 0, '', 0, '', 0, '', 0, '0', 0, '', '', 'A', 'user1', NULL, '2020-12-13 19:43:57', '2020-12-13 19:43:57');
-INSERT INTO `tbl_mas_vilage` VALUES (33, '66', 'gdfgd', 'fgdfg', 0, '', 0, '', 0, '', 0, '', 0, '', 0, '0', 0, '', '', 'A', 'user2', NULL, '2020-12-20 23:03:09', '2020-12-20 23:03:09');
-INSERT INTO `tbl_mas_vilage` VALUES (34, '5666', 'dfsdfsdf', 'sdfsdf', 0, '', 0, '', 0, '', 0, '', 0, '', 0, '', 0, '', '', 'A', 'user2', NULL, '2020-12-20 23:08:40', '2020-12-20 23:08:40');
 
 -- ----------------------------
 -- Table structure for tbl_password_reset
@@ -11036,29 +10628,6 @@ CREATE TABLE `tbl_users`  (
 INSERT INTO `tbl_users` VALUES ('admin', 'f166ffbb2a93857b6439f581ebe13f5b', 'admin1', 'admin1', 'admin1', 'admin1@dd.com', '1234567890', '9', '01', '99', 'A', 'sys', 'user2', '2020-11-15 10:54:06', '2020-12-22 22:09:11');
 INSERT INTO `tbl_users` VALUES ('admin1', 'bd809d21a198d17161d7af798ee1788a', 'admin1', 'admin1', 'admin1', 'admin1@dd.com', '1234567890', '9', '01', '99', 'A', 'sys', 'user2', '2020-11-15 10:54:06', '2020-12-22 22:09:11');
 INSERT INTO `tbl_users` VALUES ('user1', 'f166ffbb2a93857b6439f581ebe13f5b', 'user1', 'user1', 'ทดสอบ', 'go2doem@gmail.com', '0841013129', '1', '01', '01', 'A', 'sys', NULL, '2020-11-15 10:52:57', NULL);
-INSERT INTO `tbl_users` VALUES ('user2', 'f166ffbb2a93857b6439f581ebe13f5b', 'user2', 'user2', 'ทดสอบจ้า', 'room24.zeed@gmail.com', '123456789', '2', '01', '01', 'A', 'sys', NULL, '2020-12-20 22:27:27', NULL);
-INSERT INTO `tbl_users` VALUES ('user3', 'f166ffbb2a93857b6439f581ebe13f5b', 'user3', 'xxxxdd', 'dddddddddddd', 'xxxx@dddd.com', '444444444dd', NULL, '01', '01', 'A', 'user2', 'user2', '2020-12-22 21:54:53', '2020-12-22 22:09:04');
-INSERT INTO `tbl_users` VALUES ('user88', '5dd5d400b6a181dd7121b8c6b0414e90', 'xxxx', 'xxx', '343434', 'xxxx@ddd.com', '432434343', NULL, '01', '01', 'A', 'admin', NULL, '2020-12-24 00:30:26', NULL);
-
--- ----------------------------
--- Table structure for test
--- ----------------------------
-DROP TABLE IF EXISTS `test`;
-CREATE TABLE `test`  (
-  `next_not_cached_value` bigint(21) NOT NULL,
-  `minimum_value` bigint(21) NOT NULL,
-  `maximum_value` bigint(21) NOT NULL,
-  `start_value` bigint(21) NOT NULL COMMENT 'start value when sequences is created or value if RESTART is used',
-  `increment` bigint(21) NOT NULL COMMENT 'increment value',
-  `cache_size` bigint(21) UNSIGNED NOT NULL,
-  `cycle_option` tinyint(1) UNSIGNED NOT NULL COMMENT '0 if no cycles are allowed, 1 if the sequence should begin a new cycle when maximum_value is passed',
-  `cycle_count` bigint(21) NOT NULL COMMENT 'How many cycles have been done'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of test
--- ----------------------------
-INSERT INTO `test` VALUES (1100, 1, 9223372036854775806, 100, 1, 1000, 0, 0);
 
 -- ----------------------------
 -- Function structure for currval
