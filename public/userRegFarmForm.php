@@ -43,7 +43,7 @@
 				showCancelButton: false 
 				});
 				return;				
-			  }else if (!validateEmail($('#email').val())){
+			  }else if (!validateEmail($('#txtEmail').val())){
                  Swal.fire({
                   title: 'รูปแบบ Email ไม่ถูกต้อง!',
                   allowOutsideClick: false,
@@ -234,7 +234,7 @@
                   </div>				  
 
 				  <div class="form-group row">
-                    <label for="txtEmail" class="col-sm-2 col-form-label">อีเมลย์ <span class="requiredfeilds">*</span></label>
+                    <label for="txtEmail" class="col-sm-2 col-form-label">อีเมล <span class="requiredfeilds">*</span></label>
                     <div class="col-sm-6">
                         <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="aaaa@ddd.com">
                     </div>

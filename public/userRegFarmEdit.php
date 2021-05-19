@@ -30,6 +30,9 @@
  ->get()->toArray();
  
 ?>  
+
+<script src="assets/js/app.js"></script>
+
 <script>
 //$(document).ready(function() { 
 //$("#btn").click(function() { 
@@ -42,6 +45,25 @@
 
           $("#userRegFarm").on("submit",function(e){ 
             e.preventDefault(); 
+
+			if($('#txtEmail').val() == ""){	
+				Swal.fire({
+				title: 'กรุณากรอก email!',
+				allowOutsideClick: false,
+				showDenyButton: false,
+				showCancelButton: false 
+				});
+				return;				
+			  }else if (!validateEmail($('#txtEmail').val())){
+                 Swal.fire({
+                  title: 'รูปแบบ Email ไม่ถูกต้อง!',
+                  allowOutsideClick: false,
+                  showDenyButton: false,
+                  showCancelButton: false 
+              });
+              return;
+             }
+
             if(check_form($(this)[0])){
                var data = $(this).serializeArray();
                var uri=$(this).attr('action'); 
@@ -233,7 +255,7 @@
                   </div>				  
 
 				  <div class="form-group row">
-                    <label for="txtEmail" class="col-sm-2 col-form-label">อีเมลย์</label>
+                    <label for="txtEmail" class="col-sm-2 col-form-label">อีเมล <span class="requiredfeilds">*</span></label>
                     <div class="col-sm-6">
                         <input type="email" class="form-control" id="txtEmail" name="txtEmail" value="<?=$userRowObj->email?>" placeholder="aaaa@ddd.com">
                     </div>
@@ -258,7 +280,7 @@
                     $selectedx = "";
                     foreach ($listmas_dept as $k => $v) { 
                         $selectedx = "";
-                        if($v->dept_code == '01')
+                        if($v->dept_code == $_SESSION['dept_code'])
                             $selectedx = "selected";
        
                     ?>

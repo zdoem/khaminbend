@@ -42,7 +42,7 @@
   .invalid-feedback{
       display: block; 
       width: 100%;
-      position: absolute;
+      /*position: absolute;   comment for fixed passwordrecover page*/
       margin:0;
       font-size: 80%;
       color: #dc3545;

@@ -109,12 +109,12 @@ $current_file_name=preg_replace("/\//", "",$_SERVER['PHP_SELF']);
           <i class="fa fa-user" aria-hidden="true"></i>
 				<p>  
           <?=@$_SESSION['fname'].' '.@$_SESSION['lname'].' - '.@$_SESSION['position_name']?>
-				  <small>กองส่งเสริมการเกษตร</small>
+				  <small><?=$_SESSION['dept_name']?></small>
 				</p>
 			  </li> 
 			  <li class="user-footer">
-				<!--<a href="#" class="btn btn-default btn-flat">Profile</a>-->
-				<a href="./logout.php" class="btn btn-default btn-flat float-right">Sign out</a>
+				<a href="./userRegFarmEdit.php?userId=<?=$_SESSION['user_id']?>" class="btn btn-default btn-flat">Profile</a>
+				<a href="./logout.php" class="btn btn-default btn-flat float-right">Logout</a>
 			  </li>
 			</ul>
 		 </li>

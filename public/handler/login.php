@@ -33,7 +33,8 @@ if (empty($_POST['username'])) {
     $_SESSION['position_name'] =$rowsdata->position_name; 
     $_SESSION['email'] = $rowsdata->email; 
     $_SESSION['level'] = $rowsdata->level; 
-    $_SESSION['dept_code'] = $rowsdata->dept_code; 
+    $_SESSION['dept_code'] = $rowsdata->dept_code;
+	$_SESSION['dept_name'] = $rowsdata->dept_name;
     $_SESSION['role_code'] = $rowsdata->role_code; 
 
     echo "<script>window.location.href = '../'</script>";
