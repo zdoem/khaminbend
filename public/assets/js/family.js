@@ -349,15 +349,15 @@ window.app = new Vue({
         txtPostalCode:{required},
         txtHouseId:{
            required,
-          isUnique (value) {
-          if ((value == '')||(''+value).length<=0) return true;  
+          isUnique (value) { 
+          if ((value == '')||(''+value).length<=0||(this.Mhouseinfor.mooHouse==null||this.Mhouseinfor.mooHouse=='')) return true;  
             let _this=this;
             return new Promise(function(resolve, reject){
                 $.ajax({
                   url: 'handler/family/family_duplicate_mouseid.php',
                   type: 'post', 
                   datatype : "application/json", 
-                  data:{id:_this.getParameterByName('id'),survseydate:_this.survseydate,house_no:encodeURIComponent(value)},
+                  data:{id:_this.getParameterByName('id'),survseydate:_this.survseydate,house_no:encodeURIComponent(value),mooHouse:_this.Mhouseinfor.mooHouse},
                   success: function (data) { 
                     if((data.status=='nodupicate')){_this.btn_validate=1;}else{_this.btn_validate=2;}  
                     resolve((data.status=='nodupicate'));
@@ -456,7 +456,7 @@ window.app = new Vue({
        }   
     },
     getsurvseydate:function(){
-       return $('#assessment_date').val();    
+       return $('#survseydate').val();    
     }, 
     getParameterByName:function(name, url) {
     if (!url)
@@ -477,9 +477,9 @@ window.app = new Vue({
      },  
      submit: function() {  
              var _this=this; 
-             var y1=moment($('#assessment_date').val(),'DD/MM/YYYY').format('YYYY/MM/DD'); 
-             var y2=moment(window.alert_survey,'DD/MM/YYYY').format('YYYY/MM/DD'); 
-             var alertinert=moment(y1).diff(y2, 'year');
+             var y1=moment($('#survseydate').val(),'DD/MM/YYYY').format('YYYY'); 
+             var y2=moment(window.alert_survey,'DD/MM/YYYY').format('YYYY'); 
+             var alertinert=y1-y2//moment(y1).diff(y2, 'year'); 
              if(alertinert>0&&alertinert!=NaN){
                    Swal.fire({
                       title: 'คุณกำลังจะสร้างข้อมูลใหม่ใช่หรือไม่?', 

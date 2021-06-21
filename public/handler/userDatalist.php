@@ -39,7 +39,7 @@ $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
      $resultRow->where('a.user_id', '=', $userId);
  }
  if($fname != '') {
-     $resultRow->Where('a.fname', 'like','%'.$fname.'%');
+     $resultRow->whereRaw("CONCAT(fname,' ',lname) like ?", ['%'.$fname.'%']);
  }
 
 ## Total number of records without filtering 

@@ -89,11 +89,13 @@ $manage_env_desc =(!IsNullOrEmptyString(@$_POST['xEnvironmental2disc']) ? $_POST
 $conserve_env=(!IsNullOrEmptyString(@$_POST['greenxEnvironmentaldisc']) ? $_POST['greenxEnvironmentaldisc'] : ''); 
 $f_help=trim((isset($_POST['helpme']) ? $_POST['helpme'] : 'N'));
 $help_desc=(!IsNullOrEmptyString(@$_POST['helpmedisc']) ? $_POST['helpmedisc'] : ''); 
+$thaiyear_survey='';
 if($action!=3){
 $survseydate=DateTime::createFromFormat('d/m/Y',$_POST['survseydate']);  
 $d_survey=DateConvert('toad','d/m/Y',$_POST['survseydate'],'-');
 $yearfam_id=substr($survseydate->format('Y'), -2);
 $tran_id=$yearfam_id.$survseydate->format('m'); 
+$thaiyear_survey=$survseydate->format('Y');
 }
  
 $select_facilities=(isset($_POST['Mlistmas_facilities']) ? $_POST['Mlistmas_facilities'] : []);
@@ -131,7 +133,7 @@ $listmas_facilities = $db::table("tbl_mas_facilities")
 
 // validate  data in server site.----------------------------------------------------------------------
 
-if(isset($_POST['id'])&&strlen(trim($id))>0&&($yearfam_id<$tran_yearfam_id||$yearfam_id>$tran_yearfam_id)){ 
+if(isset($_POST['id'])&&$action!=3&&strlen(trim($id))>0&&($yearfam_id<$tran_yearfam_id)){ //
     ?>
     <script type="text/javascript">
      Swal.fire({
@@ -144,46 +146,97 @@ if(isset($_POST['id'])&&strlen(trim($id))>0&&($yearfam_id<$tran_yearfam_id||$yea
     <?php
     exit(); 
 }
-//----------------------------------------------------------------------------------------------------
-$temp_mem_citizen_id=[]; 
-foreach ($familylists as $k => $v) { 
-  $temp_mem_citizen_id[] = trim((isset($v['txtCitizenId']) ? $v['txtCitizenId'] : ''));  
-  }  
-if($action!=3){
+//---------------------------------------------------------------------------------------------------- 
+if($action!=3){ 
   $survseydate=DateTime::createFromFormat('d/m/Y',DateConvert('toadre','d/m/Y',$_POST['survseydate'],'/')); 
-  $d_survseydate=$survseydate->format('Y');
+  $d_survseydate=$survseydate->format('Y'); 
+//-----------------------------------------ข้อมูลบ้านเลขที่------------------------------------------------------------ 
+$rows_old=[];$forecheck=0;
+if(isset($_POST['id'])&&strlen(trim($id))>0){ 
+      $forecheck=1;
+      $row_old= $db::table("fm_fam_hd")
+      ->where('fam_id', '=', $id)  
+      ->select($db::raw("fam_id,RIGHT(YEAR(d_survey)+543,2) AS yearfam_id,d_survey,house_no,house_moo"))
+      ->first();
+      if(!isset($row_old->yearfam_id)||(@$row_old->yearfam_id<substr(date("Y")+543, -2))){// ไม่มีข้อมูลเก่าหรือ idที่ใช้ปี<ปีปัจจุบัน insert ใหม่  
+        $action=1;
+      }else if(@$row_old->yearfam_id==$yearfam_id){// มีข้อมูลอยู่แล้วให้และปีเดี่ยวกัน update 
+        $action=2; 
+      } 
+      if($action==1&&$forecheck==1){
+        $rows_old =$db::select("SELECT fam_id,d_survey,house_no,house_moo FROM  fm_fam_hd AS a 
+        WHERE  house_no=? AND house_moo=? AND fam_id!=? AND YEAR(d_survey) IN (
+            SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE fam_id=? 
+        )", [$txtHouseId,$house_moo, $id,$id] );
+      }
 
- if(isset($_POST['id'])&&strlen(trim($id))>0){ 
+  }else{ //
+    $action=1; 
+    $survseydate=DateTime::createFromFormat('d/m/Y',DateConvert('toadre','d/m/Y',@$_POST['survseydate'],'/')); 
+    $d_survseydate=$survseydate->format('Y');
+    $rows_old =$db::select("SELECT fam_id,d_survey,house_no,house_moo FROM  fm_fam_hd AS a 
+    WHERE  house_no=? AND house_moo=? AND YEAR(d_survey) IN (
+        SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE YEAR(d_survey)=? 
+    )",[$txtHouseId,$house_moo,$d_survseydate]);
+} 
+
+ if(isset($rows_old[0]->house_no)){
+  $mas_vilage= $db::table("tbl_mas_vilage")
+  ->select($db::raw("vil_id,vil_moo,vil_name,vil_desc"))
+  ->where('vil_id', '=', $house_moo) 
+  ->first();
+   ?>
+  <script type="text/javascript">
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      html: 'มีข้อมูลบ้านเลขที่ <?=$rows_old[0]->house_no?> หมู่ที่ <?=$mas_vilage->vil_moo?> บ้าน <?=$mas_vilage->vil_name?> ภายในปีสำรวจ พ.ศ. <?=$thaiyear_survey?>  ในระบบแล้ว!',
+      });  
+   $("input[name*='token_family_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>');    
+  </script>
+  <?php
+  exit();
+  }  
+//---------------------------------------เลขที่บัตรประชาชน-------------------------------------------------------------- 
+  $temp_mem_citizen_id=[]; 
+  foreach ($familylists as $k => $v) { 
+    $temp_mem_citizen_id[] = trim((isset($v['txtCitizenId']) ? $v['txtCitizenId'] : ''));  
+  }  
+
+  if($action==1&&$forecheck==1){
+    $rows_old=$db::table('fm_fam_hd AS a')
+    ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
+    ->select($db::raw('fam_id,house_no,mem_citizen_id'))
+    ->whereIn('mem_citizen_id',$temp_mem_citizen_id)
+    ->where('b.mem_fam_id','!=',$id)
+    ->whereRaw('YEAR(d_survey)=?',[$d_survseydate])
+    ->get()->toArray(); 
+    // ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query)use ($id,$house_moo,$d_survseydate,$txtHouseId) {
+    //     $query->selectRaw('YEAR(d_survey)')
+    //         ->from('fm_fam_hd')
+    //         ->whereRaw('YEAR(d_survey)=?',[$d_survseydate])
+    //         ->where('house_moo','=',$house_moo)    
+    //         ->where('house_no','=',$txtHouseId);
+    // }) 
+    }else if($action==1){  
     $rows_old=$db::table('fm_fam_hd AS a')
     ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
     ->select($db::raw('house_no,mem_citizen_id'))
     ->whereIn('mem_citizen_id',$temp_mem_citizen_id)
-    ->where('house_no','!=',$txtHouseId)
-    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query)use ($id,$d_survseydate,$txtHouseId) {
-        $query->selectRaw('YEAR(d_survey)')
-            ->from('fm_fam_hd')
-            ->whereRaw('YEAR(d_survey)=?',[$d_survseydate])
-            ->where('house_no','=',$txtHouseId);
-    })
+    ->whereRaw('YEAR(d_survey)=?',[$d_survseydate])
+    // ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query)use ($d_survseydate) {
+    //     $query->selectRaw('YEAR(d_survey)')
+    //         ->from('fm_fam_hd')
+    //         ->whereRaw('YEAR(d_survey)=?',[$d_survseydate]);
+    // })
     ->get()->toArray();  
-}else{  
-    $rows_old=$db::table('fm_fam_hd AS a')
-    ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
-    ->select($db::raw('house_no,mem_citizen_id'))
-    ->whereIn('mem_citizen_id',$temp_mem_citizen_id)
-    ->whereIn($db::raw('YEAR(a.d_survey)'), function ($query)use ($d_survseydate) {
-        $query->selectRaw('YEAR(d_survey)')
-            ->from('fm_fam_hd')
-            ->whereRaw('YEAR(d_survey)=?',[$d_survseydate]);
-    })
-    ->get()->toArray();  
-}  
-$dupi_mem_citizen_id=[];
-foreach (@$rows_old as $k => $v) { 
-   $dupi_mem_citizen_id[]=$v->mem_citizen_id;
-}
- if(sizeof($dupi_mem_citizen_id)>0){
-?>
+  }  
+  $dupi_mem_citizen_id=[];
+  foreach (@$rows_old as $k => $v) { 
+    $dupi_mem_citizen_id[]=$v->mem_citizen_id;
+  }
+  if(sizeof($dupi_mem_citizen_id)>0){
+  ?>
   <script type="text/javascript">
     Swal.fire({
     icon: 'error',
@@ -194,72 +247,10 @@ foreach (@$rows_old as $k => $v) {
   </script>
   <?php
   exit();
- } 
-}
-//----------------------------------------------------------------------------------------------------- 
-if(isset($_POST['id'])&&strlen(trim($id))>0){
-    $rows_old =$db::select("SELECT fam_id,d_survey,house_no,house_moo FROM  fm_fam_hd AS a 
-    WHERE  house_no=? AND fam_id!=? AND YEAR(d_survey) IN (
-        SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE fam_id=? 
-    )", [$txtHouseId, $id,$id] );
-}else{
-    $survseydate=DateTime::createFromFormat('d/m/Y',DateConvert('toadre','d/m/Y',@$_POST['survseydate'],'/')); 
-    $d_survseydate=$survseydate->format('Y');
-    $rows_old =$db::select("SELECT fam_id,d_survey,house_no,house_moo FROM  fm_fam_hd AS a 
-    WHERE  house_no=? AND YEAR(d_survey) IN (
-        SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE YEAR(d_survey)=? 
-    )",[$txtHouseId,$d_survseydate]);
+  }
+
+
 } 
-
- if(isset($rows_old[0]->house_no)){
-   ?>
-  <script type="text/javascript">
-    Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      html: 'มีข้อมูลบ้านเลขที่ <?=$rows_old[0]->house_no?> ในระบบแล้ว!',
-      });  
-   $("input[name*='token_family_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>');    
-  </script>
-  <?php
-  exit();
- } 
-
-// validate   substr($id,0,2)
-$rows_old=null;
-if($id>0){
-   $rows_old = $db::table("fm_fam_hd")
-    ->where('fam_id', '=', $id)  
-    ->select($db::raw("fam_id,RIGHT(YEAR(d_survey)+543,2) AS yearfam_id,d_survey,house_no,house_moo"))
-    ->first();
-      if($action!=3){ 
-         if(!isset($rows_old->yearfam_id)||(@$rows_old->yearfam_id<substr(date("Y")+543, -2))){// ไม่มีข้อมูลเก่าหรือ idที่ใช้ปี<ปีปัจจุบัน insert ใหม่  
-           $action=1;   
-           $rows_old_dupi = $db::table("fm_fam_hd")
-          ->where('house_no', '=', $rows_old->house_no)  
-          ->whereYear('d_survey', date("Y", strtotime($d_survey)))
-          ->select($db::raw("fam_id,house_no,house_moo"))
-          ->first();
-          if(isset($rows_old_dupi->house_no)){
-            ?>
-          <script type="text/javascript">
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              html: 'มีข้อมูลบ้านเลขที่ <?=$rows_old_dupi->house_no?> ภายในปีสำรวจ <?=date("Y", strtotime(DateConvert('tops','Y/m/d',$d_survey,'-')))?> ในระบบแล้ว!',
-              });  
-            $("input[name*='token_family_frm']").val('<?=\Volnix\CSRF\CSRF::getToken('token_family_frm')?>');   
-          </script>
-            <?php
-            exit();
-          } 
-         }else if(@$rows_old->yearfam_id==$yearfam_id){// มีข้อมูลอยู่แล้วให้และปีเดี่ยวกัน update 
-         $action=2; 
-        }
-    } 
-}else{
-  $action=1;     
-}  
 // test
 // $action = 1;
 // var_dump($action);exit();
@@ -609,7 +600,7 @@ function insertall($type,$tran_id){
        return true;
      } catch (\Exception $e) { 
        $db::rollBack();
-      //  var_dump($e->getMessage());exit();   
+        var_dump($e->getMessage());exit();   
        return false;
     }
 }

@@ -143,7 +143,7 @@ $help_desc ='';
 $eco_product_from =''; //ช่วงเวลาการผลิต จาก
 $eco_product_to =''; //ช่วงเวลาการผลิต จาก 
 $d_survey = DateConvert('topsre','d/m/Y',date('d/m/Y', time()),'/');//วันเดือนปีสำรวจ 
-$alert_survey=DateConvert('topsre','d/m/Y h:i',date('d/m/Y h:i', time()),'/'); 
+$alert_survey=DateConvert('topsre','d/m/Y h:i',date('d/m/Y h:i', time()),'/');
 $actions='I'; 
 if (isset($_GET['id'])) {// update 
   $actions='U';
@@ -160,12 +160,14 @@ if (isset($_GET['id'])) {// update
       ,mem_status AS x_status,mem_sex AS x_sex,mem_national AS national,mem_religion_code AS reg_code,mem_df_birth AS date_of_birth,mem_education_code AS education_code
       ,mem_relations_code AS relations_code,g_occupational_code,g_occupational_other,main_occupation_code,add_occupation_code
       ,income_per_year,fam_land_other,eco_occupation_code,eco_product_target_code,eco_capital_code,eco_product_cost,f_problem_env,problem_env_desc
-      ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,CONCAT(DATE_FORMAT(d_survey,'%d') ,'/', DATE_FORMAT(d_survey ,'%m'),'/',DATE_FORMAT(d_survey ,'%Y')+543) AS d_survey"))
+      ,f_manage_env,manage_env_desc,conserve_env,f_help,help_desc,CONCAT(DATE_FORMAT(d_survey,'%d') ,'/', DATE_FORMAT(d_survey ,'%m'),'/',DATE_FORMAT(d_survey ,'%Y')+543) AS d_survey,d_survey AS d_survey2"))
     ->leftJoinSub($base_join, 'cc', function ($join) {
         $join->on('a.fam_id', '=', 'cc.mem_fam_id');
     })->where('fam_id', '=', $_GET['id'])->first();   
 
-    if (isset($data_fm_fam_hd->d_survey)&&!IsNullOrEmptyString($data_fm_fam_hd->d_survey)) {$alert_survey = date('d/m/Y', strtotime($data_fm_fam_hd->d_survey));}
+    if (isset($data_fm_fam_hd->d_survey)&&!IsNullOrEmptyString($data_fm_fam_hd->d_survey)) {
+      $alert_survey = $data_fm_fam_hd->d_survey;//date('d/m/Y', strtotime($data_fm_fam_hd->d_survey)); 
+    } 
     $house_no = (isset($data_fm_fam_hd->house_no) ? $data_fm_fam_hd->house_no : ''); //บ้านเลขที่
     $house_moo = ((isset($data_fm_fam_hd->house_moo)&&!IsNullOrEmptyString($data_fm_fam_hd->house_moo)) ? $data_fm_fam_hd->house_moo :null); //หมู่ที
     $sub_district = (isset($data_fm_fam_hd->sub_district) ? $data_fm_fam_hd->sub_district : ''); //ตำบล
@@ -407,7 +409,7 @@ $Shouseinfor=['txtHouseId'=>$house_no,'mooHouse'=>$house_moo,'txtSubDstrict'=>$s
   window.alert_survey='<?=$alert_survey?>';
   window.actions='<?=$actions?>';
   
-<?php  
+<?php    
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'&&@$_GET['type']=='copy') { 
 if(IsNullOrEmptyString($house_no)){
 ?>

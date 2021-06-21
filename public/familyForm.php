@@ -66,7 +66,7 @@ require_once 'handler/family/familyloadDataUser.php';
               <div class="col-md-4">
                 <div class="form-group">
                   <label>หมู่ที่ - ชื่อหมู่บ้าน <span class="requiredfeilds">*</span></label> 
-				       	<select class="form-control"  :class="status($v.Mhouseinfor.mooHouse)" required @blur="$v.Mhouseinfor.mooHouse.$touch()" v-model.trim="$v.Mhouseinfor.mooHouse.$model" > 
+				       	<select class="form-control"  :class="status($v.Mhouseinfor.mooHouse)" required @blur="$v.Mhouseinfor.mooHouse.$touch();$v.Mhouseinfor.txtHouseId.$touch();" v-model.trim="$v.Mhouseinfor.mooHouse.$model" > 
                         <template v-for="(v, indexx) in listmas_vilage">
                           <option v-if="(indexx*1)==0" v-bind:value="v.vil_id" v-bind:selected="indexx== 0 ? 'selected' : false">{{v.vil_name}}</option> 
                           <option v-if="(indexx*1)>0" v-bind:value="v.vil_id" v-bind:selected="indexx== 0 ? 'selected' : false">หมู่ที่ {{v.vil_moo}} - {{v.vil_name}}</option>
