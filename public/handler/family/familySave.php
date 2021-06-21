@@ -162,13 +162,11 @@ if(isset($_POST['id'])&&strlen(trim($id))>0){
         $action=1;
       }else if(@$row_old->yearfam_id==$yearfam_id){// มีข้อมูลอยู่แล้วให้และปีเดี่ยวกัน update 
         $action=2; 
-      } 
-      if($action==1&&$forecheck==1){
-        $rows_old =$db::select("SELECT fam_id,d_survey,house_no,house_moo FROM  fm_fam_hd AS a 
+      }  
+      $rows_old =$db::select("SELECT fam_id,d_survey,house_no,house_moo FROM  fm_fam_hd AS a 
         WHERE  house_no=? AND house_moo=? AND fam_id!=? AND YEAR(d_survey) IN (
             SELECT YEAR(d_survey) FROM  fm_fam_hd  WHERE fam_id=? 
-        )", [$txtHouseId,$house_moo, $id,$id] );
-      }
+        )", [$txtHouseId,$house_moo, $id,$id] ); 
 
   }else{ //
     $action=1; 
@@ -203,7 +201,7 @@ if(isset($_POST['id'])&&strlen(trim($id))>0){
     $temp_mem_citizen_id[] = trim((isset($v['txtCitizenId']) ? $v['txtCitizenId'] : ''));  
   }  
 
-  if($action==1&&$forecheck==1){
+  if($action==2&&$forecheck==1){
     $rows_old=$db::table('fm_fam_hd AS a')
     ->join('fm_fam_members_dt1 AS b', 'a.fam_id', '=', 'b.mem_fam_id')
     ->select($db::raw('fam_id,house_no,mem_citizen_id'))
@@ -253,7 +251,7 @@ if(isset($_POST['id'])&&strlen(trim($id))>0){
 } 
 // test
 // $action = 1;
-// var_dump($action);exit();
+  // var_dump($action);exit();
  if ($action == 1) {/*Insert Data*/ 
     try {     
           $tran_id=$db::select("SELECT CONCAT($tran_id,NEXTVAL(sfm_fam_hd)) AS tran_id")[0]->tran_id; 
